@@ -48,3 +48,5 @@ export default tseslint.config({
   },
 })
 ```
+
+Zoe Thexton joining the project!
