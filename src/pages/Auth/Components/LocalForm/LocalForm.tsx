@@ -11,7 +11,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-// import useAuth from "@/hooks/auth/useAuth";
+import useAuth from "@/hooks/auth/useAuth";
 
 type FormData = {
   email: string;
@@ -23,7 +23,7 @@ type FormData = {
 const LocalForm = () => {
   const [isRegister, setIsRegister] = useState(false);
 
-  // const { login, register } = useAuth();
+  const { login, register } = useAuth();
 
   const form = useForm({
     defaultValues: {
@@ -37,19 +37,18 @@ const LocalForm = () => {
   const toggleForm = () => setIsRegister(!isRegister);
 
   const onSubmit = (data: FormData) => {
-    console.log(data);
     if (isRegister) {
-      // register({
-      //   name: data.name ?? "",
-      //   email: data.email,
-      //   password: data.password,
-      //   confirmPassword: data.confirmPassword ?? "",
-      // });
+      register({
+        name: data.name ?? "",
+        email: data.email,
+        password: data.password,
+        confirmPassword: data.confirmPassword ?? "",
+      });
     } else {
-      // login({
-      //   email: data.email,
-      //   password: data.password,
-      // });
+      login({
+        email: data.email,
+        password: data.password,
+      });
     }
   };
 
