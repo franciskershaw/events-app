@@ -1,24 +1,24 @@
-// import { useEffect } from "react";
+import { useEffect } from "react";
 
 import { FaGoogle } from "react-icons/fa";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
-// import useUser from "@/hooks/user/useUser";
+import useUser from "@/hooks/user/useUser";
 
 import LocalForm from "./Components/LocalForm/LocalForm";
 import OrDivider from "./Components/OrDivider/OrDivider";
 
 const Auth = () => {
-  // const { user } = useUser();
-  // const navigate = useNavigate();
+  const { user } = useUser();
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (user) {
-  //     return navigate("/films");
-  //   }
-  // }, [user, navigate]);
+  useEffect(() => {
+    if (user) {
+      return navigate("/events");
+    }
+  }, [user, navigate]);
   const handleGoogleLogin = () => {
     window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
   };
