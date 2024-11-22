@@ -9,32 +9,36 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import useAuth from "@/hooks/auth/useAuth";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-type FormData = {
-  email: string;
-  password: string;
-  confirmPassword?: string;
-  name?: string;
-};
+import { loginSchema, registerSchema } from "./localFormSchema";
+
+type FormData = z.infer<typeof loginSchema>;
 
 const LocalForm = () => {
   const [isRegister, setIsRegister] = useState(false);
 
   const { login, register } = useAuth();
 
-  const form = useForm({
+  const form = useForm<FormData>({
     defaultValues: {
       email: "",
       password: "",
       confirmPassword: "",
       name: "",
     },
+    resolver: zodResolver(isRegister ? registerSchema : loginSchema),
   });
 
-  const toggleForm = () => setIsRegister(!isRegister);
+  const toggleForm = () => {
+    setIsRegister(!isRegister);
+    form.clearErrors();
+  };
 
   const onSubmit = (data: FormData) => {
     if (isRegister) {
@@ -42,7 +46,6 @@ const LocalForm = () => {
         name: data.name ?? "",
         email: data.email,
         password: data.password,
-        confirmPassword: data.confirmPassword ?? "",
       });
     } else {
       login({
@@ -65,6 +68,7 @@ const LocalForm = () => {
                 <FormControl>
                   <Input placeholder="Enter your name" {...field} />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -78,6 +82,7 @@ const LocalForm = () => {
               <FormControl>
                 <Input placeholder="Enter your email" {...field} />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -95,6 +100,7 @@ const LocalForm = () => {
                   {...field}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -113,6 +119,7 @@ const LocalForm = () => {
                     {...field}
                   />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />

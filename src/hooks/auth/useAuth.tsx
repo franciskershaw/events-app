@@ -33,17 +33,9 @@ const useAuth = () => {
     name: string;
     email: string;
     password: string;
-    confirmPassword: string;
   }) => {
     try {
-      const { confirmPassword, ...formData } = data;
-
-      if (data.password !== confirmPassword) {
-        toast.error("Passwords do not match.");
-        return;
-      }
-
-      const response = await api.post("/auth/register", formData);
+      const response = await api.post("/auth/register", data);
       updateUser(response.data);
       toast.success(`Welcome to Recommendable, ${data.name}`);
       return response.data;
