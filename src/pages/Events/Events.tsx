@@ -1,19 +1,24 @@
-import useAuth from "@/pages/Auth/hooks/useAuth";
-import { Button } from "../../components/ui/button";
+import EventCard, { EventCardProps } from "./components/EventCard";
 import useGetEvents from "./hooks/useGetEvents";
 
 const Events = () => {
-  const { logout } = useAuth();
-  const { events } = useGetEvents();
+  const { events, fetchingEvents, errorFetchingEvents } = useGetEvents();
 
-  console.log(events);
+  if (fetchingEvents) return <p>Loading events...</p>;
+  if (errorFetchingEvents) return <p>Error fetching events</p>;
 
   return (
-    <div>
-      Events!!!!!
-      <button onClick={logout}>Logout</button>
-      <Button>Hello</Button>
-    </div>
+    <>
+      {events.length === 0 ? (
+        <p>No events found.</p>
+      ) : (
+        <div className="space-y-2">
+          {events.map((event: EventCardProps["event"]) => (
+            <EventCard key={event._id} event={event} />
+          ))}
+        </div>
+      )}
+    </>
   );
 };
 

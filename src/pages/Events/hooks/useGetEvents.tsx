@@ -1,7 +1,6 @@
 import useAxios from "@/axios/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import useUser from "../../../hooks/user/useUser";
-import queryKeys from "../../../tanstackQuery/queryKeys";
 
 const useGetEvents = () => {
   const api = useAxios();
@@ -24,9 +23,10 @@ const useGetEvents = () => {
     isFetching: fetchingEvents,
     isError: errorFetchingEvents,
   } = useQuery({
-    queryKey: [queryKeys.events],
+    queryKey: ["events"],
     queryFn: getEvents,
-    enabled: !!user?.accessToken && !fetchingUser,
+    retry: false,
+    staleTime: 1000 * 60 * 5,
   });
 
   return {
