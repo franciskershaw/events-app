@@ -2,7 +2,7 @@ import { toast } from "sonner";
 
 import useAxios from "@/axios/useAxios";
 
-import useUser from "../user/useUser";
+import useUser from "../../../hooks/user/useUser";
 
 const useAuth = () => {
   const api = useAxios();

@@ -1,7 +1,7 @@
 import useAxios from "@/axios/useAxios";
 import { useQuery } from "@tanstack/react-query";
-import queryKeys from "../../tanstackQuery/queryKeys";
-import useUser from "../user/useUser";
+import useUser from "../../../hooks/user/useUser";
+import queryKeys from "../../../tanstackQuery/queryKeys";
 
 const useGetEvents = () => {
   const api = useAxios();

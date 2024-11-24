@@ -1,6 +1,6 @@
-import useAuth from "@/hooks/auth/useAuth";
+import useAuth from "@/pages/Auth/hooks/useAuth";
 import { Button } from "../../components/ui/button";
-import useGetEvents from "../../hooks/events/useGetEvents";
+import useGetEvents from "./hooks/useGetEvents";
 
 const Events = () => {
   const { logout } = useAuth();
