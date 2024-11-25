@@ -17,3 +17,8 @@ export interface EventDate {
   start: string;
   end: string;
 }
+
+export interface EventLocation {
+  venue: string;
+  city: string;
+}

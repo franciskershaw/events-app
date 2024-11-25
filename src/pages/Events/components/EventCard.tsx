@@ -3,19 +3,23 @@ import { useState } from "react";
 import { Button } from "../../../components/ui/button";
 import useFormattedDate from "../../../hooks/utility/useFormattedDate";
 import useFormattedTime from "../../../hooks/utility/useFormattedTime";
-import { EventCategory, EventDate } from "../../../types/globalTypes";
+import {
+  EventCategory,
+  EventDate,
+  EventLocation,
+} from "../../../types/globalTypes";
 
 export interface EventCardProps {
   event: {
     _id: string;
     title: string;
     date: EventDate;
-    location: string;
+    location: EventLocation;
     category: EventCategory;
     createdBy: string;
     sharedWith: string[];
     createdAt: string;
-    // extraInfo?: string;
+    description?: string;
   };
 }
 
@@ -27,7 +31,7 @@ const EventCard = ({ event }: EventCardProps) => {
     createdBy,
     sharedWith,
     createdAt,
-    // extraInfo,
+    description,
   } = event;
 
   const [isOpen, setIsOpen] = useState(false);
@@ -36,12 +40,15 @@ const EventCard = ({ event }: EventCardProps) => {
   const date = useFormattedDate(event.date);
   const time = useFormattedTime(event.date);
 
+  console.log(event);
+
   return (
     <div className="event-card">
       <div
         className="event-card-header flex items-center space-x-2 box rounded-md p-2 relative cursor-pointer"
         onClick={toggleBody}
       >
+        {/* TOZO: Write get user and initials */}
         {/* <div className="absolute rounded-full box top-[-16px] left-[-16px] bg-white h-8 w-8 flex justify-center items-center">
           FK
         </div> */}
@@ -49,7 +56,11 @@ const EventCard = ({ event }: EventCardProps) => {
           <span>{date}</span>
         </div>
         <h2>{title}</h2>
-        {/* <div>{location}</div> */}
+        {location && location.city && (
+          <div className="absolute box rounded-md top-[-22px] right-[-16px] bg-white p-0.5">
+            {location.city}
+          </div>
+        )}
       </div>
       <motion.div
         className="event-card-body box mx-2 border-t-0 rounded-md rounded-t-none overflow-hidden"
@@ -60,14 +71,20 @@ const EventCard = ({ event }: EventCardProps) => {
           opacity: { duration: isOpen ? 0.1 : 0.3 },
         }}
       >
+        {/* Meta */}
+        <div className="flex space-x-1 p-1 w-full overflow-x-auto whitespace-nowrap bg-gray-200">
+          {location && location.venue && (
+            <div className="box rounded-md p-1">{location.venue}</div>
+          )}
+          <div className="box rounded-md p-1">{time}</div>
+          {/* TOZO: Write get categories function */}
+          <div className="box rounded-md p-1">Event categories</div>
+        </div>
         <div className="p-2 space-y-2">
-          {/* Meta */}
-          <div className="flex space-x-2">
-            <div className="box rounded-md p-1">{time}</div>
-            <div className="box rounded-md p-1">Event categories</div>
-          </div>
           {/* Description */}
-          {/* {extraInfo && <div className="box rounded-md">{extraInfo}</div>} */}
+          {description && (
+            <div className="box rounded-md p-1">{description}</div>
+          )}
           {/* Buttons */}
           <div className="flex justify-center space-x-2">
             <Button size="round">Edit</Button>

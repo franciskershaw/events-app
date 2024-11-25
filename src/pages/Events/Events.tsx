@@ -7,6 +7,8 @@ const Events = () => {
   if (fetchingEvents) return <p>Loading events...</p>;
   if (errorFetchingEvents) return <p>Error fetching events</p>;
 
+  // TOZO: Refactor to populate empty event cards within time period
+
   return (
     <>
       {events.length === 0 ? (
