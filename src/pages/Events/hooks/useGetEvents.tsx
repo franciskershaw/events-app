@@ -1,5 +1,6 @@
 import useAxios from "@/axios/useAxios";
 import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import useUser from "../../../hooks/user/useUser";
 
 const useGetEvents = () => {
@@ -29,8 +30,12 @@ const useGetEvents = () => {
     staleTime: 1000 * 60 * 5,
   });
 
+  const sortedEvents = [...events].sort((a, b) =>
+    dayjs(a.date.start).isBefore(dayjs(b.date.start)) ? -1 : 1
+  );
+
   return {
-    events,
+    events: sortedEvents,
     fetchingEvents,
     errorFetchingEvents,
   };
