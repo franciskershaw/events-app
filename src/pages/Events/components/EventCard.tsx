@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "../../../components/ui/button";
 import useFormattedDate from "../../../hooks/utility/useFormattedDate";
 import useFormattedTime from "../../../hooks/utility/useFormattedTime";
+import useGetWeekend from "../../../hooks/utility/useGetWeekend";
 import {
   EventCategory,
   EventDate,
@@ -39,13 +40,14 @@ const EventCard = ({ event }: EventCardProps) => {
 
   const date = useFormattedDate(event.date);
   const time = useFormattedTime(event.date);
+  const isWeekend = useGetWeekend(event.date.start);
 
   console.log(event);
 
   return (
     <div className="event-card">
       <div
-        className="event-card-header flex items-center space-x-2 box rounded-md p-2 relative cursor-pointer"
+        className={`event-card-header flex items-center space-x-2 box rounded-md p-2 relative cursor-pointer ${isWeekend && "border-4"}`}
         onClick={toggleBody}
       >
         {/* TOZO: Write get user and initials */}
@@ -53,12 +55,12 @@ const EventCard = ({ event }: EventCardProps) => {
           FK
         </div> */}
         <div className="box p-1 rounded-md">
-          <span>{date}</span>
+          <p>{date}</p>
         </div>
         <h2>{title}</h2>
         {location && location.city && (
           <div className="absolute box rounded-md top-[-22px] right-[-16px] bg-white p-0.5">
-            {location.city}
+            <p>{location.city}</p>
           </div>
         )}
       </div>
@@ -74,16 +76,23 @@ const EventCard = ({ event }: EventCardProps) => {
         {/* Meta */}
         <div className="flex space-x-1 p-1 w-full overflow-x-auto whitespace-nowrap bg-gray-200">
           {location && location.venue && (
-            <div className="box rounded-md p-1">{location.venue}</div>
+            <div className="box rounded-md p-1">
+              <p>{location.venue}</p>
+            </div>
           )}
-          <div className="box rounded-md p-1">{time}</div>
-          {/* TOZO: Write get categories function */}
-          <div className="box rounded-md p-1">Event categories</div>
+          <div className="box rounded-md p-1">
+            <p>{time}</p>
+          </div>
+          <div className="box rounded-md p-1">
+            <p>{category.name}</p>
+          </div>
         </div>
         <div className="p-2 space-y-2">
           {/* Description */}
           {description && (
-            <div className="box rounded-md p-1">{description}</div>
+            <div className="box rounded-md p-1">
+              <p>{description}</p>
+            </div>
           )}
           {/* Buttons */}
           <div className="flex justify-center space-x-2">
