@@ -46,6 +46,7 @@ const EventCard = ({ event }: EventCardProps) => {
 
   return (
     <div className="event-card">
+      {/* TOZO: Work out best way to truncate information in header */}
       <div
         className={`event-card-header flex items-center space-x-2 box rounded-md p-2 relative cursor-pointer ${isWeekend && "border-4"}`}
         onClick={toggleBody}
