@@ -23,6 +23,7 @@ const Events = () => {
         <p>No events found.</p>
       ) : (
         <>
+          <div className="top-0 left-0 right-0 fixed h-[60px] bg-white/90 z-10"></div>
           {pastEvents.length > 0 && <EventCards events={pastEvents} />}
           {events.length > 0 && <EventCards events={events} />}
         </>
