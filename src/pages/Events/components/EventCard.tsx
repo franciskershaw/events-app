@@ -42,8 +42,6 @@ const EventCard = ({ event }: EventCardProps) => {
   const time = useFormattedTime(event.date);
   const isWeekend = useGetWeekend(event.date.start);
 
-  console.log(event);
-
   return (
     <div className="event-card">
       {/* TOZO: Work out best way to truncate information in header */}
@@ -55,10 +53,10 @@ const EventCard = ({ event }: EventCardProps) => {
         {/* <div className="absolute rounded-full box top-[-16px] left-[-16px] bg-white h-8 w-8 flex justify-center items-center">
           FK
         </div> */}
-        <div className="box p-1 rounded-md">
+        <div className="box p-1 rounded-md min-w-[75px] text-center whitespace-nowrap">
           <p>{date}</p>
         </div>
-        <h2>{title}</h2>
+        <h2 className="truncate">{title}</h2>
         {location && location.city && (
           <div className="absolute box rounded-md top-[-22px] right-[-16px] bg-white p-0.5">
             <p>{location.city}</p>
@@ -97,6 +95,7 @@ const EventCard = ({ event }: EventCardProps) => {
           )}
           {/* Buttons */}
           <div className="flex justify-center space-x-2">
+            <Button size="round">Copy</Button>
             <Button size="round">Edit</Button>
             <Button size="round">Delete</Button>
             <Button size="round">Private</Button>
