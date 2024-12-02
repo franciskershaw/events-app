@@ -38,13 +38,12 @@ const EventCard = ({ event }: EventCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleBody = () => setIsOpen((prev) => !prev);
 
-  const date = useFormattedDate(event.date);
-  const time = useFormattedTime(event.date);
+  const formattedDate = useFormattedDate(event.date);
+  const formattedTime = useFormattedTime(event.date);
   const isWeekend = useGetWeekend(event.date.start);
 
   return (
     <div className="event-card">
-      {/* TOZO: Work out best way to truncate information in header */}
       <div
         className={`event-card-header flex items-center space-x-2 box rounded-md p-2 relative cursor-pointer ${isWeekend && "border-4"}`}
         onClick={toggleBody}
@@ -54,7 +53,7 @@ const EventCard = ({ event }: EventCardProps) => {
           FK
         </div> */}
         <div className="box p-1 rounded-md min-w-[75px] text-center whitespace-nowrap">
-          <p>{date}</p>
+          <p>{formattedDate}</p>
         </div>
         <h2 className="truncate">{title}</h2>
         {location && location.city && (
@@ -80,7 +79,7 @@ const EventCard = ({ event }: EventCardProps) => {
             </div>
           )}
           <div className="box rounded-md p-1">
-            <p>{time}</p>
+            <p>{formattedTime}</p>
           </div>
           <div className="box rounded-md p-1">
             <p>{category.name}</p>

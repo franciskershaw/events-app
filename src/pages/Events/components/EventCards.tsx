@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import React from "react";
 import DateScroller from "./DateScroller";
 import EventCard, { EventCardProps } from "./EventCard";
+import EventCardEmpty from "./EventCardEmpty";
 
 interface EventCardsProps {
   events: EventCardProps["event"][];
@@ -29,6 +30,32 @@ const EventCards: React.FC<EventCardsProps> = ({ events }) => {
     {}
   );
 
+  const getDaysWithEvents = (
+    month: string,
+    events: EventCardProps["event"][]
+  ) => {
+    const monthStart = dayjs(events[0].date.start).startOf("month");
+    const monthEnd = dayjs(events[0].date.start).endOf("month");
+
+    const allDays = [];
+    let currentDay = monthStart;
+
+    while (currentDay.isSameOrBefore(monthEnd, "day")) {
+      const eventForDay = events.find((event) =>
+        dayjs(event.date.start).isSame(currentDay, "day")
+      );
+
+      allDays.push({
+        date: currentDay.toISOString(),
+        event: eventForDay || null,
+      });
+
+      currentDay = currentDay.add(1, "day");
+    }
+
+    return allDays;
+  };
+
   return (
     <>
       {todayEvents.length > 0 && (
@@ -46,9 +73,13 @@ const EventCards: React.FC<EventCardsProps> = ({ events }) => {
         <div key={month}>
           <DateScroller date={events[0].date.start} />
           <div className="space-y-2">
-            {events.map((event) => (
-              <EventCard key={event._id} event={event} />
-            ))}
+            {getDaysWithEvents(month, events).map(({ date, event }) =>
+              event ? (
+                <EventCard key={event._id} event={event} />
+              ) : (
+                <EventCardEmpty key={date} date={date} />
+              )
+            )}
           </div>
         </div>
       ))}
