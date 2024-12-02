@@ -2,7 +2,6 @@ import dayjs from "dayjs";
 import React from "react";
 import DateScroller from "./DateScroller";
 import EventCard, { EventCardProps } from "./EventCard";
-import EventCardEmpty from "./EventCardEmpty";
 
 interface EventCardsProps {
   events: EventCardProps["event"][];
@@ -69,7 +68,7 @@ const EventCards: React.FC<EventCardsProps> = ({ events }) => {
         </>
       )}
 
-      {Object.entries(groupedEvents).map(([month, events]) => (
+      {/* {Object.entries(groupedEvents).map(([month, events]) => (
         <div key={month}>
           <DateScroller date={events[0].date.start} />
           <div className="space-y-2">
@@ -80,6 +79,17 @@ const EventCards: React.FC<EventCardsProps> = ({ events }) => {
                 <EventCardEmpty key={date} date={date} />
               )
             )}
+          </div>
+        </div>
+      ))} */}
+
+      {Object.entries(groupedEvents).map(([month, events]) => (
+        <div key={month}>
+          <DateScroller date={events[0].date.start} />
+          <div className="space-y-2">
+            {events.map((event) => (
+              <EventCard key={event._id} event={event} />
+            ))}
           </div>
         </div>
       ))}
