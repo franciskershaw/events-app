@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import useUser from "../../../hooks/user/useUser";
 
-const useGetEvents = (type = "future") => {
+const useGetEvents = () => {
   const api = useAxios();
   const { user } = useUser();
 
@@ -12,26 +12,11 @@ const useGetEvents = (type = "future") => {
       throw new Error("User is not authenticated");
     }
 
-    try {
-      const endpoint = type === "past" ? "/events/past" : "/events";
+    const res = await api.get("/events", {
+      headers: { Authorization: `Bearer ${user.accessToken}` },
+    });
 
-      const res = await api.get(endpoint, {
-        headers: { Authorization: `Bearer ${user.accessToken}` },
-      });
-
-      console.log("API Response:", res);
-
-      if (Array.isArray(res.data)) {
-        return res.data; // Future events: array is directly in res.data
-      } else if (res.data.events) {
-        return res.data.events; // Past events: array is in res.data.events
-      }
-
-      throw new Error("Unexpected API response structure");
-    } catch (error) {
-      console.error("Error fetching events:", error);
-      throw error;
-    }
+    return res.data;
   };
 
   const {
@@ -39,7 +24,7 @@ const useGetEvents = (type = "future") => {
     isFetching: fetchingEvents,
     isError: errorFetchingEvents,
   } = useQuery({
-    queryKey: ["events", type],
+    queryKey: ["events"],
     queryFn: getEvents,
     retry: false,
     staleTime: 1000 * 60 * 5,

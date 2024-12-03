@@ -1,9 +1,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Button } from "../../../components/ui/button";
-import useFormattedDate from "../../../hooks/utility/useFormattedDate";
-import useFormattedTime from "../../../hooks/utility/useFormattedTime";
-import useGetWeekend from "../../../hooks/utility/useGetWeekend";
+import { formatDate, formatTime, isWeekend } from "../../../lib/utils";
 import {
   EventCategory,
   EventDate,
@@ -29,23 +27,23 @@ const EventCard = ({ event }: EventCardProps) => {
     location,
     title,
     category,
-    createdBy,
-    sharedWith,
-    createdAt,
+    // createdBy,
+    // sharedWith,
+    // createdAt,
     description,
   } = event;
 
   const [isOpen, setIsOpen] = useState(false);
   const toggleBody = () => setIsOpen((prev) => !prev);
 
-  const formattedDate = useFormattedDate(event.date);
-  const formattedTime = useFormattedTime(event.date);
-  const isWeekend = useGetWeekend(event.date.start);
+  const formattedDate = formatDate(event.date);
+  const formattedTime = formatTime(event.date);
+  const weekend = isWeekend(event.date.start);
 
   return (
     <div className="event-card">
       <div
-        className={`event-card-header flex items-center space-x-2 box rounded-md p-2 relative cursor-pointer ${isWeekend && "border-4"}`}
+        className={`event-card-header flex items-center space-x-2 box rounded-md p-2 relative cursor-pointer ${weekend && "border-4"}`}
         onClick={toggleBody}
       >
         {/* TOZO: Write get user and initials */}
