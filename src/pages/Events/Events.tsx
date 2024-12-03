@@ -7,7 +7,7 @@ const Events = () => {
     events: pastEvents,
     fetchingEvents: fetchingPastEvents,
     errorFetchingEvents: errorFetchingPastEvents,
-  } = useGetEvents("past");
+  } = useGetEvents();
 
   if (fetchingEvents || fetchingPastEvents) return <p>Loading events...</p>;
   if (errorFetchingEvents || errorFetchingPastEvents)
