@@ -42,7 +42,7 @@ const AddEventModal = ({
           <Button variant="outline" type="button" onClick={closeModal}>
             Cancel
           </Button>
-          <Button form="eventForm" type="submit">
+          <Button form={id} type="submit">
             {selectedEvent ? "Save changes" : "Add event"}
           </Button>
         </DialogFooter>
