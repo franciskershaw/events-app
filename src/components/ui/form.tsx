@@ -166,6 +166,36 @@ const FormMessage = React.forwardRef<
 });
 FormMessage.displayName = "FormMessage";
 
+interface FormInputWrapperProps extends React.PropsWithChildren {
+  name: string;
+  label?: string;
+  showMessage?: boolean;
+  className?: string;
+}
+
+const FormInput = ({
+  name,
+  label,
+  children,
+  showMessage = true,
+  className,
+}: FormInputWrapperProps) => {
+  return (
+    <FormField
+      name={name}
+      render={({ field }) => (
+        <FormItem className={className}>
+          {label && <FormLabel>{label}</FormLabel>}
+          <FormControl>
+            {React.cloneElement(children as React.ReactElement, { ...field })}
+          </FormControl>
+          {showMessage && <FormMessage />}
+        </FormItem>
+      )}
+    />
+  );
+};
+
 export {
   useFormField,
   Form,
@@ -175,4 +205,5 @@ export {
   FormDescription,
   FormMessage,
   FormField,
+  FormInput,
 };

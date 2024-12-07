@@ -5,14 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormInput } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import useAuth from "@/pages/Auth/hooks/useAuth";
 
@@ -59,72 +52,23 @@ const LocalForm = () => {
     <Form {...form}>
       <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
         {isRegister && (
-          <FormField
-            name="name"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter your name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <FormInput name="name" label="Name">
+            <Input placeholder="Enter your name" />
+          </FormInput>
         )}
-        <FormField
-          name="email"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter your email" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <FormInput name="email" label="Email">
+          <Input placeholder="Enter your email" />
+        </FormInput>
 
-        <FormField
-          name="password"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input
-                  type="password"
-                  placeholder="Enter your password"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <FormInput name="password" label="Password">
+          <Input type="password" placeholder="Enter your password" />
+        </FormInput>
 
         {isRegister && (
-          <FormField
-            name="confirmPassword"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Confirm Password</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Confirm your password"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <FormInput name="confirmPassword" label="Confirm Password">
+            <Input type="password" placeholder="Confirm your password" />
+          </FormInput>
         )}
-
         <div className="text-sm text-gray-500 text-center">
           {isRegister ? (
             <>
