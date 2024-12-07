@@ -12,7 +12,6 @@ const useAuth = () => {
     try {
       const response = await api.post("/auth/login", credentials);
       if (response && response.status === 200) {
-        console.log(response);
         updateUser(response.data);
         toast.success(`Welcome back ${response.data.user.name}`);
         return response.data;

@@ -15,8 +15,6 @@ const Events = () => {
 
   // TOZO: Refactor to populate empty event cards within time period
 
-  console.log(events);
-
   return (
     <>
       {events.length === 0 && pastEvents.length === 0 ? (

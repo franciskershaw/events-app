@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
 // import useAuth from "../../../pages/Auth/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import AddEventModal from "@/pages/Events/components/AddEventModal/AddEventModal";
+import AddEventModal from "@/pages/Events/components/AddEventModal";
 import { useModals } from "@/contexts/ModalsContext";
 
 const SharedLayout = () => {
