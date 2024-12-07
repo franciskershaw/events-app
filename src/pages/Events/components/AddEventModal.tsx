@@ -7,6 +7,8 @@ import {
 } from "@/components/ui/dialog";
 import { useModals } from "@/contexts/ModalsContext";
 
+import AddEventForm from "./AddEventForm";
+
 const AddEventModal = ({
   open,
   onOpenChange,
@@ -28,7 +30,7 @@ const AddEventModal = ({
         <DialogDescription className="sr-only">
           Modal for adding a new event
         </DialogDescription>
-        <div>Form here</div>
+        <AddEventForm />
       </DialogContent>
     </Dialog>
   );

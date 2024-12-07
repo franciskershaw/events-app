@@ -1,4 +1,3 @@
-// import { useModals } from "@/contexts/ModalsContext";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
@@ -11,7 +10,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-// import DatePicker from "@/components/ui/date-picker";
 import {
   Select,
   SelectContent,
@@ -22,7 +20,6 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 
 const AddEventForm = () => {
-  //   const { selectedEvent } = useModals();
   const form = useForm();
 
   return (
@@ -41,38 +38,6 @@ const AddEventForm = () => {
             </FormItem>
           )}
         />
-
-        {/* <FormField
-          control={form.control}
-          name="date.start"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Start Date & Time</FormLabel>
-              <FormControl>
-                <DatePicker value={field.value} onChange={field.onChange} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-
-        {/* <FormField
-          control={form.control}
-          name="date.end"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>End Date & Time (Optional)</FormLabel>
-              <FormControl>
-                <DateTimeInput
-                  value={field.value}
-                  onChange={field.onChange}
-                  placeholder="Select end date and time"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
 
         <FormField
           control={form.control}
