@@ -49,54 +49,46 @@ const LocalForm = () => {
   };
 
   return (
-    <Form {...form}>
-      <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
-        {isRegister && (
-          <FormInput name="name" label="Name">
-            <Input placeholder="Enter your name" />
-          </FormInput>
-        )}
-        <FormInput name="email" label="Email">
-          <Input placeholder="Enter your email" />
+    <Form {...{ form }} onSubmit={onSubmit}>
+      {isRegister && (
+        <FormInput name="name" label="Name">
+          <Input placeholder="Enter your name" />
         </FormInput>
+      )}
+      <FormInput name="email" label="Email">
+        <Input placeholder="Enter your email" />
+      </FormInput>
 
-        <FormInput name="password" label="Password">
-          <Input type="password" placeholder="Enter your password" />
+      <FormInput name="password" label="Password">
+        <Input type="password" placeholder="Enter your password" />
+      </FormInput>
+
+      {isRegister && (
+        <FormInput name="confirmPassword" label="Confirm Password">
+          <Input type="password" placeholder="Confirm your password" />
         </FormInput>
-
-        {isRegister && (
-          <FormInput name="confirmPassword" label="Confirm Password">
-            <Input type="password" placeholder="Confirm your password" />
-          </FormInput>
+      )}
+      <div className="text-sm text-gray-500 text-center">
+        {isRegister ? (
+          <>
+            Already have an account?{" "}
+            <span onClick={toggleForm} className="text-blue-500 cursor-pointer">
+              Login
+            </span>
+          </>
+        ) : (
+          <>
+            Don't have an account?{" "}
+            <span onClick={toggleForm} className="text-blue-500 cursor-pointer">
+              Register
+            </span>
+          </>
         )}
-        <div className="text-sm text-gray-500 text-center">
-          {isRegister ? (
-            <>
-              Already have an account?{" "}
-              <span
-                onClick={toggleForm}
-                className="text-blue-500 cursor-pointer"
-              >
-                Login
-              </span>
-            </>
-          ) : (
-            <>
-              Don't have an account?{" "}
-              <span
-                onClick={toggleForm}
-                className="text-blue-500 cursor-pointer"
-              >
-                Register
-              </span>
-            </>
-          )}
-        </div>
+      </div>
 
-        <Button className="w-full" type="submit">
-          {isRegister ? "Register" : "Login"}
-        </Button>
-      </form>
+      <Button className="w-full" type="submit">
+        {isRegister ? "Register" : "Login"}
+      </Button>
     </Form>
   );
 };

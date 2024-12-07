@@ -38,40 +38,35 @@ const AddEventForm = () => {
   });
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit((values) => console.log(values))}
-        className="space-y-4"
-      >
-        <FormInput name="title" label="Title*">
-          <Input placeholder="Event title" />
-        </FormInput>
+    <Form {...{ form }} onSubmit={(values) => console.log(values)}>
+      <FormInput name="title" label="Title*">
+        <Input placeholder="Event title" />
+      </FormInput>
 
-        <FormInput name="datetime" label="Start Date*">
-          <DateTime
-            value={form.watch("datetime")}
-            onChange={(date) =>
-              form.setValue("datetime", date ?? dayjs().startOf("day").toDate())
-            }
-          />
-        </FormInput>
-
-        <FormSelect
-          name="category"
-          label="Category"
-          placeholder="Select a category"
-          options={eventCategories.map((category: EventCategory) => ({
-            value: category._id,
-            label: category.name,
-          }))}
+      <FormInput name="datetime" label="Start Date*">
+        <DateTime
+          value={form.watch("datetime")}
+          onChange={(date) =>
+            form.setValue("datetime", date ?? dayjs().startOf("day").toDate())
+          }
         />
+      </FormInput>
 
-        <FormInput name="extraInfo" label="Additional Information">
-          <Textarea placeholder="Any extra details about the event..." />
-        </FormInput>
+      <FormSelect
+        name="category"
+        label="Category"
+        placeholder="Select a category"
+        options={eventCategories.map((category: EventCategory) => ({
+          value: category._id,
+          label: category.name,
+        }))}
+      />
 
-        <Button type="submit">Add event</Button>
-      </form>
+      <FormInput name="extraInfo" label="Additional Information">
+        <Textarea placeholder="Any extra details about the event..." />
+      </FormInput>
+
+      <Button type="submit">Add event</Button>
     </Form>
   );
 };
