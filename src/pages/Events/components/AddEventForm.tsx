@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
+import { DateTime } from "@/components/ui/date-time";
 import {
   Form,
   FormControl,
@@ -33,6 +34,20 @@ const AddEventForm = () => {
               <FormLabel>Title</FormLabel>
               <FormControl>
                 <Input placeholder="Event title" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="datetime"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Date and Time</FormLabel>
+              <FormControl>
+                <DateTime value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
