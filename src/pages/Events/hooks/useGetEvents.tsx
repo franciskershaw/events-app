@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import dayjs from "dayjs";
 
 import useAxios from "@/axios/useAxios";
+import queryKeys from "@/tanstackQuery/queryKeys";
 
 import useUser from "../../../hooks/user/useUser";
 
@@ -26,18 +26,12 @@ const useGetEvents = () => {
     isFetching: fetchingEvents,
     isError: errorFetchingEvents,
   } = useQuery({
-    queryKey: ["events"],
+    queryKey: [queryKeys.events],
     queryFn: getEvents,
-    retry: false,
-    staleTime: 1000 * 60 * 5,
   });
 
-  const sortedEvents = [...events].sort((a, b) =>
-    dayjs(a.date.start).isBefore(dayjs(b.date.start)) ? -1 : 1
-  );
-
   return {
-    events: sortedEvents,
+    events,
     fetchingEvents,
     errorFetchingEvents,
   };
