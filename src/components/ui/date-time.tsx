@@ -13,7 +13,7 @@ import {
 import { cn } from "@/lib/utils";
 
 interface DateTimeProps {
-  value?: Date;
+  value?: Date | null;
   onChange?: (date: Date | undefined) => void;
   className?: string;
   name?: string;
@@ -45,7 +45,7 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
           <PopoverContent className="w-auto p-0">
             <Calendar
               mode="single"
-              selected={value}
+              selected={value ?? undefined}
               onDayClick={handleDayClick}
               initialFocus
             />

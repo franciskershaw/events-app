@@ -26,14 +26,14 @@ const Form = <TFieldValues extends FieldValues>({
   onSubmit,
   form,
   children,
-  className = "space-y-4",
+  className,
   ...formProps
 }: FormProps<TFieldValues>) => {
   return (
     <FormProvider {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className={className}
+        className={cn("space-y-4", className)}
         {...formProps}
       >
         {children}

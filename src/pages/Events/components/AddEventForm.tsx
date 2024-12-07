@@ -13,14 +13,20 @@ import { EventCategory } from "@/types/globalTypes";
 
 import useGetEventCategories from "../hooks/useGetEventCategories";
 
-const eventFormSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  datetime: z.date({
-    required_error: "Date and time is required",
-  }),
-  category: z.string().min(1, "Please select a category"),
-  extraInfo: z.string().optional(),
-});
+const eventFormSchema = z
+  .object({
+    title: z.string().min(1, "Title is required"),
+    datetime: z.date({ required_error: "Start date is required" }),
+    endDatetime: z.date().optional(),
+    category: z.string().min(1, "Please select a category"),
+    venue: z.string().optional(),
+    city: z.string().optional(),
+    description: z.string().optional(),
+  })
+  .refine((data) => !data.endDatetime || data.endDatetime >= data.datetime, {
+    message: "End date must be the same as or after the start date.",
+    path: ["endDatetime"],
+  });
 
 type EventFormValues = z.infer<typeof eventFormSchema>;
 
@@ -32,29 +38,55 @@ const AddEventForm = () => {
     defaultValues: {
       title: "",
       datetime: dayjs().startOf("day").toDate(),
+      endDatetime: undefined,
       category: "",
-      extraInfo: "",
+      venue: "",
+      city: "",
+      description: "",
     },
   });
 
+  const onSubmit = (values: EventFormValues) => {
+    const transformedValues = {
+      title: values.title,
+      date: {
+        start: values.datetime,
+        end: values.endDatetime || values.datetime,
+      },
+      location: {
+        venue: values.venue,
+        city: values.city,
+      },
+      description: values.description,
+      category: values.category,
+    };
+
+    console.log(transformedValues);
+  };
+
   return (
-    <Form {...{ form }} onSubmit={(values) => console.log(values)}>
+    <Form {...{ form, onSubmit }}>
       <FormInput name="title" label="Title*">
         <Input placeholder="Event title" />
       </FormInput>
 
       <FormInput name="datetime" label="Start Date*">
         <DateTime
-          value={form.watch("datetime")}
           onChange={(date) =>
             form.setValue("datetime", date ?? dayjs().startOf("day").toDate())
           }
         />
       </FormInput>
 
+      <FormInput name="endDatetime" label="End Date">
+        <DateTime
+          onChange={(date) => form.setValue("endDatetime", date ?? undefined)}
+        />
+      </FormInput>
+
       <FormSelect
         name="category"
-        label="Category"
+        label="Category*"
         placeholder="Select a category"
         options={eventCategories.map((category: EventCategory) => ({
           value: category._id,
@@ -62,7 +94,15 @@ const AddEventForm = () => {
         }))}
       />
 
-      <FormInput name="extraInfo" label="Additional Information">
+      <FormInput name="venue" label="Venue">
+        <Input placeholder="Event venue (optional)" />
+      </FormInput>
+
+      <FormInput name="city" label="City">
+        <Input placeholder="City (optional)" />
+      </FormInput>
+
+      <FormInput name="description" label="Description">
         <Textarea placeholder="Any extra details about the event..." />
       </FormInput>
 
