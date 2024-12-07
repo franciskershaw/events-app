@@ -9,6 +9,14 @@ import * as SelectPrimitive from "@radix-ui/react-select";
 
 import { cn } from "@/lib/utils";
 
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./form";
+
 const Select = SelectPrimitive.Root;
 
 const SelectGroup = SelectPrimitive.Group;
@@ -148,6 +156,55 @@ const SelectSeparator = React.forwardRef<
 ));
 SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
 
+interface SelectOption {
+  value: string;
+  label: string;
+}
+
+interface FormSelectProps {
+  name: string;
+  label?: string;
+  placeholder?: string;
+  options: SelectOption[];
+  className?: string;
+  showMessage?: boolean;
+}
+
+const FormSelect = ({
+  name,
+  label,
+  placeholder = "Select an option",
+  options,
+  className,
+  showMessage = true,
+}: FormSelectProps) => {
+  return (
+    <FormField
+      name={name}
+      render={({ field }) => (
+        <FormItem className={className}>
+          {label && <FormLabel>{label}</FormLabel>}
+          <Select onValueChange={field.onChange} value={field.value}>
+            <FormControl>
+              <SelectTrigger>
+                <SelectValue placeholder={placeholder} />
+              </SelectTrigger>
+            </FormControl>
+            <SelectContent>
+              {options.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {showMessage && <FormMessage />}
+        </FormItem>
+      )}
+    />
+  );
+};
+
 export {
   Select,
   SelectGroup,
@@ -159,4 +216,5 @@ export {
   SelectSeparator,
   SelectScrollUpButton,
   SelectScrollDownButton,
+  FormSelect,
 };
