@@ -1,5 +1,6 @@
 // import { useModals } from "@/contexts/ModalsContext";
 import { useForm } from "react-hook-form";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,15 +11,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 // import DatePicker from "@/components/ui/date-picker";
 import {
   Select,
-  SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 
 const AddEventForm = () => {
   //   const { selectedEvent } = useModals();

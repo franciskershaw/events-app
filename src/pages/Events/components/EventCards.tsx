@@ -1,5 +1,7 @@
-import dayjs from "dayjs";
 import React from "react";
+
+import dayjs from "dayjs";
+
 import DateScroller from "./DateScroller";
 import EventCard, { EventCardProps } from "./EventCard";
 
@@ -29,31 +31,31 @@ const EventCards: React.FC<EventCardsProps> = ({ events }) => {
     {}
   );
 
-  const getDaysWithEvents = (
-    month: string,
-    events: EventCardProps["event"][]
-  ) => {
-    const monthStart = dayjs(events[0].date.start).startOf("month");
-    const monthEnd = dayjs(events[0].date.start).endOf("month");
+  // const getDaysWithEvents = (
+  //   month: string,
+  //   events: EventCardProps["event"][]
+  // ) => {
+  //   const monthStart = dayjs(events[0].date.start).startOf("month");
+  //   const monthEnd = dayjs(events[0].date.start).endOf("month");
 
-    const allDays = [];
-    let currentDay = monthStart;
+  //   const allDays = [];
+  //   let currentDay = monthStart;
 
-    while (currentDay.isSameOrBefore(monthEnd, "day")) {
-      const eventForDay = events.find((event) =>
-        dayjs(event.date.start).isSame(currentDay, "day")
-      );
+  //   while (currentDay.isSameOrBefore(monthEnd, "day")) {
+  //     const eventForDay = events.find((event) =>
+  //       dayjs(event.date.start).isSame(currentDay, "day")
+  //     );
 
-      allDays.push({
-        date: currentDay.toISOString(),
-        event: eventForDay || null,
-      });
+  //     allDays.push({
+  //       date: currentDay.toISOString(),
+  //       event: eventForDay || null,
+  //     });
 
-      currentDay = currentDay.add(1, "day");
-    }
+  //     currentDay = currentDay.add(1, "day");
+  //   }
 
-    return allDays;
-  };
+  //   return allDays;
+  // };
 
   return (
     <>

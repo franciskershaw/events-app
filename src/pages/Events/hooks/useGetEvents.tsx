@@ -1,6 +1,8 @@
-import useAxios from "@/axios/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
+
+import useAxios from "@/axios/useAxios";
+
 import useUser from "../../../hooks/user/useUser";
 
 const useGetEvents = () => {

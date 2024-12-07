@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
 
-import { Toaster } from "@/components/ui/sonner";
 // import useAuth from "../../../pages/Auth/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import AddEventModal from "@/pages/Events/components/AddEventModal";
+import { Toaster } from "@/components/ui/sonner";
 import { useModals } from "@/contexts/ModalsContext";
+import AddEventModal from "@/pages/Events/components/AddEventModal";
 
 const SharedLayout = () => {
   // const { logout } = useAuth();

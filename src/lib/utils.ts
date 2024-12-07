@@ -1,8 +1,9 @@
 import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import updateLocale from "dayjs/plugin/updateLocale";
+import { twMerge } from "tailwind-merge";
+
 import { EventDate } from "@/types/globalTypes";
 
 export function cn(...inputs: ClassValue[]) {

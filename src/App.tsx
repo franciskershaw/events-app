@@ -1,5 +1,7 @@
 import "./App.css";
+
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+
 import PrivateRoute from "./components/layout/PrivateRoute/PrivateRoute";
 import SharedLayout from "./components/layout/SharedLayout/SharedLayout";
 import Auth from "./pages/Auth/Auth";

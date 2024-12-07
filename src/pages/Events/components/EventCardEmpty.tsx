@@ -1,8 +1,9 @@
-import { motion } from "framer-motion";
 import { useState } from "react";
+
+import { motion } from "framer-motion";
+
 import { Button } from "../../../components/ui/button";
-import { formatDate } from "../../../lib/utils";
-import useGetWeekend from "../../../hooks/utility/useGetWeekend";
+import { formatDate, isWeekend as weekend } from "../../../lib/utils";
 
 export interface EventCardEmptyProps {
   date: string;
@@ -13,7 +14,8 @@ const EventCardEmpty = ({ date }: EventCardEmptyProps) => {
   const toggleBody = () => setIsOpen((prev) => !prev);
 
   const formattedDate = formatDate({ start: date, end: date });
-  const isWeekend = useGetWeekend(date);
+
+  const isWeekend = weekend(date);
 
   return (
     <div className="event-card">
