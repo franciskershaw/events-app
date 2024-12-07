@@ -9,6 +9,9 @@ import { Form, FormInput } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { FormSelect } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { EventCategory } from "@/types/globalTypes";
+
+import useGetEventCategories from "../hooks/useGetEventCategories";
 
 const eventFormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -22,6 +25,8 @@ const eventFormSchema = z.object({
 type EventFormValues = z.infer<typeof eventFormSchema>;
 
 const AddEventForm = () => {
+  const { eventCategories } = useGetEventCategories();
+
   const form = useForm<EventFormValues>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: {
@@ -55,7 +60,10 @@ const AddEventForm = () => {
           name="category"
           label="Category"
           placeholder="Select a category"
-          options={[{ value: "test", label: "Test" }]}
+          options={eventCategories.map((category: EventCategory) => ({
+            value: category._id,
+            label: category.name,
+          }))}
         />
 
         <FormInput name="extraInfo" label="Additional Information">
