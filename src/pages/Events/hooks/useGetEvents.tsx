@@ -10,12 +10,8 @@ const useGetEvents = () => {
   const { user } = useUser();
 
   const getEvents = async () => {
-    if (!user?.accessToken) {
-      throw new Error("User is not authenticated");
-    }
-
     const res = await api.get("/events", {
-      headers: { Authorization: `Bearer ${user.accessToken}` },
+      headers: { Authorization: `Bearer ${user?.accessToken}` },
     });
 
     return res.data;
