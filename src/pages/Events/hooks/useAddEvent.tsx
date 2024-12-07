@@ -29,11 +29,12 @@ const useAddEvent = () => {
       throw new Error("User is not authenticated");
     }
 
-    return api.post("/events", data, {
+    const response = await api.post("/events", data, {
       headers: {
         Authorization: `Bearer ${user.accessToken}`,
       },
     });
+    return response.data;
   };
 
   return useMutation({
@@ -41,6 +42,9 @@ const useAddEvent = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
       toast.success("Event added successfully");
+    },
+    onError: () => {
+      toast.error("Failed to add event. Please try again.");
     },
   });
 };
