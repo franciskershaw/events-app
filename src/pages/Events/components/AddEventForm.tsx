@@ -1,4 +1,7 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import dayjs from "dayjs";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { DateTime } from "@/components/ui/date-time";
@@ -7,8 +10,27 @@ import { Input } from "@/components/ui/input";
 import { FormSelect } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
+const eventFormSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  datetime: z.date({
+    required_error: "Date and time is required",
+  }),
+  category: z.string().min(1, "Please select a category"),
+  extraInfo: z.string().optional(),
+});
+
+type EventFormValues = z.infer<typeof eventFormSchema>;
+
 const AddEventForm = () => {
-  const form = useForm();
+  const form = useForm<EventFormValues>({
+    resolver: zodResolver(eventFormSchema),
+    defaultValues: {
+      title: "",
+      datetime: dayjs().startOf("day").toDate(),
+      category: "",
+      extraInfo: "",
+    },
+  });
 
   return (
     <Form {...form}>
@@ -16,14 +38,16 @@ const AddEventForm = () => {
         onSubmit={form.handleSubmit((values) => console.log(values))}
         className="space-y-4"
       >
-        <FormInput name="title" label="Title">
+        <FormInput name="title" label="Title*">
           <Input placeholder="Event title" />
         </FormInput>
 
         <FormInput name="datetime" label="Start Date*">
           <DateTime
             value={form.watch("datetime")}
-            onChange={(date) => form.setValue("datetime", date)}
+            onChange={(date) =>
+              form.setValue("datetime", date ?? dayjs().startOf("day").toDate())
+            }
           />
         </FormInput>
 
@@ -35,10 +59,7 @@ const AddEventForm = () => {
         />
 
         <FormInput name="extraInfo" label="Additional Information">
-          <Textarea
-            placeholder="Any extra details about the event..."
-            {...form.register("extraInfo")}
-          />
+          <Textarea placeholder="Any extra details about the event..." />
         </FormInput>
 
         <Button type="submit">Add event</Button>
