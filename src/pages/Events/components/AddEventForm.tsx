@@ -8,8 +8,10 @@ import { Form, FormInput } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { FormSelect } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { useModals } from "@/contexts/ModalsContext";
 import { EventCategory } from "@/types/globalTypes";
 
+import useAddEvent from "../hooks/useAddEvent";
 import useGetEventCategories from "../hooks/useGetEventCategories";
 
 const eventFormSchema = z
@@ -31,6 +33,10 @@ export type EventFormValues = z.infer<typeof eventFormSchema>;
 
 const AddEventForm = ({ id }: { id: string }) => {
   const { eventCategories } = useGetEventCategories();
+
+  const addEvent = useAddEvent();
+
+  const { closeModal } = useModals();
 
   const form = useForm<EventFormValues>({
     resolver: zodResolver(eventFormSchema),
@@ -60,8 +66,8 @@ const AddEventForm = ({ id }: { id: string }) => {
       category: values.category,
     };
 
-    console.log(transformedValues);
-    // closeModal();
+    addEvent.mutate(transformedValues);
+    closeModal();
   };
 
   return (
