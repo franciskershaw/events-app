@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
 import { DateTime } from "@/components/ui/date-time";
 import { Form, FormInput } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -28,9 +27,9 @@ const eventFormSchema = z
     path: ["endDatetime"],
   });
 
-type EventFormValues = z.infer<typeof eventFormSchema>;
+export type EventFormValues = z.infer<typeof eventFormSchema>;
 
-const AddEventForm = () => {
+const AddEventForm = ({ id }: { id: string }) => {
   const { eventCategories } = useGetEventCategories();
 
   const form = useForm<EventFormValues>({
@@ -62,10 +61,11 @@ const AddEventForm = () => {
     };
 
     console.log(transformedValues);
+    // closeModal();
   };
 
   return (
-    <Form {...{ form, onSubmit }}>
+    <Form {...{ form, onSubmit, id }}>
       <FormInput name="title" label="Title*">
         <Input placeholder="Event title" />
       </FormInput>
@@ -105,8 +105,6 @@ const AddEventForm = () => {
       <FormInput name="description" label="Description">
         <Textarea placeholder="Any extra details about the event..." />
       </FormInput>
-
-      <Button type="submit">Add event</Button>
     </Form>
   );
 };

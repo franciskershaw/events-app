@@ -1,7 +1,9 @@
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -12,17 +14,18 @@ import AddEventForm from "./AddEventForm";
 const AddEventModal = ({
   open,
   onOpenChange,
-  //   closeModal,
+  closeModal,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   closeModal: () => void;
 }) => {
   const { selectedEvent } = useModals();
+  const id = selectedEvent?._id || "addEvent";
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
+      <DialogContent className="flex flex-col max-h-[100vh] md:max-h-[90vh] p-0">
+        <DialogHeader className="px-6 pt-6">
           <DialogTitle>
             {selectedEvent ? "Edit event" : "Add event"}
           </DialogTitle>
@@ -30,7 +33,19 @@ const AddEventModal = ({
         <DialogDescription className="sr-only">
           Modal for adding a new event
         </DialogDescription>
-        <AddEventForm />
+
+        <div className="flex-1 overflow-y-auto px-6">
+          <AddEventForm id={id} />
+        </div>
+
+        <DialogFooter className="flex flex-col gap-2 px-6 py-4 border-t">
+          <Button variant="outline" type="button" onClick={closeModal}>
+            Cancel
+          </Button>
+          <Button form="eventForm" type="submit">
+            {selectedEvent ? "Save changes" : "Add event"}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
