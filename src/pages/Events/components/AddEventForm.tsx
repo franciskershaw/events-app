@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import { FormSelect } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useModals } from "@/contexts/ModalsContext";
-import { EventCategory } from "@/types/globalTypes";
 
 import useAddEvent from "../hooks/useAddEvent";
 import useGetEventCategories from "../hooks/useGetEventCategories";
@@ -32,7 +31,7 @@ const eventFormSchema = z
 export type EventFormValues = z.infer<typeof eventFormSchema>;
 
 const AddEventForm = ({ id }: { id: string }) => {
-  const { eventCategories } = useGetEventCategories();
+  const { eventCategorySelectOptions } = useGetEventCategories();
 
   const addEvent = useAddEvent();
 
@@ -52,21 +51,7 @@ const AddEventForm = ({ id }: { id: string }) => {
   });
 
   const onSubmit = (values: EventFormValues) => {
-    const transformedValues = {
-      title: values.title,
-      date: {
-        start: values.datetime,
-        end: values.endDatetime || values.datetime,
-      },
-      location: {
-        venue: values.venue,
-        city: values.city,
-      },
-      description: values.description,
-      category: values.category,
-    };
-
-    addEvent.mutate(transformedValues);
+    addEvent.mutate(values);
     closeModal();
   };
 
@@ -94,10 +79,7 @@ const AddEventForm = ({ id }: { id: string }) => {
         name="category"
         label="Category*"
         placeholder="Select a category"
-        options={eventCategories.map((category: EventCategory) => ({
-          value: category._id,
-          label: category.name,
-        }))}
+        options={eventCategorySelectOptions}
       />
 
       <FormInput name="venue" label="Venue">

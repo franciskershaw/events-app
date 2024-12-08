@@ -5,27 +5,30 @@ import useAxios from "@/axios/useAxios";
 import useUser from "@/hooks/user/useUser";
 import queryKeys from "@/tanstackQuery/queryKeys";
 
-interface EventFormValues {
-  title: string;
-  date: {
-    start: Date;
-    end?: Date;
-  };
-  location?: {
-    venue?: string;
-    city?: string;
-  };
-  description?: string;
-  category: string;
-}
+import { EventFormValues } from "../components/AddEventForm";
 
 const useAddEvent = () => {
   const queryClient = useQueryClient();
   const api = useAxios();
   const { user } = useUser();
 
+  const transformValues = (values: EventFormValues) => ({
+    title: values.title,
+    date: {
+      start: values.datetime,
+      end: values.endDatetime || values.datetime,
+    },
+    location: {
+      venue: values.venue,
+      city: values.city,
+    },
+    description: values.description,
+    category: values.category,
+  });
+
   const addEvent = async (values: EventFormValues) => {
-    const { data } = await api.post("/events", values, {
+    const transformedValues = transformValues(values);
+    const { data } = await api.post("/events", transformedValues, {
       headers: {
         Authorization: `Bearer ${user?.accessToken}`,
       },
