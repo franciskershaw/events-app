@@ -10,11 +10,11 @@ const useGetEvents = () => {
   const { user } = useUser();
 
   const getEvents = async () => {
-    const res = await api.get("/events", {
+    const { data } = await api.get("/events", {
       headers: { Authorization: `Bearer ${user?.accessToken}` },
     });
 
-    return res.data;
+    return data;
   };
 
   const {

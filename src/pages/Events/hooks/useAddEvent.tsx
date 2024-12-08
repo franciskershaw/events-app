@@ -24,17 +24,13 @@ const useAddEvent = () => {
   const api = useAxios();
   const { user } = useUser();
 
-  const addEvent = async (data: EventFormValues) => {
-    if (!user?.accessToken) {
-      throw new Error("User is not authenticated");
-    }
-
-    const response = await api.post("/events", data, {
+  const addEvent = async (values: EventFormValues) => {
+    const { data } = await api.post("/events", values, {
       headers: {
-        Authorization: `Bearer ${user.accessToken}`,
+        Authorization: `Bearer ${user?.accessToken}`,
       },
     });
-    return response.data;
+    return data;
   };
 
   return useMutation({
@@ -43,6 +39,7 @@ const useAddEvent = () => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
       toast.success("Event added successfully");
     },
+    mutationKey: ["addEvent"],
     onError: () => {
       toast.error("Failed to add event. Please try again.");
     },
