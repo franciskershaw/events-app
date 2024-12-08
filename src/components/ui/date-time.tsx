@@ -18,10 +18,14 @@ interface DateTimeProps {
   className?: string;
   name?: string;
   disabled?: boolean;
+  disablePast?: boolean;
 }
 
 const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
-  ({ className, value, onChange, name, disabled, ...props }, ref) => {
+  (
+    { className, value, onChange, name, disabled, disablePast, ...props },
+    ref
+  ) => {
     const handleDayClick = (selectedDate: Date | undefined) => {
       onChange?.(selectedDate);
     };
@@ -48,6 +52,7 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
               selected={value ?? undefined}
               onDayClick={handleDayClick}
               initialFocus
+              disablePast={disablePast}
             />
           </PopoverContent>
         </Popover>

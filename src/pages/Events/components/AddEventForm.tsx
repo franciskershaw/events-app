@@ -66,12 +66,14 @@ const AddEventForm = ({ id }: { id: string }) => {
           onChange={(date) =>
             form.setValue("datetime", date ?? dayjs().startOf("day").toDate())
           }
+          disablePast
         />
       </FormInput>
 
       <FormInput name="endDatetime" label="End Date">
         <DateTime
           onChange={(date) => form.setValue("endDatetime", date ?? undefined)}
+          disablePast
         />
       </FormInput>
 
