@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { format } from "date-fns";
+import dayjs from "dayjs";
 import { Calendar as CalendarIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -18,12 +19,22 @@ interface DateTimeProps {
   className?: string;
   name?: string;
   disabled?: boolean;
+  minDate?: Date;
   disablePast?: boolean;
 }
 
 const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
   (
-    { className, value, onChange, name, disabled, disablePast, ...props },
+    {
+      className,
+      value,
+      onChange,
+      name,
+      disabled,
+      minDate,
+      disablePast,
+      ...props
+    },
     ref
   ) => {
     const handleDayClick = (selectedDate: Date | undefined) => {
@@ -52,7 +63,16 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
               selected={value ?? undefined}
               onDayClick={handleDayClick}
               initialFocus
-              disablePast={disablePast}
+              disabled={disabled}
+              fromDate={
+                disablePast && minDate
+                  ? dayjs(minDate).isAfter(dayjs().startOf("day"))
+                    ? minDate
+                    : dayjs().startOf("day").toDate()
+                  : disablePast
+                    ? dayjs().startOf("day").toDate()
+                    : minDate
+              }
             />
           </PopoverContent>
         </Popover>
