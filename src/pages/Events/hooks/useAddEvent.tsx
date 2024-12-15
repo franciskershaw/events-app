@@ -38,13 +38,16 @@ const useAddEvent = () => {
 
   return useMutation({
     mutationFn: addEvent,
+    onError: (error) => {
+      queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
+      toast.error(`${error.message}`);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
       toast.success("Event added successfully");
     },
-    mutationKey: ["addEvent"],
-    onError: () => {
-      toast.error("Failed to add event. Please try again.");
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
     },
   });
 };

@@ -24,6 +24,8 @@ const useGetEvents = () => {
   } = useQuery({
     queryKey: [queryKeys.events],
     queryFn: getEvents,
+    placeholderData: (prev) => prev,
+    // staleTime: 0,
   });
 
   return {

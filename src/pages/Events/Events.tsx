@@ -2,10 +2,14 @@ import EventCards from "./components/EventCards";
 import useGetEvents from "./hooks/useGetEvents";
 
 const Events = () => {
-  const { events, fetchingEvents, errorFetchingEvents } = useGetEvents();
+  // Removed the loading state for now to have an optimistic update
+  // const { events, fetchingEvents, errorFetchingEvents } = useGetEvents();
+  const { events } = useGetEvents();
 
-  if (fetchingEvents) return <p>Loading events...</p>;
-  if (errorFetchingEvents) return <p>Error fetching events</p>;
+  // TODO: Revist initial loading state
+
+  // if (fetchingEvents) return <p>Loading events...</p>;
+  // if (errorFetchingEvents) return <p>Error fetching events</p>;
 
   // TOZO: Refactor to populate empty event cards within time period
 

@@ -12,7 +12,7 @@ export interface Event {
   date: EventDate;
   location?: {
     venue: string;
-    address: string;
+    city: string;
   };
   category: EventCategory;
   additionalAttributes?: Record<string, string>;
