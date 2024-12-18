@@ -8,15 +8,15 @@ import queryKeys from "@/tanstackQuery/queryKeys";
 import { EventFormValues } from "../components/AddEventForm";
 import { transformEventFormValues } from "../helper/helper";
 
-const useAddEvent = () => {
+const useEditEvent = () => {
   const queryClient = useQueryClient();
   const api = useAxios();
   const { user } = useUser();
 
-  const addEvent = async (values: EventFormValues) => {
+  const editEvent = async (values: EventFormValues) => {
     const transformedValues = transformEventFormValues(values);
 
-    const { data } = await api.post("/events", transformedValues, {
+    const { data } = await api.put(`/events/${values._id}`, transformedValues, {
       headers: {
         Authorization: `Bearer ${user?.accessToken}`,
       },
@@ -25,19 +25,16 @@ const useAddEvent = () => {
   };
 
   return useMutation({
-    mutationFn: addEvent,
+    mutationFn: editEvent,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
-      toast.success("Event added successfully");
+      toast.success("Event edited successfully");
     },
     onError: (error) => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
-      toast.error(`${error.message}`);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
+      toast.error(error.message);
     },
   });
 };
 
-export default useAddEvent;
+export default useEditEvent;
