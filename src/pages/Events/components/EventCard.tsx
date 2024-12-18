@@ -2,41 +2,19 @@ import { useState } from "react";
 
 import { motion } from "framer-motion";
 
+import { useModals } from "@/contexts/ModalsContext";
+
 import { Button } from "../../../components/ui/button";
 import { formatDate, formatTime, isWeekend } from "../../../lib/utils";
-import {
-  EventCategory,
-  EventDate,
-  EventLocation,
-} from "../../../types/globalTypes";
+import { Event } from "../../../types/globalTypes";
 
-export interface EventCardProps {
-  event: {
-    _id: string;
-    title: string;
-    date: EventDate;
-    location: EventLocation;
-    category: EventCategory;
-    createdBy: string;
-    sharedWith: string[];
-    createdAt: string;
-    description?: string;
-  };
-}
-
-const EventCard = ({ event }: EventCardProps) => {
-  const {
-    location,
-    title,
-    category,
-    // createdBy,
-    // sharedWith,
-    // createdAt,
-    description,
-  } = event;
+const EventCard = ({ event }: { event: Event }) => {
+  const { location, title, category, description } = event;
 
   const [isOpen, setIsOpen] = useState(false);
   const toggleBody = () => setIsOpen((prev) => !prev);
+
+  const { openEventModal } = useModals();
 
   const formattedDate = formatDate(event.date);
   const formattedTime = formatTime(event.date);
@@ -95,7 +73,9 @@ const EventCard = ({ event }: EventCardProps) => {
           {/* Buttons */}
           <div className="flex justify-center space-x-2">
             <Button size="round">Copy</Button>
-            <Button size="round">Edit</Button>
+            <Button onClick={() => openEventModal(event)} size="round">
+              Edit
+            </Button>
             <Button size="round">Delete</Button>
             <Button size="round">Private</Button>
           </div>

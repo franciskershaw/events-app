@@ -35,7 +35,7 @@ const AddEventModal = ({
         </DialogDescription>
 
         <div className="flex-1 overflow-y-auto px-6">
-          <AddEventForm id={id} />
+          <AddEventForm formId={id} />
         </div>
 
         <DialogFooter className="flex flex-col gap-2 px-6 py-4 border-t">

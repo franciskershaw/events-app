@@ -30,23 +30,27 @@ const eventFormSchema = z
 
 export type EventFormValues = z.infer<typeof eventFormSchema>;
 
-const AddEventForm = ({ id }: { id: string }) => {
+const AddEventForm = ({ formId }: { formId: string }) => {
   const { eventCategorySelectOptions } = useGetEventCategories();
 
   const addEvent = useAddEvent();
 
-  const { closeModal } = useModals();
+  const { closeModal, selectedEvent } = useModals();
 
   const form = useForm<EventFormValues>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: {
-      title: "",
-      datetime: dayjs().startOf("day").toDate(),
-      endDatetime: undefined,
-      category: "",
-      venue: "",
-      city: "",
-      description: "",
+      title: selectedEvent?.title ?? "",
+      datetime: selectedEvent?.date.start
+        ? dayjs(selectedEvent.date.start).toDate()
+        : dayjs().startOf("day").toDate(),
+      endDatetime: selectedEvent?.date.end
+        ? dayjs(selectedEvent.date.end).toDate()
+        : undefined,
+      category: selectedEvent?.category._id ?? "",
+      venue: selectedEvent?.location?.venue ?? "",
+      city: selectedEvent?.location?.city ?? "",
+      description: selectedEvent?.description ?? "",
     },
   });
 
@@ -56,7 +60,7 @@ const AddEventForm = ({ id }: { id: string }) => {
   };
 
   return (
-    <Form {...{ form, onSubmit, id }}>
+    <Form {...{ form, onSubmit, id: formId }}>
       <FormInput name="title" label="Title*">
         <Input placeholder="Event title" />
       </FormInput>

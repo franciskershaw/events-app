@@ -18,7 +18,7 @@ export interface Event {
   additionalAttributes?: Record<string, string>;
   sharedWith: string;
   createdBy: string;
-  extraInfo?: string;
+  description?: string;
   createdAt: Date;
   updatedAt: Date;
 }
