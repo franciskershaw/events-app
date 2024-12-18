@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import dayjs from "dayjs";
-import { z } from "node_modules/zod/lib";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 import { useModals } from "@/contexts/ModalsContext";
 
