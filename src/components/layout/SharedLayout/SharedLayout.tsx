@@ -1,4 +1,6 @@
 // import useAuth from "../../../pages/Auth/hooks/useAuth";
+import { Outlet } from "react-router-dom";
+
 import { Toaster } from "@/components/ui/sonner";
 import { useModals } from "@/contexts/ModalsContext";
 import useUser from "@/hooks/user/useUser";
@@ -16,9 +18,9 @@ const SharedLayout = () => {
     <>
       <div className="min-h-screen">
         <NavbarTop />
-        {/* <main>
+        <main className="mt-[84px]">
           <Outlet />
-        </main> */}
+        </main>
         {/* <nav className="box fixed bottom-0 left-0 right-0 bg-white">
         Bottom nav
       </nav> */}

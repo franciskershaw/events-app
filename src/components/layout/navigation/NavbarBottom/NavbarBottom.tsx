@@ -7,7 +7,7 @@ const NavbarBottom = () => {
   const { user } = useUser();
 
   return (
-    <nav className="box fixed bottom-0 left-0 right-0 bg-white">
+    <nav className="box fixed bottom-0 left-0 right-0 bg-white z-30">
       {user && <Button onClick={() => openEventModal()}>Add event</Button>}
     </nav>
   );
