@@ -18,7 +18,7 @@ const SharedLayout = () => {
         {/* <nav className="box fixed top-0 left-0 right-0 bg-white">
         <Button onClick={logout}>Logout</Button>
       </nav> */}
-        <main className="p-4">
+        <main>
           <Outlet />
         </main>
         {/* <nav className="box fixed bottom-0 left-0 right-0 bg-white">

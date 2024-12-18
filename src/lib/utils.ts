@@ -32,8 +32,8 @@ export const formatTime = ({ start, end }: EventDate): string => {
   const startTime = dayjs(start).format("h:mma");
   const endTime = end ? dayjs(end).format("h:mma") : null;
 
-  const startDate = dayjs(start).format("Do");
-  const endDate = end ? dayjs(end).format("Do") : null;
+  const startDate = dayjs(start).format("ddd Do");
+  const endDate = end ? dayjs(end).format("ddd Do") : null;
 
   // Only start time (no end time)
   if (!end) {

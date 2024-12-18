@@ -52,8 +52,8 @@ const EventCard = ({ event }: EventCardProps) => {
         {/* <div className="absolute rounded-full box top-[-16px] left-[-16px] bg-white h-8 w-8 flex justify-center items-center">
           FK
         </div> */}
-        <div className="box p-1 rounded-md min-w-[75px] text-center whitespace-nowrap">
-          <p>{formattedDate}</p>
+        <div className="box p-1 rounded-md min-w-[75px] max-w-[120px] text-center whitespace-nowrap">
+          <p className="truncate">{formattedDate}</p>
         </div>
         <h2 className="truncate">{title}</h2>
         {location && location.city && (
