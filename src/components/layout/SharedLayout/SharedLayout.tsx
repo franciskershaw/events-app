@@ -2,7 +2,6 @@
 import { Outlet } from "react-router-dom";
 
 import { Toaster } from "@/components/ui/sonner";
-import { useModals } from "@/contexts/ModalsContext";
 import useUser from "@/hooks/user/useUser";
 import AddEventModal from "@/pages/Events/components/AddEventModal";
 import DeleteEventModal from "@/pages/Events/components/DeleteEventModal";
@@ -12,7 +11,6 @@ import NavbarTop from "../navigation/NavbarTop/NavbarTop";
 
 const SharedLayout = () => {
   // const { logout } = useAuth();
-  const { openEventModal } = useModals();
   const { user } = useUser();
 
   return (
