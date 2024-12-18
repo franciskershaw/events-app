@@ -11,19 +11,11 @@ import { useModals } from "@/contexts/ModalsContext";
 
 import AddEventForm from "./AddEventForm";
 
-const AddEventModal = ({
-  open,
-  onOpenChange,
-  closeModal,
-}: {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  closeModal: () => void;
-}) => {
-  const { selectedEvent } = useModals();
+const AddEventModal = () => {
+  const { selectedEvent, closeModal, isEventModalOpen } = useModals();
   const id = selectedEvent?._id || "addEvent";
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={isEventModalOpen} onOpenChange={closeModal}>
       <DialogContent className="flex flex-col max-h-[100vh] md:max-h-[90vh] p-0">
         <DialogHeader className="px-6 pt-6">
           <DialogTitle>

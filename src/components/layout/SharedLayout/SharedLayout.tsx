@@ -9,8 +9,7 @@ import AddEventModal from "@/pages/Events/components/AddEventModal";
 
 const SharedLayout = () => {
   // const { logout } = useAuth();
-  const { openEventModal, isEventModalOpen, closeModal, selectedEvent } =
-    useModals();
+  const { openEventModal } = useModals();
   const { user } = useUser();
   return (
     <>
@@ -29,13 +28,20 @@ const SharedLayout = () => {
       </div>
 
       {user && (
-        <AddEventModal
-          open={isEventModalOpen}
-          onOpenChange={(open) =>
-            open && selectedEvent ? openEventModal(selectedEvent) : closeModal()
-          }
-          closeModal={closeModal}
-        />
+        <>
+          <AddEventModal />
+
+          {/* <DeleteEventModal
+            open={isDeletionModalOpen}
+            onOpenChange={(open) =>
+              open && selectedEvent
+                ? openDeleteEvent(selectedEvent)
+                : closeModal()
+            }
+            event={selectedEvent}
+
+          /> */}
+        </>
       )}
     </>
   );
