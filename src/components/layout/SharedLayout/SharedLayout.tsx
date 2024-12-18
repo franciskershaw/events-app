@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { useModals } from "@/contexts/ModalsContext";
 import useUser from "@/hooks/user/useUser";
 import AddEventModal from "@/pages/Events/components/AddEventModal";
+import DeleteEventModal from "@/pages/Events/components/DeleteEventModal";
 
 const SharedLayout = () => {
   // const { logout } = useAuth();
@@ -30,17 +31,7 @@ const SharedLayout = () => {
       {user && (
         <>
           <AddEventModal />
-
-          {/* <DeleteEventModal
-            open={isDeletionModalOpen}
-            onOpenChange={(open) =>
-              open && selectedEvent
-                ? openDeleteEvent(selectedEvent)
-                : closeModal()
-            }
-            event={selectedEvent}
-
-          /> */}
+          <DeleteEventModal />
         </>
       )}
     </>

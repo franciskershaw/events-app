@@ -7,18 +7,21 @@ const MODAL_EVENT = "event";
 
 type ModalsState = {
   isEventModalOpen: boolean;
+  isDeleteEventModalOpen: boolean;
   selectedEvent: Event | null;
 };
 
 // Define the actions type
 type ModalsAction =
   | { type: "OPEN_EVENT_MODAL"; data?: Event }
+  | { type: "OPEN_DELETE_EVENT_MODAL"; data: Event }
   | { type: "CLOSE_MODAL" }
   | { type: "RESET_SELECTED_DATA" };
 
 // Initial state for the reducer
 const initialState: ModalsState = {
   isEventModalOpen: false,
+  isDeleteEventModalOpen: false,
   selectedEvent: null,
 };
 
@@ -34,11 +37,18 @@ const modalsReducer = (
         isEventModalOpen: true,
         selectedEvent: action.data || null,
       };
+    case "OPEN_DELETE_EVENT_MODAL":
+      return {
+        ...state,
+        isDeleteEventModalOpen: true,
+        selectedEvent: action.data,
+      };
 
     case "CLOSE_MODAL":
       return {
         ...state,
         isEventModalOpen: false,
+        isDeleteEventModalOpen: false,
       };
 
     case "RESET_SELECTED_DATA":
@@ -55,6 +65,7 @@ const modalsReducer = (
 // Context type definition
 type ModalsContextType = ModalsState & {
   openEventModal: (data?: Event) => void;
+  openDeleteEventModal: (data: Event) => void;
   closeModal: () => void;
   resetSelectedData: () => void;
 };
@@ -71,6 +82,10 @@ const ModalsProvider = ({ children }: { children: ReactNode }) => {
     dispatch({ type: "OPEN_EVENT_MODAL", data });
   };
 
+  const openDeleteEventModal = (data: Event) => {
+    dispatch({ type: "OPEN_DELETE_EVENT_MODAL", data });
+  };
+
   const closeModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
   };
@@ -84,6 +99,7 @@ const ModalsProvider = ({ children }: { children: ReactNode }) => {
       value={{
         ...state,
         openEventModal,
+        openDeleteEventModal,
         closeModal,
         resetSelectedData,
       }}

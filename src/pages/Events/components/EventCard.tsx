@@ -14,7 +14,7 @@ const EventCard = ({ event }: { event: Event }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleBody = () => setIsOpen((prev) => !prev);
 
-  const { openEventModal } = useModals();
+  const { openEventModal, openDeleteEventModal } = useModals();
 
   const formattedDate = formatDate(event.date);
   const formattedTime = formatTime(event.date);
@@ -76,7 +76,9 @@ const EventCard = ({ event }: { event: Event }) => {
             <Button onClick={() => openEventModal(event)} size="round">
               Edit
             </Button>
-            <Button size="round">Delete</Button>
+            <Button onClick={() => openDeleteEventModal(event)} size="round">
+              Delete
+            </Button>
             <Button size="round">Private</Button>
           </div>
         </div>
