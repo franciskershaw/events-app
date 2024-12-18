@@ -1,4 +1,4 @@
-import { EventFormValues } from "../components/AddEventForm";
+import { EventFormValues } from "../hooks/useEventForm";
 
 export const transformEventFormValues = (values: EventFormValues) => ({
   title: values.title,

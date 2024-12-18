@@ -5,8 +5,8 @@ import useAxios from "@/axios/useAxios";
 import useUser from "@/hooks/user/useUser";
 import queryKeys from "@/tanstackQuery/queryKeys";
 
-import { EventFormValues } from "../components/AddEventForm";
 import { transformEventFormValues } from "../helper/helper";
+import { EventFormValues } from "./useEventForm";
 
 const useAddEvent = () => {
   const queryClient = useQueryClient();
