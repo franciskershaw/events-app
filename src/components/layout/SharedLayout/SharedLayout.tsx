@@ -14,6 +14,7 @@ const SharedLayout = () => {
   const { openEventModal, isEventModalOpen, closeModal, selectedEvent } =
     useModals();
   const { user } = useUser();
+
   return (
     <>
       <div className="min-h-screen">

@@ -34,7 +34,7 @@ const EventCards: React.FC<EventCardsProps> = ({ events }) => {
       {todayEvents.length > 0 && (
         <>
           <DateScroller label="Today" />
-          <div className="space-y-2 px-4 py-5">
+          <div className="space-y-2 px-4 py-5 bg-blue-100">
             {todayEvents.map((event) => (
               <EventCard key={event._id} event={event} />
             ))}
@@ -45,7 +45,7 @@ const EventCards: React.FC<EventCardsProps> = ({ events }) => {
       {Object.entries(groupedEvents).map(([month, events]) => (
         <div key={month}>
           <DateScroller date={events[0].date.start} />
-          <div className="space-y-2 px-4 py-5">
+          <div className="space-y-2 px-4 py-5 bg-blue-100">
             {events.map((event) => (
               <EventCard key={event._id} event={event} />
             ))}
