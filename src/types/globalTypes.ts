@@ -1,8 +1,10 @@
 // Users
 export interface User {
-  _id: string;
-  name: string;
-  email: string;
+  user: {
+    _id: string;
+    name: string;
+    email: string;
+  };
   accessToken: string;
 }
 

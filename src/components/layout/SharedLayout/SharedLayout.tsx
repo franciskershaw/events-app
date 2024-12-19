@@ -16,14 +16,19 @@ const SharedLayout = () => {
   return (
     <>
       <div className="min-h-screen">
-        <NavbarTop />
-        <main className="mt-[84px]">
-          <Outlet />
-        </main>
-        {/* <nav className="box fixed bottom-0 left-0 right-0 bg-white">
-        Bottom nav
-      </nav> */}
-        <NavbarBottom />
+        {user ? (
+          <>
+            <NavbarTop />
+            <main className="mt-[84px]">
+              <Outlet />
+            </main>
+            <NavbarBottom />
+          </>
+        ) : (
+          <main>
+            <Outlet />
+          </main>
+        )}
         <Toaster />
       </div>
 
