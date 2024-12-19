@@ -16,7 +16,7 @@ const UsersInitials = () => {
 
   return (
     <div className="relative">
-      <UserInitials size="md" name={user?.user.name} />
+      <UserInitials size="md" name={user?.name} />
 
       {firstThreeUsers.map((user, index) => {
         const positionClasses = [

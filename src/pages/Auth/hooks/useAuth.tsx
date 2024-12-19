@@ -13,10 +13,12 @@ const useAuth = () => {
       const response = await api.post("/auth/login", credentials);
       if (response && response.status === 200) {
         updateUser(response.data);
-        toast.success(`Welcome back ${response.data.user.name}`);
+        toast.success(`Welcome back ${response.data.name}`);
         return response.data;
       }
     } catch (error) {
+      console.log("catching an error");
+      console.log(error);
       if (error instanceof Error && "response" in error) {
         const serverError = error as {
           response: { data: { message: string } };
