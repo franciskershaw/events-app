@@ -1,4 +1,3 @@
-// import useAuth from "../../../pages/Auth/hooks/useAuth";
 import { Outlet } from "react-router-dom";
 
 import { Toaster } from "@/components/ui/sonner";
@@ -10,13 +9,18 @@ import NavbarBottom from "../navigation/NavbarBottom/NavbarBottom";
 import NavbarTop from "../navigation/NavbarTop/NavbarTop";
 
 const SharedLayout = () => {
-  // const { logout } = useAuth();
-  const { user } = useUser();
+  const { user, fetchingUser } = useUser();
+
+  const loading = !user && fetchingUser;
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
       <div className="min-h-screen">
-        {user ? (
+        {!loading ? (
           <>
             <NavbarTop />
             <main className="mt-[84px]">
