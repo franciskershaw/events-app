@@ -1,5 +1,3 @@
-import dayjs from "dayjs";
-
 import { Event } from "../../../types/globalTypes";
 import { filterTodayEvents, groupEvents } from "../helper/helper";
 import DateScroller from "./DateScroller";
@@ -10,9 +8,7 @@ interface EventCardsProps {
 }
 
 const EventCards = ({ events }: EventCardsProps) => {
-  const today = dayjs().startOf("day");
-
-  const todayEvents = filterTodayEvents(events, today);
+  const todayEvents = filterTodayEvents(events);
   const upcomingEvents = groupEvents(
     events.filter((event) => !todayEvents.includes(event))
   );

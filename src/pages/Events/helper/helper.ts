@@ -22,10 +22,8 @@ interface GroupedEvents {
   [key: string]: Event[];
 }
 
-export const filterTodayEvents = (
-  events: Event[],
-  today: dayjs.Dayjs
-): Event[] => {
+export const filterTodayEvents = (events: Event[]): Event[] => {
+  const today = dayjs().startOf("day");
   return events.filter((event) => {
     const startDate = dayjs(event.date.start);
     const endDate = dayjs(event.date.end);
