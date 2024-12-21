@@ -1,32 +1,20 @@
-import React from "react";
-
 import dayjs from "dayjs";
 
+import { Event } from "../../../types/globalTypes";
+import { filterTodayEvents, groupEvents } from "../helper/helper";
 import DateScroller from "./DateScroller";
-import EventCard, { EventCardProps } from "./EventCard";
+import EventCard from "./EventCard";
 
 interface EventCardsProps {
-  events: EventCardProps["event"][];
+  events: Event[];
 }
 
-const EventCards: React.FC<EventCardsProps> = ({ events }) => {
+const EventCards = ({ events }: EventCardsProps) => {
   const today = dayjs().startOf("day");
 
-  const todayEvents = events.filter((event) =>
-    dayjs(event.date.start).isSame(today, "day")
-  );
-
-  const groupedEvents = events.reduce(
-    (acc: Record<string, EventCardProps["event"][]>, event) => {
-      if (todayEvents.includes(event)) return acc;
-      const month = dayjs(event.date.start).format("MMMM YYYY");
-      if (!acc[month]) {
-        acc[month] = [];
-      }
-      acc[month].push(event);
-      return acc;
-    },
-    {}
+  const todayEvents = filterTodayEvents(events, today);
+  const upcomingEvents = groupEvents(
+    events.filter((event) => !todayEvents.includes(event))
   );
 
   return (
@@ -42,11 +30,11 @@ const EventCards: React.FC<EventCardsProps> = ({ events }) => {
         </>
       )}
 
-      {Object.entries(groupedEvents).map(([month, events]) => (
+      {Object.entries(upcomingEvents).map(([month, monthEvents]) => (
         <div key={month}>
-          <DateScroller date={events[0].date.start} />
+          <DateScroller date={monthEvents[0].date.start} />
           <div className="space-y-2 px-4 py-5 bg-blue-100">
-            {events.map((event) => (
+            {monthEvents.map((event) => (
               <EventCard key={event._id} event={event} />
             ))}
           </div>
