@@ -8,33 +8,40 @@ import DeleteEventModal from "@/pages/Events/components/DeleteEventModal";
 import NavbarBottom from "../navigation/NavbarBottom/NavbarBottom";
 import NavbarTop from "../navigation/NavbarTop/NavbarTop";
 
+const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <>
+      <NavbarTop />
+      <main className="mt-[84px]">{children}</main>
+      <NavbarBottom />
+    </>
+  );
+};
+
+const UnauthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
+  return <main>{children}</main>;
+};
+
 const SharedLayout = () => {
   const { user, fetchingUser } = useUser();
 
-  const loading = !user && fetchingUser;
-
-  if (loading) {
+  if (fetchingUser) {
     return <div>Loading...</div>;
   }
 
   return (
-    <>
-      <div className="min-h-screen">
-        {!loading ? (
-          <>
-            <NavbarTop />
-            <main className="mt-[84px]">
-              <Outlet />
-            </main>
-            <NavbarBottom />
-          </>
-        ) : (
-          <main>
-            <Outlet />
-          </main>
-        )}
-        <Toaster />
-      </div>
+    <div className="min-h-screen">
+      {user ? (
+        <AuthenticatedLayout>
+          <Outlet />
+        </AuthenticatedLayout>
+      ) : (
+        <UnauthenticatedLayout>
+          <Outlet />
+        </UnauthenticatedLayout>
+      )}
+
+      <Toaster />
 
       {user && (
         <>
@@ -42,7 +49,7 @@ const SharedLayout = () => {
           <DeleteEventModal />
         </>
       )}
-    </>
+    </div>
   );
 };
 
