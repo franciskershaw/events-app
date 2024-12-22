@@ -21,6 +21,7 @@ interface DateTimeProps {
   disabled?: boolean;
   minDate?: Date;
   disablePast?: boolean;
+  placeholder?: string;
 }
 
 const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
@@ -28,6 +29,7 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
     {
       className,
       value,
+      placeholder,
       onChange,
       name,
       disabled,
@@ -54,7 +56,11 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
               disabled={disabled}
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
-              {value ? format(value, "PPP") : <span>Pick a date</span>}
+              {value ? (
+                format(value, "PPP")
+              ) : (
+                <span>{placeholder ? placeholder : "Pick a date"}</span>
+              )}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0">
