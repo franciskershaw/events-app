@@ -1,4 +1,4 @@
-import React from "react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 type Size = "sm" | "md" | "lg";
 
@@ -35,13 +35,11 @@ const UserInitials: React.FC<UserInitialsProps> = ({
   };
 
   return (
-    <div
-      className={`${sizeClasses[size]} rounded-full box p-2 flex justify-center items-center`}
-    >
-      <span className={`${fontSizeClasses[size]} uppercase`}>
+    <Avatar className={sizeClasses[size]}>
+      <AvatarFallback className={fontSizeClasses[size]}>
         {getInitials(name)}
-      </span>
-    </div>
+      </AvatarFallback>
+    </Avatar>
   );
 };
 

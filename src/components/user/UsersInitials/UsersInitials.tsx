@@ -1,3 +1,5 @@
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+
 import useUser from "../../../hooks/user/useUser";
 import UserInitials from "../UserInitials/UserInitials";
 
@@ -33,9 +35,11 @@ const UsersInitials = () => {
       })}
 
       {extraUserCount > 0 && (
-        <div className="h-5 w-5 rounded-full box p-2 flex justify-center items-center absolute bottom-[-8px] right-[-4px]">
-          <span className="text-[10px] uppercase">+{extraUserCount + 1}</span>
-        </div>
+        <Avatar className="h-5 w-5 absolute bottom-[-8px] right-[-4px]">
+          <AvatarFallback className="text-[10px]">
+            +{extraUserCount + 1}
+          </AvatarFallback>
+        </Avatar>
       )}
     </div>
   );
