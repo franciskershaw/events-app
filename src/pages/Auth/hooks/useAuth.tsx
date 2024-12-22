@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 
-import useAxios from "@/axios/useAxios";
+import useAxios from "@/hooks/axios/useAxios";
 
 import useUser from "../../../hooks/user/useUser";
 

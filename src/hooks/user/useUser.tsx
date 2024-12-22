@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-import useAxios from "@/axios/useAxios";
+import useAxios from "@/hooks/axios/useAxios";
 import queryKeys from "@/tanstackQuery/queryKeys";
 import { User } from "@/types/globalTypes";
 
