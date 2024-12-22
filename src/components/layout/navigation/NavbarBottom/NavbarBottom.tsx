@@ -10,7 +10,8 @@ const NavbarBottom = () => {
 
   return (
     <nav className="box fixed bottom-0 left-0 right-0 bg-white z-30 py-4 space-y-4">
-      <div className="flex justify-center items-center">
+      <div className="flex justify-around items-center">
+        <DateTime placeholder="Pick a date range" />
         <DateTime placeholder="Pick a date range" />
       </div>
       <div className="flex justify-center items-center gap-2">
