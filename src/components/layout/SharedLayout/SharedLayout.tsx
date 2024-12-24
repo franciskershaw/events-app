@@ -14,7 +14,6 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
       <NavbarTop />
       <main className="mt-[84px] bg-white min-h-screen relative">
         {children}
-        <div className="fixed bottom-0 left-0 right-0 h-[125px] bg-white" />
       </main>
       <NavbarBottom />
     </>

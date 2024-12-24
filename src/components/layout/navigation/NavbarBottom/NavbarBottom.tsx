@@ -9,11 +9,16 @@ import { Button } from "../../../ui/button";
 const NavbarBottom = () => {
   const { openEventModal } = useModals();
   const y = useMotionValue(0);
-  const navHeight = 120; // Height of the navbar content including padding
+  const navHeight = 120;
 
   return (
     <>
-      {/* Drag handle */}
+      <motion.div
+        className="fixed bottom-0 left-0 right-0 h-[125px] bg-white z-20"
+        style={{ y }}
+        aria-hidden="true"
+      />
+
       <motion.div
         className="fixed bottom-[125px] left-0 right-0 h-6 bg-gray-100 rounded-t-lg z-30 flex justify-center items-center cursor-grab"
         drag="y"
@@ -24,7 +29,6 @@ const NavbarBottom = () => {
         <FaChevronUp className="text-gray-400" />
       </motion.div>
 
-      {/* Navbar content */}
       <motion.nav
         className="fixed bottom-0 left-0 right-0 bg-white z-30 py-4 space-y-4 h-[125px] flex flex-col justify-center items-center"
         style={{ y }}
