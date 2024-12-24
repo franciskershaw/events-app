@@ -14,12 +14,6 @@ const NavbarBottom = () => {
   return (
     <>
       <motion.div
-        className="fixed bottom-0 left-0 right-0 h-[125px] bg-white z-20"
-        style={{ y }}
-        aria-hidden="true"
-      />
-
-      <motion.div
         className="fixed bottom-[125px] left-0 right-0 h-6 bg-gray-100 rounded-t-lg z-30 flex justify-center items-center cursor-grab"
         drag="y"
         dragConstraints={{ top: 0, bottom: navHeight }}
