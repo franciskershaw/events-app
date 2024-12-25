@@ -12,7 +12,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <NavbarTop />
-      <main className="mt-[84px] bg-white min-h-screen relative">
+      <main className="mt-[84px] mb-4 bg-white min-h-screen relative">
         {children}
       </main>
       <NavbarBottom />
