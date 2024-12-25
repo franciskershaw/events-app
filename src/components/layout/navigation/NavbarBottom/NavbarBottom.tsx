@@ -59,13 +59,15 @@ const NavbarBottom = () => {
           <DateTime placeholder="Pick a date range" />
           <DateTime placeholder="Pick a date range" />
         </div>
-        <div className="flex justify-center items-center gap-2">
+        <div className="flex justify-between w-full px-2 items-center gap-2">
           <Button size="round" onClick={() => openEventModal()}>
             <FaPlus />
           </Button>
-          <Button size="round">D</Button>
-          <Button size="round">W</Button>
-          <Button size="round">M</Button>
+          <div className="space-x-2">
+            <Button size="round">D</Button>
+            <Button size="round">W</Button>
+            <Button size="round">M</Button>
+          </div>
           <Button size="round">
             <FaRegCalendar />
           </Button>
