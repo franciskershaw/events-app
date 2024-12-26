@@ -28,7 +28,7 @@ const NavbarBottom = () => {
       <DrawerContent className="px-4">
         <DrawerHeader>
           <DrawerTitle>Filters</DrawerTitle>
-          <DrawerDescription>
+          <DrawerDescription className="sr-only">
             Adjust date ranges and view options
           </DrawerDescription>
         </DrawerHeader>
