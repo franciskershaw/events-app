@@ -29,17 +29,17 @@ const NavbarBottom = () => {
         </div>
       </DrawerTrigger>
 
-      <DrawerContent className="pb-4 px-4">
+      <DrawerContent className="px-4">
         <DrawerHeader>
           <DrawerTitle>Filters</DrawerTitle>
           <DrawerDescription>
             Adjust date ranges and view options
           </DrawerDescription>
         </DrawerHeader>
-        <div className="space-y-4">
-          <div className="flex justify-between items-cente">
-            <DateTime placeholder="Pick a date range" />
-            <DateTime placeholder="Pick a date range" />
+        <div className="flex flex-col justify-center items-center space-y-4 pb-4">
+          <div className="grid grid-cols-2 gap-2 w-full">
+            <DateTime placeholder="Start date" />
+            <DateTime placeholder="End date" />
           </div>
           <div className="flex justify-between w-full items-center gap-2">
             <Button size="round" onClick={() => openEventModal()}>
