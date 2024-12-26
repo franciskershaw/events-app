@@ -1,6 +1,9 @@
+import { FaPlus } from "react-icons/fa";
 import { Outlet } from "react-router-dom";
 
+import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
+import { useModals } from "@/contexts/ModalsContext";
 import useUser from "@/hooks/user/useUser";
 import AddEventModal from "@/pages/Events/components/AddEventModal";
 import DeleteEventModal from "@/pages/Events/components/DeleteEventModal";
@@ -9,6 +12,8 @@ import NavbarBottom from "../navigation/NavbarBottom/NavbarBottom";
 import NavbarTop from "../navigation/NavbarTop/NavbarTop";
 
 const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
+  const { openEventModal } = useModals();
+
   return (
     <>
       <NavbarTop />
@@ -16,6 +21,13 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
         {children}
       </main>
       <NavbarBottom />
+      <Button
+        size="round"
+        onClick={() => openEventModal()}
+        className="fixed bottom-2 right-4 z-50 h-14 w-14 shadow-lg"
+      >
+        <FaPlus className="h-5 w-5" />
+      </Button>
     </>
   );
 };

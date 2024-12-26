@@ -1,4 +1,4 @@
-import { FaChevronUp, FaPlus, FaRegCalendar } from "react-icons/fa";
+import { FaChevronUp, FaRegCalendar } from "react-icons/fa";
 
 import { DateTime } from "@/components/ui/date-time";
 import {
@@ -10,15 +10,11 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 
-import { useModals } from "../../../../contexts/ModalsContext";
 import { Button } from "../../../ui/button";
 
 const NavbarBottom = () => {
-  const { openEventModal } = useModals();
-
   return (
     <Drawer>
-      {/* Trigger button */}
       <DrawerTrigger asChild>
         <div
           className="fixed bottom-0 left-0 right-0 h-6 bg-gray-100 rounded-t-lg z-40 flex justify-center items-center cursor-pointer"
@@ -41,15 +37,10 @@ const NavbarBottom = () => {
             <DateTime placeholder="Start date" />
             <DateTime placeholder="End date" />
           </div>
-          <div className="flex justify-between w-full items-center gap-2">
-            <Button size="round" onClick={() => openEventModal()}>
-              <FaPlus />
-            </Button>
-            <div className="space-x-2">
-              <Button size="round">D</Button>
-              <Button size="round">W</Button>
-              <Button size="round">M</Button>
-            </div>
+          <div className="flex gap-2">
+            <Button size="round">D</Button>
+            <Button size="round">W</Button>
+            <Button size="round">M</Button>
             <Button size="round">
               <FaRegCalendar />
             </Button>
