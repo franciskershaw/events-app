@@ -23,7 +23,7 @@ const EventCard = ({ event }: { event: Event }) => {
   return (
     <div className="border border-gray-200 rounded-lg shadow-sm bg-white hover:shadow-md transition-all">
       <div
-        className={`flex flex-col gap-2 p-4 rounded-t-lg cursor-pointer ${
+        className={`flex flex-col gap-3 p-4 rounded-t-lg cursor-pointer ${
           weekend && "border-l-4 border-blue-500"
         }`}
         onClick={toggleBody}
@@ -32,13 +32,13 @@ const EventCard = ({ event }: { event: Event }) => {
           <h2 className="font-semibold truncate flex-1">{title}</h2>
 
           {location?.city && (
-            <span className="ml-4 text-gray-700 font-medium">
+            <span className="ml-4 text-gray-700 font-medium text-sm">
               📍 {location.city}
             </span>
           )}
         </div>
 
-        <div className="flex items-center justify-between text-sm mt-1">
+        <div className="flex items-center justify-between text-sm">
           <span className="text-muted-foreground">{formattedDate}</span>
           <span className="text-xs px-2 py-0.5 bg-gray-100 text-gray-700 rounded-md">
             {category.name}
@@ -52,9 +52,9 @@ const EventCard = ({ event }: { event: Event }) => {
         transition={{ duration: 0.3 }}
         className="border-t border-gray-200 overflow-hidden"
       >
-        <div className="pb-2 pt-0 bg-gray-50">
-          <div className="w-full overflow-x-auto bg-gray-200">
-            <div className="p-2 flex items-center gap-2 text-sm whitespace-nowrap min-w-min">
+        <div className="px-4 pb-4 pt-0 bg-gray-50 space-y-4">
+          <div className="mx-[-1rem] px-4 py-2 bg-gray-200 overflow-x-auto">
+            <div className="flex items-center gap-2 text-sm whitespace-nowrap min-w-min">
               {location?.venue && (
                 <Badge variant="secondary">{location.venue}</Badge>
               )}
@@ -64,12 +64,12 @@ const EventCard = ({ event }: { event: Event }) => {
           </div>
 
           {description && (
-            <p className="pt-2 px-4 text-sm text-gray-700 leading-relaxed">
+            <p className="text-sm text-gray-700 leading-relaxed">
               {description}
             </p>
           )}
 
-          <div className="flex items-center justify-center gap-4 my-2">
+          <div className="flex items-center justify-center gap-4">
             <Button size="round">Copy</Button>
             <Button size="round" onClick={() => openEventModal(event)}>
               Edit
