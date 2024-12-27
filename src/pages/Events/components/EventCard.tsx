@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { motion } from "framer-motion";
 
+import { Badge } from "@/components/ui/badge";
 import { useModals } from "@/contexts/ModalsContext";
 
 import { Button } from "../../../components/ui/button";
@@ -51,26 +52,24 @@ const EventCard = ({ event }: { event: Event }) => {
         transition={{ duration: 0.3 }}
         className="border-t border-gray-200 overflow-hidden"
       >
-        <div className="p-4 bg-gray-50 space-y-4">
-          <div className="flex flex-wrap items-center gap-2 text-sm">
-            {location?.venue && (
-              <span className="px-2 py-1 bg-gray-200 rounded-md">
-                {location.venue}
-              </span>
-            )}
-            <span className="px-2 py-1 bg-gray-200 rounded-md">
-              {formattedTime}
-            </span>
-            <span className="px-2 py-1 bg-gray-200 rounded-md">
-              {category.name}
-            </span>
+        <div className="pb-2 pt-0 bg-gray-50">
+          <div className="w-full overflow-x-auto bg-gray-200">
+            <div className="p-2 flex items-center gap-2 text-sm whitespace-nowrap min-w-min">
+              {location?.venue && (
+                <Badge variant="secondary">{location.venue}</Badge>
+              )}
+              <Badge variant="secondary">{formattedTime}</Badge>
+              <Badge variant="secondary">{category.name}</Badge>
+            </div>
           </div>
 
           {description && (
-            <p className="text-gray-700 leading-relaxed">{description}</p>
+            <p className="pt-2 px-4 text-sm text-gray-700 leading-relaxed">
+              {description}
+            </p>
           )}
 
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex items-center justify-center gap-4 my-2">
             <Button size="round">Copy</Button>
             <Button size="round" onClick={() => openEventModal(event)}>
               Edit
