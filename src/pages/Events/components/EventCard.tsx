@@ -10,73 +10,72 @@ import { Event } from "../../../types/globalTypes";
 
 const EventCard = ({ event }: { event: Event }) => {
   const { location, title, category, description } = event;
-
   const [isOpen, setIsOpen] = useState(false);
-  const toggleBody = () => setIsOpen((prev) => !prev);
-
   const { openEventModal, openDeleteEventModal } = useModals();
 
   const formattedDate = formatDate(event.date);
   const formattedTime = formatTime(event.date);
   const weekend = isWeekend(event.date.start);
 
+  const toggleBody = () => setIsOpen((prev) => !prev);
+
   return (
-    <div className="event-card">
+    <div className="border border-gray-200 rounded-lg shadow-sm bg-white hover:shadow-md transition-all">
       <div
-        className={`event-card-header flex items-center space-x-2 box rounded-md p-2 relative cursor-pointer ${weekend && "border-4"}`}
+        className={`flex flex-col gap-2 p-4 rounded-t-lg cursor-pointer ${
+          weekend && "border-l-4 border-blue-500"
+        }`}
         onClick={toggleBody}
       >
-        {/* TOZO: Write get user and initials */}
-        {/* <div className="absolute rounded-full box top-[-16px] left-[-16px] bg-white h-8 w-8 flex justify-center items-center">
-          FK
-        </div> */}
-        <div className="box p-1 rounded-md min-w-[75px] max-w-[120px] text-center whitespace-nowrap">
-          <p className="truncate">{formattedDate}</p>
+        <div className="flex items-center justify-between">
+          <h2 className="font-semibold truncate flex-1">{title}</h2>
+
+          {location?.city && (
+            <span className="ml-4 text-gray-700 font-medium">
+              📍 {location.city}
+            </span>
+          )}
         </div>
-        <h2 className="truncate">{title}</h2>
-        {location && location.city && (
-          <div className="absolute box rounded-md top-[-22px] right-[-16px] bg-white p-0.5">
-            <p>{location.city}</p>
-          </div>
-        )}
+
+        <div className="flex items-center justify-between text-sm mt-1">
+          <span className="text-muted-foreground">{formattedDate}</span>
+          <span className="text-xs px-2 py-0.5 bg-gray-100 text-gray-700 rounded-md">
+            {category.name}
+          </span>
+        </div>
       </div>
+
       <motion.div
-        className="event-card-body box mx-2 border-t-0 rounded-md rounded-t-none overflow-hidden"
         initial={{ height: 0, opacity: 0 }}
         animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
-        transition={{
-          height: { duration: 0.3 },
-          opacity: { duration: isOpen ? 0.1 : 0.3 },
-        }}
+        transition={{ duration: 0.3 }}
+        className="border-t border-gray-200 overflow-hidden"
       >
-        {/* Meta */}
-        <div className="flex space-x-1 p-1 w-full overflow-x-auto whitespace-nowrap bg-gray-200">
-          {location && location.venue && (
-            <div className="box rounded-md p-1">
-              <p>{location.venue}</p>
-            </div>
-          )}
-          <div className="box rounded-md p-1">
-            <p>{formattedTime}</p>
+        <div className="p-4 bg-gray-50 space-y-4">
+          <div className="flex flex-wrap items-center gap-2 text-sm">
+            {location?.venue && (
+              <span className="px-2 py-1 bg-gray-200 rounded-md">
+                {location.venue}
+              </span>
+            )}
+            <span className="px-2 py-1 bg-gray-200 rounded-md">
+              {formattedTime}
+            </span>
+            <span className="px-2 py-1 bg-gray-200 rounded-md">
+              {category.name}
+            </span>
           </div>
-          <div className="box rounded-md p-1">
-            <p>{category.name}</p>
-          </div>
-        </div>
-        <div className="p-2 space-y-2">
-          {/* Description */}
+
           {description && (
-            <div className="box rounded-md p-1">
-              <p>{description}</p>
-            </div>
+            <p className="text-gray-700 leading-relaxed">{description}</p>
           )}
-          {/* Buttons */}
-          <div className="flex justify-center space-x-2">
+
+          <div className="flex items-center justify-center gap-4">
             <Button size="round">Copy</Button>
-            <Button onClick={() => openEventModal(event)} size="round">
+            <Button size="round" onClick={() => openEventModal(event)}>
               Edit
             </Button>
-            <Button onClick={() => openDeleteEventModal(event)} size="round">
+            <Button size="round" onClick={() => openDeleteEventModal(event)}>
               Delete
             </Button>
             <Button size="round">Private</Button>
