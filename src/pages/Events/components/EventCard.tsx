@@ -21,17 +21,13 @@ const EventCard = ({ event }: { event: Event }) => {
   const toggleBody = () => setIsOpen((prev) => !prev);
 
   return (
-    // <div
-    //   className={`border rounded-lg shadow-sm bg-white hover:shadow-md transition-all ${
-    //     weekend ? "border-blue-500" : "border-gray-200"
-    //   }`}
     <div
-      className={
-        "border rounded-lg shadow-sm bg-white hover:shadow-md transition-all"
-      }
+      className={`border rounded-md shadow-sm bg-white hover:shadow-md transition-all ${
+        weekend ? "border-blue-500" : "border-gray-200"
+      }`}
     >
       <div
-        className={`flex flex-col gap-3 p-4 rounded-t-lg cursor-pointer`}
+        className={`flex flex-col gap-3 p-4 cursor-pointer`}
         onClick={toggleBody}
       >
         <div className="flex items-center justify-between">
@@ -46,9 +42,7 @@ const EventCard = ({ event }: { event: Event }) => {
 
         <div className="flex items-center justify-between text-sm">
           <span className="text-muted-foreground">{formattedDate}</span>
-          <span className="text-sm px-2 py-0.5 bg-gray-100 text-gray-700 rounded-md">
-            {category.name}
-          </span>
+          <Badge variant="secondary">{category.name}</Badge>
         </div>
       </div>
 
@@ -56,7 +50,7 @@ const EventCard = ({ event }: { event: Event }) => {
         initial={{ height: 0, opacity: 0 }}
         animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
         transition={{ duration: 0.3 }}
-        className="border-t border-gray-200 overflow-hidden"
+        className="overflow-hidden rounded-b-md"
       >
         <div className="px-4 pb-4 pt-0 bg-gray-50 space-y-4">
           <div className="mx-[-1rem] px-4 py-2 bg-gray-200 overflow-x-auto">
@@ -64,7 +58,9 @@ const EventCard = ({ event }: { event: Event }) => {
               {location?.venue && (
                 <Badge variant="secondary">{location.venue}</Badge>
               )}
-              <Badge variant="secondary">{formattedTime}</Badge>
+              {formattedTime && (
+                <Badge variant="secondary">{formattedTime}</Badge>
+              )}
               <Badge variant="secondary">{category.name}</Badge>
             </div>
           </div>

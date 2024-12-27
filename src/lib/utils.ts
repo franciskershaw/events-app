@@ -29,29 +29,26 @@ export const formatDate = ({ start, end }: EventDate): string => {
 };
 
 export const formatTime = ({ start, end }: EventDate): string => {
+  // Return empty string if start time is midnight (00:00)
+  if (dayjs(start).format("HH:mm") === "00:00") {
+    return "";
+  }
+
   const startTime = dayjs(start).format("h:mma");
   const endTime = end ? dayjs(end).format("h:mma") : null;
-
-  const startDate = dayjs(start).format("ddd Do");
-  const endDate = end ? dayjs(end).format("ddd Do") : null;
 
   // Only start time (no end time)
   if (!end) {
     return startTime;
   }
 
-  // Same start and end time
-  if (start === end) {
+  // Same start and end time or end time is midnight
+  if (start === end || dayjs(end).format("HH:mm") === "00:00") {
     return startTime;
   }
 
-  // Start and end times on the same day
-  if (startDate === endDate) {
-    return `${startTime} - ${endTime}`;
-  }
-
-  // Start and end times on different days
-  return `${startDate} ${startTime} - ${endDate} ${endTime}`;
+  // Start and end times
+  return `${startTime} - ${endTime}`;
 };
 
 export const isWeekend = (start: string): boolean => {
