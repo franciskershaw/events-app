@@ -21,11 +21,17 @@ const EventCard = ({ event }: { event: Event }) => {
   const toggleBody = () => setIsOpen((prev) => !prev);
 
   return (
-    <div className="border border-gray-200 rounded-lg shadow-sm bg-white hover:shadow-md transition-all">
+    // <div
+    //   className={`border rounded-lg shadow-sm bg-white hover:shadow-md transition-all ${
+    //     weekend ? "border-blue-500" : "border-gray-200"
+    //   }`}
+    <div
+      className={
+        "border rounded-lg shadow-sm bg-white hover:shadow-md transition-all"
+      }
+    >
       <div
-        className={`flex flex-col gap-3 p-4 rounded-t-lg cursor-pointer ${
-          weekend && "border-l-4 border-blue-500"
-        }`}
+        className={`flex flex-col gap-3 p-4 rounded-t-lg cursor-pointer`}
         onClick={toggleBody}
       >
         <div className="flex items-center justify-between">
@@ -40,7 +46,7 @@ const EventCard = ({ event }: { event: Event }) => {
 
         <div className="flex items-center justify-between text-sm">
           <span className="text-muted-foreground">{formattedDate}</span>
-          <span className="text-xs px-2 py-0.5 bg-gray-100 text-gray-700 rounded-md">
+          <span className="text-sm px-2 py-0.5 bg-gray-100 text-gray-700 rounded-md">
             {category.name}
           </span>
         </div>
