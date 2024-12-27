@@ -52,18 +52,19 @@ const EventCard = ({ event }: { event: Event }) => {
         transition={{ duration: 0.3 }}
         className="overflow-hidden rounded-b-md"
       >
-        <div className="px-4 pb-4 pt-0 bg-gray-50 space-y-4">
-          <div className="mx-[-1rem] px-4 py-2 bg-gray-200 overflow-x-auto">
-            <div className="flex items-center gap-2 text-sm whitespace-nowrap min-w-min">
-              {location?.venue && (
-                <Badge variant="secondary">{location.venue}</Badge>
-              )}
-              {formattedTime && (
-                <Badge variant="secondary">{formattedTime}</Badge>
-              )}
-              <Badge variant="secondary">{category.name}</Badge>
+        <div className="px-4 pb-4 pt-0 space-y-4">
+          {(location?.venue || formattedTime) && (
+            <div className="mx-[-1rem] px-4 py-2 bg-gray-200 overflow-x-auto">
+              <div className="flex items-center gap-2 text-sm whitespace-nowrap min-w-min">
+                {location?.venue && (
+                  <Badge variant="secondary">{location.venue}</Badge>
+                )}
+                {formattedTime && (
+                  <Badge variant="secondary">{formattedTime}</Badge>
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
           {description && (
             <p className="text-sm text-gray-700 leading-relaxed">
