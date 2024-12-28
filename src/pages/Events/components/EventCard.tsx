@@ -73,14 +73,14 @@ const EventCard = ({ event }: { event: Event }) => {
           )}
 
           <div className="flex items-center justify-center gap-4">
-            <Button size="round">Copy</Button>
+            {/* <Button size="round">Copy</Button> */}
             <Button size="round" onClick={() => openEventModal(event)}>
               Edit
             </Button>
             <Button size="round" onClick={() => openDeleteEventModal(event)}>
               Delete
             </Button>
-            <Button size="round">Private</Button>
+            {/* <Button size="round">Private</Button> */}
           </div>
         </div>
       </motion.div>
