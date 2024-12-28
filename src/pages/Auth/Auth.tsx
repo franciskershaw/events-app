@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
 import useUser from "@/hooks/user/useUser";
 
-import LocalForm from "./componentsTemp/LocalForm/LocalForm";
-import OrDivider from "./componentsTemp/OrDivider/OrDivider";
+import LocalForm from "./components/LocalForm/LocalForm";
+import OrDivider from "./components/OrDivider/OrDivider";
 
 const Auth = () => {
   const { user } = useUser();
