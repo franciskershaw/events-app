@@ -80,6 +80,7 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
     };
 
     const handleClear = (e: React.MouseEvent) => {
+      e.preventDefault();
       e.stopPropagation();
       onChange?.(undefined);
     };
@@ -94,10 +95,11 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
               variant="outline"
               size="icon"
               className={cn(
-                "absolute -top-3 h-6 w-6 rounded-full border-muted-foreground/20 p-0 hover:bg-destructive hover:text-destructive-foreground",
+                "absolute -top-3 h-6 w-6 rounded-full border-muted-foreground/20 p-0",
                 showTime ? "-right-3" : "right-0 translate-x-1/2"
               )}
               onClick={handleClear}
+              type="button"
             >
               <X className="h-3 w-3" />
               <span className="sr-only">Clear date</span>
