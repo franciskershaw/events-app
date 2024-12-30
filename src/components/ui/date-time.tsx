@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { format } from "date-fns";
 import dayjs from "dayjs";
-import { Calendar as CalendarIcon } from "lucide-react";
+import { Calendar as CalendarIcon, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -25,6 +25,7 @@ interface DateTimeProps {
   disablePast?: boolean;
   placeholder?: string;
   showTime?: boolean;
+  allowClear?: boolean;
 }
 
 const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
@@ -39,6 +40,7 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
       minDate,
       disablePast,
       showTime = false,
+      allowClear = false,
       ...props
     },
     ref
@@ -77,60 +79,88 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
       onChange?.(newDate);
     };
 
+    const handleClear = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      onChange?.(undefined);
+    };
+
     const defaultMonth = value ? dayjs(value).toDate() : undefined;
 
     return (
-      <div className={cn("flex gap-2", className)}>
-        <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
-          <PopoverTrigger asChild>
+      <div className={cn("block w-full", className)}>
+        <div className="relative inline-block">
+          {allowClear && value && (
             <Button
-              variant={"outline"}
+              variant="outline"
+              size="icon"
               className={cn(
-                "w-[200px] justify-start text-left font-normal",
-                !value && "text-muted-foreground"
+                "absolute -top-3 h-6 w-6 rounded-full border-muted-foreground/20 p-0 hover:bg-destructive hover:text-destructive-foreground",
+                showTime ? "-right-3" : "right-0 translate-x-1/2"
               )}
-              disabled={disabled}
+              onClick={handleClear}
             >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {value ? (
-                format(value, "PPP")
-              ) : (
-                <span>{placeholder ? placeholder : "Pick a date"}</span>
-              )}
+              <X className="h-3 w-3" />
+              <span className="sr-only">Clear date</span>
             </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <Calendar
-              mode="single"
-              selected={value ?? undefined}
-              onDayClick={handleDayClick}
-              initialFocus
-              disabled={disabled}
-              defaultMonth={defaultMonth}
-              fromDate={
-                disablePast && minDate
-                  ? dayjs(minDate).isAfter(dayjs().startOf("day"))
-                    ? minDate
-                    : dayjs().startOf("day").toDate()
-                  : disablePast
-                    ? dayjs().startOf("day").toDate()
-                    : minDate
-              }
+          )}
+
+          <div className="flex gap-2">
+            <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-[200px] justify-start text-left font-normal",
+                    !value && "text-muted-foreground"
+                  )}
+                  disabled={disabled}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {value ? (
+                    format(value, "PPP")
+                  ) : (
+                    <span>{placeholder ? placeholder : "Pick a date"}</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={value ?? undefined}
+                  onDayClick={handleDayClick}
+                  initialFocus
+                  disabled={disabled}
+                  defaultMonth={defaultMonth}
+                  fromDate={
+                    disablePast && minDate
+                      ? dayjs(minDate).isAfter(dayjs().startOf("day"))
+                        ? minDate
+                        : dayjs().startOf("day").toDate()
+                      : disablePast
+                        ? dayjs().startOf("day").toDate()
+                        : minDate
+                  }
+                />
+              </PopoverContent>
+            </Popover>
+
+            {showTime && (
+              <Time
+                value={value}
+                onChange={handleTimeChange}
+                disabled={disabled}
+              />
+            )}
+
+            <input
+              ref={ref}
+              type="hidden"
+              name={name}
+              value={value?.toISOString() || ""}
+              {...props}
             />
-          </PopoverContent>
-        </Popover>
-
-        {showTime && (
-          <Time value={value} onChange={handleTimeChange} disabled={disabled} />
-        )}
-
-        <input
-          ref={ref}
-          type="hidden"
-          name={name}
-          value={value?.toISOString() || ""}
-          {...props}
-        />
+          </div>
+        </div>
       </div>
     );
   }

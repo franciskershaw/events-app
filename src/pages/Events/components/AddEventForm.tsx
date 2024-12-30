@@ -33,6 +33,7 @@ const AddEventForm = ({ formId }: { formId: string }) => {
           disablePast
           minDate={form.watch("datetime")}
           showTime
+          allowClear
         />
       </FormInput>
 
