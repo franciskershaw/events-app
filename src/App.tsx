@@ -9,7 +9,7 @@ import Events from "./pages/Events/Events";
 
 function App() {
   return (
-    <Router>
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <Routes>
         <Route path="/" element={<SharedLayout />}>
           <Route index element={<Auth />} />
