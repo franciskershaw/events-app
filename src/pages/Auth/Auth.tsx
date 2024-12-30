@@ -30,7 +30,7 @@ const Auth = () => {
           fontWeight="font-semibold"
           className="mb-4 text-center"
         >
-          Organisy!
+          Organisey!
         </Heading>
 
         {/* Google Login Button */}
