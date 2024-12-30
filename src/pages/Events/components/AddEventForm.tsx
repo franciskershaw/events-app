@@ -23,6 +23,7 @@ const AddEventForm = ({ formId }: { formId: string }) => {
             form.setValue("datetime", date ?? dayjs().startOf("day").toDate())
           }
           disablePast
+          showTime
         />
       </FormInput>
 

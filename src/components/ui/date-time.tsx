@@ -13,8 +13,10 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
+import { Time } from "./time";
+
 interface DateTimeProps {
-  value?: Date | null;
+  value?: Date | undefined;
   onChange?: (date: Date | undefined) => void;
   className?: string;
   name?: string;
@@ -22,6 +24,7 @@ interface DateTimeProps {
   minDate?: Date;
   disablePast?: boolean;
   placeholder?: string;
+  showTime?: boolean;
 }
 
 const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
@@ -35,24 +38,46 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
       disabled,
       minDate,
       disablePast,
+      showTime = false,
       ...props
     },
     ref
   ) => {
+    const [timeValue, setTimeValue] = React.useState<string>(
+      value ? dayjs(value).format("HH:mm") : "00:00"
+    );
+
     const handleDayClick = (selectedDate: Date | undefined) => {
-      onChange?.(selectedDate);
+      if (!selectedDate) {
+        onChange?.(undefined);
+        return;
+      }
+
+      const [hours, minutes] = timeValue.split(":").map(Number);
+      const newDate = dayjs(selectedDate).hour(hours).minute(minutes).toDate();
+
+      onChange?.(newDate);
+    };
+
+    const handleTimeChange = (newTime: string) => {
+      setTimeValue(newTime);
+      if (value) {
+        const [hours, minutes] = newTime.split(":").map(Number);
+        const newDate = dayjs(value).hour(hours).minute(minutes).toDate();
+        onChange?.(newDate);
+      }
     };
 
     const defaultMonth = value ? dayjs(value).toDate() : undefined;
 
     return (
-      <div className={cn("flex gap-4", className)}>
+      <div className={cn("flex gap-2", className)}>
         <Popover>
           <PopoverTrigger asChild>
             <Button
               variant={"outline"}
               className={cn(
-                "max-w-[280px] w-full justify-start text-left font-normal",
+                "w-[200px] justify-start text-left font-normal",
                 !value && "text-muted-foreground"
               )}
               disabled={disabled}
@@ -65,7 +90,7 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
               )}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0">
+          <PopoverContent className="w-auto p-0" align="start">
             <Calendar
               mode="single"
               selected={value ?? undefined}
@@ -85,6 +110,11 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
             />
           </PopoverContent>
         </Popover>
+
+        {showTime && (
+          <Time value={value} onChange={handleTimeChange} disabled={disabled} />
+        )}
+
         <input
           ref={ref}
           type="hidden"
