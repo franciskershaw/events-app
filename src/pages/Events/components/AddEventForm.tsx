@@ -32,6 +32,7 @@ const AddEventForm = ({ formId }: { formId: string }) => {
           onChange={(date) => form.setValue("endDatetime", date ?? undefined)}
           disablePast
           minDate={form.watch("datetime")}
+          showTime
         />
       </FormInput>
 

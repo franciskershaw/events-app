@@ -43,9 +43,7 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
     },
     ref
   ) => {
-    const [timeValue, setTimeValue] = React.useState<string>(
-      value ? dayjs(value).format("HH:mm") : "00:00"
-    );
+    const [isCalendarOpen, setIsCalendarOpen] = React.useState(false);
 
     const handleDayClick = (selectedDate: Date | undefined) => {
       if (!selectedDate) {
@@ -53,26 +51,37 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
         return;
       }
 
-      const [hours, minutes] = timeValue.split(":").map(Number);
-      const newDate = dayjs(selectedDate).hour(hours).minute(minutes).toDate();
+      if (value) {
+        const newDate = dayjs(selectedDate)
+          .hour(dayjs(value).hour())
+          .minute(dayjs(value).minute())
+          .toDate();
+        onChange?.(newDate);
+      } else {
+        onChange?.(selectedDate);
+      }
 
-      onChange?.(newDate);
+      setIsCalendarOpen(false);
     };
 
-    const handleTimeChange = (newTime: string) => {
-      setTimeValue(newTime);
-      if (value) {
-        const [hours, minutes] = newTime.split(":").map(Number);
-        const newDate = dayjs(value).hour(hours).minute(minutes).toDate();
+    const handleTimeChange = (timeString: string) => {
+      if (!value) {
+        const [hours, minutes] = timeString.split(":").map(Number);
+        const newDate = dayjs().hour(hours).minute(minutes).toDate();
         onChange?.(newDate);
+        return;
       }
+
+      const [hours, minutes] = timeString.split(":").map(Number);
+      const newDate = dayjs(value).hour(hours).minute(minutes).toDate();
+      onChange?.(newDate);
     };
 
     const defaultMonth = value ? dayjs(value).toDate() : undefined;
 
     return (
       <div className={cn("flex gap-2", className)}>
-        <Popover>
+        <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
           <PopoverTrigger asChild>
             <Button
               variant={"outline"}
