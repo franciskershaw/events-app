@@ -43,6 +43,8 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
       onChange?.(selectedDate);
     };
 
+    const defaultMonth = value ? dayjs(value).toDate() : undefined;
+
     return (
       <div className={cn("flex gap-4", className)}>
         <Popover>
@@ -70,6 +72,7 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
               onDayClick={handleDayClick}
               initialFocus
               disabled={disabled}
+              defaultMonth={defaultMonth}
               fromDate={
                 disablePast && minDate
                   ? dayjs(minDate).isAfter(dayjs().startOf("day"))
