@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import dayjs from "dayjs";
 import { useForm } from "react-hook-form";
@@ -52,6 +54,29 @@ const useEventForm = () => {
       description: selectedEvent?.description ?? "",
     },
   });
+
+  // Watch the start date and update end date if needed
+  useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      if (name === "datetime" && value.datetime && value.endDatetime) {
+        const startDate = dayjs(value.datetime);
+        const endDate = dayjs(value.endDatetime);
+
+        if (
+          (startDate.isSame(endDate, "day") && !endDate.isAfter(startDate)) ||
+          endDate.isBefore(startDate)
+        ) {
+          const newEndDate = startDate.toDate();
+
+          form.setValue("endDatetime", newEndDate, {
+            shouldValidate: true,
+          });
+        }
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form]);
 
   const onSubmit = (values: EventFormValues) => {
     if (selectedEvent) {
