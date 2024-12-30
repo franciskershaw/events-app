@@ -9,6 +9,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
 interface TimeProps {
@@ -19,21 +20,6 @@ interface TimeProps {
   triggerWidth?: string;
 }
 
-const timePresets = [
-  "09:00",
-  "10:00",
-  "11:00",
-  "12:00",
-  "13:00",
-  "14:00",
-  "15:00",
-  "16:00",
-  "17:00",
-  "18:00",
-  "19:00",
-  "20:00",
-];
-
 const Time = ({
   value,
   onChange,
@@ -41,24 +27,29 @@ const Time = ({
   disabled,
   triggerWidth = "120px",
 }: TimeProps) => {
-  // Handle both string time values and Date objects
   const timeValue = React.useMemo(() => {
-    if (!value) return "00:00";
-    if (value instanceof Date) {
-      return dayjs(value).format("HH:mm");
-    }
-    return value;
+    if (!value) return { hour: "00", minute: "00" };
+    const date =
+      value instanceof Date ? value : new Date(`1970-01-01T${value}`);
+    return {
+      hour: dayjs(date).format("HH"),
+      minute: dayjs(date).format("mm"),
+    };
   }, [value]);
 
-  const handleTimeChange = (newTime: string) => {
+  const handleTimeChange = (type: "hour" | "minute", newValue: string) => {
+    const newTime =
+      type === "hour"
+        ? `${newValue}:${timeValue.minute}`
+        : `${timeValue.hour}:${newValue}`;
     onChange?.(newTime);
   };
 
   return (
-    <Popover>
+    <Popover modal={true}>
       <PopoverTrigger asChild>
         <Button
-          variant={"outline"}
+          variant="outline"
           className={cn(
             "justify-start text-left font-normal",
             !value && "text-muted-foreground",
@@ -68,35 +59,55 @@ const Time = ({
           disabled={disabled}
         >
           <Clock className="mr-2 h-4 w-4" />
-          {timeValue || "Set time"}
+          {timeValue ? `${timeValue.hour}:${timeValue.minute}` : "Set time"}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[240px] p-3" align="start">
-        <div className="space-y-4">
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium">Select time</label>
-            <input
-              type="time"
-              value={timeValue}
-              onChange={(e) => handleTimeChange(e.target.value)}
-              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Common times</label>
-            <div className="grid grid-cols-3 gap-1">
-              {timePresets.map((time) => (
+      <PopoverContent className="w-auto p-0" align="start">
+        <div className="flex divide-x">
+          <ScrollArea className="h-[300px] w-[100px]">
+            <div className="p-2">
+              {Array.from({ length: 24 }, (_, i) => i).map((hour) => (
                 <Button
-                  key={time}
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleTimeChange(time)}
+                  key={hour}
+                  variant={
+                    timeValue.hour === hour.toString().padStart(2, "0")
+                      ? "default"
+                      : "ghost"
+                  }
+                  className="w-full h-10"
+                  onClick={() =>
+                    handleTimeChange("hour", hour.toString().padStart(2, "0"))
+                  }
                 >
-                  {time}
+                  {hour.toString().padStart(2, "0")}
                 </Button>
               ))}
             </div>
-          </div>
+          </ScrollArea>
+
+          <ScrollArea className="h-[300px] w-[100px]">
+            <div className="p-2">
+              {Array.from({ length: 12 }, (_, i) => i * 5).map((minute) => (
+                <Button
+                  key={minute}
+                  variant={
+                    timeValue.minute === minute.toString().padStart(2, "0")
+                      ? "default"
+                      : "ghost"
+                  }
+                  className="w-full h-10"
+                  onClick={() =>
+                    handleTimeChange(
+                      "minute",
+                      minute.toString().padStart(2, "0")
+                    )
+                  }
+                >
+                  {minute.toString().padStart(2, "0")}
+                </Button>
+              ))}
+            </div>
+          </ScrollArea>
         </div>
       </PopoverContent>
     </Popover>
