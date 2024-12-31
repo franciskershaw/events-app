@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import dayjs from "dayjs";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { CaptionProps, DayPicker, useNavigation } from "react-day-picker";
 
 import { buttonVariants } from "@/components/ui/button";
@@ -30,42 +31,31 @@ function Calendar({
       className={cn("p-3", className)}
       fromDate={disablePast ? new Date() : undefined}
       classNames={{
-        months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
+        months: "flex justify-center space-y-4",
         month: "space-y-4",
-        caption: "flex justify-center pt-1 relative items-center gap-1",
+        caption: "flex items-center justify-center w-full gap-4",
         nav: "space-x-1 flex items-center",
         nav_button: cn(
           buttonVariants({ variant: "outline" }),
           "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
         ),
-        nav_button_previous: "absolute left-1",
-        nav_button_next: "absolute right-1",
         table: "w-full border-collapse space-y-1",
-        head_row: "flex",
+        head_row: "flex w-full justify-between",
         head_cell:
-          "text-muted-foreground rounded-md w-8 font-normal text-[0.8rem]",
-        row: "flex w-full mt-2",
+          "text-muted-foreground rounded-md w-8 font-normal text-[0.8rem] flex-1",
+        row: "flex w-full justify-between mt-2",
         cell: cn(
-          "relative p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-accent [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected].day-range-end)]:rounded-r-md",
+          "relative p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-accent flex-1",
           props.mode === "range"
-            ? "[&:has(>.day-range-end)]:rounded-r-md [&:has(>.day-range-start)]:rounded-l-md first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md"
+            ? "[&:has(>.day-range-end)]:rounded-r-md [&:has(>.day-range-start)]:rounded-l-md"
             : "[&:has([aria-selected])]:rounded-md"
         ),
         day: cn(
           buttonVariants({ variant: "ghost" }),
           "h-8 w-8 p-0 font-normal aria-selected:opacity-100"
         ),
-        day_range_start: "day-range-start",
-        day_range_end: "day-range-end",
-        day_selected:
-          "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
         day_today: "bg-accent text-accent-foreground",
-        day_outside:
-          "day-outside text-muted-foreground aria-selected:bg-accent/50 aria-selected:text-muted-foreground",
         day_disabled: "text-muted-foreground opacity-50",
-        day_range_middle:
-          "aria-selected:bg-accent aria-selected:text-accent-foreground",
-        day_hidden: "invisible",
         ...classNames,
       }}
       components={{
@@ -78,63 +68,80 @@ function Calendar({
 Calendar.displayName = "Calendar";
 
 function CustomCaption({ displayMonth }: CaptionProps) {
-  const months = Array.from({ length: 12 }, (_, i) => {
-    return {
-      value: i.toString(),
-      label: dayjs().month(i).format("MMMM"),
-    };
-  });
+  const months = Array.from({ length: 12 }, (_, i) => ({
+    value: i.toString(),
+    label: dayjs().month(i).format("MMMM"),
+  }));
 
   const years = Array.from({ length: 10 }, (_, i) => {
     const year = dayjs(displayMonth).subtract(5, "year").add(i, "year").year();
-    return {
-      value: year.toString(),
-      label: year.toString(),
-    };
+    return { value: year.toString(), label: year.toString() };
   });
 
-  // We need to access the DayPicker context to change months
   const { goToMonth } = useNavigation();
 
   return (
-    <div className="flex gap-2 items-center justify-center">
-      <Select
-        onValueChange={(value) => {
-          const newDate = dayjs(displayMonth).month(parseInt(value)).toDate();
-          goToMonth(newDate);
-        }}
+    <div className="flex items-center justify-between w-full">
+      <button
+        onClick={() =>
+          goToMonth(dayjs(displayMonth).subtract(1, "month").toDate())
+        }
+        className={cn(
+          buttonVariants({ variant: "ghost", size: "icon" }),
+          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
+        )}
       >
-        <SelectTrigger className="h-7 w-[110px]">
-          <SelectValue
-            placeholder={months[dayjs(displayMonth).month()].label}
-          />
-        </SelectTrigger>
-        <SelectContent>
-          {months.map((month) => (
-            <SelectItem key={month.value} value={month.value}>
-              {month.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+        <ChevronLeft className="h-4 w-4" />
+      </button>
 
-      <Select
-        onValueChange={(value) => {
-          const newDate = dayjs(displayMonth).year(parseInt(value)).toDate();
-          goToMonth(newDate);
-        }}
+      <div className="flex items-center gap-2">
+        <Select
+          onValueChange={(value) => {
+            const newDate = dayjs(displayMonth).month(parseInt(value)).toDate();
+            goToMonth(newDate);
+          }}
+        >
+          <SelectTrigger className="h-7 w-[110px]">
+            <SelectValue
+              placeholder={months[dayjs(displayMonth).month()].label}
+            />
+          </SelectTrigger>
+          <SelectContent>
+            {months.map((month) => (
+              <SelectItem key={month.value} value={month.value}>
+                {month.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Select
+          onValueChange={(value) => {
+            const newDate = dayjs(displayMonth).year(parseInt(value)).toDate();
+            goToMonth(newDate);
+          }}
+        >
+          <SelectTrigger className="h-7 w-[90px]">
+            <SelectValue placeholder={dayjs(displayMonth).year().toString()} />
+          </SelectTrigger>
+          <SelectContent>
+            {years.map((year) => (
+              <SelectItem key={year.value} value={year.value}>
+                {year.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <button
+        onClick={() => goToMonth(dayjs(displayMonth).add(1, "month").toDate())}
+        className={cn(
+          buttonVariants({ variant: "ghost", size: "icon" }),
+          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
+        )}
       >
-        <SelectTrigger className="h-7 w-[90px]">
-          <SelectValue placeholder={dayjs(displayMonth).year().toString()} />
-        </SelectTrigger>
-        <SelectContent>
-          {years.map((year) => (
-            <SelectItem key={year.value} value={year.value}>
-              {year.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+        <ChevronRight className="h-4 w-4" />
+      </button>
     </div>
   );
 }
