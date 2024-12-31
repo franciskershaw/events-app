@@ -45,9 +45,11 @@ const useEventForm = () => {
       datetime: selectedEvent?.date.start
         ? dayjs(selectedEvent.date.start).toDate()
         : dayjs().startOf("day").toDate(),
-      endDatetime: selectedEvent?.date.end
-        ? dayjs(selectedEvent.date.end).toDate()
-        : null,
+      endDatetime:
+        selectedEvent?.date.end &&
+        !dayjs(selectedEvent.date.end).isSame(selectedEvent.date.start)
+          ? dayjs(selectedEvent.date.end).toDate()
+          : null,
       category: selectedEvent?.category._id ?? "",
       venue: selectedEvent?.location?.venue ?? "",
       city: selectedEvent?.location?.city ?? "",
