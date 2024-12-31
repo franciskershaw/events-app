@@ -130,7 +130,7 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
                   id={id}
                   variant={"outline"}
                   className={cn(
-                    "w-[200px] justify-start text-left font-normal",
+                    "w-full min-w-[140px] justify-start text-left font-normal",
                     !effectiveValue && "text-muted-foreground"
                   )}
                   disabled={disabled}
