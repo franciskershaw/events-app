@@ -79,7 +79,10 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
       const [hours, minutes] = timeString.split(":").map(Number);
       const newDate = effectiveValue
         ? dayjs(effectiveValue).hour(hours).minute(minutes).toDate()
-        : dayjs().hour(hours).minute(minutes).toDate();
+        : dayjs(minDate || new Date())
+            .hour(hours)
+            .minute(minutes)
+            .toDate();
 
       onChange?.(newDate);
       setInternalValue(newDate);
