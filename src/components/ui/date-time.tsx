@@ -16,8 +16,8 @@ import { cn } from "@/lib/utils";
 import { Time } from "./time";
 
 interface DateTimeProps {
-  value?: Date | undefined;
-  onChange?: (date: Date | undefined) => void;
+  value?: Date | null | undefined;
+  onChange?: (date: Date | null | undefined) => void;
   className?: string;
   name?: string;
   disabled?: boolean;
@@ -26,6 +26,7 @@ interface DateTimeProps {
   placeholder?: string;
   showTime?: boolean;
   allowClear?: boolean;
+  defaultValue?: Date;
 }
 
 const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
@@ -33,6 +34,7 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
     {
       className,
       value,
+      defaultValue,
       placeholder,
       onChange,
       name,
@@ -45,52 +47,62 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
     },
     ref
   ) => {
+    const [internalValue, setInternalValue] = React.useState<
+      Date | null | undefined
+    >(defaultValue);
     const [isCalendarOpen, setIsCalendarOpen] = React.useState(false);
+
+    const effectiveValue = value !== undefined ? value : internalValue;
 
     const handleDayClick = (selectedDate: Date | undefined) => {
       if (!selectedDate) {
         onChange?.(undefined);
+        setInternalValue(undefined);
         return;
       }
 
-      if (value) {
-        const newDate = dayjs(selectedDate)
-          .hour(dayjs(value).hour())
-          .minute(dayjs(value).minute())
-          .toDate();
-        onChange?.(newDate);
-      } else {
-        onChange?.(selectedDate);
-      }
+      const newDate = effectiveValue
+        ? dayjs(selectedDate)
+            .hour(dayjs(effectiveValue).hour())
+            .minute(dayjs(effectiveValue).minute())
+            .toDate()
+        : selectedDate;
 
+      onChange?.(newDate);
+      setInternalValue(newDate);
       setIsCalendarOpen(false);
     };
 
     const handleTimeChange = (timeString: string) => {
-      if (!value) {
-        const [hours, minutes] = timeString.split(":").map(Number);
-        const newDate = dayjs().hour(hours).minute(minutes).toDate();
-        onChange?.(newDate);
-        return;
-      }
-
       const [hours, minutes] = timeString.split(":").map(Number);
-      const newDate = dayjs(value).hour(hours).minute(minutes).toDate();
+      const newDate = effectiveValue
+        ? dayjs(effectiveValue).hour(hours).minute(minutes).toDate()
+        : dayjs().hour(hours).minute(minutes).toDate();
+
       onChange?.(newDate);
+      setInternalValue(newDate);
     };
 
     const handleClear = (e: React.MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
-      onChange?.(undefined);
+      onChange?.(null);
+      setInternalValue(null);
     };
 
-    const defaultMonth = value ? dayjs(value).toDate() : undefined;
+    const defaultMonth = effectiveValue
+      ? dayjs(effectiveValue).toDate()
+      : undefined;
+
+    const getInputValue = () => {
+      if (!effectiveValue) return "";
+      return effectiveValue.toISOString();
+    };
 
     return (
       <div className={cn("block w-full", className)}>
         <div className="relative inline-block">
-          {allowClear && value && (
+          {allowClear && effectiveValue && (
             <Button
               variant="outline"
               size="icon"
@@ -113,13 +125,13 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
                   variant={"outline"}
                   className={cn(
                     "w-[200px] justify-start text-left font-normal",
-                    !value && "text-muted-foreground"
+                    !effectiveValue && "text-muted-foreground"
                   )}
                   disabled={disabled}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
-                  {value ? (
-                    format(value, "PPP")
+                  {effectiveValue ? (
+                    format(effectiveValue, "PPP")
                   ) : (
                     <span>{placeholder ? placeholder : "Pick a date"}</span>
                   )}
@@ -128,7 +140,7 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
               <PopoverContent className="w-auto p-0" align="start">
                 <Calendar
                   mode="single"
-                  selected={value ?? undefined}
+                  selected={effectiveValue ?? undefined}
                   onDayClick={handleDayClick}
                   initialFocus
                   disabled={disabled}
@@ -148,7 +160,7 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
 
             {showTime && (
               <Time
-                value={value}
+                value={effectiveValue}
                 onChange={handleTimeChange}
                 disabled={disabled}
               />
@@ -158,7 +170,7 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
               ref={ref}
               type="hidden"
               name={name}
-              value={value?.toISOString() || ""}
+              value={getInputValue()}
               {...props}
             />
           </div>

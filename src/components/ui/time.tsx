@@ -13,7 +13,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
 interface TimeProps {
-  value?: string | Date;
+  value?: string | Date | null;
   onChange?: (time: string) => void;
   className?: string;
   disabled?: boolean;
