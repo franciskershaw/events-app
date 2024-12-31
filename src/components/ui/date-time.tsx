@@ -137,7 +137,14 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
                 >
                   <CalendarIcon className="mr-2 h-4 w-4 flex-shrink-0" />
                   {effectiveValue ? (
-                    format(effectiveValue, "PPP")
+                    <div className="truncate">
+                      <span className="inline max-[380px]:hidden">
+                        {format(effectiveValue, "PPP")}
+                      </span>
+                      <span className="hidden max-[380px]:inline">
+                        {format(effectiveValue, "dd/MM/yy")}
+                      </span>
+                    </div>
                   ) : (
                     <span className="truncate">
                       {placeholder ? placeholder : "Pick a date"}
