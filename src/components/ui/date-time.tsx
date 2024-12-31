@@ -106,7 +106,7 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
 
     return (
       <div className={cn("block w-full", className)}>
-        <div className="relative inline-block">
+        <div className="relative w-full">
           {allowClear && effectiveValue && (
             <Button
               variant="outline"
@@ -123,23 +123,25 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
             </Button>
           )}
 
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap min-w-0">
             <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
               <PopoverTrigger asChild>
                 <Button
                   id={id}
                   variant={"outline"}
                   className={cn(
-                    "w-full min-w-[140px] justify-start text-left font-normal",
+                    "flex-1 min-w-[140px] justify-start text-left font-normal truncate",
                     !effectiveValue && "text-muted-foreground"
                   )}
                   disabled={disabled}
                 >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  <CalendarIcon className="mr-2 h-4 w-4 flex-shrink-0" />
                   {effectiveValue ? (
                     format(effectiveValue, "PPP")
                   ) : (
-                    <span>{placeholder ? placeholder : "Pick a date"}</span>
+                    <span className="truncate">
+                      {placeholder ? placeholder : "Pick a date"}
+                    </span>
                   )}
                 </Button>
               </PopoverTrigger>
@@ -169,6 +171,7 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
                 value={effectiveValue}
                 onChange={handleTimeChange}
                 disabled={disabled}
+                className="flex-shrink-0"
               />
             )}
 
