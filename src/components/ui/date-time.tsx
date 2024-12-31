@@ -22,6 +22,7 @@ interface DateTimeProps {
   name?: string;
   disabled?: boolean;
   minDate?: Date;
+  toDate?: Date;
   disablePast?: boolean;
   placeholder?: string;
   showTime?: boolean;
@@ -42,6 +43,7 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
       id,
       disabled,
       minDate,
+      toDate,
       disablePast,
       showTime = false,
       allowClear = false,
@@ -160,6 +162,7 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
                   initialFocus
                   disabled={disabled}
                   defaultMonth={defaultMonth}
+                  toDate={toDate}
                   fromDate={
                     disablePast && minDate
                       ? dayjs(minDate).isAfter(dayjs().startOf("day"))

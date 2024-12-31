@@ -24,6 +24,7 @@ const AddEventForm = ({ formId }: { formId: string }) => {
           }
           disablePast
           showTime
+          toDate={dayjs().add(5, "years").endOf("year").toDate()}
         />
       </FormInput>
 
@@ -34,6 +35,7 @@ const AddEventForm = ({ formId }: { formId: string }) => {
           minDate={form.watch("datetime")}
           showTime
           allowClear
+          toDate={dayjs().add(5, "years").endOf("year").toDate()}
         />
       </FormInput>
 

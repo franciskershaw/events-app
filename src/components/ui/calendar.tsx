@@ -2,7 +2,12 @@ import * as React from "react";
 
 import dayjs from "dayjs";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { CaptionProps, DayPicker, useNavigation } from "react-day-picker";
+import {
+  CaptionProps,
+  DayPicker,
+  useDayPicker,
+  useNavigation,
+} from "react-day-picker";
 
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -67,28 +72,33 @@ function Calendar({
 }
 Calendar.displayName = "Calendar";
 
-function CustomCaption({ displayMonth }: CaptionProps) {
+function CustomCaption(props: CaptionProps) {
   const months = Array.from({ length: 12 }, (_, i) => ({
     value: i.toString(),
     label: dayjs().month(i).format("MMMM"),
   }));
 
-  const years = Array.from({ length: 10 }, (_, i) => {
-    const year = dayjs(displayMonth).subtract(5, "year").add(i, "year").year();
+  const currentYear = dayjs().year();
+  const years = Array.from({ length: 6 }, (_, i) => {
+    const year = currentYear + i;
     return { value: year.toString(), label: year.toString() };
   });
 
-  const { goToMonth } = useNavigation();
+  const { goToMonth, currentMonth } = useNavigation();
+  const { toDate } = useDayPicker();
+  const isMaxMonth =
+    toDate && dayjs(currentMonth).isSame(dayjs(toDate), "month");
 
   return (
     <div className="flex items-center justify-between w-full">
       <button
         onClick={() =>
-          goToMonth(dayjs(displayMonth).subtract(1, "month").toDate())
+          goToMonth(dayjs(props.displayMonth).subtract(1, "month").toDate())
         }
         className={cn(
           buttonVariants({ variant: "ghost", size: "icon" }),
-          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
+          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
+          "disabled:opacity-20"
         )}
       >
         <ChevronLeft className="h-4 w-4" />
@@ -97,13 +107,15 @@ function CustomCaption({ displayMonth }: CaptionProps) {
       <div className="flex items-center gap-2">
         <Select
           onValueChange={(value) => {
-            const newDate = dayjs(displayMonth).month(parseInt(value)).toDate();
+            const newDate = dayjs(props.displayMonth)
+              .month(parseInt(value))
+              .toDate();
             goToMonth(newDate);
           }}
         >
           <SelectTrigger className="h-7 w-[110px]">
             <SelectValue
-              placeholder={months[dayjs(displayMonth).month()].label}
+              placeholder={months[dayjs(props.displayMonth).month()].label}
             />
           </SelectTrigger>
           <SelectContent>
@@ -116,12 +128,16 @@ function CustomCaption({ displayMonth }: CaptionProps) {
         </Select>
         <Select
           onValueChange={(value) => {
-            const newDate = dayjs(displayMonth).year(parseInt(value)).toDate();
+            const newDate = dayjs(props.displayMonth)
+              .year(parseInt(value))
+              .toDate();
             goToMonth(newDate);
           }}
         >
           <SelectTrigger className="h-7 w-[90px]">
-            <SelectValue placeholder={dayjs(displayMonth).year().toString()} />
+            <SelectValue
+              placeholder={dayjs(props.displayMonth).year().toString()}
+            />
           </SelectTrigger>
           <SelectContent>
             {years.map((year) => (
@@ -134,10 +150,15 @@ function CustomCaption({ displayMonth }: CaptionProps) {
       </div>
 
       <button
-        onClick={() => goToMonth(dayjs(displayMonth).add(1, "month").toDate())}
+        onClick={() => {
+          const nextMonth = dayjs(props.displayMonth).add(1, "month").toDate();
+          goToMonth(nextMonth);
+        }}
+        disabled={isMaxMonth}
         className={cn(
           buttonVariants({ variant: "ghost", size: "icon" }),
-          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
+          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
+          "disabled:opacity-20"
         )}
       >
         <ChevronRight className="h-4 w-4" />
