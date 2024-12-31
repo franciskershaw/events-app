@@ -212,13 +212,17 @@ const FormInput = ({
     <FormField
       name={name}
       render={({ field }) => (
-        <FormItem className={className}>
-          {label && <FormLabel>{label}</FormLabel>}
-          <FormControl>
-            {React.cloneElement(children as React.ReactElement, { ...field })}
-          </FormControl>
-          {showMessage && <FormMessage />}
-        </FormItem>
+        <FormFieldContext.Provider value={{ name: field.name }}>
+          <FormItem className={className}>
+            {label && <FormLabel>{label}</FormLabel>}
+            <FormControl>
+              {React.cloneElement(children as React.ReactElement, {
+                ...field,
+              })}
+            </FormControl>
+            {showMessage && <FormMessage />}
+          </FormItem>
+        </FormFieldContext.Provider>
       )}
     />
   );

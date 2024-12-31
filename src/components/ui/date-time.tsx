@@ -27,6 +27,7 @@ interface DateTimeProps {
   showTime?: boolean;
   allowClear?: boolean;
   defaultValue?: Date;
+  id?: string;
 }
 
 const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
@@ -38,6 +39,7 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
       placeholder,
       onChange,
       name,
+      id,
       disabled,
       minDate,
       disablePast,
@@ -122,6 +124,7 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
             <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
               <PopoverTrigger asChild>
                 <Button
+                  id={id}
                   variant={"outline"}
                   className={cn(
                     "w-[200px] justify-start text-left font-normal",

@@ -184,7 +184,11 @@ const FormSelect = ({
       render={({ field }) => (
         <FormItem className={className}>
           {label && <FormLabel>{label}</FormLabel>}
-          <Select onValueChange={field.onChange} value={field.value}>
+          <Select
+            name={name}
+            onValueChange={field.onChange}
+            value={field.value}
+          >
             <FormControl>
               <SelectTrigger>
                 <SelectValue placeholder={placeholder} />
