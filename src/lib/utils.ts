@@ -21,7 +21,7 @@ export const formatDate = ({ start, end }: EventDate): string => {
   const startDate = dayjs(start).format("dddd Do");
   const endDate = end ? dayjs(end) : null;
 
-  if (!endDate || start === end) {
+  if (!endDate || dayjs(start).isSame(endDate, "day")) {
     return startDate;
   }
 
