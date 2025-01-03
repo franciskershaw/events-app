@@ -1,6 +1,24 @@
 import { getDate, getDay, getMonth, getYear } from "date-fns";
 
-// Maps for months and weekdays
+// Maps for weekdays
+export const dayMap: Record<string, number> = {
+  sun: 0,
+  sunday: 0,
+  mon: 1,
+  monday: 1,
+  tue: 2,
+  tuesday: 2,
+  wed: 3,
+  wednesday: 3,
+  thu: 4,
+  thursday: 4,
+  fri: 5,
+  friday: 5,
+  sat: 6,
+  saturday: 6,
+};
+
+// Maps for months
 export const monthMap: Record<string, number> = {
   jan: 0,
   january: 0,
@@ -27,24 +45,7 @@ export const monthMap: Record<string, number> = {
   december: 11,
 };
 
-export const dayMap: Record<string, number> = {
-  sun: 0,
-  sunday: 0,
-  mon: 1,
-  monday: 1,
-  tue: 2,
-  tuesday: 2,
-  wed: 3,
-  wednesday: 3,
-  thu: 4,
-  thursday: 4,
-  fri: 5,
-  friday: 5,
-  sat: 6,
-  saturday: 6,
-};
-
-// Helper to normalize query date components
+// Helper to normalise query date components
 export const parseDateComponents = (input: string) => {
   const dayPattern = /^(\d{1,2})(st|nd|rd|th)?$/; // Match days like 1, 2nd, 3rd
   const yearPattern = /^\d{2,4}$/; // Match years like 25 or 2025
@@ -108,7 +109,7 @@ export const matchesDateComponents = (
       ? queryComponents.weekday === getDay(eventDate)
       : true;
 
-  return matchesDay && matchesMonth && matchesYear && matchesWeekday; // Ensure all match
+  return matchesDay && matchesMonth && matchesYear && matchesWeekday;
 };
 
 // Create a lookup table for categories
@@ -127,7 +128,6 @@ export const createCategoryLookup = (
 export const splitQueryParts = (query: string) => {
   const queryParts = query.toLowerCase().split(/\s+/);
 
-  // Separate text-based and date-based parts
   const textParts: string[] = [];
   const dateParts: string[] = [];
 
@@ -137,11 +137,16 @@ export const splitQueryParts = (query: string) => {
       part in dayMap ||
       /^\d{1,4}(st|nd|rd|th)?$/.test(part)
     ) {
-      dateParts.push(part); // Add to date-based parts
+      dateParts.push(part);
     } else {
-      textParts.push(part); // Add to text-based parts
+      textParts.push(part);
     }
   });
 
   return { textQuery: textParts.join(" "), dateQuery: dateParts.join(" ") };
+};
+
+// Utility to get nested values from an object
+export const getNestedValue = (obj: any, path: string) => {
+  return path.split(".").reduce((o, k) => o?.[k], obj);
 };

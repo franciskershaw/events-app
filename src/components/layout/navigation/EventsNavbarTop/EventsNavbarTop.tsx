@@ -25,7 +25,7 @@ const EventsNavbarTop: React.FC<EventsNavbarTopProps> = ({
         <UsersInitials />
         <div className="flex-grow">
           <SearchBar
-            placeholder="Search by title, venue, or city"
+            placeholder="Search by title, venue, city, category or date"
             query={query}
             setQuery={setQuery}
           />

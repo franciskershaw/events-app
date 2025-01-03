@@ -6,11 +6,10 @@ import {
   useState,
 } from "react";
 
-import { parse } from "date-fns";
-
 import { Event } from "../../types/globalTypes";
 import {
   createCategoryLookup,
+  getNestedValue,
   matchesDateComponents,
   parseDateComponents,
   splitQueryParts,
@@ -51,46 +50,31 @@ export const SearchProvider = ({
   const categoryLookup = createCategoryLookup(categories);
 
   useEffect(() => {
-    // Split query into text and date parts
     const { textQuery, dateQuery } = splitQueryParts(query);
-
-    // Parse date components
     const queryComponents = parseDateComponents(dateQuery);
-
-    // Split text query into keywords
-    const textKeywords = textQuery.split(/\s+/).filter(Boolean); // Split and remove empty strings
+    const textKeywords = textQuery.split(/\s+/).filter(Boolean);
 
     const filtered = initialEvents.filter((event) => {
       // Match text fields (title, venue, city) against each keyword
-      const matchesTextQuery = textKeywords.some((keyword) =>
+      const matchesTextQuery = textKeywords.every((keyword) =>
         ["title", "location.venue", "location.city"].some((key) => {
-          const value = key
-            .split(".")
-            .reduce(
-              (obj, k) => obj?.[k as keyof typeof obj],
-              event as Record<string, any>
-            );
+          const value = getNestedValue(event, key);
           return value?.toString().toLowerCase().includes(keyword);
         })
       );
 
       // Match categories against each keyword
-      const categoryId = event.category._id; // Extract category ID
-      const categoryName = categoryLookup[categoryId]; // Get category name
+      const categoryId = event.category._id;
+      const categoryName = categoryLookup[categoryId];
       const matchesCategory = textKeywords.some((keyword) =>
         categoryName.includes(keyword)
       );
 
       // Match event dates
-      const eventDate = parse(
-        event.date.start, // Ensure ISO string format
-        "yyyy-MM-dd'T'HH:mm:ss.SSSX",
-        new Date()
-      );
-
+      const eventDate = new Date(event.date.start);
       const matchesDate = matchesDateComponents(queryComponents, eventDate);
 
-      // Combine matches - ALL conditions must be true
+      // Combine matches - all conditions must be true
       const matchesAll =
         (textKeywords.length === 0 || matchesTextQuery || matchesCategory) &&
         matchesDate;
