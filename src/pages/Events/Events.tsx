@@ -1,7 +1,10 @@
 import React from "react";
 
 import EventsNavbarTop from "../../components/layout/navigation/EventsNavbarTop/EventsNavbarTop";
-import { SearchProvider, useSearch } from "../../contexts/SearchEventsContext";
+import {
+  SearchProvider,
+  useSearch,
+} from "../../contexts/SearchEvents/SearchEventsContext";
 import EventCards from "./components/EventCards";
 import useGetEventCategories from "./hooks/useGetEventCategories";
 import useGetEvents from "./hooks/useGetEvents";

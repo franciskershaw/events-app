@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { useModals } from "@/contexts/ModalsContext";
+import { useModals } from "@/contexts/Modals/ModalsContext";
 
 import useAddEvent from "./useAddEvent";
 import useEditEvent from "./useEditEvent";

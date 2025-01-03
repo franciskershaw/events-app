@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
-import { useModals } from "@/contexts/ModalsContext";
+import { useModals } from "@/contexts/Modals/ModalsContext";
 import useUser from "@/hooks/user/useUser";
 import AddEventModal from "@/pages/Events/components/AddEventModal";
 import DeleteEventModal from "@/pages/Events/components/DeleteEventModal";

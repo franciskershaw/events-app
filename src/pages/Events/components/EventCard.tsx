@@ -3,7 +3,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 import { Badge } from "@/components/ui/badge";
-import { useModals } from "@/contexts/ModalsContext";
+import { useModals } from "@/contexts/Modals/ModalsContext";
 
 import { Button } from "../../../components/ui/button";
 import { formatDate, formatTime, isWeekend } from "../../../lib/utils";
