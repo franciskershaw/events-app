@@ -210,15 +210,13 @@ export const splitQueryParts = (query: string) => {
     end: [],
   };
 
-  let skipNext = false; // Used to skip the second word in multi-word phrases
-
+  let skipNext = false;
   queryParts.forEach((part, index) => {
     if (skipNext) {
-      skipNext = false; // Skip the second word in multi-word phrases
+      skipNext = false;
       return;
     }
 
-    // Check for multi-word phrases (e.g., "next week")
     const twoWordPhrase = `${part} ${queryParts[index + 1] || ""}`.trim();
 
     if (relativeDateMap[twoWordPhrase]) {
@@ -236,14 +234,11 @@ export const splitQueryParts = (query: string) => {
       part in dayMap ||
       /^\d{1,4}(st|nd|rd|th)?$/.test(part)
     ) {
-      dateParts.start.push(part); // Keep explicit date as string
+      dateParts.start.push(part);
     } else {
-      textParts.push(part); // Treat as text keyword
+      textParts.push(part);
     }
   });
-
-  console.log("textParts:", textParts);
-  console.log("dateParts:", dateParts);
 
   return {
     textQuery: textParts.join(" "),
