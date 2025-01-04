@@ -3,21 +3,18 @@ import { Outlet } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
-import { useModals } from "@/contexts/ModalsContext";
+import { useModals } from "@/contexts/Modals/ModalsContext";
 import useUser from "@/hooks/user/useUser";
 import AddEventModal from "@/pages/Events/components/AddEventModal";
 import DeleteEventModal from "@/pages/Events/components/DeleteEventModal";
 
 // import NavbarBottom from "../navigation/NavbarBottom/NavbarBottom";
-import NavbarTop from "../navigation/NavbarTop/NavbarTop";
 
 const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   const { openEventModal } = useModals();
 
   return (
     <>
-      <NavbarTop />
-      {/* <main className="mt-[84px] mb-4 bg-white min-h-screen relative"> */}
       <main className="mt-[84px] bg-white min-h-screen relative">
         {children}
       </main>

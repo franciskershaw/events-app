@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useModals } from "@/contexts/ModalsContext";
+import { useModals } from "@/contexts/Modals/ModalsContext";
 
 import AddEventForm from "./AddEventForm";
 

@@ -1,16 +1,14 @@
-import { Event } from "../../../types/globalTypes";
+import { useSearch } from "../../../contexts/SearchEvents/SearchEventsContext";
 import { filterTodayEvents, groupEvents } from "../helper/helper";
 import DateScroller from "./DateScroller";
 import EventCard from "./EventCard";
 
-interface EventCardsProps {
-  events: Event[];
-}
+const EventCards = () => {
+  const { filteredEvents } = useSearch();
 
-const EventCards = ({ events }: EventCardsProps) => {
-  const todayEvents = filterTodayEvents(events);
+  const todayEvents = filterTodayEvents(filteredEvents);
   const upcomingEvents = groupEvents(
-    events.filter((event) => !todayEvents.includes(event))
+    filteredEvents.filter((event) => !todayEvents.includes(event))
   );
 
   return (
