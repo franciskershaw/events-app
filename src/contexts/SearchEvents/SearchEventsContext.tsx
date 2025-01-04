@@ -10,6 +10,7 @@ import { Event } from "../../types/globalTypes";
 import {
   createCategoryLookup,
   getNestedValue,
+  isDateInRange,
   matchesDateComponents,
   parseDateComponents,
   splitQueryParts,
@@ -51,7 +52,10 @@ export const SearchProvider = ({
 
   useEffect(() => {
     const { textQuery, dateQuery } = splitQueryParts(query);
-    const queryComponents = parseDateComponents(dateQuery);
+    const startDateComponents = parseDateComponents(dateQuery.start);
+    const endDateComponents = dateQuery.end
+      ? parseDateComponents(dateQuery.end)
+      : null;
     const textKeywords = textQuery.split(/\s+/).filter(Boolean);
 
     const filtered = initialEvents.filter((event) => {
@@ -72,12 +76,22 @@ export const SearchProvider = ({
 
       // Match event dates
       const eventDate = new Date(event.date.start);
-      const matchesDate = matchesDateComponents(queryComponents, eventDate);
+
+      const matchesStartDate = matchesDateComponents(
+        startDateComponents,
+        eventDate
+      );
+
+      const matchesInRange =
+        endDateComponents &&
+        isDateInRange(eventDate, startDateComponents, endDateComponents);
 
       // Combine matches - all conditions must be true
       const matchesAll =
         (textKeywords.length === 0 || matchesTextQuery || matchesCategory) &&
-        matchesDate;
+        (endDateComponents
+          ? matchesInRange // Use range match if endComponents exist
+          : matchesStartDate); // Otherwise, just check start date
 
       return matchesAll;
     });

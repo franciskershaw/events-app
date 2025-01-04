@@ -1,4 +1,17 @@
-import { getDate, getDay, getMonth, getYear } from "date-fns";
+import {
+  addDays,
+  endOfWeek,
+  getDate,
+  getDay,
+  getMonth,
+  getYear,
+  startOfWeek,
+} from "date-fns";
+
+interface DateRange {
+  start: Date;
+  end: Date;
+}
 
 // Maps for weekdays
 export const dayMap: Record<string, number> = {
@@ -45,6 +58,22 @@ export const monthMap: Record<string, number> = {
   december: 11,
 };
 
+// Explicitly define the type for relativeDateMap
+export const relativeDateMap: Record<string, DateRange> = {
+  today: {
+    start: new Date(),
+    end: new Date(),
+  },
+  tomorrow: {
+    start: addDays(new Date(), 1),
+    end: addDays(new Date(), 1),
+  },
+  "next week": {
+    start: startOfWeek(addDays(new Date(), 7)), // Start of next week
+    end: endOfWeek(addDays(new Date(), 7)), // End of next week
+  },
+};
+
 // Helper to normalise query date components
 export const parseDateComponents = (input: string) => {
   const dayPattern = /^(\d{1,2})(st|nd|rd|th)?$/; // Match days like 1, 2nd, 3rd
@@ -82,6 +111,27 @@ export const parseDateComponents = (input: string) => {
   });
 
   return components;
+};
+
+// Helper to check if a date is within a specified range
+export const isDateInRange = (
+  eventDate: Date,
+  startComponents: ReturnType<typeof parseDateComponents>,
+  endComponents: ReturnType<typeof parseDateComponents>
+) => {
+  const startDate = new Date(
+    startComponents.year!,
+    startComponents.month!,
+    startComponents.day!
+  );
+
+  const endDate = new Date(
+    endComponents.year!,
+    endComponents.month!,
+    endComponents.day!
+  );
+
+  return eventDate >= startDate && eventDate <= endDate;
 };
 
 // Matches date components against query components
@@ -129,7 +179,7 @@ export const splitQueryParts = (query: string) => {
   const queryParts = query.toLowerCase().split(/\s+/);
 
   const textParts: string[] = [];
-  const dateParts: string[] = [];
+  const dateParts: { start: string[]; end: string[] } = { start: [], end: [] };
 
   queryParts.forEach((part) => {
     if (
@@ -137,13 +187,22 @@ export const splitQueryParts = (query: string) => {
       part in dayMap ||
       /^\d{1,4}(st|nd|rd|th)?$/.test(part)
     ) {
-      dateParts.push(part);
+      dateParts.start.push(part);
     } else {
       textParts.push(part);
     }
   });
 
-  return { textQuery: textParts.join(" "), dateQuery: dateParts.join(" ") };
+  console.log("textParts", textParts);
+  console.log("dateParts", dateParts);
+
+  return {
+    textQuery: textParts.join(" "),
+    dateQuery: {
+      start: dateParts.start.join(" "),
+      end: dateParts.end.join(" "),
+    },
+  };
 };
 
 // Utility to get nested values from an object
