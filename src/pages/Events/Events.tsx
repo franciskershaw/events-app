@@ -36,9 +36,11 @@ const EventsWithSearch = () => {
   return (
     <>
       <EventsNavbarTop query={query} setQuery={setQuery} />
-      <div className="p-4">
-        {filteredEvents.length === 0 ? <p>No events found.</p> : <EventCards />}
-      </div>
+      {filteredEvents.length === 0 ? (
+        <p className="p-4">No events found.</p>
+      ) : (
+        <EventCards />
+      )}
     </>
   );
 };
