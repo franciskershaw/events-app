@@ -35,13 +35,16 @@ const useEventForm = () => {
   const addEvent = useAddEvent();
   const editEvent = useEditEvent();
 
-  const { closeModal, selectedEvent } = useModals();
+  const { closeModal, selectedEvent, mode } = useModals();
 
   const form = useForm<EventFormValues>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: {
-      _id: selectedEvent?._id ?? "",
-      title: selectedEvent?.title ?? "",
+      _id: mode === "copy" ? undefined : (selectedEvent?._id ?? ""),
+      title:
+        mode === "copy"
+          ? `${selectedEvent?.title ?? ""} (Copy)`
+          : (selectedEvent?.title ?? ""),
       datetime: selectedEvent?.date.start
         ? dayjs(selectedEvent.date.start).toDate()
         : dayjs().startOf("day").toDate(),
@@ -81,10 +84,10 @@ const useEventForm = () => {
   }, [form]);
 
   const onSubmit = (values: EventFormValues) => {
-    if (selectedEvent) {
-      editEvent.mutate(values);
-    } else {
+    if (mode === "copy" || !selectedEvent) {
       addEvent.mutate(values);
+    } else {
+      editEvent.mutate(values);
     }
     closeModal();
   };

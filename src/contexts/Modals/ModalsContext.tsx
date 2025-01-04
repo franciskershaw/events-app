@@ -5,15 +5,18 @@ import { Event } from "@/types/globalTypes";
 // Define modal names as constants
 const MODAL_EVENT = "event";
 
+type ModalMode = "edit" | "copy";
+
 type ModalsState = {
   isEventModalOpen: boolean;
   isDeleteEventModalOpen: boolean;
   selectedEvent: Event | null;
+  mode: ModalMode | null;
 };
 
 // Define the actions type
 type ModalsAction =
-  | { type: "OPEN_EVENT_MODAL"; data?: Event }
+  | { type: "OPEN_EVENT_MODAL"; data?: Event; mode: ModalMode }
   | { type: "OPEN_DELETE_EVENT_MODAL"; data: Event }
   | { type: "CLOSE_MODAL" }
   | { type: "RESET_SELECTED_DATA" };
@@ -23,6 +26,7 @@ const initialState: ModalsState = {
   isEventModalOpen: false,
   isDeleteEventModalOpen: false,
   selectedEvent: null,
+  mode: null,
 };
 
 // Reducer function
@@ -36,6 +40,7 @@ const modalsReducer = (
         ...state,
         isEventModalOpen: true,
         selectedEvent: action.data || null,
+        mode: action.mode,
       };
     case "OPEN_DELETE_EVENT_MODAL":
       return {
@@ -49,12 +54,14 @@ const modalsReducer = (
         ...state,
         isEventModalOpen: false,
         isDeleteEventModalOpen: false,
+        mode: null,
       };
 
     case "RESET_SELECTED_DATA":
       return {
         ...state,
         selectedEvent: null,
+        mode: null,
       };
 
     default:
@@ -64,7 +71,7 @@ const modalsReducer = (
 
 // Context type definition
 type ModalsContextType = ModalsState & {
-  openEventModal: (data?: Event) => void;
+  openEventModal: (data?: Event, mode?: ModalMode) => void;
   openDeleteEventModal: (data: Event) => void;
   closeModal: () => void;
   resetSelectedData: () => void;
@@ -78,8 +85,8 @@ const ModalsProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(modalsReducer, initialState);
 
   // Action dispatchers
-  const openEventModal = (data?: Event) => {
-    dispatch({ type: "OPEN_EVENT_MODAL", data });
+  const openEventModal = (data?: Event, mode: ModalMode = "edit") => {
+    dispatch({ type: "OPEN_EVENT_MODAL", data, mode });
   };
 
   const openDeleteEventModal = (data: Event) => {
@@ -118,4 +125,4 @@ const useModals = () => {
   return context;
 };
 
-export { ModalsProvider, useModals, MODAL_EVENT };
+export { MODAL_EVENT, ModalsProvider, useModals };

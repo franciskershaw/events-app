@@ -12,14 +12,18 @@ import { useModals } from "@/contexts/Modals/ModalsContext";
 import AddEventForm from "./AddEventForm";
 
 const AddEventModal = () => {
-  const { selectedEvent, closeModal, isEventModalOpen } = useModals();
+  const { selectedEvent, closeModal, isEventModalOpen, mode } = useModals();
   const id = selectedEvent?._id || "addEvent";
   return (
     <Dialog open={isEventModalOpen} onOpenChange={closeModal}>
       <DialogContent className="flex flex-col max-h-[100vh] md:max-h-[90vh] p-0">
         <DialogHeader className="px-6 pt-6">
           <DialogTitle>
-            {selectedEvent ? "Edit event" : "Add event"}
+            {mode === "copy"
+              ? "Copy event"
+              : selectedEvent
+                ? "Edit event"
+                : "Add event"}
           </DialogTitle>
         </DialogHeader>
         <DialogDescription className="sr-only">
@@ -35,7 +39,11 @@ const AddEventModal = () => {
             Cancel
           </Button>
           <Button form={id} type="submit">
-            {selectedEvent ? "Save changes" : "Add event"}
+            {mode === "copy"
+              ? "Create copy"
+              : selectedEvent
+                ? "Save changes"
+                : "Add event"}
           </Button>
         </DialogFooter>
       </DialogContent>
