@@ -154,7 +154,11 @@ export const isDateInRange = (
   const endDate = new Date(
     endComponents.year!,
     endComponents.month!,
-    endComponents.day!
+    endComponents.day!,
+    23,
+    59,
+    59,
+    999 // Ensure end date includes full day
   );
 
   return eventDate >= startDate && eventDate <= endDate;
