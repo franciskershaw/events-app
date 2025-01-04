@@ -3,6 +3,7 @@ import {
   ReactNode,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
@@ -36,7 +37,7 @@ export const useSearch = () => {
 interface SearchProviderProps {
   children: ReactNode;
   initialEvents: Event[];
-  categories: { _id: { $oid: string }; name: string }[];
+  categories: { _id: string; name: string }[];
 }
 
 export const SearchProvider = ({
@@ -47,8 +48,11 @@ export const SearchProvider = ({
   const [query, setQuery] = useState("");
   const [filteredEvents, setFilteredEvents] = useState<Event[]>(initialEvents);
 
-  // Create category lookup
-  const categoryLookup = createCategoryLookup(categories);
+  // Memoize category lookup
+  const categoryLookup = useMemo(
+    () => createCategoryLookup(categories),
+    [categories]
+  );
 
   useEffect(() => {
     const { textQuery, dateQuery } = splitQueryParts(query);
@@ -97,7 +101,7 @@ export const SearchProvider = ({
     });
 
     setFilteredEvents(filtered);
-  }, [query, initialEvents, categories]);
+  }, [query, initialEvents, categories, categoryLookup]);
 
   return (
     <SearchContext.Provider

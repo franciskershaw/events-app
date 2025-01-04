@@ -194,11 +194,11 @@ export const matchesDateComponents = (
 
 // Create a lookup table for categories
 export const createCategoryLookup = (
-  categories: { _id: { $oid: string }; name: string }[]
+  categories: { _id: string; name: string }[]
 ) =>
   categories.reduce(
     (acc, category) => {
-      acc[category._id.$oid] = category.name.toLowerCase();
+      acc[category._id] = category.name.toLowerCase();
       return acc;
     },
     {} as Record<string, string>
@@ -254,6 +254,14 @@ export const splitQueryParts = (query: string) => {
 };
 
 // Utility to get nested values from an object
-export const getNestedValue = (obj: any, path: string) => {
-  return path.split(".").reduce((o, k) => o?.[k], obj);
+export const getNestedValue = <T extends object>(
+  obj: T,
+  path: string
+): unknown => {
+  return path.split(".").reduce<unknown>((acc, key) => {
+    if (acc && typeof acc === "object") {
+      return (acc as Record<string, unknown>)[key];
+    }
+    return undefined;
+  }, obj);
 };

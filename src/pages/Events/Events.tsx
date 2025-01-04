@@ -1,5 +1,3 @@
-import React from "react";
-
 import EventsNavbarTop from "../../components/layout/navigation/EventsNavbarTop/EventsNavbarTop";
 import {
   SearchProvider,
@@ -11,20 +9,10 @@ import useGetEvents from "./hooks/useGetEvents";
 
 const Events = () => {
   const { events } = useGetEvents();
-  const { eventCategorySelectOptions } = useGetEventCategories();
-  const initialEvents = React.useMemo(() => events || [], [events]);
-
-  const categories = React.useMemo(
-    () =>
-      eventCategorySelectOptions.map((category) => ({
-        _id: { $oid: category.value },
-        name: category.label,
-      })),
-    [eventCategorySelectOptions]
-  );
+  const { eventCategories } = useGetEventCategories();
 
   return (
-    <SearchProvider initialEvents={initialEvents} categories={categories}>
+    <SearchProvider initialEvents={events} categories={eventCategories}>
       <EventsWithSearch />
     </SearchProvider>
   );
