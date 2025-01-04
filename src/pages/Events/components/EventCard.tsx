@@ -73,8 +73,13 @@ const EventCard = ({ event }: { event: Event }) => {
           )}
 
           <div className="flex items-center justify-center gap-4">
-            {/* <Button size="round">Copy</Button> */}
-            <Button size="round" onClick={() => openEventModal(event)}>
+            <Button
+              size="round"
+              onClick={() => openEventModal({ ...event, _id: "" }, "copy")}
+            >
+              Copy
+            </Button>
+            <Button size="round" onClick={() => openEventModal(event, "edit")}>
               Edit
             </Button>
             <Button size="round" onClick={() => openDeleteEventModal(event)}>
