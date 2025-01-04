@@ -179,7 +179,10 @@ export const splitQueryParts = (query: string) => {
   const queryParts = query.toLowerCase().split(/\s+/);
 
   const textParts: string[] = [];
-  const dateParts: { start: string[]; end: string[] } = { start: [], end: [] };
+  const dateParts: { start: (Date | string)[]; end: (Date | string)[] } = {
+    start: [],
+    end: [],
+  };
 
   queryParts.forEach((part) => {
     if (
@@ -188,13 +191,13 @@ export const splitQueryParts = (query: string) => {
       /^\d{1,4}(st|nd|rd|th)?$/.test(part)
     ) {
       dateParts.start.push(part);
+    } else if (relativeDateMap[part]) {
+      dateParts.start.push(relativeDateMap[part].start);
+      dateParts.end.push(relativeDateMap[part].end);
     } else {
       textParts.push(part);
     }
   });
-
-  console.log("textParts", textParts);
-  console.log("dateParts", dateParts);
 
   return {
     textQuery: textParts.join(" "),
