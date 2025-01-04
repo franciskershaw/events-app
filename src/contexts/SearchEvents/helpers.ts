@@ -1,11 +1,17 @@
 import {
   addDays,
+  addMonths,
+  addYears,
+  endOfMonth,
   endOfWeek,
+  endOfYear,
   getDate,
   getDay,
   getMonth,
   getYear,
+  startOfMonth,
   startOfWeek,
+  startOfYear,
 } from "date-fns";
 
 interface DateRange {
@@ -68,9 +74,29 @@ export const relativeDateMap: Record<string, DateRange> = {
     start: addDays(new Date(), 1),
     end: addDays(new Date(), 1),
   },
+  "this week": {
+    start: startOfWeek(new Date(), { weekStartsOn: 1 }),
+    end: endOfWeek(new Date(), { weekStartsOn: 1 }),
+  },
   "next week": {
-    start: startOfWeek(addDays(new Date(), 7)), // Start of next week
-    end: endOfWeek(addDays(new Date(), 7)), // End of next week
+    start: startOfWeek(addDays(new Date(), 7), { weekStartsOn: 1 }),
+    end: endOfWeek(addDays(new Date(), 7), { weekStartsOn: 1 }),
+  },
+  "this month": {
+    start: startOfMonth(new Date()),
+    end: endOfMonth(new Date()),
+  },
+  "next month": {
+    start: startOfMonth(addMonths(new Date(), 1)),
+    end: endOfMonth(addMonths(new Date(), 1)),
+  },
+  "this year": {
+    start: startOfYear(new Date()),
+    end: endOfYear(new Date()),
+  },
+  "next year": {
+    start: startOfYear(addYears(new Date(), 1)),
+    end: endOfYear(addYears(new Date(), 1)),
   },
 };
 
@@ -184,20 +210,40 @@ export const splitQueryParts = (query: string) => {
     end: [],
   };
 
-  queryParts.forEach((part) => {
-    if (
+  let skipNext = false; // Used to skip the second word in multi-word phrases
+
+  queryParts.forEach((part, index) => {
+    if (skipNext) {
+      skipNext = false; // Skip the second word in multi-word phrases
+      return;
+    }
+
+    // Check for multi-word phrases (e.g., "next week")
+    const twoWordPhrase = `${part} ${queryParts[index + 1] || ""}`.trim();
+
+    if (relativeDateMap[twoWordPhrase]) {
+      // Handle multi-word relative dates
+      const range = relativeDateMap[twoWordPhrase];
+      dateParts.start.push(range.start);
+      dateParts.end.push(range.end);
+      skipNext = true; // Skip the next word
+    } else if (relativeDateMap[part]) {
+      // Handle single-word relative dates
+      dateParts.start.push(relativeDateMap[part].start);
+      dateParts.end.push(relativeDateMap[part].end);
+    } else if (
       part in monthMap ||
       part in dayMap ||
       /^\d{1,4}(st|nd|rd|th)?$/.test(part)
     ) {
-      dateParts.start.push(part);
-    } else if (relativeDateMap[part]) {
-      dateParts.start.push(relativeDateMap[part].start);
-      dateParts.end.push(relativeDateMap[part].end);
+      dateParts.start.push(part); // Keep explicit date as string
     } else {
-      textParts.push(part);
+      textParts.push(part); // Treat as text keyword
     }
   });
+
+  console.log("textParts:", textParts);
+  console.log("dateParts:", dateParts);
 
   return {
     textQuery: textParts.join(" "),
