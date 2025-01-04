@@ -40,11 +40,8 @@ const useEventForm = () => {
   const form = useForm<EventFormValues>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: {
-      _id: mode === "copy" ? undefined : (selectedEvent?._id ?? ""),
-      title:
-        mode === "copy"
-          ? `${selectedEvent?.title ?? ""} (Copy)`
-          : (selectedEvent?.title ?? ""),
+      _id: mode === "copy" ? "" : selectedEvent?._id || "",
+      title: selectedEvent?.title ?? "",
       datetime: selectedEvent?.date.start
         ? dayjs(selectedEvent.date.start).toDate()
         : dayjs().startOf("day").toDate(),
