@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import dayjs from "dayjs";
 import { FaChevronUp, FaRegCalendar } from "react-icons/fa";
 
@@ -45,26 +47,30 @@ const EventsNavbarBottom = () => {
     }
   };
 
-  // Generate applied filters
-  const appliedFilters: { label: string; type: string }[] = [];
+  // Memoized applied filters
+  const appliedFilters = useMemo(() => {
+    const filters: { label: string; type: string }[] = [];
 
-  if (query) {
-    appliedFilters.push({ label: `"${query}"`, type: "query" });
-  }
+    if (query) {
+      filters.push({ label: `"${query}"`, type: "query" });
+    }
 
-  if (startDate) {
-    appliedFilters.push({
-      label: `From: ${dayjs(startDate).format("DD/MM/YYYY")}`,
-      type: "startDate",
-    });
-  }
+    if (startDate) {
+      filters.push({
+        label: `From: ${dayjs(startDate).format("DD/MM/YYYY")}`,
+        type: "startDate",
+      });
+    }
 
-  if (endDate) {
-    appliedFilters.push({
-      label: `To: ${dayjs(endDate).format("DD/MM/YYYY")}`,
-      type: "endDate",
-    });
-  }
+    if (endDate) {
+      filters.push({
+        label: `To: ${dayjs(endDate).format("DD/MM/YYYY")}`,
+        type: "endDate",
+      });
+    }
+
+    return filters;
+  }, [query, startDate, endDate]);
 
   return (
     <Drawer>

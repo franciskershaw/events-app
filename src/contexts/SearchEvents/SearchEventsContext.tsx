@@ -124,7 +124,7 @@ export const SearchProvider = ({
     });
 
     setFilteredEvents(filtered);
-  }, [query, startDate, endDate, initialEvents, categories]);
+  }, [query, startDate, endDate, initialEvents, categories, categoryLookup]);
 
   return (
     <SearchContext.Provider
