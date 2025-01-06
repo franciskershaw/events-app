@@ -1,3 +1,4 @@
+import NavbarBottom from "../../components/layout/navigation/EventsNavbarBottom/EventsNavbarBottom";
 import EventsNavbarTop from "../../components/layout/navigation/EventsNavbarTop/EventsNavbarTop";
 import {
   SearchProvider,
@@ -29,6 +30,7 @@ const EventsWithSearch = () => {
       ) : (
         <EventCards />
       )}
+      <NavbarBottom />
     </>
   );
 };

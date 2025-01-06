@@ -17,16 +17,33 @@ const SearchBar: React.FC<SearchBarProps> = ({
     setQuery(e.target.value);
   };
 
+  const handleClear = () => {
+    setQuery("");
+  };
+
   return (
-    <input
-      type="text"
-      placeholder={placeholder}
+    <div
       className={cn(
-        "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+        "relative flex h-9 w-full items-center rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm placeholder:text-muted-foreground focus-within:ring-1 focus-within:ring-ring"
       )}
-      value={query}
-      onChange={handleChange}
-    />
+    >
+      <input
+        type="text"
+        placeholder={placeholder}
+        className="flex-grow bg-transparent outline-none"
+        value={query}
+        onChange={handleChange}
+      />
+      {query && (
+        <button
+          type="button"
+          onClick={handleClear}
+          className="ml-2 text-muted-foreground hover:text-foreground focus:outline-none"
+        >
+          ✕
+        </button>
+      )}
+    </div>
   );
 };
 
