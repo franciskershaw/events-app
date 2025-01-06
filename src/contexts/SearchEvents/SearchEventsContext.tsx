@@ -83,28 +83,37 @@ export const SearchProvider = ({
         categoryName.includes(keyword)
       );
 
-      // Match event dates
-      const eventDate = new Date(event.date.start);
+      // Match event date range
+      const eventStartDate = new Date(event.date.start);
+      const eventEndDate = new Date(event.date.end || event.date.start);
 
-      // Match parsed dates from query
-      const matchesStartDate = matchesDateComponents(
-        startDateComponents,
-        eventDate
-      );
+      // Match parsed date range from query (e.g., "today")
+      const matchesQueryDateRange =
+        endDateComponents && startDateComponents
+          ? isDateInRange(
+              eventStartDate,
+              startDateComponents,
+              endDateComponents
+            ) || // Start date falls in range
+            isDateInRange(
+              eventEndDate,
+              startDateComponents,
+              endDateComponents
+            ) || // End date falls in range
+            (eventStartDate <= new Date(dateQuery.end) &&
+              eventEndDate >= new Date(dateQuery.start)) // Event overlaps query range
+          : matchesDateComponents(startDateComponents, eventStartDate) ||
+            matchesDateComponents(startDateComponents, eventEndDate);
 
-      const matchesInRange =
-        endDateComponents &&
-        isDateInRange(eventDate, startDateComponents, endDateComponents);
-
-      // Match manual start and end dates
+      // Match manual date range (e.g., Start and End selected manually)
       const matchesManualDateRange =
-        (!startDate || eventDate >= startDate) &&
-        (!endDate || eventDate <= endDate);
+        (!startDate || eventEndDate >= startDate) && // Event still ongoing after startDate
+        (!endDate || eventStartDate <= endDate); // Event starts before endDate
 
-      // Combine matches - all conditions must be true
+      // Combine all match conditions
       const matchesAll =
         (textKeywords.length === 0 || matchesTextQuery || matchesCategory) &&
-        (endDateComponents ? matchesInRange : matchesStartDate) &&
+        matchesQueryDateRange &&
         matchesManualDateRange;
 
       return matchesAll;
