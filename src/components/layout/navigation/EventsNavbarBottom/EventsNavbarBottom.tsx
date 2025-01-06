@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { FaChevronUp, FaRegCalendar } from "react-icons/fa";
 
 import { DateTime } from "@/components/ui/date-time";
@@ -11,12 +12,14 @@ import {
 } from "@/components/ui/drawer";
 
 import { useSearch } from "../../../../contexts/SearchEvents/SearchEventsContext";
+import { Badge } from "../../../ui/badge";
 import { Button } from "../../../ui/button";
 
 const EventsNavbarBottom = () => {
-  const { setQuery, startDate, setStartDate, endDate, setEndDate } =
+  const { query, setQuery, startDate, setStartDate, endDate, setEndDate } =
     useSearch();
 
+  // Handlers for date changes
   const handleStartDateChange = (date: Date | null | undefined) => {
     setStartDate(date || null);
   };
@@ -24,6 +27,44 @@ const EventsNavbarBottom = () => {
   const handleEndDateChange = (date: Date | null | undefined) => {
     setEndDate(date || null);
   };
+
+  // Remove specific filters
+  const removeFilter = (type: string) => {
+    switch (type) {
+      case "query":
+        setQuery("");
+        break;
+      case "startDate":
+        setStartDate(null);
+        break;
+      case "endDate":
+        setEndDate(null);
+        break;
+      default:
+        break;
+    }
+  };
+
+  // Generate applied filters
+  const appliedFilters: { label: string; type: string }[] = [];
+
+  if (query) {
+    appliedFilters.push({ label: `"${query}"`, type: "query" });
+  }
+
+  if (startDate) {
+    appliedFilters.push({
+      label: `From: ${dayjs(startDate).format("DD/MM/YYYY")}`,
+      type: "startDate",
+    });
+  }
+
+  if (endDate) {
+    appliedFilters.push({
+      label: `To: ${dayjs(endDate).format("DD/MM/YYYY")}`,
+      type: "endDate",
+    });
+  }
 
   return (
     <Drawer>
@@ -44,6 +85,23 @@ const EventsNavbarBottom = () => {
             Adjust date ranges and view options
           </DrawerDescription>
         </DrawerHeader>
+        {appliedFilters.length > 0 && (
+          <div className="mx-[-1rem] px-4 py-2 mb-4 bg-gray-200 overflow-x-auto">
+            <div className="flex items-center gap-2 text-sm whitespace-nowrap min-w-min">
+              {appliedFilters.map((filter, index) => (
+                <button onClick={() => removeFilter(filter.type)} key={index}>
+                  <Badge
+                    variant="secondary"
+                    className="flex items-center gap-1 px-2 py-1"
+                  >
+                    {filter.label}
+                    <span className="ml-0.5">✕</span>
+                  </Badge>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
         <div className="flex flex-col justify-center items-center space-y-4 pb-4">
           <div className="grid grid-cols-2 gap-2 w-full">
             <DateTime
