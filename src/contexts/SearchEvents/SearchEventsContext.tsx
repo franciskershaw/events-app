@@ -17,7 +17,14 @@ import {
   splitQueryParts,
 } from "./helpers";
 
-interface SearchContextProps {
+interface DateFilters {
+  startDate: Date | null;
+  setStartDate: (date: Date | null) => void;
+  endDate: Date | null;
+  setEndDate: (date: Date | null) => void;
+}
+
+interface SearchContextProps extends DateFilters {
   query: string;
   setQuery: (query: string) => void;
   filteredEvents: Event[];
@@ -47,6 +54,8 @@ export const SearchProvider = ({
 }: SearchProviderProps) => {
   const [query, setQuery] = useState("");
   const [filteredEvents, setFilteredEvents] = useState<Event[]>(initialEvents);
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
 
   // Memoize category lookup
   const categoryLookup = useMemo(
@@ -78,34 +87,57 @@ export const SearchProvider = ({
         categoryName.includes(keyword)
       );
 
-      // Match event dates
-      const eventDate = new Date(event.date.start);
+      // Match event date range
+      const eventStartDate = new Date(event.date.start);
+      const eventEndDate = new Date(event.date.end || event.date.start);
 
-      const matchesStartDate = matchesDateComponents(
-        startDateComponents,
-        eventDate
-      );
+      // Match parsed date range from query (e.g., "today")
+      const matchesQueryDateRange =
+        endDateComponents && startDateComponents
+          ? isDateInRange(
+              eventStartDate,
+              startDateComponents,
+              endDateComponents
+            ) || // Start date falls in range
+            isDateInRange(
+              eventEndDate,
+              startDateComponents,
+              endDateComponents
+            ) || // End date falls in range
+            (eventStartDate <= new Date(dateQuery.end) &&
+              eventEndDate >= new Date(dateQuery.start)) // Event overlaps query range
+          : matchesDateComponents(startDateComponents, eventStartDate) ||
+            matchesDateComponents(startDateComponents, eventEndDate);
 
-      const matchesInRange =
-        endDateComponents &&
-        isDateInRange(eventDate, startDateComponents, endDateComponents);
+      // Match manual date range (e.g., Start and End selected manually)
+      const matchesManualDateRange =
+        (!startDate || eventEndDate >= startDate) && // Event still ongoing after startDate
+        (!endDate || eventStartDate <= endDate); // Event starts before endDate
 
-      // Combine matches - all conditions must be true
+      // Combine all match conditions
       const matchesAll =
         (textKeywords.length === 0 || matchesTextQuery || matchesCategory) &&
-        (endDateComponents
-          ? matchesInRange // Use range match if endComponents exist
-          : matchesStartDate); // Otherwise, just check start date
+        matchesQueryDateRange &&
+        matchesManualDateRange;
 
       return matchesAll;
     });
 
     setFilteredEvents(filtered);
-  }, [query, initialEvents, categories, categoryLookup]);
+  }, [query, startDate, endDate, initialEvents, categories, categoryLookup]);
 
   return (
     <SearchContext.Provider
-      value={{ query, setQuery, filteredEvents, setFilteredEvents }}
+      value={{
+        query,
+        setQuery,
+        filteredEvents,
+        setFilteredEvents,
+        startDate,
+        setStartDate,
+        endDate,
+        setEndDate,
+      }}
     >
       {children}
     </SearchContext.Provider>
