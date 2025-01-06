@@ -16,7 +16,14 @@ import {
   splitQueryParts,
 } from "./helpers";
 
-interface SearchContextProps {
+interface DateFilters {
+  startDate: Date | null;
+  setStartDate: (date: Date | null) => void;
+  endDate: Date | null;
+  setEndDate: (date: Date | null) => void;
+}
+
+interface SearchContextProps extends DateFilters {
   query: string;
   setQuery: (query: string) => void;
   filteredEvents: Event[];
@@ -46,6 +53,8 @@ export const SearchProvider = ({
 }: SearchProviderProps) => {
   const [query, setQuery] = useState("");
   const [filteredEvents, setFilteredEvents] = useState<Event[]>(initialEvents);
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
 
   // Create category lookup
   const categoryLookup = createCategoryLookup(categories);
@@ -77,6 +86,7 @@ export const SearchProvider = ({
       // Match event dates
       const eventDate = new Date(event.date.start);
 
+      // Match parsed dates from query
       const matchesStartDate = matchesDateComponents(
         startDateComponents,
         eventDate
@@ -86,22 +96,35 @@ export const SearchProvider = ({
         endDateComponents &&
         isDateInRange(eventDate, startDateComponents, endDateComponents);
 
+      // Match manual start and end dates
+      const matchesManualDateRange =
+        (!startDate || eventDate >= startDate) &&
+        (!endDate || eventDate <= endDate);
+
       // Combine matches - all conditions must be true
       const matchesAll =
         (textKeywords.length === 0 || matchesTextQuery || matchesCategory) &&
-        (endDateComponents
-          ? matchesInRange // Use range match if endComponents exist
-          : matchesStartDate); // Otherwise, just check start date
+        (endDateComponents ? matchesInRange : matchesStartDate) &&
+        matchesManualDateRange;
 
       return matchesAll;
     });
 
     setFilteredEvents(filtered);
-  }, [query, initialEvents, categories]);
+  }, [query, startDate, endDate, initialEvents, categories]);
 
   return (
     <SearchContext.Provider
-      value={{ query, setQuery, filteredEvents, setFilteredEvents }}
+      value={{
+        query,
+        setQuery,
+        filteredEvents,
+        setFilteredEvents,
+        startDate,
+        setStartDate,
+        endDate,
+        setEndDate,
+      }}
     >
       {children}
     </SearchContext.Provider>

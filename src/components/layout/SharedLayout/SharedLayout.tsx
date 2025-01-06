@@ -8,8 +8,6 @@ import useUser from "@/hooks/user/useUser";
 import AddEventModal from "@/pages/Events/components/AddEventModal";
 import DeleteEventModal from "@/pages/Events/components/DeleteEventModal";
 
-// import NavbarBottom from "../navigation/NavbarBottom/NavbarBottom";
-
 const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   const { openEventModal } = useModals();
 
@@ -18,7 +16,6 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
       <main className="mt-[84px] bg-white min-h-screen relative">
         {children}
       </main>
-      {/* <NavbarBottom /> */}
       <Button
         size="round"
         onClick={() => openEventModal()}
