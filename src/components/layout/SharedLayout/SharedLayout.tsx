@@ -1,6 +1,9 @@
-import { FaPlus } from "react-icons/fa";
-import { Outlet } from "react-router-dom";
+import { useState } from "react";
 
+import { FaPlus } from "react-icons/fa";
+import { Outlet, useLocation } from "react-router-dom";
+
+import Hamburger from "@/components/layout/navigation/Hamburger/Hamburger";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
 import { useModals } from "@/contexts/Modals/ModalsContext";
@@ -10,9 +13,20 @@ import DeleteEventModal from "@/pages/Events/components/DeleteEventModal";
 
 const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   const { openEventModal } = useModals();
+  const [isExpanded, setIsExpanded] = useState(false);
+  const location = useLocation();
+  const isEventsPage = location.pathname === "/events";
 
   return (
     <>
+      {!isEventsPage && (
+        <div
+          className="fixed top-4 right-4 z-50"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          <Hamburger />
+        </div>
+      )}
       <main className="mt-[84px] bg-white min-h-screen relative">
         {children}
       </main>

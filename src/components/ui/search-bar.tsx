@@ -33,6 +33,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         className="flex-grow bg-transparent outline-none"
         value={query}
         onChange={handleChange}
+        id="search-bar"
       />
       {query && (
         <button
