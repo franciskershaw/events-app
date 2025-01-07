@@ -29,7 +29,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
       <Button
         size="round"
         onClick={() => openEventModal()}
-        className="fixed bottom-2 right-4 z-50 h-14 w-14 shadow-lg"
+        className="fixed bottom-2 right-4 z-30 h-14 w-14 shadow-lg"
       >
         <FaPlus className="h-5 w-5" />
       </Button>
