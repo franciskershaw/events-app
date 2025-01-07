@@ -5,7 +5,7 @@ const Hamburger = () => {
 
   return (
     <button
-      className={`z-50 transition-all duration-200`}
+      className={`relative z-50 transition-all duration-200`}
       onClick={(e) => {
         e.stopPropagation();
         toggleSidebar();

@@ -3,6 +3,8 @@ import { useMemo } from "react";
 import dayjs from "dayjs";
 import { FaChevronUp, FaRegCalendar } from "react-icons/fa";
 
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { DateTime } from "@/components/ui/date-time";
 import {
   Drawer,
@@ -12,10 +14,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-
-import { useSearch } from "../../../../contexts/SearchEvents/SearchEventsContext";
-import { Badge } from "../../../ui/badge";
-import { Button } from "../../../ui/button";
+import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
 
 const EventsNavbarBottom = () => {
   const { query, setQuery, startDate, setStartDate, endDate, setEndDate } =
@@ -76,7 +75,7 @@ const EventsNavbarBottom = () => {
     <Drawer>
       <DrawerTrigger asChild>
         <div
-          className="fixed bottom-0 left-0 right-0 h-6 bg-gray-100 rounded-t-lg z-40 flex justify-center items-center cursor-pointer"
+          className="fixed bottom-0 left-0 right-0 h-6 bg-gray-100 rounded-t-lg z-30 flex justify-center items-center cursor-pointer"
           role="button"
           tabIndex={0}
         >

@@ -2,6 +2,7 @@ import { FaPlus } from "react-icons/fa";
 import { Outlet, useLocation } from "react-router-dom";
 
 import Hamburger from "@/components/layout/navigation/Hamburger/Hamburger";
+import Sidebar from "@/components/layout/navigation/Sidebar/Sidebar";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
 import { useModals } from "@/contexts/Modals/ModalsContext";
@@ -16,6 +17,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="relative">
+      <Sidebar />
       {!isEventsPage && (
         <div className="fixed top-4 right-4 z-50">
           <Hamburger />
