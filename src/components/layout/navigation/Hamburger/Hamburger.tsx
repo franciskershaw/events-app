@@ -1,7 +1,16 @@
+import { useSidebar } from "@/contexts/Sidebar/SidebarContext";
+
 const Hamburger = () => {
-  const isExpanded = false;
+  const { isExpanded, toggleSidebar } = useSidebar();
+
   return (
-    <button className={`z-50 transition-all duration-200`}>
+    <button
+      className={`z-50 transition-all duration-200`}
+      onClick={(e) => {
+        e.stopPropagation();
+        toggleSidebar();
+      }}
+    >
       <div className="relative flex overflow-hidden items-center justify-center rounded-full w-12 h-12 transform transition-all bg-secondary text-secondary-foreground">
         <div className="flex flex-col justify-between w-5 h-5 transform transition-all duration-300 origin-center overflow-hidden">
           <div
