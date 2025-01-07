@@ -48,7 +48,7 @@ const Sidebar = () => {
           </Link> */}
           <button
             onClick={logout}
-            className="flex items-center gap-3 text-lg hover:text-accent-foreground transition-colors w-full text-left"
+            className="flex items-center gap-3 text-lg w-full text-left"
           >
             <LogOut className="h-5 w-5" />
             Logout
