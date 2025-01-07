@@ -15,15 +15,15 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   const isEventsPage = location.pathname === "/events";
 
   return (
-    <>
+    <div className="relative">
       {!isEventsPage && (
         <div className="fixed top-4 right-4 z-50">
           <Hamburger />
         </div>
       )}
-      <main className="mt-[84px] bg-white min-h-screen relative">
-        {children}
-      </main>
+      <div className="min-h-screen flex flex-col">
+        <main className="mt-[84px] bg-white flex-grow">{children}</main>
+      </div>
       <Button
         size="round"
         onClick={() => openEventModal()}
@@ -31,12 +31,16 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
       >
         <FaPlus className="h-5 w-5" />
       </Button>
-    </>
+    </div>
   );
 };
 
 const UnauthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
-  return <main>{children}</main>;
+  return (
+    <div className="min-h-screen">
+      <main>{children}</main>
+    </div>
+  );
 };
 
 const SharedLayout = () => {
@@ -47,7 +51,7 @@ const SharedLayout = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <>
       {user ? (
         <AuthenticatedLayout>
           <Outlet />
@@ -66,7 +70,7 @@ const SharedLayout = () => {
           <DeleteEventModal />
         </>
       )}
-    </div>
+    </>
   );
 };
 
