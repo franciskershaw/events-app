@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
-type Size = "sm" | "md" | "lg";
+type Size = "sm" | "md" | "lg" | "xl";
 
 interface UserInitialsProps {
   size?: Size;
@@ -26,17 +26,19 @@ const UserInitials: React.FC<UserInitialsProps> = ({
     sm: "h-5 w-5",
     md: "h-12 w-12",
     lg: "h-16 w-16",
+    xl: "h-32 w-32",
   };
 
   const fontSizeClasses: Record<Size, string> = {
     sm: "text-[10px]",
     md: "text-lg",
     lg: "text-xl",
+    xl: "text-4xl",
   };
 
   return (
     <Avatar className={sizeClasses[size]}>
-      <AvatarFallback className={fontSizeClasses[size]}>
+      <AvatarFallback className={`${fontSizeClasses[size]} text-primary`}>
         {getInitials(name)}
       </AvatarFallback>
     </Avatar>
