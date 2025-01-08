@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { cn } from "@/lib/utils";
 
 interface SearchBarProps {
@@ -8,11 +6,11 @@ interface SearchBarProps {
   setQuery: (query: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({
+const SearchBar = ({
   placeholder = "Search...",
   query,
   setQuery,
-}) => {
+}: SearchBarProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
   };
