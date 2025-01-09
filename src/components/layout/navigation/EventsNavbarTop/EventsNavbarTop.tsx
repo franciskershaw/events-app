@@ -7,10 +7,7 @@ interface EventsNavbarTopProps {
   setQuery: (query: string) => void;
 }
 
-const EventsNavbarTop: React.FC<EventsNavbarTopProps> = ({
-  query,
-  setQuery,
-}) => {
+const EventsNavbarTop = ({ query, setQuery }: EventsNavbarTopProps) => {
   return (
     <>
       {/* Interactive Hamburger that's always on top of sidebar but below modals */}

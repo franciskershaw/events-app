@@ -24,7 +24,11 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
       )}
       <div className="min-h-screen flex flex-col">
-        <main className="mt-[84px] bg-white flex-grow">{children}</main>
+        <main
+          className={`bg-white flex-grow mb-4 ${isEventsPage ? "mt-[84px]" : ""}`}
+        >
+          {children}
+        </main>
       </div>
       <Button
         size="round"

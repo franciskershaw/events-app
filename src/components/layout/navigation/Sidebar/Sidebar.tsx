@@ -1,5 +1,5 @@
-import { LogOut } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { Calendar, LogOut } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 import UserInitials from "@/components/user/UserInitials/UserInitials";
 import { useSidebar } from "@/contexts/Sidebar/SidebarContext";
@@ -7,13 +7,17 @@ import useUser from "@/hooks/user/useUser";
 import useAuth from "@/pages/Auth/hooks/useAuth";
 
 const Sidebar = () => {
-  const { isExpanded } = useSidebar();
+  const { isExpanded, toggleSidebar } = useSidebar();
   const location = useLocation();
-  const isEventsPage = location.pathname === "/events";
+  const isAuthPage = location.pathname === "/";
   const { user } = useUser();
   const { logout } = useAuth();
 
-  if (!isEventsPage) return null;
+  const handleLinkClick = () => {
+    toggleSidebar();
+  };
+
+  if (isAuthPage) return null;
 
   return (
     <div
@@ -33,15 +37,24 @@ const Sidebar = () => {
         {/* Navigation Links */}
         <nav className="w-full space-y-6">
           {/* <Link
-            to="/connections"
-            className="flex items-center gap-3 text-lg hover:text-accent-foreground transition-colors"
-          >
-            <Users className="h-5 w-5" />
-            Connections
-          </Link>
+                to="/connections"
+                className="flex items-center gap-3 text-lg hover:text-accent-foreground transition-colors"
+              >
+                <Users className="h-5 w-5" />
+                Connections
+              </Link> */}
           <Link
-            to="/config"
+            to="/events"
             className="flex items-center gap-3 text-lg hover:text-accent-foreground transition-colors"
+            onClick={handleLinkClick}
+          >
+            <Calendar className="h-5 w-5" />
+            Events
+          </Link>
+          {/* <Link
+            to="/settings"
+            className="flex items-center gap-3 text-lg hover:text-accent-foreground transition-colors"
+            onClick={handleLinkClick}
           >
             <Settings className="h-5 w-5" />
             Settings
