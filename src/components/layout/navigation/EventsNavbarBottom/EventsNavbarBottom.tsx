@@ -16,9 +16,30 @@ import {
 } from "@/components/ui/drawer";
 import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
 
+import useGetEventCategories from "../../../../pages/Events/hooks/useGetEventCategories";
+
 const EventsNavbarBottom = () => {
-  const { query, setQuery, startDate, setStartDate, endDate, setEndDate } =
-    useSearch();
+  const {
+    query,
+    setQuery,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    selectedCategory,
+    setSelectedCategory,
+  } = useSearch();
+
+  const { eventCategorySelectOptions } = useGetEventCategories();
+  const categories = useMemo(() => {
+    return [
+      { label: "All", value: "" },
+      ...eventCategorySelectOptions.map((option) => ({
+        label: option.label,
+        value: option.label,
+      })),
+    ];
+  }, [eventCategorySelectOptions]);
 
   // Handlers for date changes
   const handleStartDateChange = (date: Date | null | undefined) => {
@@ -27,6 +48,11 @@ const EventsNavbarBottom = () => {
 
   const handleEndDateChange = (date: Date | null | undefined) => {
     setEndDate(date || null);
+  };
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selected = e.target.value;
+    setSelectedCategory(selected);
   };
 
   // Remove specific filters
@@ -41,12 +67,14 @@ const EventsNavbarBottom = () => {
       case "endDate":
         setEndDate(null);
         break;
+      case "category":
+        setSelectedCategory("");
+        break;
       default:
         break;
     }
   };
 
-  // Memoized applied filters
   const appliedFilters = useMemo(() => {
     const filters: { label: string; type: string }[] = [];
 
@@ -68,8 +96,15 @@ const EventsNavbarBottom = () => {
       });
     }
 
+    if (selectedCategory) {
+      filters.push({
+        label: `Category: ${selectedCategory}`,
+        type: "category",
+      });
+    }
+
     return filters;
-  }, [query, startDate, endDate]);
+  }, [query, startDate, endDate, selectedCategory]);
 
   return (
     <Drawer>
@@ -108,6 +143,17 @@ const EventsNavbarBottom = () => {
           </div>
         )}
         <div className="flex flex-col justify-center items-center space-y-4 pb-4">
+          <select
+            className="p-2 border rounded"
+            value={selectedCategory}
+            onChange={handleCategoryChange}
+          >
+            {categories.map((category) => (
+              <option key={category.value} value={category.value}>
+                {category.label}
+              </option>
+            ))}
+          </select>
           <div className="grid grid-cols-2 gap-2 w-full">
             <DateTime
               placeholder="Start date"

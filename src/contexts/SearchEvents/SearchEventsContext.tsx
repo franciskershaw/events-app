@@ -29,6 +29,8 @@ interface SearchContextProps extends DateFilters {
   setQuery: (query: string) => void;
   filteredEvents: Event[];
   setFilteredEvents: (events: Event[]) => void;
+  selectedCategory: string;
+  setSelectedCategory: (category: string) => void;
 }
 
 const SearchContext = createContext<SearchContextProps | undefined>(undefined);
@@ -57,11 +59,12 @@ export const SearchProvider = ({
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
 
-  // Memoize category lookup
   const categoryLookup = useMemo(
     () => createCategoryLookup(categories),
     [categories]
   );
+
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
 
   useEffect(() => {
     const { textQuery, dateQuery } = splitQueryParts(query);
@@ -80,12 +83,15 @@ export const SearchProvider = ({
         })
       );
 
-      // Match categories against each keyword
+      // Match categories
       const categoryId = event.category._id;
       const categoryName = categoryLookup[categoryId];
-      const matchesCategory = textKeywords.some((keyword) =>
-        categoryName.includes(keyword)
+      const matchesCategoryQuery = textKeywords.some((keyword) =>
+        categoryName.toLowerCase().includes(keyword.toLowerCase())
       );
+      const matchesCategorySelect =
+        !selectedCategory ||
+        categoryName.toLowerCase() === selectedCategory.toLowerCase();
 
       // Match event date range
       const eventStartDate = new Date(event.date.start);
@@ -116,7 +122,10 @@ export const SearchProvider = ({
 
       // Combine all match conditions
       const matchesAll =
-        (textKeywords.length === 0 || matchesTextQuery || matchesCategory) &&
+        (textKeywords.length === 0 ||
+          matchesTextQuery ||
+          matchesCategoryQuery) &&
+        matchesCategorySelect &&
         matchesQueryDateRange &&
         matchesManualDateRange;
 
@@ -124,7 +133,15 @@ export const SearchProvider = ({
     });
 
     setFilteredEvents(filtered);
-  }, [query, startDate, endDate, initialEvents, categories, categoryLookup]);
+  }, [
+    query,
+    startDate,
+    endDate,
+    initialEvents,
+    categories,
+    categoryLookup,
+    selectedCategory,
+  ]);
 
   return (
     <SearchContext.Provider
@@ -137,6 +154,8 @@ export const SearchProvider = ({
         setStartDate,
         endDate,
         setEndDate,
+        selectedCategory,
+        setSelectedCategory,
       }}
     >
       {children}
