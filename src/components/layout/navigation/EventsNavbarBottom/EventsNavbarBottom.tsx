@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { endOfMonth, endOfWeek, startOfMonth, startOfWeek } from "date-fns";
 import dayjs from "dayjs";
 import { FaChevronUp, FaRegCalendar } from "react-icons/fa";
 
@@ -179,13 +180,31 @@ const EventsNavbarBottom = () => {
             />
           </div>
           <div className="flex gap-2">
-            <Button size="round" onClick={() => setQuery("today")}>
+            <Button
+              size="round"
+              onClick={() => {
+                setStartDate(new Date());
+                setEndDate(new Date());
+              }}
+            >
               D
             </Button>
-            <Button size="round" onClick={() => setQuery("this week")}>
+            <Button
+              size="round"
+              onClick={() => {
+                setStartDate(startOfWeek(new Date(), { weekStartsOn: 1 }));
+                setEndDate(endOfWeek(new Date(), { weekStartsOn: 1 }));
+              }}
+            >
               W
             </Button>
-            <Button size="round" onClick={() => setQuery("this month")}>
+            <Button
+              size="round"
+              onClick={() => {
+                setStartDate(startOfMonth(new Date()));
+                setEndDate(endOfMonth(new Date()));
+              }}
+            >
               M
             </Button>
             <Button size="round">
