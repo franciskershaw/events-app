@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 import { endOfMonth, endOfWeek, startOfMonth, startOfWeek } from "date-fns";
 import dayjs from "dayjs";
@@ -20,7 +20,13 @@ import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
 import useGetEventCategories from "../../../../pages/Events/hooks/useGetEventCategories";
 import { BasicSelect } from "../../../ui/select";
 
-const EventsNavbarBottom = () => {
+interface EventsNavbarBottomProps {
+  setActiveFilterCount: (count: number) => void;
+}
+
+const EventsNavbarBottom: React.FC<EventsNavbarBottomProps> = ({
+  setActiveFilterCount,
+}) => {
   const {
     query,
     setQuery,
@@ -34,6 +40,20 @@ const EventsNavbarBottom = () => {
     setSelectedLocation,
     locations,
   } = useSearch();
+
+  const activeFilterCount = useMemo(() => {
+    let count = 0;
+    if (query) count++;
+    if (startDate) count++;
+    if (endDate) count++;
+    if (selectedCategory) count++;
+    if (selectedLocation) count++;
+    return count;
+  }, [query, startDate, endDate, selectedCategory, selectedLocation]);
+
+  useEffect(() => {
+    setActiveFilterCount(activeFilterCount);
+  }, [activeFilterCount, setActiveFilterCount]);
 
   const { eventCategorySelectOptions } = useGetEventCategories();
   const categories = useMemo(() => {
