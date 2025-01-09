@@ -1,5 +1,6 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
+import { endOfMonth, endOfWeek, startOfMonth, startOfWeek } from "date-fns";
 import dayjs from "dayjs";
 import { FaChevronUp, FaRegCalendar } from "react-icons/fa";
 
@@ -16,9 +17,54 @@ import {
 } from "@/components/ui/drawer";
 import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
 
-const EventsNavbarBottom = () => {
-  const { query, setQuery, startDate, setStartDate, endDate, setEndDate } =
-    useSearch();
+import useGetEventCategories from "../../../../pages/Events/hooks/useGetEventCategories";
+import { BasicSelect } from "../../../ui/select";
+
+interface EventsNavbarBottomProps {
+  setActiveFilterCount: (count: number) => void;
+}
+
+const EventsNavbarBottom: React.FC<EventsNavbarBottomProps> = ({
+  setActiveFilterCount,
+}) => {
+  const {
+    query,
+    setQuery,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    selectedCategory,
+    setSelectedCategory,
+    selectedLocation,
+    setSelectedLocation,
+    filteredEvents,
+    locations,
+  } = useSearch();
+
+  const activeFilterCount = useMemo(() => {
+    let count = 0;
+    if (query) count++;
+    if (startDate) count++;
+    if (endDate) count++;
+    if (selectedCategory) count++;
+    if (selectedLocation) count++;
+    return count;
+  }, [query, startDate, endDate, selectedCategory, selectedLocation]);
+
+  useEffect(() => {
+    setActiveFilterCount(activeFilterCount);
+  }, [activeFilterCount, setActiveFilterCount]);
+
+  const { eventCategorySelectOptions } = useGetEventCategories();
+  const categories = useMemo(() => {
+    return [
+      ...eventCategorySelectOptions.map((option) => ({
+        label: option.label,
+        value: option.label,
+      })),
+    ];
+  }, [eventCategorySelectOptions]);
 
   // Handlers for date changes
   const handleStartDateChange = (date: Date | null | undefined) => {
@@ -27,6 +73,14 @@ const EventsNavbarBottom = () => {
 
   const handleEndDateChange = (date: Date | null | undefined) => {
     setEndDate(date || null);
+  };
+
+  const clearAllFilters = () => {
+    setQuery("");
+    setStartDate(null);
+    setEndDate(null);
+    setSelectedCategory("");
+    setSelectedLocation("");
   };
 
   // Remove specific filters
@@ -41,12 +95,17 @@ const EventsNavbarBottom = () => {
       case "endDate":
         setEndDate(null);
         break;
+      case "category":
+        setSelectedCategory("");
+        break;
+      case "location":
+        setSelectedLocation("");
+        break;
       default:
         break;
     }
   };
 
-  // Memoized applied filters
   const appliedFilters = useMemo(() => {
     const filters: { label: string; type: string }[] = [];
 
@@ -68,8 +127,22 @@ const EventsNavbarBottom = () => {
       });
     }
 
+    if (selectedCategory) {
+      filters.push({
+        label: `Category: ${selectedCategory}`,
+        type: "category",
+      });
+    }
+
+    if (selectedLocation) {
+      filters.push({
+        label: `Location: ${selectedLocation}`,
+        type: "location",
+      });
+    }
+
     return filters;
-  }, [query, startDate, endDate]);
+  }, [query, startDate, endDate, selectedCategory, selectedLocation]);
 
   return (
     <Drawer>
@@ -91,23 +164,49 @@ const EventsNavbarBottom = () => {
           </DrawerDescription>
         </DrawerHeader>
         {appliedFilters.length > 0 && (
-          <div className="mx-[-1rem] px-4 py-2 mb-4 bg-gray-200 overflow-x-auto">
-            <div className="flex items-center gap-2 text-sm whitespace-nowrap min-w-min">
-              {appliedFilters.map((filter, index) => (
-                <button onClick={() => removeFilter(filter.type)} key={index}>
-                  <Badge
-                    variant="secondary"
-                    className="flex items-center gap-1 px-2 py-1"
-                  >
-                    {filter.label}
-                    <span className="ml-0.5">✕</span>
-                  </Badge>
-                </button>
-              ))}
+          <>
+            <div className="text-sm text-center mb-2">
+              Showing {filteredEvents.length} result
+              {filteredEvents.length > 1 ? "s" : ""}.{" "}
+              <button
+                className="text-blue-500 hover:underline"
+                onClick={clearAllFilters}
+              >
+                Clear filters ✕
+              </button>
             </div>
-          </div>
+            <div className="mx-[-1rem] px-4 py-2 mb-4 bg-gray-200 overflow-x-auto">
+              <div className="flex items-center gap-2 text-sm whitespace-nowrap min-w-min">
+                {appliedFilters.map((filter, index) => (
+                  <button onClick={() => removeFilter(filter.type)} key={index}>
+                    <Badge
+                      variant="secondary"
+                      className="flex items-center gap-1 px-2 py-1"
+                    >
+                      {filter.label}
+                      <span className="ml-0.5">✕</span>
+                    </Badge>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </>
         )}
         <div className="flex flex-col justify-center items-center space-y-4 pb-4">
+          <div className="grid grid-cols-2 gap-2 w-full">
+            <BasicSelect
+              value={selectedCategory}
+              onChange={setSelectedCategory}
+              options={categories}
+              placeholder="Categories"
+            />
+            <BasicSelect
+              value={selectedLocation}
+              onChange={setSelectedLocation}
+              options={locations}
+              placeholder="Locations"
+            />
+          </div>
           <div className="grid grid-cols-2 gap-2 w-full">
             <DateTime
               placeholder="Start date"
@@ -118,16 +217,35 @@ const EventsNavbarBottom = () => {
               placeholder="End date"
               value={endDate || null}
               onChange={handleEndDateChange}
+              minDate={startDate || undefined}
             />
           </div>
           <div className="flex gap-2">
-            <Button size="round" onClick={() => setQuery("today")}>
+            <Button
+              size="round"
+              onClick={() => {
+                setStartDate(new Date());
+                setEndDate(new Date());
+              }}
+            >
               D
             </Button>
-            <Button size="round" onClick={() => setQuery("this week")}>
+            <Button
+              size="round"
+              onClick={() => {
+                setStartDate(startOfWeek(new Date(), { weekStartsOn: 1 }));
+                setEndDate(endOfWeek(new Date(), { weekStartsOn: 1 }));
+              }}
+            >
               W
             </Button>
-            <Button size="round" onClick={() => setQuery("this month")}>
+            <Button
+              size="round"
+              onClick={() => {
+                setStartDate(startOfMonth(new Date()));
+                setEndDate(endOfMonth(new Date()));
+              }}
+            >
               M
             </Button>
             <Button size="round">
