@@ -29,6 +29,9 @@ const EventsNavbarBottom = () => {
     setEndDate,
     selectedCategory,
     setSelectedCategory,
+    selectedLocation,
+    setSelectedLocation,
+    locations,
   } = useSearch();
 
   const { eventCategorySelectOptions } = useGetEventCategories();
@@ -50,11 +53,6 @@ const EventsNavbarBottom = () => {
     setEndDate(date || null);
   };
 
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selected = e.target.value;
-    setSelectedCategory(selected);
-  };
-
   // Remove specific filters
   const removeFilter = (type: string) => {
     switch (type) {
@@ -69,6 +67,9 @@ const EventsNavbarBottom = () => {
         break;
       case "category":
         setSelectedCategory("");
+        break;
+      case "location":
+        setSelectedLocation("");
         break;
       default:
         break;
@@ -103,8 +104,15 @@ const EventsNavbarBottom = () => {
       });
     }
 
+    if (selectedLocation) {
+      filters.push({
+        label: `Location: ${selectedLocation}`,
+        type: "location",
+      });
+    }
+
     return filters;
-  }, [query, startDate, endDate, selectedCategory]);
+  }, [query, startDate, endDate, selectedCategory, selectedLocation]);
 
   return (
     <Drawer>
@@ -143,12 +151,20 @@ const EventsNavbarBottom = () => {
           </div>
         )}
         <div className="flex flex-col justify-center items-center space-y-4 pb-4">
-          <BasicSelect
-            value={selectedCategory}
-            onChange={setSelectedCategory}
-            options={categories}
-            placeholder="Select a category"
-          />
+          <div className="grid grid-cols-2 gap-2 w-full">
+            <BasicSelect
+              value={selectedCategory}
+              onChange={setSelectedCategory}
+              options={categories}
+              placeholder="Categories"
+            />
+            <BasicSelect
+              value={selectedLocation}
+              onChange={setSelectedLocation}
+              options={locations}
+              placeholder="Locations"
+            />
+          </div>
           <div className="grid grid-cols-2 gap-2 w-full">
             <DateTime
               placeholder="Start date"
@@ -159,6 +175,7 @@ const EventsNavbarBottom = () => {
               placeholder="End date"
               value={endDate || null}
               onChange={handleEndDateChange}
+              minDate={startDate || undefined}
             />
           </div>
           <div className="flex gap-2">

@@ -11,6 +11,7 @@ import { Event } from "../../types/globalTypes";
 import {
   createCategoryLookup,
   getNestedValue,
+  getUniqueLocations,
   isDateInRange,
   matchesDateComponents,
   parseDateComponents,
@@ -31,6 +32,9 @@ interface SearchContextProps extends DateFilters {
   setFilteredEvents: (events: Event[]) => void;
   selectedCategory: string;
   setSelectedCategory: (category: string) => void;
+  selectedLocation: string;
+  setSelectedLocation: (location: string) => void;
+  locations: { label: string; value: string }[];
 }
 
 const SearchContext = createContext<SearchContextProps | undefined>(undefined);
@@ -65,6 +69,8 @@ export const SearchProvider = ({
   );
 
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedLocation, setSelectedLocation] = useState<string>("");
+  const locations = getUniqueLocations(initialEvents);
 
   useEffect(() => {
     const { textQuery, dateQuery } = splitQueryParts(query);
@@ -92,6 +98,14 @@ export const SearchProvider = ({
       const matchesCategorySelect =
         !selectedCategory ||
         categoryName.toLowerCase() === selectedCategory.toLowerCase();
+
+      // Match location
+      const eventCity = event.location?.city?.toLowerCase() || "";
+      const eventVenue = event.location?.venue?.toLowerCase() || "";
+      const matchesLocation =
+        !selectedLocation ||
+        eventCity === selectedLocation.toLowerCase() ||
+        eventVenue === selectedLocation.toLowerCase();
 
       // Match event date range
       const eventStartDate = new Date(event.date.start);
@@ -126,6 +140,7 @@ export const SearchProvider = ({
           matchesTextQuery ||
           matchesCategoryQuery) &&
         matchesCategorySelect &&
+        matchesLocation &&
         matchesQueryDateRange &&
         matchesManualDateRange;
 
@@ -141,6 +156,7 @@ export const SearchProvider = ({
     categories,
     categoryLookup,
     selectedCategory,
+    selectedLocation,
   ]);
 
   return (
@@ -156,6 +172,9 @@ export const SearchProvider = ({
         setEndDate,
         selectedCategory,
         setSelectedCategory,
+        selectedLocation,
+        setSelectedLocation,
+        locations,
       }}
     >
       {children}
