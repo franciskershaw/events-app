@@ -6,7 +6,8 @@ import PrivateRoute from "./components/layout/PrivateRoute/PrivateRoute";
 import SharedLayout from "./components/layout/SharedLayout/SharedLayout";
 import Auth from "./pages/Auth/Auth";
 import Events from "./pages/Events/Events";
-import Settings from "./pages/Settings/Settings";
+
+// import Settings from "./pages/Settings/Settings";
 
 function App() {
   return (
@@ -17,9 +18,9 @@ function App() {
           <Route path="/events" element={<PrivateRoute />}>
             <Route index element={<Events />} />
           </Route>
-          <Route path="/settings" element={<PrivateRoute />}>
+          {/* <Route path="/settings" element={<PrivateRoute />}>
             <Route index element={<Settings />} />
-          </Route>
+          </Route> */}
         </Route>
       </Routes>
     </Router>
