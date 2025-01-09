@@ -17,6 +17,7 @@ import {
 import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
 
 import useGetEventCategories from "../../../../pages/Events/hooks/useGetEventCategories";
+import { BasicSelect } from "../../../ui/select";
 
 const EventsNavbarBottom = () => {
   const {
@@ -33,7 +34,6 @@ const EventsNavbarBottom = () => {
   const { eventCategorySelectOptions } = useGetEventCategories();
   const categories = useMemo(() => {
     return [
-      { label: "All", value: "" },
       ...eventCategorySelectOptions.map((option) => ({
         label: option.label,
         value: option.label,
@@ -143,17 +143,12 @@ const EventsNavbarBottom = () => {
           </div>
         )}
         <div className="flex flex-col justify-center items-center space-y-4 pb-4">
-          <select
-            className="p-2 border rounded"
+          <BasicSelect
             value={selectedCategory}
-            onChange={handleCategoryChange}
-          >
-            {categories.map((category) => (
-              <option key={category.value} value={category.value}>
-                {category.label}
-              </option>
-            ))}
-          </select>
+            onChange={setSelectedCategory}
+            options={categories}
+            placeholder="Select a category"
+          />
           <div className="grid grid-cols-2 gap-2 w-full">
             <DateTime
               placeholder="Start date"
