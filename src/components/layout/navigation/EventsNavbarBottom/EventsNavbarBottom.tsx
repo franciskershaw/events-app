@@ -38,6 +38,7 @@ const EventsNavbarBottom: React.FC<EventsNavbarBottomProps> = ({
     setSelectedCategory,
     selectedLocation,
     setSelectedLocation,
+    filteredEvents,
     locations,
   } = useSearch();
 
@@ -72,6 +73,14 @@ const EventsNavbarBottom: React.FC<EventsNavbarBottomProps> = ({
 
   const handleEndDateChange = (date: Date | null | undefined) => {
     setEndDate(date || null);
+  };
+
+  const clearAllFilters = () => {
+    setQuery("");
+    setStartDate(null);
+    setEndDate(null);
+    setSelectedCategory("");
+    setSelectedLocation("");
   };
 
   // Remove specific filters
@@ -155,21 +164,33 @@ const EventsNavbarBottom: React.FC<EventsNavbarBottomProps> = ({
           </DrawerDescription>
         </DrawerHeader>
         {appliedFilters.length > 0 && (
-          <div className="mx-[-1rem] px-4 py-2 mb-4 bg-gray-200 overflow-x-auto">
-            <div className="flex items-center gap-2 text-sm whitespace-nowrap min-w-min">
-              {appliedFilters.map((filter, index) => (
-                <button onClick={() => removeFilter(filter.type)} key={index}>
-                  <Badge
-                    variant="secondary"
-                    className="flex items-center gap-1 px-2 py-1"
-                  >
-                    {filter.label}
-                    <span className="ml-0.5">✕</span>
-                  </Badge>
-                </button>
-              ))}
+          <>
+            <div className="text-sm text-center mb-2">
+              Showing {filteredEvents.length} result
+              {filteredEvents.length > 1 ? "s" : ""}.{" "}
+              <button
+                className="text-blue-500 hover:underline"
+                onClick={clearAllFilters}
+              >
+                Clear filters ✕
+              </button>
             </div>
-          </div>
+            <div className="mx-[-1rem] px-4 py-2 mb-4 bg-gray-200 overflow-x-auto">
+              <div className="flex items-center gap-2 text-sm whitespace-nowrap min-w-min">
+                {appliedFilters.map((filter, index) => (
+                  <button onClick={() => removeFilter(filter.type)} key={index}>
+                    <Badge
+                      variant="secondary"
+                      className="flex items-center gap-1 px-2 py-1"
+                    >
+                      {filter.label}
+                      <span className="ml-0.5">✕</span>
+                    </Badge>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </>
         )}
         <div className="flex flex-col justify-center items-center space-y-4 pb-4">
           <div className="grid grid-cols-2 gap-2 w-full">
