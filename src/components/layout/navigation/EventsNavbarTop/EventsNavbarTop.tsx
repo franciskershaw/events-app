@@ -5,9 +5,18 @@ import Hamburger from "../Hamburger/Hamburger";
 interface EventsNavbarTopProps {
   query: string;
   setQuery: (query: string) => void;
+  activeFilterCount: number;
 }
 
-const EventsNavbarTop = ({ query, setQuery }: EventsNavbarTopProps) => {
+const EventsNavbarTop = ({
+  query,
+  setQuery,
+  activeFilterCount,
+}: EventsNavbarTopProps) => {
+  const placeholder = activeFilterCount
+    ? `${activeFilterCount} filter${activeFilterCount > 1 ? "s" : ""} applied`
+    : "Search by title, venue, city, category or date";
+
   return (
     <>
       {/* Interactive Hamburger that's always on top of sidebar but below modals */}
@@ -21,7 +30,7 @@ const EventsNavbarTop = ({ query, setQuery }: EventsNavbarTopProps) => {
           <UsersInitials />
           <div className="flex-grow">
             <SearchBar
-              placeholder="Search by title, venue, city, category or date"
+              placeholder={placeholder}
               query={query}
               setQuery={setQuery}
             />

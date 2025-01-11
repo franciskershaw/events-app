@@ -14,6 +14,8 @@ import {
   startOfYear,
 } from "date-fns";
 
+import { Event } from "../../types/globalTypes";
+
 interface DateRange {
   start: Date;
   end: Date;
@@ -264,4 +266,25 @@ export const getNestedValue = <T extends object>(
     }
     return undefined;
   }, obj);
+};
+
+export const getUniqueLocations = (
+  events: Event[]
+): { label: string; value: string }[] => {
+  const locations = events.reduce((acc, event) => {
+    if (event.location?.city) {
+      acc.add(event.location.city);
+    }
+    if (event.location?.venue) {
+      acc.add(event.location.venue);
+    }
+    return acc;
+  }, new Set<string>());
+
+  return Array.from(locations)
+    .map((city) => ({
+      label: city,
+      value: city,
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label));
 };
