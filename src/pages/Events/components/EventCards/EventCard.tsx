@@ -3,11 +3,10 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { useModals } from "@/contexts/Modals/ModalsContext";
-
-import { Button } from "../../../components/ui/button";
-import { formatDate, formatTime, isWeekend } from "../../../lib/utils";
-import { Event } from "../../../types/globalTypes";
+import { formatDate, formatTime, isWeekend } from "@/lib/utils";
+import { Event } from "@/types/globalTypes";
 
 const EventCard = ({ event }: { event: Event }) => {
   const { location, title, category, description } = event;

@@ -1,3 +1,10 @@
+/**
+ * Todo:
+ * - Move most of the logic to a hook
+ * - Break up the JSX into smaller components, Filters, 174 - 264ish
+ * - Rename file to FiltersDrawer
+ */
+
 import { useEffect, useMemo } from "react";
 
 import { endOfMonth, endOfWeek, startOfMonth, startOfWeek } from "date-fns";
@@ -15,18 +22,16 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { BasicSelect } from "@/components/ui/select";
 import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
 
-import useGetEventCategories from "../../../../pages/Events/hooks/useGetEventCategories";
-import { BasicSelect } from "../../../ui/select";
+import useGetEventCategories from "../../hooks/useGetEventCategories";
 
-interface EventsNavbarBottomProps {
+export interface FiltersDrawerProps {
   setActiveFilterCount: (count: number) => void;
 }
 
-const EventsNavbarBottom: React.FC<EventsNavbarBottomProps> = ({
-  setActiveFilterCount,
-}) => {
+const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
   const {
     query,
     setQuery,
@@ -143,7 +148,6 @@ const EventsNavbarBottom: React.FC<EventsNavbarBottomProps> = ({
 
     return filters;
   }, [query, startDate, endDate, selectedCategory, selectedLocation]);
-
   return (
     <Drawer>
       <DrawerTrigger asChild>
@@ -164,6 +168,7 @@ const EventsNavbarBottom: React.FC<EventsNavbarBottomProps> = ({
           </DrawerDescription>
         </DrawerHeader>
         {appliedFilters.length > 0 && (
+          // 175 - 263 should be a component
           <>
             <div className="text-sm text-center mb-2">
               Showing {filteredEvents.length} result
@@ -258,4 +263,4 @@ const EventsNavbarBottom: React.FC<EventsNavbarBottomProps> = ({
   );
 };
 
-export default EventsNavbarBottom;
+export default FiltersDrawer;

@@ -2,8 +2,8 @@ import { useState } from "react";
 
 import { motion } from "framer-motion";
 
-import { Button } from "../../../components/ui/button";
-import { formatDate, isWeekend as weekend } from "../../../lib/utils";
+import { Button } from "@/components/ui/button";
+import { formatDate, isWeekend as weekend } from "@/lib/utils";
 
 export interface EventCardEmptyProps {
   date: string;

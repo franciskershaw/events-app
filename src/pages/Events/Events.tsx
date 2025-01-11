@@ -1,12 +1,12 @@
 import { useState } from "react";
 
-import EventsNavbarBottom from "../../components/layout/navigation/EventsNavbarBottom/EventsNavbarBottom";
-import EventsNavbarTop from "../../components/layout/navigation/EventsNavbarTop/EventsNavbarTop";
 import {
   SearchProvider,
   useSearch,
 } from "../../contexts/SearchEvents/SearchEventsContext";
-import EventCards from "./components/EventCards";
+import EventCards from "./components/EventCards/EventCards";
+import EventsNavbarTop from "./components/EventsNavbarTop/EventsNavbarTop";
+import FiltersDrawer from "./components/FiltersDrawer/FIltersDrawer";
 import useGetEventCategories from "./hooks/useGetEventCategories";
 import useGetEvents from "./hooks/useGetEvents";
 
@@ -37,7 +37,7 @@ const EventsWithSearch = () => {
       ) : (
         <EventCards />
       )}
-      <EventsNavbarBottom setActiveFilterCount={setActiveFilterCount} />
+      <FiltersDrawer setActiveFilterCount={setActiveFilterCount} />
     </>
   );
 };

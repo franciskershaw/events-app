@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
 import { useModals } from "@/contexts/Modals/ModalsContext";
 import useUser from "@/hooks/user/useUser";
-import AddEventModal from "@/pages/Events/components/AddEventModal";
-import DeleteEventModal from "@/pages/Events/components/DeleteEventModal";
+import AddEventModal from "@/pages/Events/components/EventModals/AddEventModal";
+import DeleteEventModal from "@/pages/Events/components/EventModals/DeleteEventModal";
 
 const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   const { openEventModal } = useModals();

@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { useModals } from "@/contexts/Modals/ModalsContext";
 
-import useDeleteEvent from "../hooks/useDeleteEvent";
+import useDeleteEvent from "../../hooks/useDeleteEvent";
 
 const DeleteEventModal = () => {
   const { selectedEvent, closeModal, isDeleteEventModalOpen } = useModals();

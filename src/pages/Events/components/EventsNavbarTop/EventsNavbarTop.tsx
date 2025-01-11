@@ -1,6 +1,6 @@
-import { SearchBar } from "../../../ui/search-bar";
-import UsersInitials from "../../../user/UsersInitials/UsersInitials";
-import Hamburger from "../Hamburger/Hamburger";
+import Hamburger from "@/components/layout/navigation/Hamburger/Hamburger";
+import { SearchBar } from "@/components/ui/search-bar";
+import UsersInitials from "@/components/user/UsersInitials/UsersInitials";
 
 interface EventsNavbarTopProps {
   query: string;
