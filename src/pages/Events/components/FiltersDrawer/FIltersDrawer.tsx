@@ -1,14 +1,4 @@
-/**
- * Todo:
- * - Move most of the logic to a hook
- * - Break up the JSX into smaller components, Filters, 174 - 264ish
- * - Rename file to FiltersDrawer
- */
-
-import { useEffect, useMemo } from "react";
-
 import { endOfMonth, endOfWeek, startOfMonth, startOfWeek } from "date-fns";
-import dayjs from "dayjs";
 import { FaChevronUp, FaRegCalendar } from "react-icons/fa";
 
 import { Badge } from "@/components/ui/badge";
@@ -23,9 +13,8 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { BasicSelect } from "@/components/ui/select";
-import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
 
-import useGetEventCategories from "../../hooks/useGetEventCategories";
+import useFiltersDrawer from "./useFiltersDrawer";
 
 export interface FiltersDrawerProps {
   setActiveFilterCount: (count: number) => void;
@@ -33,121 +22,24 @@ export interface FiltersDrawerProps {
 
 const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
   const {
-    query,
-    setQuery,
-    startDate,
-    setStartDate,
-    endDate,
-    setEndDate,
+    filteredEvents,
+    locations,
+    categories,
+    appliedFilters,
+    clearAllFilters,
+    removeFilter,
+    handleStartDateChange,
+    handleEndDateChange,
     selectedCategory,
     setSelectedCategory,
     selectedLocation,
     setSelectedLocation,
-    filteredEvents,
-    locations,
-  } = useSearch();
+    startDate,
+    endDate,
+    setStartDate,
+    setEndDate,
+  } = useFiltersDrawer(setActiveFilterCount);
 
-  const activeFilterCount = useMemo(() => {
-    let count = 0;
-    if (query) count++;
-    if (startDate) count++;
-    if (endDate) count++;
-    if (selectedCategory) count++;
-    if (selectedLocation) count++;
-    return count;
-  }, [query, startDate, endDate, selectedCategory, selectedLocation]);
-
-  useEffect(() => {
-    setActiveFilterCount(activeFilterCount);
-  }, [activeFilterCount, setActiveFilterCount]);
-
-  const { eventCategorySelectOptions } = useGetEventCategories();
-  const categories = useMemo(() => {
-    return [
-      ...eventCategorySelectOptions.map((option) => ({
-        label: option.label,
-        value: option.label,
-      })),
-    ];
-  }, [eventCategorySelectOptions]);
-
-  // Handlers for date changes
-  const handleStartDateChange = (date: Date | null | undefined) => {
-    setStartDate(date || null);
-  };
-
-  const handleEndDateChange = (date: Date | null | undefined) => {
-    setEndDate(date || null);
-  };
-
-  const clearAllFilters = () => {
-    setQuery("");
-    setStartDate(null);
-    setEndDate(null);
-    setSelectedCategory("");
-    setSelectedLocation("");
-  };
-
-  // Remove specific filters
-  const removeFilter = (type: string) => {
-    switch (type) {
-      case "query":
-        setQuery("");
-        break;
-      case "startDate":
-        setStartDate(null);
-        break;
-      case "endDate":
-        setEndDate(null);
-        break;
-      case "category":
-        setSelectedCategory("");
-        break;
-      case "location":
-        setSelectedLocation("");
-        break;
-      default:
-        break;
-    }
-  };
-
-  const appliedFilters = useMemo(() => {
-    const filters: { label: string; type: string }[] = [];
-
-    if (query) {
-      filters.push({ label: `"${query}"`, type: "query" });
-    }
-
-    if (startDate) {
-      filters.push({
-        label: `From: ${dayjs(startDate).format("DD/MM/YYYY")}`,
-        type: "startDate",
-      });
-    }
-
-    if (endDate) {
-      filters.push({
-        label: `To: ${dayjs(endDate).format("DD/MM/YYYY")}`,
-        type: "endDate",
-      });
-    }
-
-    if (selectedCategory) {
-      filters.push({
-        label: `Category: ${selectedCategory}`,
-        type: "category",
-      });
-    }
-
-    if (selectedLocation) {
-      filters.push({
-        label: `Location: ${selectedLocation}`,
-        type: "location",
-      });
-    }
-
-    return filters;
-  }, [query, startDate, endDate, selectedCategory, selectedLocation]);
   return (
     <Drawer>
       <DrawerTrigger asChild>
@@ -168,7 +60,6 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
           </DrawerDescription>
         </DrawerHeader>
         {appliedFilters.length > 0 && (
-          // 175 - 263 should be a component
           <>
             <div className="text-sm text-center mb-2">
               Showing {filteredEvents.length} result
