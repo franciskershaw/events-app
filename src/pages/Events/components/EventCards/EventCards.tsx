@@ -1,6 +1,7 @@
-import { useSearch } from "../../../contexts/SearchEvents/SearchEventsContext";
-import { filterTodayEvents, groupEvents } from "../helper/helper";
-import DateScroller from "./DateScroller";
+import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
+
+import { filterTodayEvents, groupEvents } from "../../helper/helper";
+import DateScroller from "../DateScroller";
 import EventCard from "./EventCard";
 
 const EventCards = () => {

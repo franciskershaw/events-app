@@ -11,6 +11,7 @@ import { Event } from "../../types/globalTypes";
 import {
   createCategoryLookup,
   getNestedValue,
+  getUniqueLocations,
   isDateInRange,
   matchesDateComponents,
   parseDateComponents,
@@ -29,6 +30,11 @@ interface SearchContextProps extends DateFilters {
   setQuery: (query: string) => void;
   filteredEvents: Event[];
   setFilteredEvents: (events: Event[]) => void;
+  selectedCategory: string;
+  setSelectedCategory: (category: string) => void;
+  selectedLocation: string;
+  setSelectedLocation: (location: string) => void;
+  locations: { label: string; value: string }[];
 }
 
 const SearchContext = createContext<SearchContextProps | undefined>(undefined);
@@ -57,11 +63,14 @@ export const SearchProvider = ({
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
 
-  // Memoize category lookup
   const categoryLookup = useMemo(
     () => createCategoryLookup(categories),
     [categories]
   );
+
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedLocation, setSelectedLocation] = useState<string>("");
+  const locations = getUniqueLocations(initialEvents);
 
   useEffect(() => {
     const { textQuery, dateQuery } = splitQueryParts(query);
@@ -80,12 +89,23 @@ export const SearchProvider = ({
         })
       );
 
-      // Match categories against each keyword
+      // Match categories
       const categoryId = event.category._id;
       const categoryName = categoryLookup[categoryId];
-      const matchesCategory = textKeywords.some((keyword) =>
-        categoryName.includes(keyword)
+      const matchesCategoryQuery = textKeywords.some((keyword) =>
+        categoryName.toLowerCase().includes(keyword.toLowerCase())
       );
+      const matchesCategorySelect =
+        !selectedCategory ||
+        categoryName.toLowerCase() === selectedCategory.toLowerCase();
+
+      // Match location
+      const eventCity = event.location?.city?.toLowerCase() || "";
+      const eventVenue = event.location?.venue?.toLowerCase() || "";
+      const matchesLocation =
+        !selectedLocation ||
+        eventCity === selectedLocation.toLowerCase() ||
+        eventVenue === selectedLocation.toLowerCase();
 
       // Match event date range
       const eventStartDate = new Date(event.date.start);
@@ -116,7 +136,11 @@ export const SearchProvider = ({
 
       // Combine all match conditions
       const matchesAll =
-        (textKeywords.length === 0 || matchesTextQuery || matchesCategory) &&
+        (textKeywords.length === 0 ||
+          matchesTextQuery ||
+          matchesCategoryQuery) &&
+        matchesCategorySelect &&
+        matchesLocation &&
         matchesQueryDateRange &&
         matchesManualDateRange;
 
@@ -124,7 +148,16 @@ export const SearchProvider = ({
     });
 
     setFilteredEvents(filtered);
-  }, [query, startDate, endDate, initialEvents, categories, categoryLookup]);
+  }, [
+    query,
+    startDate,
+    endDate,
+    initialEvents,
+    categories,
+    categoryLookup,
+    selectedCategory,
+    selectedLocation,
+  ]);
 
   return (
     <SearchContext.Provider
@@ -137,6 +170,11 @@ export const SearchProvider = ({
         setStartDate,
         endDate,
         setEndDate,
+        selectedCategory,
+        setSelectedCategory,
+        selectedLocation,
+        setSelectedLocation,
+        locations,
       }}
     >
       {children}
