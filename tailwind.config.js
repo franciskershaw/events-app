@@ -58,5 +58,23 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    function ({ addUtilities }) {
+      addUtilities({
+        ".max-h-dvh": {
+          "max-height": "100vh", // Default for older browsers
+          "@supports (max-height: 100dvh)": {
+            "max-height": "100dvh", // Preferred dynamic behavior
+          },
+        },
+        ".pb-safe": {
+          "padding-bottom": "16px", // Fallback for safe area inset
+          "@supports (padding-bottom: env(safe-area-inset-bottom))": {
+            "padding-bottom": "calc(env(safe-area-inset-bottom) + 16px)", // Dynamic safe area
+          },
+        },
+      });
+    },
+  ],
 };

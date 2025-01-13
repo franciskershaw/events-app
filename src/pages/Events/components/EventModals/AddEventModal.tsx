@@ -16,7 +16,7 @@ const AddEventModal = () => {
   const id = selectedEvent?._id || "addEvent";
   return (
     <Dialog open={isEventModalOpen} onOpenChange={closeModal}>
-      <DialogContent className="flex flex-col max-h-[100vh] md:max-h-[90vh] p-0">
+      <DialogContent className="flex flex-col max-h-dvh md:max-h-[90dvh] p-0">
         <DialogHeader className="px-6 pt-6">
           <DialogTitle>
             {mode === "copy"
@@ -34,7 +34,7 @@ const AddEventModal = () => {
           <AddEventForm formId={id} />
         </div>
 
-        <DialogFooter className="flex flex-col gap-2 px-6 py-4 border-t">
+        <DialogFooter className="flex flex-col gap-2 px-6 py-4 border-t pb-safe">
           <Button variant="outline" type="button" onClick={closeModal}>
             Cancel
           </Button>
