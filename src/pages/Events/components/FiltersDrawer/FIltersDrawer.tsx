@@ -1,3 +1,5 @@
+import { useEffect, useMemo, useState } from "react";
+
 import { endOfMonth, endOfWeek, startOfMonth, startOfWeek } from "date-fns";
 import { FaChevronUp, FaRegCalendar } from "react-icons/fa";
 
@@ -39,6 +41,44 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
     setStartDate,
     setEndDate,
   } = useFiltersDrawer(setActiveFilterCount);
+
+  const [selectedButton, setSelectedButton] = useState<string | null>(null);
+  const [selectedEventsFree, setSelectedEventsFree] = useState<boolean>(false);
+
+  const dateButtons = useMemo(
+    () => [
+      {
+        label: "D",
+        startDate: new Date(),
+        endDate: new Date(),
+      },
+      {
+        label: "W",
+        startDate: startOfWeek(new Date(), { weekStartsOn: 1 }),
+        endDate: endOfWeek(new Date(), { weekStartsOn: 1 }),
+      },
+      {
+        label: "M",
+        startDate: startOfMonth(new Date()),
+        endDate: endOfMonth(new Date()),
+      },
+    ],
+    []
+  );
+
+  useEffect(() => {
+    if (
+      selectedButton &&
+      !dateButtons.some(
+        ({ label, startDate: btnStart, endDate: btnEnd }) =>
+          label === selectedButton &&
+          startDate?.toDateString() === btnStart.toDateString() &&
+          endDate?.toDateString() === btnEnd.toDateString()
+      )
+    ) {
+      setSelectedButton(null);
+    }
+  }, [startDate, endDate, selectedButton, dateButtons]);
 
   return (
     <Drawer>
@@ -118,34 +158,29 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
             />
           </div>
           <div className="flex gap-2">
+            {dateButtons.map((button) => (
+              <Button
+                key={button.label}
+                size="round"
+                variant={
+                  selectedButton === button.label ? "outline" : "default"
+                }
+                onClick={() => {
+                  setStartDate(button.startDate);
+                  setEndDate(button.endDate);
+                  setSelectedButton(button.label);
+                }}
+              >
+                {button.label}
+              </Button>
+            ))}
             <Button
               size="round"
-              onClick={() => {
-                setStartDate(new Date());
-                setEndDate(new Date());
-              }}
+              variant={selectedEventsFree === true ? "outline" : "default"}
+              onClick={() =>
+                setSelectedEventsFree((prev) => (prev === true ? false : true))
+              }
             >
-              D
-            </Button>
-            <Button
-              size="round"
-              onClick={() => {
-                setStartDate(startOfWeek(new Date(), { weekStartsOn: 1 }));
-                setEndDate(endOfWeek(new Date(), { weekStartsOn: 1 }));
-              }}
-            >
-              W
-            </Button>
-            <Button
-              size="round"
-              onClick={() => {
-                setStartDate(startOfMonth(new Date()));
-                setEndDate(endOfMonth(new Date()));
-              }}
-            >
-              M
-            </Button>
-            <Button size="round">
               <FaRegCalendar />
             </Button>
           </div>
