@@ -12,8 +12,8 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { BasicSelect } from "@/components/ui/select";
 
+import { Combobox } from "../../../../components/ui/combobox";
 import useFiltersDrawer from "./useFiltersDrawer";
 
 export interface FiltersDrawerProps {
@@ -89,21 +89,22 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
           </>
         )}
         <div className="flex flex-col justify-center items-center space-y-4 pb-4">
-          <div className="grid grid-cols-2 gap-2 w-full">
-            <BasicSelect
+          <div className="grid grid-cols-2 gap-4 w-full">
+            <Combobox
               value={selectedCategory}
               onChange={setSelectedCategory}
               options={categories}
               placeholder="Categories"
+              role="add"
             />
-            <BasicSelect
+            <Combobox
               value={selectedLocation}
               onChange={setSelectedLocation}
               options={locations}
               placeholder="Locations"
             />
           </div>
-          <div className="grid grid-cols-2 gap-2 w-full">
+          <div className="grid grid-cols-2 gap-4 w-full">
             <DateTime
               placeholder="Start date"
               value={startDate || null}
