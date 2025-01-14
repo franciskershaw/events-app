@@ -49,7 +49,7 @@ export const formatTime = ({ start, end }: EventDate): string => {
   }
 
   if (dayjs(start).date() !== dayjs(end).date()) {
-    return `${startTime} (${dayjs(start).format("MMM D")}) - ${endTime} (${dayjs(end).format("MMM D")})`;
+    return `${startTime} (${dayjs(start).format("MMM Do")}) - ${endTime} (${dayjs(end).format("MMM Do")})`;
   }
 
   return `${startTime} - ${endTime}`;
