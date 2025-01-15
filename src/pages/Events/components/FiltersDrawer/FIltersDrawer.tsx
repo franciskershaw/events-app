@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/drawer";
 
 import { Combobox } from "../../../../components/ui/combobox";
+import { useSearch } from "../../../../contexts/SearchEvents/SearchEventsContext";
 import useFiltersDrawer from "./useFiltersDrawer";
 
 export interface FiltersDrawerProps {
@@ -41,9 +42,8 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
     setStartDate,
     setEndDate,
   } = useFiltersDrawer(setActiveFilterCount);
-
+  const { showEventsFree, setShowEventsFree } = useSearch();
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
-  const [selectedEventsFree, setSelectedEventsFree] = useState<boolean>(false);
 
   const dateButtons = useMemo(
     () => [
@@ -136,12 +136,14 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
               options={categories}
               placeholder="Categories"
               role="add"
+              disabled={showEventsFree}
             />
             <Combobox
               value={selectedLocation}
               onChange={setSelectedLocation}
               options={locations}
               placeholder="Locations"
+              disabled={showEventsFree}
             />
           </div>
           <div className="grid grid-cols-2 gap-4 w-full">
@@ -176,10 +178,8 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
             ))}
             <Button
               size="round"
-              variant={selectedEventsFree === true ? "outline" : "default"}
-              onClick={() =>
-                setSelectedEventsFree((prev) => (prev === true ? false : true))
-              }
+              variant={showEventsFree ? "outline" : "default"}
+              onClick={() => setShowEventsFree(!showEventsFree)}
             >
               <FaRegCalendar />
             </Button>

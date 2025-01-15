@@ -1,11 +1,13 @@
 import { createContext, ReactNode, useContext, useReducer } from "react";
 
+import dayjs from "dayjs";
+
 import { Event } from "@/types/globalTypes";
 
 // Define modal names as constants
 const MODAL_EVENT = "event";
 
-type ModalMode = "edit" | "copy";
+type ModalMode = "add" | "edit" | "copy";
 
 type ModalsState = {
   isEventModalOpen: boolean;
@@ -71,7 +73,7 @@ const modalsReducer = (
 
 // Context type definition
 type ModalsContextType = ModalsState & {
-  openEventModal: (data?: Event, mode?: ModalMode) => void;
+  openEventModal: (data?: Event, mode?: ModalMode, date?: string) => void;
   openDeleteEventModal: (data: Event) => void;
   closeModal: () => void;
   resetSelectedData: () => void;
@@ -85,8 +87,35 @@ const ModalsProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(modalsReducer, initialState);
 
   // Action dispatchers
-  const openEventModal = (data?: Event, mode: ModalMode = "edit") => {
-    dispatch({ type: "OPEN_EVENT_MODAL", data, mode });
+  const openEventModal = (
+    data?: Event,
+    mode: ModalMode = "edit",
+    date?: string
+  ) => {
+    const newEvent: Event = {
+      _id: "",
+      title: "",
+      category: { _id: "", name: "", icon: "" },
+      sharedWith: "",
+      createdBy: "",
+      date: {
+        start: date || dayjs().toISOString(),
+        end: "",
+      },
+      location: {
+        venue: "",
+        city: "",
+      },
+      description: "",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    dispatch({
+      type: "OPEN_EVENT_MODAL",
+      data: mode === "add" ? newEvent : data || undefined,
+      mode,
+    });
   };
 
   const openDeleteEventModal = (data: Event) => {
