@@ -7,7 +7,9 @@ import {
   useState,
 } from "react";
 
-import { Event } from "../../types/globalTypes";
+import { eachDayOfInterval, isSameDay } from "date-fns";
+
+import { Event, EventFree } from "../../types/globalTypes";
 import {
   createCategoryLookup,
   getNestedValue,
@@ -30,6 +32,9 @@ interface SearchContextProps extends DateFilters {
   setQuery: (query: string) => void;
   filteredEvents: Event[];
   setFilteredEvents: (events: Event[]) => void;
+  filteredEventsFree: EventFree[];
+  showEventsFree: boolean;
+  setShowEventsFree: (value: boolean) => void;
   selectedCategory: string;
   setSelectedCategory: (category: string) => void;
   selectedLocation: string;
@@ -62,6 +67,7 @@ export const SearchProvider = ({
   const [filteredEvents, setFilteredEvents] = useState<Event[]>(initialEvents);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
+  const [showEventsFree, setShowEventsFree] = useState(false);
 
   const categoryLookup = useMemo(
     () => createCategoryLookup(categories),
@@ -71,6 +77,39 @@ export const SearchProvider = ({
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedLocation, setSelectedLocation] = useState<string>("");
   const locations = getUniqueLocations(initialEvents);
+
+  const eventsFree = useMemo(() => {
+    const today = new Date();
+
+    const furthestDate = filteredEvents.reduce(
+      (latest, event) =>
+        new Date(event.date.end || event.date.start) > latest
+          ? new Date(event.date.end || event.date.start)
+          : latest,
+      today
+    );
+
+    const rangeEndDate =
+      endDate && endDate > furthestDate ? endDate : furthestDate;
+
+    const allDays = eachDayOfInterval({ start: today, end: rangeEndDate });
+
+    const eventDays = filteredEvents.flatMap((event) => {
+      const eventStart = new Date(event.date.start);
+      const eventEnd = new Date(event.date.end || event.date.start);
+      return eachDayOfInterval({ start: eventStart, end: eventEnd });
+    });
+
+    let noEventDays = allDays.filter(
+      (day) => !eventDays.some((eventDay) => isSameDay(day, eventDay))
+    );
+
+    if (startDate) {
+      noEventDays = noEventDays.filter((day) => day >= startDate);
+    }
+
+    return noEventDays;
+  }, [filteredEvents, startDate, endDate]);
 
   useEffect(() => {
     const { textQuery, dateQuery } = splitQueryParts(query);
@@ -166,10 +205,16 @@ export const SearchProvider = ({
         setQuery,
         filteredEvents,
         setFilteredEvents,
+        filteredEventsFree: eventsFree.map((day) => ({
+          _id: `free-${day.toISOString()}`,
+          date: { start: day.toISOString(), end: day.toISOString() },
+        })),
         startDate,
         setStartDate,
         endDate,
         setEndDate,
+        showEventsFree,
+        setShowEventsFree,
         selectedCategory,
         setSelectedCategory,
         selectedLocation,

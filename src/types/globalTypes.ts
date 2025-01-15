@@ -7,6 +7,11 @@ export interface User {
   accessToken: string;
 }
 
+// Events
+export type BaseEvent = {
+  _id: string;
+  date: EventDate;
+};
 export interface Event {
   _id: string;
   title: string;
@@ -24,7 +29,11 @@ export interface Event {
   updatedAt: Date;
 }
 
-// Events
+export interface EventFree {
+  _id: string;
+  date: EventDate;
+}
+
 export interface EventCategory {
   _id: string;
   name: string;

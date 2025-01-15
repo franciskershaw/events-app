@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useEffect, useState } from "react";
 
 import { Check, ChevronsUpDown } from "lucide-react";
 
@@ -27,6 +27,7 @@ interface ComboboxProps {
   placeholder?: string;
   role?: "search" | "add";
   onAddOption?: (newOption: string) => void;
+  disabled?: boolean;
 }
 
 const Combobox = ({
@@ -36,9 +37,16 @@ const Combobox = ({
   placeholder = "Select an option",
   role = "search",
   onAddOption,
+  disabled = false,
 }: ComboboxProps) => {
-  const [open, setOpen] = React.useState(false);
-  const [searchValue, setSearchValue] = React.useState("");
+  const [open, setOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+
+  useEffect(() => {
+    if (disabled && value) {
+      onChange("");
+    }
+  }, [disabled, value, onChange]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -47,7 +55,12 @@ const Combobox = ({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className={`min-w-[140px] truncate justify-start font-normal ${!value && "text-muted-foreground"}`}
+          disabled={disabled}
+          className={cn(
+            "min-w-[140px] truncate justify-start font-normal",
+            !value && "text-muted-foreground",
+            disabled && "cursor-not-allowed opacity-50"
+          )}
         >
           <ChevronsUpDown className="mr-2 h-4 w-4 flex-shrink-0" />
           {value
