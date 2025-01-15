@@ -14,7 +14,21 @@ const EventFreeCard = ({ event }: { event: EventFree }) => {
       className={`border rounded-md shadow-sm bg-white hover:shadow-md transition-all cursor-pointer ${
         weekend ? "border-blue-500" : "border-gray-200"
       }`}
-      onClick={() => openEventModal(undefined, "add", event.date.start)}
+      onClick={() =>
+        openEventModal(
+          {
+            _id: "",
+            title: "",
+            date: { start: event.date.start, end: "" },
+            category: { _id: "", name: "", icon: "" },
+            sharedWith: "",
+            createdBy: "",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+          "addFromFreeEvent"
+        )
+      }
     >
       <div className="flex items-center justify-between text-sm px-4 py-2">
         <span className="text-muted-foreground">{formattedDate}</span>
