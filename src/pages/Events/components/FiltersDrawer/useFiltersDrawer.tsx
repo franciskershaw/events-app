@@ -20,6 +20,8 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     setSelectedLocation,
     filteredEvents,
     locations,
+    showEventsFree,
+    setShowEventsFree,
   } = useSearch();
 
   const activeFilterCount = useMemo(() => {
@@ -29,8 +31,16 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     if (endDate) count++;
     if (selectedCategory) count++;
     if (selectedLocation) count++;
+    if (showEventsFree) count++;
     return count;
-  }, [query, startDate, endDate, selectedCategory, selectedLocation]);
+  }, [
+    query,
+    startDate,
+    endDate,
+    selectedCategory,
+    selectedLocation,
+    showEventsFree,
+  ]);
 
   useEffect(() => {
     setActiveFilterCount(activeFilterCount);
@@ -60,6 +70,7 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     setEndDate(null);
     setSelectedCategory("");
     setSelectedLocation("");
+    setShowEventsFree(false);
   };
 
   // Remove specific filters
@@ -79,6 +90,9 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
         break;
       case "location":
         setSelectedLocation("");
+        break;
+      case "freeDays":
+        setShowEventsFree(false);
         break;
       default:
         break;
@@ -120,8 +134,22 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
       });
     }
 
+    if (showEventsFree) {
+      filters.push({
+        label: `Free days`,
+        type: "freeDays",
+      });
+    }
+
     return filters;
-  }, [query, startDate, endDate, selectedCategory, selectedLocation]);
+  }, [
+    query,
+    startDate,
+    endDate,
+    selectedCategory,
+    selectedLocation,
+    showEventsFree,
+  ]);
 
   return {
     filteredEvents,
@@ -140,6 +168,8 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     endDate,
     setStartDate,
     setEndDate,
+    showEventsFree,
+    setShowEventsFree,
   };
 };
 
