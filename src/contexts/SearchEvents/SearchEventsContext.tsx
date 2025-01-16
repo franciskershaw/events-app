@@ -74,13 +74,22 @@ export const SearchProvider = ({
   const eventsFree = useMemo(() => {
     const today = new Date();
 
-    const furthestDate = eventsDb.reduce(
+    const furthestEventDate = eventsDb.reduce(
       (latest, event) =>
         new Date(event.date.end || event.date.start) > latest
           ? new Date(event.date.end || event.date.start)
           : latest,
       today
     );
+
+    // Determine the furthest date to consider from query, date range and final event
+    const { dateQuery } = splitQueryParts(query);
+    const queryEndDate = dateQuery.end ? new Date(dateQuery.end) : null;
+
+    const furthestDate =
+      queryEndDate && queryEndDate > furthestEventDate
+        ? queryEndDate
+        : furthestEventDate;
 
     const rangeEndDate =
       endDate && endDate > furthestDate ? endDate : furthestDate;
@@ -105,7 +114,7 @@ export const SearchProvider = ({
       _id: `free-${day.toISOString()}`,
       date: { start: day.toISOString(), end: day.toISOString() },
     }));
-  }, [eventsDb, startDate, endDate]);
+  }, [eventsDb, startDate, endDate, query]);
 
   const events = useMemo(() => {
     const { textQuery, dateQuery } = splitQueryParts(query);
