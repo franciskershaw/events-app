@@ -1,14 +1,8 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, ReactNode, useContext, useMemo, useState } from "react";
 
 import { eachDayOfInterval, isSameDay } from "date-fns";
 
+import { isEventTypeguard } from "../../pages/Events/helpers/helpers";
 import { Event, EventFree } from "../../types/globalTypes";
 import {
   createCategoryLookup,
@@ -30,9 +24,8 @@ interface DateFilters {
 interface SearchContextProps extends DateFilters {
   query: string;
   setQuery: (query: string) => void;
-  filteredEvents: Event[];
-  setFilteredEvents: (events: Event[]) => void;
-  filteredEventsFree: EventFree[];
+  filteredEvents: Event[] | EventFree[];
+  setFilteredEvents: (events: Event[] | EventFree[]) => void;
   showEventsFree: boolean;
   setShowEventsFree: (value: boolean) => void;
   selectedCategory: string;
@@ -54,17 +47,16 @@ export const useSearch = () => {
 
 interface SearchProviderProps {
   children: ReactNode;
-  initialEvents: Event[];
+  eventsDb: Event[];
   categories: { _id: string; name: string }[];
 }
 
 export const SearchProvider = ({
   children,
-  initialEvents,
+  eventsDb,
   categories,
 }: SearchProviderProps) => {
   const [query, setQuery] = useState("");
-  const [filteredEvents, setFilteredEvents] = useState<Event[]>(initialEvents);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [showEventsFree, setShowEventsFree] = useState(false);
@@ -76,12 +68,13 @@ export const SearchProvider = ({
 
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedLocation, setSelectedLocation] = useState<string>("");
-  const locations = getUniqueLocations(initialEvents);
+  const locations = getUniqueLocations(eventsDb);
 
+  // Calculate eventsFree based on eventsDb
   const eventsFree = useMemo(() => {
     const today = new Date();
 
-    const furthestDate = filteredEvents.reduce(
+    const furthestDate = eventsDb.reduce(
       (latest, event) =>
         new Date(event.date.end || event.date.start) > latest
           ? new Date(event.date.end || event.date.start)
@@ -94,24 +87,27 @@ export const SearchProvider = ({
 
     const allDays = eachDayOfInterval({ start: today, end: rangeEndDate });
 
-    const eventDays = filteredEvents.flatMap((event) => {
+    const eventDays = eventsDb.flatMap((event) => {
       const eventStart = new Date(event.date.start);
       const eventEnd = new Date(event.date.end || event.date.start);
       return eachDayOfInterval({ start: eventStart, end: eventEnd });
     });
 
-    let noEventDays = allDays.filter(
+    let eventFreeDays = allDays.filter(
       (day) => !eventDays.some((eventDay) => isSameDay(day, eventDay))
     );
 
     if (startDate) {
-      noEventDays = noEventDays.filter((day) => day >= startDate);
+      eventFreeDays = eventFreeDays.filter((day) => day >= startDate);
     }
 
-    return noEventDays;
-  }, [filteredEvents, startDate, endDate]);
+    return eventFreeDays.map((day) => ({
+      _id: `free-${day.toISOString()}`,
+      date: { start: day.toISOString(), end: day.toISOString() },
+    }));
+  }, [eventsDb, startDate, endDate]);
 
-  useEffect(() => {
+  const events = useMemo(() => {
     const { textQuery, dateQuery } = splitQueryParts(query);
     const startDateComponents = parseDateComponents(dateQuery.start);
     const endDateComponents = dateQuery.end
@@ -119,7 +115,9 @@ export const SearchProvider = ({
       : null;
     const textKeywords = textQuery.split(/\s+/).filter(Boolean);
 
-    const filtered = initialEvents.filter((event) => {
+    const eventsInitial = showEventsFree === false ? eventsDb : eventsFree;
+
+    return eventsInitial.filter((event) => {
       // Match text fields (title, venue, city) against each keyword
       const matchesTextQuery = textKeywords.every((keyword) =>
         ["title", "location.venue", "location.city"].some((key) => {
@@ -127,24 +125,6 @@ export const SearchProvider = ({
           return value?.toString().toLowerCase().includes(keyword);
         })
       );
-
-      // Match categories
-      const categoryId = event.category._id;
-      const categoryName = categoryLookup[categoryId];
-      const matchesCategoryQuery = textKeywords.some((keyword) =>
-        categoryName.toLowerCase().includes(keyword.toLowerCase())
-      );
-      const matchesCategorySelect =
-        !selectedCategory ||
-        categoryName.toLowerCase() === selectedCategory.toLowerCase();
-
-      // Match location
-      const eventCity = event.location?.city?.toLowerCase() || "";
-      const eventVenue = event.location?.venue?.toLowerCase() || "";
-      const matchesLocation =
-        !selectedLocation ||
-        eventCity === selectedLocation.toLowerCase() ||
-        eventVenue === selectedLocation.toLowerCase();
 
       // Match event date range
       const eventStartDate = new Date(event.date.start);
@@ -173,29 +153,55 @@ export const SearchProvider = ({
         (!startDate || eventEndDate >= startDate) && // Event still ongoing after startDate
         (!endDate || eventStartDate <= endDate); // Event starts before endDate
 
-      // Combine all match conditions
-      const matchesAll =
-        (textKeywords.length === 0 ||
-          matchesTextQuery ||
-          matchesCategoryQuery) &&
-        matchesCategorySelect &&
-        matchesLocation &&
-        matchesQueryDateRange &&
-        matchesManualDateRange;
+      if (showEventsFree === true) {
+        return (
+          (textKeywords.length === 0 || matchesTextQuery) &&
+          matchesQueryDateRange &&
+          matchesManualDateRange
+        );
+      } else {
+        if (!isEventTypeguard(event)) return false;
 
-      return matchesAll;
+        // Match categories
+        const categoryId = event.category._id;
+        const categoryName = categoryLookup[categoryId];
+        const matchesCategoryQuery = textKeywords.some((keyword) =>
+          categoryName.toLowerCase().includes(keyword.toLowerCase())
+        );
+        const matchesCategorySelect =
+          !selectedCategory ||
+          categoryName.toLowerCase() === selectedCategory.toLowerCase();
+
+        // Match location
+        const eventCity = event.location?.city?.toLowerCase() || "";
+        const eventVenue = event.location?.venue?.toLowerCase() || "";
+        const matchesLocation =
+          !selectedLocation ||
+          eventCity === selectedLocation.toLowerCase() ||
+          eventVenue === selectedLocation.toLowerCase();
+
+        // Combine all match conditions
+        return (
+          (textKeywords.length === 0 ||
+            matchesTextQuery ||
+            matchesCategoryQuery) &&
+          matchesCategorySelect &&
+          matchesLocation &&
+          matchesQueryDateRange &&
+          matchesManualDateRange
+        );
+      }
     });
-
-    setFilteredEvents(filtered);
   }, [
+    showEventsFree,
+    eventsFree,
+    eventsDb,
     query,
-    startDate,
-    endDate,
-    initialEvents,
-    categories,
     categoryLookup,
     selectedCategory,
     selectedLocation,
+    startDate,
+    endDate,
   ]);
 
   return (
@@ -203,12 +209,8 @@ export const SearchProvider = ({
       value={{
         query,
         setQuery,
-        filteredEvents,
-        setFilteredEvents,
-        filteredEventsFree: eventsFree.map((day) => ({
-          _id: `free-${day.toISOString()}`,
-          date: { start: day.toISOString(), end: day.toISOString() },
-        })),
+        filteredEvents: events,
+        setFilteredEvents: () => {},
         startDate,
         setStartDate,
         endDate,

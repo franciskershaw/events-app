@@ -4,18 +4,17 @@ import {
   filterTodayEvents,
   groupEvents,
   isEventTypeguard,
-} from "../../helper/helper";
+} from "../../helpers/helpers";
 import DateScroller from "../DateScroller";
 import EventCard from "./EventCard";
 import EventFreeCard from "./EventFreeCard";
 
 const EventCards = () => {
-  const { filteredEvents, filteredEventsFree, showEventsFree } = useSearch();
-  const events = showEventsFree ? filteredEventsFree : filteredEvents;
+  const { filteredEvents, showEventsFree } = useSearch();
 
-  const todayEvents = filterTodayEvents(events);
+  const todayEvents = filterTodayEvents(filteredEvents);
   const upcomingEvents = groupEvents(
-    events.filter((event) => !todayEvents.includes(event))
+    filteredEvents.filter((event) => !todayEvents.includes(event))
   );
 
   return (
