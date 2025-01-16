@@ -46,6 +46,14 @@ export const groupEvents = (events: BaseEvent[]): GroupedEvents => {
   }, {});
 };
 
-export const isEventTypeguard = (event: BaseEvent): event is Event => {
-  return "title" in event && "category" in event && "sharedWith" in event;
+export const isEventTypeguard = (obj: any): obj is Event => {
+  return (
+    obj &&
+    typeof obj === "object" &&
+    "title" in obj &&
+    "category" in obj &&
+    typeof obj.category === "object" &&
+    "_id" in obj.category &&
+    "sharedWith" in obj
+  );
 };

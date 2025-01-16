@@ -15,7 +15,7 @@ const Events = () => {
   const { eventCategories } = useGetEventCategories();
 
   return (
-    <SearchProvider initialEvents={events} categories={eventCategories}>
+    <SearchProvider eventsDb={events} categories={eventCategories}>
       <EventsWithSearch />
     </SearchProvider>
   );
