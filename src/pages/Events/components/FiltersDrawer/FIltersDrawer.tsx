@@ -42,8 +42,12 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
     setStartDate,
     setEndDate,
   } = useFiltersDrawer(setActiveFilterCount);
-  const { showEventsFree, setShowEventsFree } = useSearch();
+  const { showEventsFree, setShowEventsFree, filteredEventsFree } = useSearch();
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
+
+  const eventsNum = showEventsFree
+    ? filteredEventsFree.length
+    : filteredEvents.length;
 
   const dateButtons = useMemo(
     () => [
@@ -102,8 +106,8 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
         {appliedFilters.length > 0 && (
           <>
             <div className="text-sm text-center mb-2">
-              Showing {filteredEvents.length} result
-              {filteredEvents.length > 1 ? "s" : ""}.{" "}
+              Showing {eventsNum} result
+              {eventsNum > 1 ? "s" : ""}.{" "}
               <button
                 className="text-blue-500 hover:underline"
                 onClick={clearAllFilters}
