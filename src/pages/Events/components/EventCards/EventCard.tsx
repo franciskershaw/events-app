@@ -61,6 +61,12 @@ const EventCard = ({ event }: { event: Event }) => {
           animate={{ translateX: isSwiped ? -100 : 0 }}
           transition={{ duration: duration }}
         >
+          <div className="absolute top-0 right-0 bottom-0 px-1 py-2">
+            <div
+              className="w-1 h-full rounded-full bg-secondary"
+              aria-hidden="true"
+            ></div>
+          </div>
           <div className="flex items-center justify-between">
             <h2 className="font-semibold text-sm truncate flex-1">{title}</h2>
             {location?.city && (
@@ -76,24 +82,32 @@ const EventCard = ({ event }: { event: Event }) => {
         </motion.div>
 
         <motion.div
-          className={`absolute top-0 right-0 bottom-0 flex items-center justify-center gap-4 w-full bg-white`}
+          className={`absolute top-0 right-0 bottom-0 w-full bg-white`}
           style={{ width: "100%" }}
           animate={{ translateX: isSwiped ? 0 : "100%" }}
           transition={{ duration: duration }}
         >
-          <Button
-            size="round"
-            onClick={() => openEventModal({ ...event, _id: "" }, "copy")}
-          >
-            Copy
-          </Button>
-          <Button size="round" onClick={() => openEventModal(event, "edit")}>
-            Edit
-          </Button>
-          <Button size="round" onClick={() => openDeleteEventModal(event)}>
-            Delete
-          </Button>
-          {/* <Button size="round">Private</Button> */}
+          <div className="relative flex items-center justify-center gap-4 h-full">
+            <div className="absolute top-0 left-0 bottom-0 px-1 py-2">
+              <div
+                className="w-1 h-full rounded-full bg-secondary"
+                aria-hidden="true"
+              ></div>
+            </div>
+            <Button
+              size="round"
+              onClick={() => openEventModal({ ...event, _id: "" }, "copy")}
+            >
+              Copy
+            </Button>
+            <Button size="round" onClick={() => openEventModal(event, "edit")}>
+              Edit
+            </Button>
+            <Button size="round" onClick={() => openDeleteEventModal(event)}>
+              Delete
+            </Button>
+            {/* <Button size="round">Private</Button> */}
+          </div>
         </motion.div>
       </div>
 
