@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 
-import { Event } from "@/types/globalTypes";
-
+import { BaseEvent, Event } from "../../../types/globalTypes";
 import { EventFormValues } from "../hooks/useEventForm";
 
 export const transformEventFormValues = (values: EventFormValues) => ({
@@ -19,10 +18,10 @@ export const transformEventFormValues = (values: EventFormValues) => ({
 });
 
 interface GroupedEvents {
-  [key: string]: Event[];
+  [key: string]: BaseEvent[];
 }
 
-export const filterTodayEvents = (events: Event[]): Event[] => {
+export const filterTodayEvents = (events: BaseEvent[]): BaseEvent[] => {
   const today = dayjs().startOf("day");
   return events.filter((event) => {
     const startDate = dayjs(event.date.start);
@@ -35,7 +34,7 @@ export const filterTodayEvents = (events: Event[]): Event[] => {
   });
 };
 
-export const groupEvents = (events: Event[]): GroupedEvents => {
+export const groupEvents = (events: BaseEvent[]): GroupedEvents => {
   return events.reduce((acc: GroupedEvents, event) => {
     const month = dayjs(event.date.start).format("MMMM YYYY");
     if (!acc[month]) {
@@ -44,4 +43,19 @@ export const groupEvents = (events: Event[]): GroupedEvents => {
     acc[month] = [...acc[month], event];
     return acc;
   }, {});
+};
+
+export const isEventTypeguard = (obj: unknown): obj is Event => {
+  if (!obj || typeof obj !== "object") {
+    return false;
+  }
+
+  const eventObj = obj as Record<string, unknown>;
+  return (
+    "title" in eventObj &&
+    "category" in eventObj &&
+    typeof eventObj.category === "object" &&
+    eventObj.category !== null &&
+    "_id" in eventObj.category
+  );
 };

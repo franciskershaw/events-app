@@ -5,7 +5,7 @@ import { Event } from "@/types/globalTypes";
 // Define modal names as constants
 const MODAL_EVENT = "event";
 
-type ModalMode = "edit" | "copy";
+type ModalMode = "edit" | "copy" | "addFromFreeEvent";
 
 type ModalsState = {
   isEventModalOpen: boolean;

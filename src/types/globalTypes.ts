@@ -7,6 +7,11 @@ export interface User {
   accessToken: string;
 }
 
+// Events
+export type BaseEvent = {
+  _id: string;
+  date: EventDate;
+};
 export interface Event {
   _id: string;
   title: string;
@@ -17,14 +22,17 @@ export interface Event {
   };
   category: EventCategory;
   additionalAttributes?: Record<string, string>;
-  sharedWith: string;
   createdBy: string;
   description?: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-// Events
+export interface EventFree {
+  _id: string;
+  date: EventDate;
+}
+
 export interface EventCategory {
   _id: string;
   name: string;

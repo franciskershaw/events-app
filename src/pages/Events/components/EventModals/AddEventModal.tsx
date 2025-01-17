@@ -21,9 +21,11 @@ const AddEventModal = () => {
           <DialogTitle>
             {mode === "copy"
               ? "Copy event"
-              : selectedEvent
-                ? "Edit event"
-                : "Add event"}
+              : mode === "addFromFreeEvent"
+                ? "Add event"
+                : selectedEvent
+                  ? "Edit event"
+                  : "Add event"}
           </DialogTitle>
         </DialogHeader>
         <DialogDescription className="sr-only">
@@ -41,9 +43,11 @@ const AddEventModal = () => {
           <Button form={id} type="submit">
             {mode === "copy"
               ? "Create copy"
-              : selectedEvent
-                ? "Save changes"
-                : "Add event"}
+              : mode === "addFromFreeEvent"
+                ? "Add event"
+                : selectedEvent
+                  ? "Save changes"
+                  : "Add event"}
           </Button>
         </DialogFooter>
       </DialogContent>

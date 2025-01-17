@@ -1,11 +1,16 @@
 import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
 
-import { filterTodayEvents, groupEvents } from "../../helper/helper";
+import {
+  filterTodayEvents,
+  groupEvents,
+  isEventTypeguard,
+} from "../../helpers/helpers";
 import DateScroller from "../DateScroller";
 import EventCard from "./EventCard";
+import EventFreeCard from "./EventFreeCard";
 
 const EventCards = () => {
-  const { filteredEvents } = useSearch();
+  const { filteredEvents, showEventsFree } = useSearch();
 
   const todayEvents = filterTodayEvents(filteredEvents);
   const upcomingEvents = groupEvents(
@@ -18,9 +23,13 @@ const EventCards = () => {
         <>
           <DateScroller label="Today" />
           <div className="space-y-2 px-4 py-5 bg-blue-100">
-            {todayEvents.map((event) => (
-              <EventCard key={event._id} event={event} />
-            ))}
+            {todayEvents.map((event) =>
+              showEventsFree ? (
+                <EventFreeCard key={event._id} event={event} />
+              ) : isEventTypeguard(event) ? (
+                <EventCard key={event._id} event={event} />
+              ) : null
+            )}
           </div>
         </>
       )}
@@ -29,9 +38,13 @@ const EventCards = () => {
         <div key={month}>
           <DateScroller date={monthEvents[0].date.start} />
           <div className="space-y-2 px-4 py-5 bg-blue-100">
-            {monthEvents.map((event) => (
-              <EventCard key={event._id} event={event} />
-            ))}
+            {monthEvents.map((event) =>
+              showEventsFree ? (
+                <EventFreeCard key={event._id} event={event} />
+              ) : isEventTypeguard(event) ? (
+                <EventCard key={event._id} event={event} />
+              ) : null
+            )}
           </div>
         </div>
       ))}
