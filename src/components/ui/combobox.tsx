@@ -74,6 +74,7 @@ const Combobox = ({
             onValueChange={(searchValue) => {
               setSearchValue(searchValue);
             }}
+            autoFocus={false}
           />
           <CommandList>
             <CommandEmpty>
