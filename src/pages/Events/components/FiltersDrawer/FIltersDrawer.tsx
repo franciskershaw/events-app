@@ -77,6 +77,24 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
     return matchingButton?.label || null;
   }, [dateButtons, startDate, endDate]);
 
+  const toggleDateButton = (button: {
+    label: string;
+    startDate: Date;
+    endDate: Date;
+  }) => {
+    if (
+      activeButton === button.label &&
+      startDate?.toDateString() === button.startDate.toDateString() &&
+      endDate?.toDateString() === button.endDate.toDateString()
+    ) {
+      setStartDate(null);
+      setEndDate(null);
+    } else {
+      setStartDate(button.startDate);
+      setEndDate(button.endDate);
+    }
+  };
+
   return (
     <Drawer>
       <DrawerTrigger asChild>
@@ -162,10 +180,7 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
                 key={button.label}
                 size="round"
                 variant={activeButton === button.label ? "outline" : "default"}
-                onClick={() => {
-                  setStartDate(button.startDate);
-                  setEndDate(button.endDate);
-                }}
+                onClick={() => toggleDateButton(button)}
               >
                 {button.label}
               </Button>
