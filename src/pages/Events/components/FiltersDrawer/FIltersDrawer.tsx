@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import { endOfMonth, endOfWeek, startOfMonth, startOfWeek } from "date-fns";
 import { FaChevronUp, FaRegCalendar } from "react-icons/fa";
@@ -43,7 +43,6 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
     setEndDate,
   } = useFiltersDrawer(setActiveFilterCount);
   const { showEventsFree, setShowEventsFree } = useSearch();
-  const [selectedButton, setSelectedButton] = useState<string | null>(null);
 
   const dateButtons = useMemo(
     () => [
@@ -66,19 +65,17 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
     []
   );
 
-  useEffect(() => {
-    if (
-      selectedButton &&
-      !dateButtons.some(
-        ({ label, startDate: btnStart, endDate: btnEnd }) =>
-          label === selectedButton &&
-          startDate?.toDateString() === btnStart.toDateString() &&
-          endDate?.toDateString() === btnEnd.toDateString()
-      )
-    ) {
-      setSelectedButton(null);
-    }
-  }, [startDate, endDate, selectedButton, dateButtons]);
+  const activeButton = useMemo(() => {
+    if (!startDate || !endDate) return null;
+
+    const matchingButton = dateButtons.find(
+      ({ startDate: btnStart, endDate: btnEnd }) =>
+        startDate.toDateString() === btnStart.toDateString() &&
+        endDate.toDateString() === btnEnd.toDateString()
+    );
+
+    return matchingButton?.label || null;
+  }, [dateButtons, startDate, endDate]);
 
   return (
     <Drawer>
@@ -164,13 +161,10 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
               <Button
                 key={button.label}
                 size="round"
-                variant={
-                  selectedButton === button.label ? "outline" : "default"
-                }
+                variant={activeButton === button.label ? "outline" : "default"}
                 onClick={() => {
                   setStartDate(button.startDate);
                   setEndDate(button.endDate);
-                  setSelectedButton(button.label);
                 }}
               >
                 {button.label}
