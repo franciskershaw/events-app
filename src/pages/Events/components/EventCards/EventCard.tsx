@@ -8,6 +8,8 @@ import { useModals } from "@/contexts/Modals/ModalsContext";
 import { formatDate, formatTime, isWeekend } from "@/lib/utils";
 import { Event } from "@/types/globalTypes";
 
+import useMakeEventPrivate from "../../hooks/useMakeEventPrivate";
+
 const EventCard = ({ event }: { event: Event }) => {
   const { location, title, category, description } = event;
   const [isOpen, setIsOpen] = useState(false);
@@ -18,6 +20,8 @@ const EventCard = ({ event }: { event: Event }) => {
   const weekend = isWeekend(event.date.start);
 
   const toggleBody = () => setIsOpen((prev) => !prev);
+
+  const makeEventPrivate = useMakeEventPrivate();
 
   return (
     <div
@@ -84,7 +88,12 @@ const EventCard = ({ event }: { event: Event }) => {
             <Button size="round" onClick={() => openDeleteEventModal(event)}>
               Delete
             </Button>
-            {/* <Button size="round">Private</Button> */}
+            <Button
+              size="round"
+              onClick={() => makeEventPrivate.mutate(event._id)}
+            >
+              Private
+            </Button>
           </div>
         </div>
       </motion.div>
