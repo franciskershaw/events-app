@@ -22,7 +22,6 @@ export interface Event {
   };
   category: EventCategory;
   additionalAttributes?: Record<string, string>;
-  sharedWith: string;
   createdBy: string;
   description?: string;
   createdAt: Date;

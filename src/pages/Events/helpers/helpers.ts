@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 
-import { BaseEvent, Event } from "@/types/globalTypes";
-
+import { BaseEvent, Event } from "../../../types/globalTypes";
 import { EventFormValues } from "../hooks/useEventForm";
 
 export const transformEventFormValues = (values: EventFormValues) => ({
@@ -46,14 +45,17 @@ export const groupEvents = (events: BaseEvent[]): GroupedEvents => {
   }, {});
 };
 
-export const isEventTypeguard = (obj: any): obj is Event => {
+export const isEventTypeguard = (obj: unknown): obj is Event => {
+  if (!obj || typeof obj !== "object") {
+    return false;
+  }
+
+  const eventObj = obj as Record<string, unknown>;
   return (
-    obj &&
-    typeof obj === "object" &&
-    "title" in obj &&
-    "category" in obj &&
-    typeof obj.category === "object" &&
-    "_id" in obj.category &&
-    "sharedWith" in obj
+    "title" in eventObj &&
+    "category" in eventObj &&
+    typeof eventObj.category === "object" &&
+    eventObj.category !== null &&
+    "_id" in eventObj.category
   );
 };
