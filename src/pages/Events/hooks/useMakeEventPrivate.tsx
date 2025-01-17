@@ -11,7 +11,6 @@ const useMakeEventPrivate = () => {
   const { user } = useUser();
 
   const makeEventPrivate = async (eventId: string) => {
-    console.log(user?.accessToken);
     const { data } = await api.patch(
       `/events/${eventId}/privacy`,
       {},
