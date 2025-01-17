@@ -21,7 +21,6 @@ const EventFreeCard = ({ event }: { event: EventFree }) => {
             title: "",
             date: { start: event.date.start, end: "" },
             category: { _id: "", name: "", icon: "" },
-            sharedWith: "",
             createdBy: "",
             createdAt: new Date(),
             updatedAt: new Date(),

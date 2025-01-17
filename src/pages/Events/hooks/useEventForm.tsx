@@ -41,7 +41,9 @@ const useEventForm = () => {
     resolver: zodResolver(eventFormSchema),
     defaultValues: {
       _id:
-        mode === ("copy" || "addFromFreeEvent") ? "" : selectedEvent?._id || "",
+        mode === "copy" || mode === "addFromFreeEvent"
+          ? ""
+          : selectedEvent?._id || "",
       title: selectedEvent?.title ?? "",
       datetime: selectedEvent?.date.start
         ? dayjs(selectedEvent.date.start).toDate()
@@ -82,10 +84,11 @@ const useEventForm = () => {
   }, [form]);
 
   const onSubmit = (values: EventFormValues) => {
-    if (mode === ("copy" || "addFromFreeEvent") || !selectedEvent) {
+    if (mode === "copy" || mode === "addFromFreeEvent" || !selectedEvent) {
+      console.log(values, mode);
       addEvent.mutate(values);
     } else {
-      console.log(values);
+      console.log(values, mode);
       editEvent.mutate(values);
     }
     closeModal();
