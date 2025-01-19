@@ -9,6 +9,8 @@ import { useModals } from "@/contexts/Modals/ModalsContext";
 import { formatDate, formatTime, isWeekend } from "@/lib/utils";
 import { Event } from "@/types/globalTypes";
 
+import SwipeableIndicator from "../../../../components/utility/SwipeableIndicator";
+
 const EventCard = ({ event }: { event: Event }) => {
   const { location, title, category, description } = event;
   const [isOpen, setIsOpen] = useState(false);
@@ -62,12 +64,7 @@ const EventCard = ({ event }: { event: Event }) => {
           animate={{ translateX: isSwiped ? -100 : 0 }}
           transition={{ duration: duration }}
         >
-          <div className="absolute top-0 right-0 bottom-0 px-1 py-2">
-            <div
-              className="w-1 h-full rounded-full bg-secondary"
-              aria-hidden="true"
-            ></div>
-          </div>
+          <SwipeableIndicator orientation="vertical" alignment="right" />
           <div className="flex items-center justify-between">
             <h2 className="font-semibold text-sm truncate flex-1">{title}</h2>
             {location?.city && (
@@ -90,12 +87,7 @@ const EventCard = ({ event }: { event: Event }) => {
           transition={{ duration: duration }}
         >
           <div className="relative flex items-center justify-center gap-4 h-full">
-            <div className="absolute top-0 left-0 bottom-0 px-1 py-2">
-              <div
-                className="w-1 h-full rounded-full bg-secondary"
-                aria-hidden="true"
-              ></div>
-            </div>
+            <SwipeableIndicator orientation="vertical" alignment="left" />
             <Button
               size="round"
               onClick={() => openEventModal({ ...event, _id: "" }, "copy")}

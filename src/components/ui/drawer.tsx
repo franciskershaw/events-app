@@ -4,6 +4,8 @@ import { Drawer as DrawerPrimitive } from "vaul";
 
 import { cn } from "@/lib/utils";
 
+import SwipeableIndicator from "../utility/SwipeableIndicator";
+
 const Drawer = ({
   shouldScaleBackground = true,
   ...props
@@ -47,10 +49,7 @@ const DrawerContent = React.forwardRef<
       )}
       {...props}
     >
-      <div
-        className="mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted"
-        aria-hidden="true"
-      />
+      <SwipeableIndicator orientation="horizontal" />
       {children}
     </DrawerPrimitive.Content>
   </DrawerPortal>
@@ -108,13 +107,13 @@ DrawerDescription.displayName = DrawerPrimitive.Description.displayName;
 
 export {
   Drawer,
-  DrawerPortal,
-  DrawerOverlay,
-  DrawerTrigger,
   DrawerClose,
   DrawerContent,
-  DrawerHeader,
-  DrawerFooter,
-  DrawerTitle,
   DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerPortal,
+  DrawerTitle,
+  DrawerTrigger,
 };
