@@ -1,5 +1,15 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
+import {
+  addDays,
+  addMonths,
+  endOfDay,
+  endOfMonth,
+  endOfWeek,
+  startOfDay,
+  startOfMonth,
+  startOfWeek,
+} from "date-fns";
 import dayjs from "dayjs";
 
 import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
@@ -24,6 +34,7 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     setShowEventsFree,
   } = useSearch();
 
+  // Counts number of active filters for search bar placeholder
   const activeFilterCount = useMemo(() => {
     let count = 0;
     if (query) count++;
@@ -45,6 +56,48 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
   useEffect(() => {
     setActiveFilterCount(activeFilterCount);
   }, [activeFilterCount, setActiveFilterCount]);
+
+  // Handles D, W and M button functionality
+  const [offset, setOffset] = useState(0);
+  const [activeButton, setActiveButton] = useState<string | null>(null);
+
+  const dateButtons = useMemo(() => {
+    const now = new Date();
+    return [
+      {
+        label: "D",
+        getDates: () => ({
+          startDate: startOfDay(addDays(now, offset)),
+          endDate: endOfDay(addDays(now, offset)),
+        }),
+      },
+      {
+        label: "W",
+        getDates: () => ({
+          startDate: startOfWeek(addDays(now, offset * 7), { weekStartsOn: 1 }),
+          endDate: endOfWeek(addDays(now, offset * 7), { weekStartsOn: 1 }),
+        }),
+      },
+      {
+        label: "M",
+        getDates: () => ({
+          startDate: startOfMonth(addMonths(now, offset)),
+          endDate: endOfMonth(addMonths(now, offset)),
+        }),
+      },
+    ];
+  }, [offset]);
+
+  useEffect(() => {
+    if (activeButton) {
+      const button = dateButtons.find((b) => b.label === activeButton);
+      if (button) {
+        const { startDate, endDate } = button.getDates();
+        setStartDate(startDate);
+        setEndDate(endDate);
+      }
+    }
+  }, [activeButton, offset, dateButtons]);
 
   const { eventCategorySelectOptions } = useGetEventCategories();
   const categories = useMemo(() => {
@@ -71,6 +124,8 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     setSelectedCategory("");
     setSelectedLocation("");
     setShowEventsFree(false);
+    setOffset(0);
+    setActiveButton(null);
   };
 
   // Remove specific filters
@@ -170,6 +225,11 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     setEndDate,
     showEventsFree,
     setShowEventsFree,
+    dateButtons,
+    offset,
+    setOffset,
+    activeButton,
+    setActiveButton,
   };
 };
 

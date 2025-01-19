@@ -1,6 +1,5 @@
-import { useMemo } from "react";
+import { useRef } from "react";
 
-import { endOfMonth, endOfWeek, startOfMonth, startOfWeek } from "date-fns";
 import { FaChevronUp, FaRegCalendar } from "react-icons/fa";
 
 import { Badge } from "@/components/ui/badge";
@@ -39,59 +38,28 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
     setSelectedLocation,
     startDate,
     endDate,
-    setStartDate,
-    setEndDate,
+    dateButtons,
+    offset,
+    setOffset,
+    activeButton,
+    setActiveButton,
   } = useFiltersDrawer(setActiveFilterCount);
   const { showEventsFree, setShowEventsFree } = useSearch();
 
-  const dateButtons = useMemo(
-    () => [
-      {
-        label: "D",
-        startDate: new Date(),
-        endDate: new Date(),
-      },
-      {
-        label: "W",
-        startDate: startOfWeek(new Date(), { weekStartsOn: 1 }),
-        endDate: endOfWeek(new Date(), { weekStartsOn: 1 }),
-      },
-      {
-        label: "M",
-        startDate: startOfMonth(new Date()),
-        endDate: endOfMonth(new Date()),
-      },
-    ],
-    []
-  );
+  const longPressTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  const activeButton = useMemo(() => {
-    if (!startDate || !endDate) return null;
+  const handleLongPressStart = (e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault();
 
-    const matchingButton = dateButtons.find(
-      ({ startDate: btnStart, endDate: btnEnd }) =>
-        startDate.toDateString() === btnStart.toDateString() &&
-        endDate.toDateString() === btnEnd.toDateString()
-    );
+    longPressTimeout.current = setTimeout(() => {
+      console.log("Long press!");
+    }, 500);
+  };
 
-    return matchingButton?.label || null;
-  }, [dateButtons, startDate, endDate]);
-
-  const toggleDateButton = (button: {
-    label: string;
-    startDate: Date;
-    endDate: Date;
-  }) => {
-    if (
-      activeButton === button.label &&
-      startDate?.toDateString() === button.startDate.toDateString() &&
-      endDate?.toDateString() === button.endDate.toDateString()
-    ) {
-      setStartDate(null);
-      setEndDate(null);
-    } else {
-      setStartDate(button.startDate);
-      setEndDate(button.endDate);
+  const handleLongPressEnd = () => {
+    if (longPressTimeout.current) {
+      clearTimeout(longPressTimeout.current);
+      longPressTimeout.current = null;
     }
   };
 
@@ -176,14 +144,31 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
           </div>
           <div className="flex gap-2">
             {dateButtons.map((button) => (
-              <Button
-                key={button.label}
-                size="round"
-                variant={activeButton === button.label ? "outline" : "default"}
-                onClick={() => toggleDateButton(button)}
-              >
-                {button.label}
-              </Button>
+              <div className="relative" key={button.label}>
+                <Button
+                  size="round"
+                  variant={
+                    activeButton === button.label ? "outline" : "default"
+                  }
+                  onClick={() => {
+                    setOffset((prevOffset) =>
+                      activeButton === button.label ? prevOffset + 1 : 0
+                    );
+                    setActiveButton(button.label);
+                  }}
+                  onMouseDown={(e) => handleLongPressStart(e)}
+                  onMouseUp={handleLongPressEnd}
+                  onTouchStart={(e) => handleLongPressStart(e)}
+                  onTouchEnd={handleLongPressEnd}
+                >
+                  {button.label}
+                </Button>
+                {offset > 0 && activeButton === button.label && (
+                  <div className="text-xs absolute bg-white border rounded-full w-5 h-5 top-[-4px] right-[-4px] flex justify-center items-center">
+                    +{offset}
+                  </div>
+                )}
+              </div>
             ))}
             <Button
               size="round"
