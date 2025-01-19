@@ -1,5 +1,3 @@
-import { useRef } from "react";
-
 import { FaChevronUp, FaRegCalendar } from "react-icons/fa";
 
 import { Badge } from "@/components/ui/badge";
@@ -15,6 +13,7 @@ import {
 } from "@/components/ui/drawer";
 
 import { Combobox } from "../../../../components/ui/combobox";
+import LongPress from "../../../../components/utility/LongPress";
 import { useSearch } from "../../../../contexts/SearchEvents/SearchEventsContext";
 import useFiltersDrawer from "./useFiltersDrawer";
 
@@ -43,25 +42,10 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
     setOffset,
     activeButton,
     setActiveButton,
+    setStartDate,
+    setEndDate,
   } = useFiltersDrawer(setActiveFilterCount);
   const { showEventsFree, setShowEventsFree } = useSearch();
-
-  const longPressTimeout = useRef<NodeJS.Timeout | null>(null);
-
-  const handleLongPressStart = (e: React.MouseEvent | React.TouchEvent) => {
-    e.preventDefault();
-
-    longPressTimeout.current = setTimeout(() => {
-      console.log("Long press!");
-    }, 500);
-  };
-
-  const handleLongPressEnd = () => {
-    if (longPressTimeout.current) {
-      clearTimeout(longPressTimeout.current);
-      longPressTimeout.current = null;
-    }
-  };
 
   return (
     <Drawer>
@@ -145,24 +129,29 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
           <div className="flex gap-2">
             {dateButtons.map((button) => (
               <div className="relative" key={button.label}>
-                <Button
-                  size="round"
-                  variant={
-                    activeButton === button.label ? "outline" : "default"
-                  }
+                <LongPress
+                  onLongPress={() => {
+                    setStartDate(null);
+                    setEndDate(null);
+                    setOffset(0);
+                    setActiveButton(null);
+                  }}
                   onClick={() => {
                     setOffset((prevOffset) =>
                       activeButton === button.label ? prevOffset + 1 : 0
                     );
                     setActiveButton(button.label);
                   }}
-                  onMouseDown={(e) => handleLongPressStart(e)}
-                  onMouseUp={handleLongPressEnd}
-                  onTouchStart={(e) => handleLongPressStart(e)}
-                  onTouchEnd={handleLongPressEnd}
                 >
-                  {button.label}
-                </Button>
+                  <Button
+                    size="round"
+                    variant={
+                      activeButton === button.label ? "outline" : "default"
+                    }
+                  >
+                    {button.label}
+                  </Button>
+                </LongPress>
                 {offset > 0 && activeButton === button.label && (
                   <div className="text-xs absolute bg-white border rounded-full w-5 h-5 top-[-4px] right-[-4px] flex justify-center items-center">
                     +{offset}
