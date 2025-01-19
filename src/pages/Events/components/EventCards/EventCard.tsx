@@ -58,6 +58,7 @@ const EventCard = ({ event }: { event: Event }) => {
       <div onClick={toggleBody}>
         <motion.div
           className={`flex flex-col gap-3 p-4 cursor-pointer`}
+          initial={{ translateX: 0 }}
           animate={{ translateX: isSwiped ? -100 : 0 }}
           transition={{ duration: duration }}
         >
@@ -84,6 +85,7 @@ const EventCard = ({ event }: { event: Event }) => {
         <motion.div
           className={`absolute top-0 right-0 bottom-0 w-full bg-white`}
           style={{ width: "100%" }}
+          initial={{ translateX: "100%" }}
           animate={{ translateX: isSwiped ? 0 : "100%" }}
           transition={{ duration: duration }}
         >
