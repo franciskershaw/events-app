@@ -2,6 +2,8 @@ import Hamburger from "@/components/layout/navigation/Hamburger/Hamburger";
 import { SearchBar } from "@/components/ui/search-bar";
 import UsersInitials from "@/components/user/UsersInitials/UsersInitials";
 
+import { useScrollVisibility } from "../../../../hooks/utility/useScrollVisibility";
+
 interface EventsNavbarTopProps {
   query: string;
   setQuery: (query: string) => void;
@@ -16,8 +18,7 @@ const EventsNavbarTop = ({
   const placeholder = activeFilterCount
     ? `${activeFilterCount} filter${activeFilterCount > 1 ? "s" : ""} applied`
     : "Search by title, venue, city, category or date";
-  // const isNavbarVisible = useScrollVisibility();
-  const isNavbarVisible = true;
+  const isNavbarVisible = useScrollVisibility();
 
   return (
     <>
