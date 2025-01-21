@@ -44,6 +44,7 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
     setActiveButton,
     setStartDate,
     setEndDate,
+    createMessage,
   } = useFiltersDrawer(setActiveFilterCount);
   const { showEventsFree, setShowEventsFree } = useSearch();
 
@@ -159,6 +160,7 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
                 )}
               </div>
             ))}
+            {/* TODO: Move these buttons */}
             <Button
               size="round"
               variant={showEventsFree ? "outline" : "default"}
@@ -166,6 +168,10 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
             >
               <FaRegCalendar />
             </Button>
+            <Button size="round" variant="default" onClick={createMessage}>
+              Copy
+            </Button>
+            {/* TODO: Move these buttons */}
           </div>
         </div>
       </DrawerContent>

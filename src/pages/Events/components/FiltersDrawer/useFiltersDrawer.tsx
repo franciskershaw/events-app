@@ -6,6 +6,7 @@ import {
   endOfDay,
   endOfMonth,
   endOfWeek,
+  format,
   startOfDay,
   startOfMonth,
   startOfWeek,
@@ -14,6 +15,7 @@ import dayjs from "dayjs";
 
 import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
 
+import { isEventTypeguard } from "../../helpers/helpers";
 import useGetEventCategories from "../../hooks/useGetEventCategories";
 
 const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
@@ -206,6 +208,74 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     showEventsFree,
   ]);
 
+  const createMessage = () => {
+    const eventsNum = filteredEvents.length;
+
+    if (eventsNum === 0) {
+      // TODO: Function to toggle UI reponse
+      return;
+    }
+
+    const formatDate = (dateString: string) => {
+      return format(new Date(dateString), "EEE do MMM");
+    };
+
+    const firstDate = formatDate(filteredEvents[0].date.start);
+    const lastDate = formatDate(filteredEvents[eventsNum - 1].date.start);
+
+    const getCategoryText = (category: string, count: number) => {
+      const lowerCaseCategory = category.toLowerCase();
+      return `${lowerCaseCategory}${
+        !lowerCaseCategory.endsWith("s") && count > 1 ? "s" : ""
+      }`;
+    };
+
+    const formatEvents = () =>
+      filteredEvents
+        .map((event) => {
+          if (isEventTypeguard(event)) {
+            return `- ${formatDate(event.date.start)}: ${event.title}${
+              event.location?.venue ? ` @ ${event.location.venue}` : ""
+            }`;
+          }
+          return null;
+        })
+        .join("\n");
+
+    let message = "";
+
+    if (showEventsFree) {
+      const eventsFree = filteredEvents
+        .map((event) => `- ${formatDate(event.date.start)}`)
+        .join("\n");
+
+      // Free events - "I am free on 2 days between Sat 22nd Jan and Fri 2nd Feb:"
+      message = `I am free on ${eventsNum} day${eventsNum > 1 ? "s" : ""} between ${firstDate} and ${lastDate}: \n${eventsFree}`;
+    } else {
+      const events = formatEvents();
+
+      // Events - "I have 3 plans between Sat 22nd Jan and Fri 2nd Feb:"
+      let baseMessage = `I have ${eventsNum} plan${eventsNum > 1 ? "s" : ""} between ${firstDate} and ${lastDate}:`;
+
+      // Events with category - "I have 3 gigs between Sat 22nd Jan and Fri 2nd Feb:"
+      if (selectedCategory) {
+        baseMessage = `I have ${eventsNum} ${getCategoryText(selectedCategory, eventsNum)} between ${firstDate} and ${lastDate}:`;
+      }
+
+      // Events with category and location - "I have 3 gigs in Bristol between Sat 22nd Jan and Fri 2nd Feb:"
+      if (selectedCategory && selectedLocation) {
+        baseMessage = `I have ${eventsNum} ${getCategoryText(selectedCategory, eventsNum)} in ${selectedLocation} between ${firstDate} and ${lastDate}:`;
+      }
+
+      message = `${baseMessage}\n${events}`;
+    }
+
+    navigator.clipboard
+      .writeText(message)
+      .then(() => alert(message))
+      .catch((err) => alert("Failed to copy event titles: " + err.message));
+  };
+
   return {
     filteredEvents,
     locations,
@@ -230,6 +300,7 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     setOffset,
     activeButton,
     setActiveButton,
+    createMessage,
   };
 };
 
