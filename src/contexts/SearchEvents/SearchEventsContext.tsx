@@ -2,7 +2,7 @@ import { createContext, useContext, useMemo, useState } from "react";
 
 import { isEventTypeguard } from "../../pages/Events/helpers/helpers";
 import { Event, EventFree } from "../../types/globalTypes";
-import { createCategoryLookup, getUniqueLocations } from "./helpers";
+import { createCategoryLookup } from "./helpers";
 import { useEventsFree } from "./hooks/useEventsFree";
 import { useFilterEvents } from "./hooks/useFilterEvents";
 
@@ -21,6 +21,7 @@ interface SearchContextProps extends DateFilters {
   setShowEventsFree: (value: boolean) => void;
   selectedCategory: string;
   setSelectedCategory: (category: string) => void;
+  categories: { label: string; value: string }[];
   selectedLocation: string;
   setSelectedLocation: (location: string) => void;
   locations: { label: string; value: string }[];
@@ -60,7 +61,7 @@ export const SearchProvider = ({
     () => createCategoryLookup(categories),
     [categories]
   );
-  const locations = useMemo(() => getUniqueLocations(eventsDb), [eventsDb]);
+  // const locations = useMemo(() => getUniqueLocations(eventsDb), [eventsDb]);
 
   // Calculate free events
   const eventsFree = useEventsFree({
@@ -82,18 +83,32 @@ export const SearchProvider = ({
     categoryLookup,
   });
 
-  const filteredLocations = useMemo(() => {
-    // Filter events to include only those of type `Event`
+  // Filtered categories
+  const filteredCategories = useMemo(() => {
     const validEvents = filteredEvents.filter(isEventTypeguard);
 
-    // Extract unique locations from valid events
+    const categoriesInFilteredEvents = new Set(
+      validEvents.map((event) => event.category._id)
+    );
+
+    return categories
+      .filter((category) => categoriesInFilteredEvents.has(category._id))
+      .map((category) => ({
+        value: category.name,
+        label: category.name,
+      }));
+  }, [filteredEvents, categories]);
+
+  // Filtered locations
+  const filteredLocations = useMemo(() => {
+    const validEvents = filteredEvents.filter(isEventTypeguard);
+
     const locationsInFilteredEvents = new Set(
       validEvents.flatMap((event) =>
         [event.location?.city, event.location?.venue].filter(Boolean)
-      ) // Remove null/undefined
+      )
     );
 
-    // Format as { value, label } for the combobox
     return Array.from(locationsInFilteredEvents).map((location) => ({
       value: location!,
       label: location!,
@@ -113,6 +128,7 @@ export const SearchProvider = ({
       setShowEventsFree,
       selectedCategory,
       setSelectedCategory,
+      categories: filteredCategories,
       selectedLocation,
       setSelectedLocation,
       locations: filteredLocations,
@@ -125,7 +141,8 @@ export const SearchProvider = ({
       showEventsFree,
       selectedCategory,
       selectedLocation,
-      locations,
+      filteredLocations,
+      filteredCategories,
     ]
   );
 
