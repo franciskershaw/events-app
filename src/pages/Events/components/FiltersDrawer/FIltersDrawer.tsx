@@ -1,4 +1,6 @@
-import { FaChevronUp, FaRegCalendar } from "react-icons/fa";
+import { useState } from "react";
+
+import { FaChevronUp, FaRegCalendar, FaRegCopy } from "react-icons/fa";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -47,6 +49,28 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
     createMessage,
   } = useFiltersDrawer(setActiveFilterCount);
   const { showEventsFree, setShowEventsFree } = useSearch();
+  const [buttonText, setButtonText] = useState("Copy event text");
+
+  const handleCopyEventClick = () => {
+    const eventsNum = filteredEvents.length;
+
+    if (eventsNum === 0) {
+      setButtonText("No events");
+      setTimeout(() => setButtonText("Copy event text"), 2000);
+      return;
+    }
+
+    navigator.clipboard
+      .writeText(createMessage())
+      .then(() => {
+        setButtonText("Events copied");
+        setTimeout(() => setButtonText("Copy event text"), 2000);
+      })
+      .catch(() => {
+        setButtonText("Failed to copy");
+        setTimeout(() => setButtonText("Copy event text"), 2000);
+      });
+  };
 
   return (
     <Drawer>
@@ -160,18 +184,26 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
                 )}
               </div>
             ))}
-            {/* TODO: Move these buttons */}
+          </div>
+          <div className="flex gap-2">
             <Button
-              size="round"
+              size="default"
               variant={showEventsFree ? "outline" : "default"}
               onClick={() => setShowEventsFree(!showEventsFree)}
+              className="min-w-40"
             >
               <FaRegCalendar />
+              {showEventsFree ? "Hide" : "Show"} free days
             </Button>
-            <Button size="round" variant="default" onClick={createMessage}>
-              Copy
+            <Button
+              size="default"
+              variant="default"
+              onClick={handleCopyEventClick}
+              className="min-w-40"
+            >
+              <FaRegCopy />
+              {buttonText}
             </Button>
-            {/* TODO: Move these buttons */}
           </div>
         </div>
       </DrawerContent>

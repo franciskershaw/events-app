@@ -212,8 +212,7 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     const eventsNum = filteredEvents.length;
 
     if (eventsNum === 0) {
-      // TODO: Function to toggle UI reponse
-      return;
+      return "";
     }
 
     const formatDate = (dateString: string) => {
@@ -242,15 +241,13 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
         })
         .join("\n");
 
-    let message = "";
-
     if (showEventsFree) {
       const eventsFree = filteredEvents
         .map((event) => `- ${formatDate(event.date.start)}`)
         .join("\n");
 
       // Free events - "I am free on 2 days between Sat 22nd Jan and Fri 2nd Feb:"
-      message = `I am free on ${eventsNum} day${eventsNum > 1 ? "s" : ""} between ${firstDate} and ${lastDate}: \n${eventsFree}`;
+      return `I am free on ${eventsNum} day${eventsNum > 1 ? "s" : ""} between ${firstDate} and ${lastDate}: \n${eventsFree}`;
     } else {
       const events = formatEvents();
 
@@ -267,13 +264,8 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
         baseMessage = `I have ${eventsNum} ${getCategoryText(selectedCategory, eventsNum)} in ${selectedLocation} between ${firstDate} and ${lastDate}:`;
       }
 
-      message = `${baseMessage}\n${events}`;
+      return `${baseMessage}\n${events}`;
     }
-
-    navigator.clipboard
-      .writeText(message)
-      .then(() => alert(message))
-      .catch((err) => alert("Failed to copy event titles: " + err.message));
   };
 
   return {
