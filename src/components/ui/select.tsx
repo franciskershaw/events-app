@@ -6,6 +6,7 @@ import {
   ChevronUpIcon,
 } from "@radix-ui/react-icons";
 import * as SelectPrimitive from "@radix-ui/react-select";
+import { ChevronsUpDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -30,15 +31,12 @@ const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex h-9 w-full items-center justify-between whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+      "flex h-9 w-full items-center whitespace-nowrap rounded-md border border-input bg-transparent px-4 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
       className
     )}
     {...props}
   >
     {children}
-    <SelectPrimitive.Icon asChild>
-      <ChevronDownIcon className="h-4 w-4 opacity-50" />
-    </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ));
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
@@ -214,6 +212,7 @@ interface BasicSelectProps {
   onChange: (value: string) => void;
   options: SelectOption[];
   placeholder?: string;
+  disabled?: boolean;
 }
 
 const BasicSelect = ({
@@ -221,10 +220,12 @@ const BasicSelect = ({
   onChange,
   options,
   placeholder = "Select an option",
+  disabled = false,
 }: BasicSelectProps) => {
   return (
-    <Select value={value} onValueChange={onChange}>
+    <Select value={value} onValueChange={onChange} disabled={disabled}>
       <SelectTrigger className="w-full">
+        <ChevronsUpDown className="mr-4 h-4 w-4 flex-shrink-0" />
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
