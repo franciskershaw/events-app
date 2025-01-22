@@ -9,7 +9,7 @@ import { useModals } from "@/contexts/Modals/ModalsContext";
 import { formatDate, formatTime, isWeekend } from "@/lib/utils";
 import { Event } from "@/types/globalTypes";
 
-import SwipeableIndicator from "../../../../components/utility/SwipeableIndicator";
+import SwipeableIndicator from "../../../../components/utility/SwipeableIndicator/SwipeableIndicator";
 
 const EventCard = ({ event }: { event: Event }) => {
   const { location, title, category, description } = event;

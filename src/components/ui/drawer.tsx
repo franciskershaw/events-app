@@ -4,7 +4,7 @@ import { Drawer as DrawerPrimitive } from "vaul";
 
 import { cn } from "@/lib/utils";
 
-import SwipeableIndicator from "../utility/SwipeableIndicator";
+import SwipeableIndicator from "../utility/SwipeableIndicator/SwipeableIndicator";
 
 const Drawer = ({
   shouldScaleBackground = true,

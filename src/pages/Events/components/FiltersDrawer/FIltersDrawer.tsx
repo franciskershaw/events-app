@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/drawer";
 
 import { Combobox } from "../../../../components/ui/combobox";
-import LongPress from "../../../../components/utility/LongPress";
+import LongPress from "../../../../components/utility/LongPress/LongPress";
 import { useSearch } from "../../../../contexts/SearchEvents/SearchEventsContext";
 import useFiltersDrawer from "./useFiltersDrawer";
 
