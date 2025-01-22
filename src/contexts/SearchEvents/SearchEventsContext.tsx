@@ -1,5 +1,6 @@
 import { createContext, useContext, useMemo, useState } from "react";
 
+import { isEventTypeguard } from "../../pages/Events/helpers/helpers";
 import { Event, EventFree } from "../../types/globalTypes";
 import { createCategoryLookup, getUniqueLocations } from "./helpers";
 import { useEventsFree } from "./hooks/useEventsFree";
@@ -81,6 +82,24 @@ export const SearchProvider = ({
     categoryLookup,
   });
 
+  const filteredLocations = useMemo(() => {
+    // Filter events to include only those of type `Event`
+    const validEvents = filteredEvents.filter(isEventTypeguard);
+
+    // Extract unique locations from valid events
+    const locationsInFilteredEvents = new Set(
+      validEvents.flatMap((event) =>
+        [event.location?.city, event.location?.venue].filter(Boolean)
+      ) // Remove null/undefined
+    );
+
+    // Format as { value, label } for the combobox
+    return Array.from(locationsInFilteredEvents).map((location) => ({
+      value: location!,
+      label: location!,
+    }));
+  }, [filteredEvents]);
+
   const contextValue = useMemo(
     () => ({
       query,
@@ -96,7 +115,7 @@ export const SearchProvider = ({
       setSelectedCategory,
       selectedLocation,
       setSelectedLocation,
-      locations,
+      locations: filteredLocations,
     }),
     [
       query,

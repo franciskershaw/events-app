@@ -213,6 +213,7 @@ interface BasicSelectProps {
   options: SelectOption[];
   placeholder?: string;
   disabled?: boolean;
+  side?: "bottom" | "top" | "right" | "left" | undefined;
 }
 
 const BasicSelect = ({
@@ -221,6 +222,7 @@ const BasicSelect = ({
   options,
   placeholder = "Select an option",
   disabled = false,
+  side = undefined,
 }: BasicSelectProps) => {
   return (
     <Select value={value} onValueChange={onChange} disabled={disabled}>
@@ -228,7 +230,7 @@ const BasicSelect = ({
         <ChevronsUpDown className="mr-4 h-4 w-4 flex-shrink-0" />
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent side={side}>
         {options.map((option) => (
           <SelectItem key={option.value} value={option.value}>
             {option.label}
