@@ -1,6 +1,12 @@
 import { useState } from "react";
 
-import { FaChevronUp, FaRegCalendar, FaRegCopy } from "react-icons/fa";
+import {
+  FaCheck,
+  FaChevronUp,
+  FaRegCalendar,
+  FaRegCopy,
+  FaTimes,
+} from "react-icons/fa";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -50,26 +56,52 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
   } = useFiltersDrawer(setActiveFilterCount);
   const { showEventsFree, setShowEventsFree } = useSearch();
   const [buttonText, setButtonText] = useState("Copy event text");
+  const [buttonStatus, setButtonStatus] = useState<
+    "default" | "success" | "error"
+  >("default");
 
   const handleCopyEventClick = () => {
-    const eventsNum = filteredEvents.length;
+    const message = createMessage();
 
-    if (eventsNum === 0) {
+    if (!message) {
+      setButtonStatus("error");
       setButtonText("No events");
-      setTimeout(() => setButtonText("Copy event text"), 2000);
+      setTimeout(() => {
+        setButtonStatus("default");
+        setButtonText("Copy event text");
+      }, 2000);
       return;
     }
 
     navigator.clipboard
-      .writeText(createMessage())
+      .writeText(message)
       .then(() => {
+        setButtonStatus("success");
         setButtonText("Events copied");
-        setTimeout(() => setButtonText("Copy event text"), 2000);
+        setTimeout(() => {
+          setButtonStatus("default");
+          setButtonText("Copy event text");
+        }, 2000);
       })
       .catch(() => {
+        setButtonStatus("error");
         setButtonText("Failed to copy");
-        setTimeout(() => setButtonText("Copy event text"), 2000);
+        setTimeout(() => {
+          setButtonStatus("default");
+          setButtonText("Copy event text");
+        }, 2000);
       });
+  };
+
+  const getIcon = () => {
+    switch (buttonStatus) {
+      case "error":
+        return <FaTimes />;
+      case "success":
+        return <FaCheck />;
+      default:
+        return <FaRegCopy />;
+    }
   };
 
   return (
@@ -197,11 +229,11 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
             </Button>
             <Button
               size="default"
-              variant="default"
+              variant={buttonStatus}
               onClick={handleCopyEventClick}
               className="min-w-40"
             >
-              <FaRegCopy />
+              {getIcon()}
               {buttonText}
             </Button>
           </div>
