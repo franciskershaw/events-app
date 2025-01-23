@@ -16,7 +16,6 @@ import dayjs from "dayjs";
 import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
 
 import { isEventTypeguard } from "../../helpers/helpers";
-import useGetEventCategories from "../../hooks/useGetEventCategories";
 
 const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
   const {
@@ -28,10 +27,11 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     setEndDate,
     selectedCategory,
     setSelectedCategory,
+    categories,
     selectedLocation,
     setSelectedLocation,
-    filteredEvents,
     locations,
+    filteredEvents,
     showEventsFree,
     setShowEventsFree,
   } = useSearch();
@@ -101,15 +101,15 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     }
   }, [activeButton, offset, dateButtons, setStartDate, setEndDate]);
 
-  const { eventCategorySelectOptions } = useGetEventCategories();
-  const categories = useMemo(() => {
-    return [
-      ...eventCategorySelectOptions.map((option) => ({
-        label: option.label,
-        value: option.label,
-      })),
-    ];
-  }, [eventCategorySelectOptions]);
+  // const { eventCategorySelectOptions } = useGetEventCategories();
+  // const categories = useMemo(() => {
+  //   return [
+  //     ...eventCategorySelectOptions.map((option) => ({
+  //       label: option.label,
+  //       value: option.label,
+  //     })),
+  //   ];
+  // }, [eventCategorySelectOptions]);
 
   const handleStartDateChange = (date: Date | null | undefined) => {
     setStartDate(date || null);

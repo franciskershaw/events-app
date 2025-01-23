@@ -58,6 +58,7 @@ const Combobox = ({
         options={options}
         placeholder={placeholder}
         disabled={disabled}
+        side="top"
       />
     );
   }
