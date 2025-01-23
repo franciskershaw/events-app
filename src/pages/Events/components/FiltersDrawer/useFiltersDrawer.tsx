@@ -99,7 +99,7 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
         setEndDate(endDate);
       }
     }
-  }, [activeButton, offset, dateButtons]);
+  }, [activeButton, offset, dateButtons, setStartDate, setEndDate]);
 
   const { eventCategorySelectOptions } = useGetEventCategories();
   const categories = useMemo(() => {
