@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 interface LongPressProps {
   children: React.ReactNode;
@@ -17,22 +17,25 @@ const LongPress: React.FC<LongPressProps> = ({
   const [longPressTriggered, setLongPressTriggered] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  const handleLongPressStart = (e: React.TouchEvent | React.MouseEvent) => {
-    e.preventDefault();
-    setLongPressTriggered(false);
+  const handleLongPressStart = useCallback(
+    (e: React.TouchEvent | React.MouseEvent) => {
+      e.preventDefault();
+      setLongPressTriggered(false);
 
-    longPressTimeout.current = setTimeout(() => {
-      setLongPressTriggered(true);
-      onLongPress();
-    }, delay);
-  };
+      longPressTimeout.current = setTimeout(() => {
+        setLongPressTriggered(true);
+        onLongPress();
+      }, delay);
+    },
+    [onLongPress, delay]
+  );
 
-  const handleLongPressEnd = () => {
+  const handleLongPressEnd = useCallback(() => {
     if (longPressTimeout.current) {
       clearTimeout(longPressTimeout.current);
       longPressTimeout.current = null;
     }
-  };
+  }, []);
 
   useEffect(() => {
     const element = containerRef.current;
@@ -59,7 +62,7 @@ const LongPress: React.FC<LongPressProps> = ({
         element.removeEventListener("touchend", handleTouchEnd);
       };
     }
-  }, [onClick, onLongPress, delay, longPressTriggered]);
+  }, [handleLongPressStart, handleLongPressEnd, longPressTriggered, onClick]);
 
   return (
     <div
