@@ -6,7 +6,7 @@ import {
 } from "../../contexts/SearchEvents/SearchEventsContext";
 import EventCards from "./components/EventCards/EventCards";
 import EventsNavbarTop from "./components/EventsNavbarTop/EventsNavbarTop";
-import FiltersDrawer from "./components/FiltersDrawer/FiltersDrawer";
+import FiltersDrawer from "./components/FIltersDrawer/FiltersDrawer";
 import useGetEventCategories from "./hooks/useGetEventCategories";
 import useGetEvents from "./hooks/useGetEvents";
 
