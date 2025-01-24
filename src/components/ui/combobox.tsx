@@ -18,6 +18,9 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
+import { useViewport } from "../../contexts/Viewport/ViewportContext";
+import { BasicSelect } from "./select";
+
 interface ComboboxProps {
   value: string;
   onChange: (value: string) => void;
@@ -39,12 +42,26 @@ const Combobox = ({
 }: ComboboxProps) => {
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const { isMobile } = useViewport();
 
   useEffect(() => {
     if (disabled && value) {
       onChange("");
     }
   }, [disabled, value, onChange]);
+
+  if (isMobile) {
+    return (
+      <BasicSelect
+        value={value}
+        onChange={onChange}
+        options={options}
+        placeholder={placeholder}
+        disabled={disabled}
+        side="top"
+      />
+    );
+  }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -60,7 +77,7 @@ const Combobox = ({
             disabled && "cursor-not-allowed opacity-50"
           )}
         >
-          <ChevronsUpDown className="mr-2 h-4 w-4 flex-shrink-0" />
+          <ChevronsUpDown className="h-4 w-4 flex-shrink-0" />
           {value
             ? options.find((option) => option.value === value)?.label
             : placeholder}
@@ -74,6 +91,7 @@ const Combobox = ({
             onValueChange={(searchValue) => {
               setSearchValue(searchValue);
             }}
+            autoFocus={false}
           />
           <CommandList>
             <CommandEmpty>

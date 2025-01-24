@@ -1,5 +1,6 @@
 import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
 
+import { useScrollVisibility } from "../../../../hooks/utility/useScrollVisibility";
 import {
   filterTodayEvents,
   groupEvents,
@@ -11,6 +12,7 @@ import EventFreeCard from "./EventFreeCard";
 
 const EventCards = () => {
   const { filteredEvents, showEventsFree } = useSearch();
+  const isNavbarVisible = useScrollVisibility();
 
   const todayEvents = filterTodayEvents(filteredEvents);
   const upcomingEvents = groupEvents(
@@ -18,7 +20,9 @@ const EventCards = () => {
   );
 
   return (
-    <>
+    <div
+      className={`transition-transform duration-300 ${isNavbarVisible ? "translate-y-[0px]" : "-translate-y-[84px]"}`}
+    >
       {todayEvents.length > 0 && (
         <>
           <DateScroller label="Today" />
@@ -48,7 +52,7 @@ const EventCards = () => {
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 };
 

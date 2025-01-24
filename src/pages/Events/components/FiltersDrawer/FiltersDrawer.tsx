@@ -1,7 +1,12 @@
-import { useMemo } from "react";
+import { useState } from "react";
 
-import { endOfMonth, endOfWeek, startOfMonth, startOfWeek } from "date-fns";
-import { FaChevronUp, FaRegCalendar } from "react-icons/fa";
+import {
+  FaCheck,
+  FaChevronUp,
+  FaRegCalendar,
+  FaRegCopy,
+  FaTimes,
+} from "react-icons/fa";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -16,6 +21,7 @@ import {
 } from "@/components/ui/drawer";
 
 import { Combobox } from "../../../../components/ui/combobox";
+import LongPress from "../../../../components/utility/LongPress/LongPress";
 import { useSearch } from "../../../../contexts/SearchEvents/SearchEventsContext";
 import useFiltersDrawer from "./useFiltersDrawer";
 
@@ -39,43 +45,64 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
     setSelectedLocation,
     startDate,
     endDate,
+    dateButtons,
+    offset,
+    setOffset,
+    activeButton,
+    setActiveButton,
     setStartDate,
     setEndDate,
+    createMessage,
   } = useFiltersDrawer(setActiveFilterCount);
   const { showEventsFree, setShowEventsFree } = useSearch();
+  const [buttonText, setButtonText] = useState("Copy event text");
+  const [buttonStatus, setButtonStatus] = useState<
+    "default" | "success" | "error"
+  >("default");
 
-  const dateButtons = useMemo(
-    () => [
-      {
-        label: "D",
-        startDate: new Date(),
-        endDate: new Date(),
-      },
-      {
-        label: "W",
-        startDate: startOfWeek(new Date(), { weekStartsOn: 1 }),
-        endDate: endOfWeek(new Date(), { weekStartsOn: 1 }),
-      },
-      {
-        label: "M",
-        startDate: startOfMonth(new Date()),
-        endDate: endOfMonth(new Date()),
-      },
-    ],
-    []
-  );
+  const handleCopyEventClick = () => {
+    const message = createMessage();
 
-  const activeButton = useMemo(() => {
-    if (!startDate || !endDate) return null;
+    if (!message) {
+      setButtonStatus("error");
+      setButtonText("No events");
+      setTimeout(() => {
+        setButtonStatus("default");
+        setButtonText("Copy event text");
+      }, 2000);
+      return;
+    }
 
-    const matchingButton = dateButtons.find(
-      ({ startDate: btnStart, endDate: btnEnd }) =>
-        startDate.toDateString() === btnStart.toDateString() &&
-        endDate.toDateString() === btnEnd.toDateString()
-    );
+    navigator.clipboard
+      .writeText(message)
+      .then(() => {
+        setButtonStatus("success");
+        setButtonText("Events copied");
+        setTimeout(() => {
+          setButtonStatus("default");
+          setButtonText("Copy event text");
+        }, 2000);
+      })
+      .catch(() => {
+        setButtonStatus("error");
+        setButtonText("Failed to copy");
+        setTimeout(() => {
+          setButtonStatus("default");
+          setButtonText("Copy event text");
+        }, 2000);
+      });
+  };
 
-    return matchingButton?.label || null;
-  }, [dateButtons, startDate, endDate]);
+  const getIcon = () => {
+    switch (buttonStatus) {
+      case "error":
+        return <FaTimes />;
+      case "success":
+        return <FaCheck />;
+      default:
+        return <FaRegCopy />;
+    }
+  };
 
   return (
     <Drawer>
@@ -158,24 +185,56 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
           </div>
           <div className="flex gap-2">
             {dateButtons.map((button) => (
-              <Button
-                key={button.label}
-                size="round"
-                variant={activeButton === button.label ? "outline" : "default"}
-                onClick={() => {
-                  setStartDate(button.startDate);
-                  setEndDate(button.endDate);
-                }}
-              >
-                {button.label}
-              </Button>
+              <div className="relative" key={button.label}>
+                <LongPress
+                  onLongPress={() => {
+                    setStartDate(null);
+                    setEndDate(null);
+                    setOffset(0);
+                    setActiveButton(null);
+                  }}
+                  onClick={() => {
+                    setOffset((prevOffset) =>
+                      activeButton === button.label ? prevOffset + 1 : 0
+                    );
+                    setActiveButton(button.label);
+                  }}
+                >
+                  <Button
+                    size="round"
+                    variant={
+                      activeButton === button.label ? "outline" : "default"
+                    }
+                  >
+                    {button.label}
+                  </Button>
+                </LongPress>
+                {offset > 0 && activeButton === button.label && (
+                  <div className="text-xs absolute bg-white border rounded-full w-5 h-5 top-[-4px] right-[-4px] flex justify-center items-center">
+                    +{offset}
+                  </div>
+                )}
+              </div>
             ))}
+          </div>
+          <div className="flex gap-2">
             <Button
-              size="round"
+              size="default"
               variant={showEventsFree ? "outline" : "default"}
               onClick={() => setShowEventsFree(!showEventsFree)}
+              className="min-w-40"
             >
               <FaRegCalendar />
+              {showEventsFree ? "Hide" : "Show"} free days
+            </Button>
+            <Button
+              size="default"
+              variant={buttonStatus}
+              onClick={handleCopyEventClick}
+              className="min-w-40"
+            >
+              {getIcon()}
+              {buttonText}
             </Button>
           </div>
         </div>
