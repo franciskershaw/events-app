@@ -50,6 +50,12 @@ const EventCard = ({ event }: { event: Event }) => {
   const formattedTime = formatTime(event.date);
   const weekend = isWeekend(event.date.start);
 
+  const handleClick = () => {
+    if (description || location?.venue || formattedTime) {
+      toggleBody();
+    }
+  };
+
   return (
     <div
       className={`relative border rounded-md shadow-sm bg-white hover:shadow-md transition-all overflow-x-hidden ${
@@ -57,7 +63,7 @@ const EventCard = ({ event }: { event: Event }) => {
       }`}
       {...swipeHandlers}
     >
-      <div onClick={toggleBody}>
+      <div onClick={handleClick}>
         <motion.div
           className={`flex flex-col gap-3 p-4 cursor-pointer`}
           initial={{ translateX: 0 }}

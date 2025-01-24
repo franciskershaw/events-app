@@ -226,9 +226,10 @@ const BasicSelect = ({
 }: BasicSelectProps) => {
   return (
     <Select value={value} onValueChange={onChange} disabled={disabled}>
-      <SelectTrigger className="w-full">
+      <SelectTrigger className="w-full" disabled={options.length === 0 && true}>
         <ChevronsUpDown className="mr-4 h-4 w-4 flex-shrink-0" />
         <SelectValue placeholder={placeholder} />
+        {options.length === 0 && value}
       </SelectTrigger>
       <SelectContent side={side}>
         {options.map((option) => (
