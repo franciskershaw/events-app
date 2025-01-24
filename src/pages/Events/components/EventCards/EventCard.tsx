@@ -10,6 +10,7 @@ import { formatDate, formatTime, isWeekend } from "@/lib/utils";
 import { Event } from "@/types/globalTypes";
 
 import SwipeableIndicator from "../../../../components/utility/SwipeableIndicator/SwipeableIndicator";
+import useMakeEventPrivate from "../../hooks/useMakeEventPrivate";
 
 const EventCard = ({ event }: { event: Event }) => {
   const { location, title, category, description } = event;
@@ -18,6 +19,8 @@ const EventCard = ({ event }: { event: Event }) => {
   const { openEventModal, openDeleteEventModal } = useModals();
   const swipeBlockRef = useRef(false);
   const duration = 0.3;
+
+  const makeEventPrivate = useMakeEventPrivate();
 
   const toggleBody = () => {
     if (!swipeBlockRef.current && !isSwiped) {
@@ -62,7 +65,7 @@ const EventCard = ({ event }: { event: Event }) => {
           className={`flex flex-col gap-3 p-4 cursor-pointer`}
           initial={{ translateX: 0 }}
           animate={{ translateX: isSwiped ? -100 : 0 }}
-          transition={{ duration: duration }}
+          transition={{ duration }}
         >
           <SwipeableIndicator orientation="vertical" alignment="right" />
           <div className="flex items-center justify-between">
@@ -100,7 +103,12 @@ const EventCard = ({ event }: { event: Event }) => {
             <Button size="round" onClick={() => openDeleteEventModal(event)}>
               Delete
             </Button>
-            {/* <Button size="round">Private</Button> */}
+            <Button
+              size="round"
+              onClick={() => makeEventPrivate.mutate(event._id)}
+            >
+              Private
+            </Button>
           </div>
         </motion.div>
       </div>
