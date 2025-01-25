@@ -1,4 +1,4 @@
-import { Calendar, LogOut } from "lucide-react";
+import { Calendar, LogOut, Users } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 import UserInitials from "@/components/user/UserInitials/UserInitials";
@@ -36,13 +36,14 @@ const Sidebar = () => {
 
         {/* Navigation Links */}
         <nav className="w-full space-y-6">
-          {/* <Link
-                to="/connections"
-                className="flex items-center gap-3 text-lg hover:text-accent-foreground transition-colors"
-              >
-                <Users className="h-5 w-5" />
-                Connections
-              </Link> */}
+          <Link
+            to="/connections"
+            onClick={handleLinkClick}
+            className="flex items-center gap-3 text-lg hover:text-accent-foreground transition-colors"
+          >
+            <Users className="h-5 w-5" />
+            Connections
+          </Link>
           <Link
             to="/events"
             className="flex items-center gap-3 text-lg hover:text-accent-foreground transition-colors"
@@ -51,14 +52,6 @@ const Sidebar = () => {
             <Calendar className="h-5 w-5" />
             Events
           </Link>
-          {/* <Link
-            to="/settings"
-            className="flex items-center gap-3 text-lg hover:text-accent-foreground transition-colors"
-            onClick={handleLinkClick}
-          >
-            <Settings className="h-5 w-5" />
-            Settings
-          </Link> */}
           <button
             onClick={logout}
             className="flex items-center gap-3 text-lg w-full text-left"

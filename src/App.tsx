@@ -5,6 +5,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import PrivateRoute from "./components/layout/PrivateRoute/PrivateRoute";
 import SharedLayout from "./components/layout/SharedLayout/SharedLayout";
 import Auth from "./pages/Auth/Auth";
+import Connections from "./pages/Connections/Connections";
 import Events from "./pages/Events/Events";
 
 // import Settings from "./pages/Settings/Settings";
@@ -17,6 +18,9 @@ function App() {
           <Route index element={<Auth />} />
           <Route path="/events" element={<PrivateRoute />}>
             <Route index element={<Events />} />
+          </Route>
+          <Route path="/connections" element={<PrivateRoute />}>
+            <Route index element={<Connections />} />
           </Route>
           {/* <Route path="/settings" element={<PrivateRoute />}>
             <Route index element={<Settings />} />
