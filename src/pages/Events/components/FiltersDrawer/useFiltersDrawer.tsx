@@ -6,16 +6,16 @@ import {
   endOfDay,
   endOfMonth,
   endOfWeek,
-  format,
   startOfDay,
   startOfMonth,
   startOfWeek,
 } from "date-fns";
 import dayjs from "dayjs";
+import { FaCheck, FaRegCopy, FaTimes } from "react-icons/fa";
 
 import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
 
-import { isEventTypeguard } from "../../helpers/helpers";
+import useCreateMessage from "../../hooks/useCreateMessage";
 
 const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
   const {
@@ -27,10 +27,8 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     setEndDate,
     selectedCategory,
     setSelectedCategory,
-    categories,
     selectedLocation,
     setSelectedLocation,
-    locations,
     filteredEvents,
     showEventsFree,
     setShowEventsFree,
@@ -101,6 +99,7 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     }
   }, [activeButton, offset, dateButtons, setStartDate, setEndDate]);
 
+  // Handles date changes
   const handleStartDateChange = (date: Date | null | undefined) => {
     setStartDate(date || null);
   };
@@ -109,6 +108,7 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     setEndDate(date || null);
   };
 
+  // Clears all filters
   const clearAllFilters = () => {
     setQuery("");
     setStartDate(null);
@@ -146,6 +146,7 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     }
   };
 
+  // Pushes applied filters to filters UI
   const appliedFilters = useMemo(() => {
     const filters: { label: string; type: string }[] = [];
 
@@ -198,95 +199,78 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     showEventsFree,
   ]);
 
-  const createMessage = () => {
-    const eventsNum = filteredEvents.length;
+  // Sets UI and message for copy events
+  const [buttonText, setButtonText] = useState("Copy event text");
+  const [buttonStatus, setButtonStatus] = useState<
+    "default" | "success" | "error"
+  >("default");
 
-    if (eventsNum === 0) {
-      return "";
+  const message = useCreateMessage({
+    filteredEvents,
+    startDate,
+    endDate,
+    selectedCategory,
+    selectedLocation,
+    showEventsFree,
+  });
+
+  const handleCopyEventClick = () => {
+    if (!message) {
+      setButtonStatus("error");
+      setButtonText("No events");
+      setTimeout(() => {
+        setButtonStatus("default");
+        setButtonText("Copy event text");
+      }, 2000);
+      return;
     }
 
-    const formatDate = (dateString: string) => {
-      return format(new Date(dateString), "EEE do MMM");
-    };
+    navigator.clipboard
+      .writeText(message)
+      .then(() => {
+        setButtonStatus("success");
+        setButtonText("Events copied");
+        setTimeout(() => {
+          setButtonStatus("default");
+          setButtonText("Copy event text");
+        }, 2000);
+      })
+      .catch(() => {
+        setButtonStatus("error");
+        setButtonText("Failed to copy");
+        setTimeout(() => {
+          setButtonStatus("default");
+          setButtonText("Copy event text");
+        }, 2000);
+      });
+  };
 
-    const firstDate = startDate
-      ? dayjs(startDate).format("Do MMM")
-      : formatDate(filteredEvents[0].date.start);
-    const lastDate = endDate
-      ? dayjs(endDate).format("Do MMM")
-      : formatDate(filteredEvents[eventsNum - 1].date.start);
-
-    const getCategoryText = (category: string, count: number) => {
-      const lowerCaseCategory = category.toLowerCase();
-      return `${lowerCaseCategory}${
-        !lowerCaseCategory.endsWith("s") && count > 1 ? "s" : ""
-      }`;
-    };
-
-    const formatEvents = () =>
-      filteredEvents
-        .map((event) => {
-          if (isEventTypeguard(event)) {
-            return `- ${formatDate(event.date.start)}: ${event.title}${
-              event.location?.venue ? ` @ ${event.location.venue}` : ""
-            }`;
-          }
-          return null;
-        })
-        .join("\n");
-
-    if (showEventsFree) {
-      const eventsFree = filteredEvents
-        .map((event) => `- ${formatDate(event.date.start)}`)
-        .join("\n");
-
-      // Free events - "I am free on 2 days between Sat 22nd Jan and Fri 2nd Feb:"
-      return `I am free on ${eventsNum} day${eventsNum > 1 ? "s" : ""} between ${firstDate} and ${lastDate}: \n${eventsFree}`;
-    } else {
-      const events = formatEvents();
-
-      // Events - "I have 3 plans between Sat 22nd Jan and Fri 2nd Feb:"
-      let baseMessage = `I have ${eventsNum} plan${eventsNum > 1 ? "s" : ""} between ${firstDate} and ${lastDate}:`;
-
-      // Events with category - "I have 3 gigs between Sat 22nd Jan and Fri 2nd Feb:"
-      if (selectedCategory) {
-        baseMessage = `I have ${eventsNum} ${getCategoryText(selectedCategory, eventsNum)} between ${firstDate} and ${lastDate}:`;
-      }
-
-      // Events with category and location - "I have 3 gigs in Bristol between Sat 22nd Jan and Fri 2nd Feb:"
-      if (selectedCategory && selectedLocation) {
-        baseMessage = `I have ${eventsNum} ${getCategoryText(selectedCategory, eventsNum)} in ${selectedLocation} between ${firstDate} and ${lastDate}:`;
-      }
-
-      return `${baseMessage}\n${events}`;
+  const getIcon = () => {
+    switch (buttonStatus) {
+      case "error":
+        return <FaTimes />;
+      case "success":
+        return <FaCheck />;
+      default:
+        return <FaRegCopy />;
     }
   };
 
   return {
-    filteredEvents,
-    locations,
-    categories,
     appliedFilters,
     clearAllFilters,
     removeFilter,
     handleStartDateChange,
     handleEndDateChange,
-    selectedCategory,
-    setSelectedCategory,
-    selectedLocation,
-    setSelectedLocation,
-    startDate,
-    endDate,
-    setStartDate,
-    setEndDate,
-    showEventsFree,
-    setShowEventsFree,
     dateButtons,
     offset,
     setOffset,
     activeButton,
     setActiveButton,
-    createMessage,
+    buttonText,
+    buttonStatus,
+    handleCopyEventClick,
+    getIcon,
   };
 };
 

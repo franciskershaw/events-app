@@ -25,6 +25,11 @@ interface SearchContextProps extends DateFilters {
   selectedLocation: string;
   setSelectedLocation: (location: string) => void;
   locations: { label: string; value: string }[];
+  offset: number;
+  setOffset: (offset: number) => void;
+  activeButton: string | null;
+  setActiveButton: (activeButton: string | null) => void;
+  clearAllFilters: () => void;
 }
 
 interface SearchProviderProps {
@@ -115,6 +120,20 @@ export const SearchProvider = ({
     }));
   }, [filteredEvents]);
 
+  const [offset, setOffset] = useState<number>(0);
+  const [activeButton, setActiveButton] = useState<string | null>(null);
+
+  const clearAllFilters = () => {
+    setQuery("");
+    setStartDate(null);
+    setEndDate(null);
+    setSelectedCategory("");
+    setSelectedLocation("");
+    setShowEventsFree(false);
+    setOffset(0);
+    setActiveButton(null);
+  };
+
   const contextValue = useMemo(
     () => ({
       query,
@@ -132,6 +151,11 @@ export const SearchProvider = ({
       selectedLocation,
       setSelectedLocation,
       locations: filteredLocations,
+      offset,
+      setOffset,
+      activeButton,
+      setActiveButton,
+      clearAllFilters,
     }),
     [
       query,
