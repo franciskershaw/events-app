@@ -101,16 +101,6 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     }
   }, [activeButton, offset, dateButtons, setStartDate, setEndDate]);
 
-  // const { eventCategorySelectOptions } = useGetEventCategories();
-  // const categories = useMemo(() => {
-  //   return [
-  //     ...eventCategorySelectOptions.map((option) => ({
-  //       label: option.label,
-  //       value: option.label,
-  //     })),
-  //   ];
-  // }, [eventCategorySelectOptions]);
-
   const handleStartDateChange = (date: Date | null | undefined) => {
     setStartDate(date || null);
   };
@@ -219,8 +209,12 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
       return format(new Date(dateString), "EEE do MMM");
     };
 
-    const firstDate = formatDate(filteredEvents[0].date.start);
-    const lastDate = formatDate(filteredEvents[eventsNum - 1].date.start);
+    const firstDate = startDate
+      ? dayjs(startDate).format("Do MMM")
+      : formatDate(filteredEvents[0].date.start);
+    const lastDate = endDate
+      ? dayjs(endDate).format("Do MMM")
+      : formatDate(filteredEvents[eventsNum - 1].date.start);
 
     const getCategoryText = (category: string, count: number) => {
       const lowerCaseCategory = category.toLowerCase();
