@@ -35,35 +35,15 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     offset,
     activeButton,
     clearAllFilters,
+    activeFilterCount,
   } = useSearch();
 
-  // Counts number of active filters for search bar placeholder
-  const activeFilterCount = useMemo(() => {
-    let count = 0;
-    if (query) count++;
-    if (startDate) count++;
-    if (endDate) count++;
-    if (selectedCategory) count++;
-    if (selectedLocation) count++;
-    if (showEventsFree) count++;
-    return count;
-  }, [
-    query,
-    startDate,
-    endDate,
-    selectedCategory,
-    selectedLocation,
-    showEventsFree,
-  ]);
-
+  // Updates active filter number for search bar placeholder
   useEffect(() => {
     setActiveFilterCount(activeFilterCount);
   }, [activeFilterCount, setActiveFilterCount]);
 
-  // Handles D, W and M button functionality
-  // const [offset, setOffset] = useState(0);
-  // const [activeButton, setActiveButton] = useState<string | null>(null);
-
+  // Manages applied date ranges
   const dateButtons = useMemo(() => {
     const now = new Date();
     return [
@@ -110,18 +90,6 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
   const handleEndDateChange = (date: Date | null | undefined) => {
     setEndDate(date || null);
   };
-
-  // Clears all filters
-  // const clearAllFilters = () => {
-  //   setQuery("");
-  //   setStartDate(null);
-  //   setEndDate(null);
-  //   setSelectedCategory("");
-  //   setSelectedLocation("");
-  //   setShowEventsFree(false);
-  //   setOffset(0);
-  //   setActiveButton(null);
-  // };
 
   // Remove specific filters
   const removeFilter = (type: string) => {

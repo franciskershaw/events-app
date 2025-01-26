@@ -30,6 +30,7 @@ interface SearchContextProps extends DateFilters {
   activeButton: string | null;
   setActiveButton: (activeButton: string | null) => void;
   clearAllFilters: () => void;
+  activeFilterCount: number;
 }
 
 interface SearchProviderProps {
@@ -135,6 +136,25 @@ export const SearchProvider = ({
     setActiveButton(null);
   };
 
+  // Counts number of active filters for search bar placeholder
+  const activeFilterCount = useMemo(() => {
+    let count = 0;
+    if (query) count++;
+    if (startDate) count++;
+    if (endDate) count++;
+    if (selectedCategory) count++;
+    if (selectedLocation) count++;
+    if (showEventsFree) count++;
+    return count;
+  }, [
+    query,
+    startDate,
+    endDate,
+    selectedCategory,
+    selectedLocation,
+    showEventsFree,
+  ]);
+
   const contextValue = useMemo(
     () => ({
       query,
@@ -157,6 +177,7 @@ export const SearchProvider = ({
       activeButton,
       setActiveButton,
       clearAllFilters,
+      activeFilterCount,
     }),
     [
       query,
