@@ -32,6 +32,9 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     filteredEvents,
     showEventsFree,
     setShowEventsFree,
+    offset,
+    activeButton,
+    clearAllFilters,
   } = useSearch();
 
   // Counts number of active filters for search bar placeholder
@@ -58,8 +61,8 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
   }, [activeFilterCount, setActiveFilterCount]);
 
   // Handles D, W and M button functionality
-  const [offset, setOffset] = useState(0);
-  const [activeButton, setActiveButton] = useState<string | null>(null);
+  // const [offset, setOffset] = useState(0);
+  // const [activeButton, setActiveButton] = useState<string | null>(null);
 
   const dateButtons = useMemo(() => {
     const now = new Date();
@@ -109,16 +112,16 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
   };
 
   // Clears all filters
-  const clearAllFilters = () => {
-    setQuery("");
-    setStartDate(null);
-    setEndDate(null);
-    setSelectedCategory("");
-    setSelectedLocation("");
-    setShowEventsFree(false);
-    setOffset(0);
-    setActiveButton(null);
-  };
+  // const clearAllFilters = () => {
+  //   setQuery("");
+  //   setStartDate(null);
+  //   setEndDate(null);
+  //   setSelectedCategory("");
+  //   setSelectedLocation("");
+  //   setShowEventsFree(false);
+  //   setOffset(0);
+  //   setActiveButton(null);
+  // };
 
   // Remove specific filters
   const removeFilter = (type: string) => {
@@ -263,10 +266,6 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     handleStartDateChange,
     handleEndDateChange,
     dateButtons,
-    offset,
-    setOffset,
-    activeButton,
-    setActiveButton,
     buttonText,
     buttonStatus,
     handleCopyEventClick,

@@ -26,7 +26,7 @@ interface SearchContextProps extends DateFilters {
   setSelectedLocation: (location: string) => void;
   locations: { label: string; value: string }[];
   offset: number;
-  setOffset: (offset: number) => void;
+  setOffset: React.Dispatch<React.SetStateAction<number>>;
   activeButton: string | null;
   setActiveButton: (activeButton: string | null) => void;
   clearAllFilters: () => void;
@@ -66,7 +66,6 @@ export const SearchProvider = ({
     () => createCategoryLookup(categories),
     [categories]
   );
-  // const locations = useMemo(() => getUniqueLocations(eventsDb), [eventsDb]);
 
   // Calculate free events
   const eventsFree = useEventsFree({
@@ -120,9 +119,11 @@ export const SearchProvider = ({
     }));
   }, [filteredEvents]);
 
-  const [offset, setOffset] = useState<number>(0);
+  // Set offset and active buttons in filter drawer
+  const [offset, setOffset] = useState(0);
   const [activeButton, setActiveButton] = useState<string | null>(null);
 
+  // Clear all filters
   const clearAllFilters = () => {
     setQuery("");
     setStartDate(null);
@@ -167,6 +168,8 @@ export const SearchProvider = ({
       selectedLocation,
       filteredLocations,
       filteredCategories,
+      offset,
+      activeButton,
     ]
   );
 

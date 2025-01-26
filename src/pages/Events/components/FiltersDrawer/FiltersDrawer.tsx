@@ -24,15 +24,10 @@ export interface FiltersDrawerProps {
 const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
   const {
     appliedFilters,
-    clearAllFilters,
     removeFilter,
     handleStartDateChange,
     handleEndDateChange,
     dateButtons,
-    offset,
-    setOffset,
-    activeButton,
-    setActiveButton,
     buttonText,
     buttonStatus,
     handleCopyEventClick,
@@ -52,6 +47,11 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
     endDate,
     setStartDate,
     setEndDate,
+    offset,
+    setOffset,
+    activeButton,
+    setActiveButton,
+    clearAllFilters,
   } = useSearch();
 
   return (
@@ -144,8 +144,8 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
                     setActiveButton(null);
                   }}
                   onClick={() => {
-                    setOffset((prevOffset) =>
-                      activeButton === button.label ? prevOffset + 1 : 0
+                    setOffset((offset) =>
+                      activeButton === button.label ? offset + 1 : 0
                     );
                     setActiveButton(button.label);
                   }}
