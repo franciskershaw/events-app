@@ -1,16 +1,22 @@
 import { cn } from "@/lib/utils";
 
 interface SearchBarProps {
-  placeholder?: string;
   query: string;
   setQuery: (query: string) => void;
+  clearFilters: () => void;
+  activeFilterCount: number;
 }
 
 const SearchBar = ({
-  placeholder = "Search...",
   query,
   setQuery,
+  clearFilters,
+  activeFilterCount,
 }: SearchBarProps) => {
+  const placeholder = activeFilterCount
+    ? `${activeFilterCount} filter${activeFilterCount > 1 ? "s" : ""} applied`
+    : "Search by title, venue, city, category or date";
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
   };
@@ -33,10 +39,12 @@ const SearchBar = ({
         onChange={handleChange}
         id="search-bar"
       />
-      {query && (
+      {(query || activeFilterCount > 0) && (
         <button
           type="button"
-          onClick={handleClear}
+          onClick={
+            query && activeFilterCount === 0 ? handleClear : clearFilters
+          }
           className="ml-2 text-muted-foreground hover:text-foreground focus:outline-none"
         >
           ✕
