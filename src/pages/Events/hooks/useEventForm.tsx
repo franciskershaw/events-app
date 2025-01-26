@@ -86,7 +86,6 @@ const useEventForm = () => {
   }, [form]);
 
   const onSubmit = (values: EventFormValues) => {
-    console.log(values);
     if (mode === "copy" || mode === "addFromFreeEvent" || !selectedEvent) {
       addEvent.mutate(values);
     } else {

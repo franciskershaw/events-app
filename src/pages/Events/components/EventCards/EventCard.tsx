@@ -10,6 +10,7 @@ import { formatDate, formatTime, isWeekend } from "@/lib/utils";
 import { Event } from "@/types/globalTypes";
 
 import SwipeableIndicator from "../../../../components/utility/SwipeableIndicator/SwipeableIndicator";
+import useToggleConfirmEvent from "../../hooks/useToggleConfirmEvent";
 
 const EventCard = ({ event }: { event: Event }) => {
   const { location, title, category, description } = event;
@@ -18,6 +19,7 @@ const EventCard = ({ event }: { event: Event }) => {
   const { openEventModal, openDeleteEventModal } = useModals();
   const swipeBlockRef = useRef(false);
   const duration = 0.3;
+  const { mutate: toggleEventConfirmation } = useToggleConfirmEvent();
 
   const toggleBody = () => {
     if (!swipeBlockRef.current && !isSwiped) {
@@ -54,6 +56,13 @@ const EventCard = ({ event }: { event: Event }) => {
     if (description || location?.venue || formattedTime) {
       toggleBody();
     }
+  };
+
+  const handleConfirmEvent = () => {
+    toggleEventConfirmation({
+      eventId: event._id,
+      unConfirmed: event.unConfirmed,
+    });
   };
 
   return (
@@ -93,7 +102,7 @@ const EventCard = ({ event }: { event: Event }) => {
           <div className="relative flex items-center justify-center gap-4 h-full">
             <SwipeableIndicator orientation="vertical" alignment="left" />
             {event.unConfirmed === true && (
-              <Button size="round" onClick={() => console.log("click")}>
+              <Button size="round" onClick={handleConfirmEvent}>
                 Confirm
               </Button>
             )}
