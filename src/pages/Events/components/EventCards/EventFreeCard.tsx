@@ -24,6 +24,7 @@ const EventFreeCard = ({ event }: { event: EventFree }) => {
             createdBy: "",
             createdAt: new Date(),
             updatedAt: new Date(),
+            unConfirmed: false,
           },
           "addFromFreeEvent"
         )
