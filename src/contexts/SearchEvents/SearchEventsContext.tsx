@@ -25,6 +25,12 @@ interface SearchContextProps extends DateFilters {
   selectedLocation: string;
   setSelectedLocation: (location: string) => void;
   locations: { label: string; value: string }[];
+  offset: number;
+  setOffset: React.Dispatch<React.SetStateAction<number>>;
+  activeButton: string | null;
+  setActiveButton: (activeButton: string | null) => void;
+  clearAllFilters: () => void;
+  activeFilterCount: number;
 }
 
 interface SearchProviderProps {
@@ -61,7 +67,6 @@ export const SearchProvider = ({
     () => createCategoryLookup(categories),
     [categories]
   );
-  // const locations = useMemo(() => getUniqueLocations(eventsDb), [eventsDb]);
 
   // Calculate free events
   const eventsFree = useEventsFree({
@@ -115,6 +120,41 @@ export const SearchProvider = ({
     }));
   }, [filteredEvents]);
 
+  // Set offset and active buttons in filter drawer
+  const [offset, setOffset] = useState(0);
+  const [activeButton, setActiveButton] = useState<string | null>(null);
+
+  // Clear all filters
+  const clearAllFilters = () => {
+    setQuery("");
+    setStartDate(null);
+    setEndDate(null);
+    setSelectedCategory("");
+    setSelectedLocation("");
+    setShowEventsFree(false);
+    setOffset(0);
+    setActiveButton(null);
+  };
+
+  // Counts number of active filters for search bar placeholder
+  const activeFilterCount = useMemo(() => {
+    let count = 0;
+    if (query) count++;
+    if (startDate) count++;
+    if (endDate) count++;
+    if (selectedCategory) count++;
+    if (selectedLocation) count++;
+    if (showEventsFree) count++;
+    return count;
+  }, [
+    query,
+    startDate,
+    endDate,
+    selectedCategory,
+    selectedLocation,
+    showEventsFree,
+  ]);
+
   const contextValue = useMemo(
     () => ({
       query,
@@ -132,6 +172,12 @@ export const SearchProvider = ({
       selectedLocation,
       setSelectedLocation,
       locations: filteredLocations,
+      offset,
+      setOffset,
+      activeButton,
+      setActiveButton,
+      clearAllFilters,
+      activeFilterCount,
     }),
     [
       query,
@@ -143,6 +189,8 @@ export const SearchProvider = ({
       selectedLocation,
       filteredLocations,
       filteredCategories,
+      offset,
+      activeButton,
     ]
   );
 

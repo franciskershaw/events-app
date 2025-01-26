@@ -1,12 +1,6 @@
 import { useState } from "react";
 
-import {
-  FaCheck,
-  FaChevronUp,
-  FaRegCalendar,
-  FaRegCopy,
-  FaTimes,
-} from "react-icons/fa";
+import { FaChevronUp, FaRegCalendar } from "react-icons/fa";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,84 +19,41 @@ import LongPress from "../../../../components/utility/LongPress/LongPress";
 import { useSearch } from "../../../../contexts/SearchEvents/SearchEventsContext";
 import useFiltersDrawer from "./useFiltersDrawer";
 
-export interface FiltersDrawerProps {
-  setActiveFilterCount: (count: number) => void;
-}
+const FiltersDrawer = () => {
+  const [_activeFilterCount, setActiveFilterCount] = useState(0);
 
-const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
   const {
-    filteredEvents,
-    locations,
-    categories,
     appliedFilters,
-    clearAllFilters,
     removeFilter,
     handleStartDateChange,
     handleEndDateChange,
+    dateButtons,
+    buttonText,
+    buttonStatus,
+    handleCopyEventClick,
+    getIcon,
+  } = useFiltersDrawer(setActiveFilterCount);
+
+  const {
+    filteredEvents,
+    showEventsFree,
+    setShowEventsFree,
+    locations,
+    categories,
     selectedCategory,
     setSelectedCategory,
     selectedLocation,
     setSelectedLocation,
     startDate,
     endDate,
-    dateButtons,
+    setStartDate,
+    setEndDate,
     offset,
     setOffset,
     activeButton,
     setActiveButton,
-    setStartDate,
-    setEndDate,
-    createMessage,
-  } = useFiltersDrawer(setActiveFilterCount);
-  const { showEventsFree, setShowEventsFree } = useSearch();
-  const [buttonText, setButtonText] = useState("Copy event text");
-  const [buttonStatus, setButtonStatus] = useState<
-    "default" | "success" | "error"
-  >("default");
-
-  const handleCopyEventClick = () => {
-    const message = createMessage();
-
-    if (!message) {
-      setButtonStatus("error");
-      setButtonText("No events");
-      setTimeout(() => {
-        setButtonStatus("default");
-        setButtonText("Copy event text");
-      }, 2000);
-      return;
-    }
-
-    navigator.clipboard
-      .writeText(message)
-      .then(() => {
-        setButtonStatus("success");
-        setButtonText("Events copied");
-        setTimeout(() => {
-          setButtonStatus("default");
-          setButtonText("Copy event text");
-        }, 2000);
-      })
-      .catch(() => {
-        setButtonStatus("error");
-        setButtonText("Failed to copy");
-        setTimeout(() => {
-          setButtonStatus("default");
-          setButtonText("Copy event text");
-        }, 2000);
-      });
-  };
-
-  const getIcon = () => {
-    switch (buttonStatus) {
-      case "error":
-        return <FaTimes />;
-      case "success":
-        return <FaCheck />;
-      default:
-        return <FaRegCopy />;
-    }
-  };
+    clearAllFilters,
+  } = useSearch();
 
   return (
     <Drawer>
@@ -194,8 +145,8 @@ const FiltersDrawer = ({ setActiveFilterCount }: FiltersDrawerProps) => {
                     setActiveButton(null);
                   }}
                   onClick={() => {
-                    setOffset((prevOffset) =>
-                      activeButton === button.label ? prevOffset + 1 : 0
+                    setOffset((offset) =>
+                      activeButton === button.label ? offset + 1 : 0
                     );
                     setActiveButton(button.label);
                   }}

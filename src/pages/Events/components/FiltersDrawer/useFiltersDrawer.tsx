@@ -6,16 +6,16 @@ import {
   endOfDay,
   endOfMonth,
   endOfWeek,
-  format,
   startOfDay,
   startOfMonth,
   startOfWeek,
 } from "date-fns";
 import dayjs from "dayjs";
+import { FaCheck, FaRegCopy, FaTimes } from "react-icons/fa";
 
 import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
 
-import { isEventTypeguard } from "../../helpers/helpers";
+import useCreateMessage from "../../hooks/useCreateMessage";
 
 const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
   const {
@@ -27,42 +27,23 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     setEndDate,
     selectedCategory,
     setSelectedCategory,
-    categories,
     selectedLocation,
     setSelectedLocation,
-    locations,
     filteredEvents,
     showEventsFree,
     setShowEventsFree,
+    offset,
+    activeButton,
+    clearAllFilters,
+    activeFilterCount,
   } = useSearch();
 
-  // Counts number of active filters for search bar placeholder
-  const activeFilterCount = useMemo(() => {
-    let count = 0;
-    if (query) count++;
-    if (startDate) count++;
-    if (endDate) count++;
-    if (selectedCategory) count++;
-    if (selectedLocation) count++;
-    if (showEventsFree) count++;
-    return count;
-  }, [
-    query,
-    startDate,
-    endDate,
-    selectedCategory,
-    selectedLocation,
-    showEventsFree,
-  ]);
-
+  // Updates active filter number for search bar placeholder
   useEffect(() => {
     setActiveFilterCount(activeFilterCount);
   }, [activeFilterCount, setActiveFilterCount]);
 
-  // Handles D, W and M button functionality
-  const [offset, setOffset] = useState(0);
-  const [activeButton, setActiveButton] = useState<string | null>(null);
-
+  // Manages applied date ranges
   const dateButtons = useMemo(() => {
     const now = new Date();
     return [
@@ -101,33 +82,13 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     }
   }, [activeButton, offset, dateButtons, setStartDate, setEndDate]);
 
-  // const { eventCategorySelectOptions } = useGetEventCategories();
-  // const categories = useMemo(() => {
-  //   return [
-  //     ...eventCategorySelectOptions.map((option) => ({
-  //       label: option.label,
-  //       value: option.label,
-  //     })),
-  //   ];
-  // }, [eventCategorySelectOptions]);
-
+  // Handles date changes
   const handleStartDateChange = (date: Date | null | undefined) => {
     setStartDate(date || null);
   };
 
   const handleEndDateChange = (date: Date | null | undefined) => {
     setEndDate(date || null);
-  };
-
-  const clearAllFilters = () => {
-    setQuery("");
-    setStartDate(null);
-    setEndDate(null);
-    setSelectedCategory("");
-    setSelectedLocation("");
-    setShowEventsFree(false);
-    setOffset(0);
-    setActiveButton(null);
   };
 
   // Remove specific filters
@@ -156,6 +117,7 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     }
   };
 
+  // Pushes applied filters to filters UI
   const appliedFilters = useMemo(() => {
     const filters: { label: string; type: string }[] = [];
 
@@ -208,91 +170,74 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     showEventsFree,
   ]);
 
-  const createMessage = () => {
-    const eventsNum = filteredEvents.length;
+  // Sets UI and message for copy events
+  const [buttonText, setButtonText] = useState("Copy event text");
+  const [buttonStatus, setButtonStatus] = useState<
+    "default" | "success" | "error"
+  >("default");
 
-    if (eventsNum === 0) {
-      return "";
+  const message = useCreateMessage({
+    filteredEvents,
+    startDate,
+    endDate,
+    selectedCategory,
+    selectedLocation,
+    showEventsFree,
+  });
+
+  const handleCopyEventClick = () => {
+    if (!message) {
+      setButtonStatus("error");
+      setButtonText("No events");
+      setTimeout(() => {
+        setButtonStatus("default");
+        setButtonText("Copy event text");
+      }, 2000);
+      return;
     }
 
-    const formatDate = (dateString: string) => {
-      return format(new Date(dateString), "EEE do MMM");
-    };
+    navigator.clipboard
+      .writeText(message)
+      .then(() => {
+        setButtonStatus("success");
+        setButtonText("Events copied");
+        setTimeout(() => {
+          setButtonStatus("default");
+          setButtonText("Copy event text");
+        }, 2000);
+      })
+      .catch(() => {
+        setButtonStatus("error");
+        setButtonText("Failed to copy");
+        setTimeout(() => {
+          setButtonStatus("default");
+          setButtonText("Copy event text");
+        }, 2000);
+      });
+  };
 
-    const firstDate = formatDate(filteredEvents[0].date.start);
-    const lastDate = formatDate(filteredEvents[eventsNum - 1].date.start);
-
-    const getCategoryText = (category: string, count: number) => {
-      const lowerCaseCategory = category.toLowerCase();
-      return `${lowerCaseCategory}${
-        !lowerCaseCategory.endsWith("s") && count > 1 ? "s" : ""
-      }`;
-    };
-
-    const formatEvents = () =>
-      filteredEvents
-        .map((event) => {
-          if (isEventTypeguard(event)) {
-            return `- ${formatDate(event.date.start)}: ${event.title}${
-              event.location?.venue ? ` @ ${event.location.venue}` : ""
-            }`;
-          }
-          return null;
-        })
-        .join("\n");
-
-    if (showEventsFree) {
-      const eventsFree = filteredEvents
-        .map((event) => `- ${formatDate(event.date.start)}`)
-        .join("\n");
-
-      // Free events - "I am free on 2 days between Sat 22nd Jan and Fri 2nd Feb:"
-      return `I am free on ${eventsNum} day${eventsNum > 1 ? "s" : ""} between ${firstDate} and ${lastDate}: \n${eventsFree}`;
-    } else {
-      const events = formatEvents();
-
-      // Events - "I have 3 plans between Sat 22nd Jan and Fri 2nd Feb:"
-      let baseMessage = `I have ${eventsNum} plan${eventsNum > 1 ? "s" : ""} between ${firstDate} and ${lastDate}:`;
-
-      // Events with category - "I have 3 gigs between Sat 22nd Jan and Fri 2nd Feb:"
-      if (selectedCategory) {
-        baseMessage = `I have ${eventsNum} ${getCategoryText(selectedCategory, eventsNum)} between ${firstDate} and ${lastDate}:`;
-      }
-
-      // Events with category and location - "I have 3 gigs in Bristol between Sat 22nd Jan and Fri 2nd Feb:"
-      if (selectedCategory && selectedLocation) {
-        baseMessage = `I have ${eventsNum} ${getCategoryText(selectedCategory, eventsNum)} in ${selectedLocation} between ${firstDate} and ${lastDate}:`;
-      }
-
-      return `${baseMessage}\n${events}`;
+  const getIcon = () => {
+    switch (buttonStatus) {
+      case "error":
+        return <FaTimes />;
+      case "success":
+        return <FaCheck />;
+      default:
+        return <FaRegCopy />;
     }
   };
 
   return {
-    filteredEvents,
-    locations,
-    categories,
     appliedFilters,
     clearAllFilters,
     removeFilter,
     handleStartDateChange,
     handleEndDateChange,
-    selectedCategory,
-    setSelectedCategory,
-    selectedLocation,
-    setSelectedLocation,
-    startDate,
-    endDate,
-    setStartDate,
-    setEndDate,
-    showEventsFree,
-    setShowEventsFree,
     dateButtons,
-    offset,
-    setOffset,
-    activeButton,
-    setActiveButton,
-    createMessage,
+    buttonText,
+    buttonStatus,
+    handleCopyEventClick,
+    getIcon,
   };
 };
 
