@@ -17,6 +17,7 @@ const eventFormSchema = z
     title: z.string().min(1, "Title is required"),
     datetime: z.date({ required_error: "Start date is required" }),
     endDatetime: z.date().nullable().optional(),
+    unConfirmed: z.boolean().optional().default(false),
     category: z.string().min(1, "Please select a category"),
     venue: z.string().optional(),
     city: z.string().optional(),
@@ -53,6 +54,7 @@ const useEventForm = () => {
         !dayjs(selectedEvent.date.end).isSame(selectedEvent.date.start)
           ? dayjs(selectedEvent.date.end).toDate()
           : null,
+      unConfirmed: selectedEvent?.unConfirmed ?? false,
       category: selectedEvent?.category._id ?? "",
       venue: selectedEvent?.location?.venue ?? "",
       city: selectedEvent?.location?.city ?? "",
@@ -84,6 +86,7 @@ const useEventForm = () => {
   }, [form]);
 
   const onSubmit = (values: EventFormValues) => {
+    console.log(values);
     if (mode === "copy" || mode === "addFromFreeEvent" || !selectedEvent) {
       addEvent.mutate(values);
     } else {

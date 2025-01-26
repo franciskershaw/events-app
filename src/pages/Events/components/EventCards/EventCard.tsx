@@ -60,12 +60,14 @@ const EventCard = ({ event }: { event: Event }) => {
     <div
       className={`relative border rounded-md shadow-sm bg-white hover:shadow-md transition-all overflow-x-hidden ${
         weekend ? "border-blue-500" : "border-gray-200"
-      }`}
+      } ${event.unConfirmed === true ? "border-dashed" : ""}`}
       {...swipeHandlers}
     >
       <div onClick={handleClick}>
         {/* Main event card */}
-        <div className="relative flex flex-col gap-3 p-4 cursor-pointer z-10">
+        <div
+          className={`relative flex flex-col gap-3 p-4 cursor-pointer z-10 ${event.unConfirmed === true ? "opacity-50" : ""}`}
+        >
           <SwipeableIndicator orientation="vertical" alignment="right" />
           <div className="flex items-center justify-between">
             <h2 className="font-semibold text-sm truncate flex-1">{title}</h2>
@@ -90,6 +92,11 @@ const EventCard = ({ event }: { event: Event }) => {
         >
           <div className="relative flex items-center justify-center gap-4 h-full">
             <SwipeableIndicator orientation="vertical" alignment="left" />
+            {event.unConfirmed === true && (
+              <Button size="round" onClick={() => console.log("click")}>
+                Confirm
+              </Button>
+            )}
             <Button
               size="round"
               onClick={() => openEventModal({ ...event, _id: "" }, "copy")}

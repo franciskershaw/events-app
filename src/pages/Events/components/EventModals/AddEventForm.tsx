@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { FormSelect } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
+import { Checkbox } from "../../../../components/ui/checkbox";
 import useEventForm from "../../hooks/useEventForm";
 
 const AddEventForm = ({ formId }: { formId: string }) => {
@@ -36,6 +37,19 @@ const AddEventForm = ({ formId }: { formId: string }) => {
           showTime
           allowClear
           toDate={dayjs().add(5, "years").endOf("year").toDate()}
+        />
+      </FormInput>
+
+      <FormInput
+        name="unConfirmed"
+        label="Unconfirmed?"
+        className="m-0 flex items-center"
+      >
+        <Checkbox
+          checked={form.watch("unConfirmed")}
+          onCheckedChange={(checked) =>
+            form.setValue("unConfirmed", !!checked, { shouldValidate: true })
+          }
         />
       </FormInput>
 
