@@ -6,14 +6,16 @@ import AddEventModal from "@/pages/Events/mobile/components/EventModals/AddEvent
 import DeleteEventModal from "@/pages/Events/mobile/components/EventModals/DeleteEventModal";
 
 import { useViewport } from "../../../contexts/Viewport/ViewportContext";
-import {
-  AuthenticatedLayoutDesktop,
-  UnauthenticatedLayoutDesktop,
-} from "./desktop/SharedLayoutDesktop";
-import {
-  AuthenticatedLayoutMobile,
-  UnauthenticatedLayoutMobile,
-} from "./mobile/SharedLayoutMobile";
+import { AuthenticatedLayoutDesktop } from "./desktop/SharedLayoutDesktop";
+import { AuthenticatedLayoutMobile } from "./mobile/SharedLayoutMobile";
+
+const UnauthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="min-h-screen">
+      <main>{children}</main>
+    </div>
+  );
+};
 
 const SharedLayout = () => {
   const { isMobile } = useViewport();
@@ -25,24 +27,20 @@ const SharedLayout = () => {
 
   return (
     <>
-      {isMobile ? (
-        user ? (
+      {user ? (
+        isMobile ? (
           <AuthenticatedLayoutMobile>
             <Outlet />
           </AuthenticatedLayoutMobile>
         ) : (
-          <UnauthenticatedLayoutMobile>
+          <AuthenticatedLayoutDesktop>
             <Outlet />
-          </UnauthenticatedLayoutMobile>
+          </AuthenticatedLayoutDesktop>
         )
-      ) : user ? (
-        <AuthenticatedLayoutDesktop>
-          <Outlet />
-        </AuthenticatedLayoutDesktop>
       ) : (
-        <UnauthenticatedLayoutDesktop>
+        <UnauthenticatedLayout>
           <Outlet />
-        </UnauthenticatedLayoutDesktop>
+        </UnauthenticatedLayout>
       )}
 
       <Toaster />
