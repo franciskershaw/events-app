@@ -9,8 +9,8 @@ import { useModals } from "@/contexts/Modals/ModalsContext";
 import { formatDate, formatTime, isWeekend } from "@/lib/utils";
 import { Event } from "@/types/globalTypes";
 
-import SwipeableIndicator from "../../../../components/utility/SwipeableIndicator/SwipeableIndicator";
-import useToggleConfirmEvent from "../../hooks/useToggleConfirmEvent";
+import SwipeableIndicator from "../../../../../components/utility/SwipeableIndicator/SwipeableIndicator";
+import useToggleConfirmEvent from "../../../hooks/useToggleConfirmEvent";
 
 const EventCard = ({ event }: { event: Event }) => {
   const { location, title, category, description } = event;

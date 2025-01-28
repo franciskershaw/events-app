@@ -15,7 +15,7 @@ import { FaCheck, FaRegCopy, FaTimes } from "react-icons/fa";
 
 import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
 
-import useCreateMessage from "../../hooks/useCreateMessage";
+import useCreateMessage from "../../../hooks/useCreateMessage";
 
 const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
   const {

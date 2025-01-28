@@ -1,11 +1,11 @@
 import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
 
-import { useScrollVisibility } from "../../../../hooks/utility/useScrollVisibility";
+import { useScrollVisibility } from "../../../../../hooks/utility/useScrollVisibility";
 import {
   filterTodayEvents,
   groupEvents,
   isEventTypeguard,
-} from "../../helpers/helpers";
+} from "../../../helpers/helpers";
 import DateScroller from "../DateScroller";
 import EventCard from "./EventCard";
 import EventFreeCard from "./EventFreeCard";

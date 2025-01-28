@@ -1,8 +1,8 @@
 import { formatDate, isWeekend } from "@/lib/utils";
 import { EventFree } from "@/types/globalTypes";
 
-import { Badge } from "../../../../components/ui/badge";
-import { useModals } from "../../../../contexts/Modals/ModalsContext";
+import { Badge } from "../../../../../components/ui/badge";
+import { useModals } from "../../../../../contexts/Modals/ModalsContext";
 
 const EventFreeCard = ({ event }: { event: EventFree }) => {
   const { openEventModal } = useModals();
