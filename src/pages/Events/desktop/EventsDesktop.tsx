@@ -1,10 +1,12 @@
 import dayjs from "dayjs";
 
 import { useSearch } from "../../../contexts/SearchEvents/SearchEventsContext";
+import { Event } from "../../../types/globalTypes";
+import { isEventTypeguard } from "../helpers/helpers";
 
 // TODO: Make shared styles for different sorts of events (past, today, weekends etc) so easy to keep consistent across mobile + desktop
 
-export const generateMonthColumns = (startDate: Date, endDate: Date) => {
+const generateMonthColumns = (startDate: Date, endDate: Date) => {
   const start = dayjs(startDate).startOf("month");
   const end = dayjs(endDate).startOf("month");
   const months = [];
@@ -18,60 +20,64 @@ export const generateMonthColumns = (startDate: Date, endDate: Date) => {
   return months;
 };
 
+const getEventsByDay = (events: Event[]) => {
+  return events.reduce<
+    Record<string, { titles: string[]; locations: Set<string> }>
+  >((acc, event) => {
+    const startDate = dayjs(event.date.start);
+    const endDate = dayjs(event.date.end);
+    const eventTitle = event.unConfirmed ? `${event.title}?` : event.title;
+    const eventLocation = event.location?.city ?? "";
+
+    let currentDate = startDate;
+    while (
+      currentDate.isBefore(endDate) ||
+      currentDate.isSame(endDate, "day")
+    ) {
+      const dateKey = currentDate.format("YYYY-MM-DD");
+
+      if (!acc[dateKey]) {
+        acc[dateKey] = { titles: [], locations: new Set() };
+      }
+
+      acc[dateKey].titles.push(eventTitle);
+      if (eventLocation) {
+        acc[dateKey].locations.add(eventLocation);
+      }
+
+      currentDate = currentDate.add(1, "day");
+    }
+
+    return acc;
+  }, {});
+};
+
 export const EventsDesktop = () => {
   const { filteredEvents } = useSearch();
+
+  const events = filteredEvents
+    .map((event) => (isEventTypeguard(event) ? event : null))
+    .filter((event): event is Event => event !== null); // Get rid of EventFree type errors
   const today = dayjs();
 
   const firstEventDate = new Date(
-    Math.min(
-      ...filteredEvents.map((event) => new Date(event.date.start).getTime())
-    )
+    Math.min(...events.map((event) => new Date(event.date.start).getTime()))
   );
   const lastEventDate = new Date(
-    Math.max(
-      ...filteredEvents.map((event) => new Date(event.date.start).getTime())
-    )
+    Math.max(...events.map((event) => new Date(event.date.start).getTime()))
   );
 
   const showLocations = false;
   const defaultLocation = "Bristol";
 
-  const eventsByDay = filteredEvents.reduce(
-    (acc, event) => {
-      const startDate = dayjs(event.date.start);
-      const endDate = dayjs(event.date.end);
-      const eventTitle = event.unConfirmed ? `${event.title}?` : event.title;
-      const eventLocation = event.location?.city ?? "";
-
-      let currentDate = startDate;
-      while (
-        currentDate.isBefore(endDate) ||
-        currentDate.isSame(endDate, "day")
-      ) {
-        const dateKey = currentDate.format("YYYY-MM-DD");
-
-        acc[dateKey] = acc[dateKey] || { titles: [], locations: new Set() };
-        acc[dateKey].titles.push(eventTitle);
-        if (eventLocation) {
-          acc[dateKey].locations.add(eventLocation);
-        }
-
-        currentDate = currentDate.add(1, "day");
-      }
-
-      return acc;
-    },
-    {} as Record<string, { titles: string[]; locations: Set<string> }>
-  );
+  const eventsByDay = getEventsByDay(events);
 
   const monthColumns = generateMonthColumns(firstEventDate, lastEventDate);
 
   return (
     <div
       className="grid gap-4 overflow-x-auto h-screen"
-      style={{
-        gridTemplateColumns: `repeat(${monthColumns.length}, 300px)`,
-      }}
+      style={{ gridTemplateColumns: `repeat(${monthColumns.length}, 300px)` }}
     >
       {monthColumns.map((month) => (
         <div
@@ -83,6 +89,7 @@ export const EventsDesktop = () => {
               {month.format("MMMM YYYY")}
             </h2>
           </div>
+
           <div className="flex flex-col gap-1">
             {Array.from({ length: month.daysInMonth() }).map((_, dayIndex) => {
               const currentDate = month.date(dayIndex + 1);
@@ -109,11 +116,7 @@ export const EventsDesktop = () => {
                         : isWeekend
                           ? "border-blue-500"
                           : "border-gray-300"
-                  } ${
-                    isPast && !isToday
-                      ? "bg-gray-200 text-gray-500"
-                      : "bg-white"
-                  }`}
+                  } ${isPast && !isToday ? "bg-gray-200 text-gray-500" : "bg-white"}`}
                 >
                   <div className="border-r border-gray-300 py-1 text-center flex-shrink-0 w-12">
                     {currentDate.format("ddd D")}

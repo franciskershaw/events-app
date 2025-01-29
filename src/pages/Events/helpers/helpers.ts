@@ -53,10 +53,11 @@ export const isEventTypeguard = (obj: unknown): obj is Event => {
 
   const eventObj = obj as Record<string, unknown>;
   return (
-    "title" in eventObj &&
-    "category" in eventObj &&
+    typeof eventObj._id === "string" &&
+    typeof eventObj.title === "string" &&
     typeof eventObj.category === "object" &&
     eventObj.category !== null &&
-    "_id" in eventObj.category
+    "_id" in eventObj.category &&
+    typeof eventObj.unConfirmed === "boolean"
   );
 };
