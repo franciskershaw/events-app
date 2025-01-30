@@ -86,6 +86,6 @@
   }
 
   .event--weekend-past {
-    @apply border-gray-500;
+    @apply border-gray-400;
   }
 }
