@@ -61,3 +61,50 @@ export const isEventTypeguard = (obj: unknown): obj is Event => {
     typeof eventObj.unConfirmed === "boolean"
   );
 };
+
+// Desktop
+export const generateMonthColumns = (startDate: Date, endDate: Date) => {
+  const start = dayjs(startDate).startOf("month");
+  const end = dayjs(endDate).startOf("month");
+  const months = [];
+
+  let current = start;
+  while (current.isBefore(end) || current.isSame(end)) {
+    months.push(current);
+    current = current.add(1, "month");
+  }
+
+  return months;
+};
+
+export const getEventsByDay = (events: Event[]) => {
+  return events.reduce<
+    Record<string, { titles: string[]; locations: Set<string> }>
+  >((acc, event) => {
+    const startDate = dayjs(event.date.start);
+    const endDate = dayjs(event.date.end);
+    const eventTitle = event.unConfirmed ? `${event.title}?` : event.title;
+    const eventLocation = event.location?.city ?? "";
+
+    let currentDate = startDate;
+    while (
+      currentDate.isBefore(endDate) ||
+      currentDate.isSame(endDate, "day")
+    ) {
+      const dateKey = currentDate.format("YYYY-MM-DD");
+
+      if (!acc[dateKey]) {
+        acc[dateKey] = { titles: [], locations: new Set() };
+      }
+
+      acc[dateKey].titles.push(eventTitle);
+      if (eventLocation) {
+        acc[dateKey].locations.add(eventLocation);
+      }
+
+      currentDate = currentDate.add(1, "day");
+    }
+
+    return acc;
+  }, {});
+};

@@ -2,55 +2,11 @@ import dayjs from "dayjs";
 
 import { useSearch } from "../../../contexts/SearchEvents/SearchEventsContext";
 import { Event } from "../../../types/globalTypes";
-import { isEventTypeguard } from "../helpers/helpers";
-
-// TODO: Make shared styles for different sorts of events (past, today, weekends etc) so easy to keep consistent across mobile + desktop
-
-const generateMonthColumns = (startDate: Date, endDate: Date) => {
-  const start = dayjs(startDate).startOf("month");
-  const end = dayjs(endDate).startOf("month");
-  const months = [];
-
-  let current = start;
-  while (current.isBefore(end) || current.isSame(end)) {
-    months.push(current);
-    current = current.add(1, "month");
-  }
-
-  return months;
-};
-
-const getEventsByDay = (events: Event[]) => {
-  return events.reduce<
-    Record<string, { titles: string[]; locations: Set<string> }>
-  >((acc, event) => {
-    const startDate = dayjs(event.date.start);
-    const endDate = dayjs(event.date.end);
-    const eventTitle = event.unConfirmed ? `${event.title}?` : event.title;
-    const eventLocation = event.location?.city ?? "";
-
-    let currentDate = startDate;
-    while (
-      currentDate.isBefore(endDate) ||
-      currentDate.isSame(endDate, "day")
-    ) {
-      const dateKey = currentDate.format("YYYY-MM-DD");
-
-      if (!acc[dateKey]) {
-        acc[dateKey] = { titles: [], locations: new Set() };
-      }
-
-      acc[dateKey].titles.push(eventTitle);
-      if (eventLocation) {
-        acc[dateKey].locations.add(eventLocation);
-      }
-
-      currentDate = currentDate.add(1, "day");
-    }
-
-    return acc;
-  }, {});
-};
+import {
+  generateMonthColumns,
+  getEventsByDay,
+  isEventTypeguard,
+} from "../helpers/helpers";
 
 export const EventsDesktop = () => {
   const { filteredEvents } = useSearch();
@@ -67,11 +23,10 @@ export const EventsDesktop = () => {
     Math.max(...events.map((event) => new Date(event.date.start).getTime()))
   );
 
-  const showLocations = false;
+  const showLocations = true;
   const defaultLocation = "Bristol";
 
   const eventsByDay = getEventsByDay(events);
-
   const monthColumns = generateMonthColumns(firstEventDate, lastEventDate);
 
   return (
@@ -108,15 +63,15 @@ export const EventsDesktop = () => {
               return (
                 <div
                   key={dayIndex}
-                  className={`flex items-center text-sm rounded border ${
+                  className={`flex items-center text-sm rounded border event ${
                     isToday
-                      ? "border-green-500 bg-white font-bold"
+                      ? "event--today"
                       : isWeekend && isPast
-                        ? "border-gray-500"
+                        ? "event--weekend-past"
                         : isWeekend
-                          ? "border-blue-500"
-                          : "border-gray-300"
-                  } ${isPast && !isToday ? "bg-gray-200 text-gray-500" : "bg-white"}`}
+                          ? "event--weekend"
+                          : "event--default"
+                  } ${isPast && !isToday ? "event--past" : ""}`}
                 >
                   <div className="border-r border-gray-300 py-1 text-center flex-shrink-0 w-12">
                     {currentDate.format("ddd D")}

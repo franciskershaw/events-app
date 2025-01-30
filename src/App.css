@@ -67,4 +67,25 @@
   .box {
     @apply border-2 border-black bg-white;
   }
+
+  /* Event card styling */
+  .event {
+    @apply bg-white border-gray-300;
+  }
+
+  .event--today {
+    @apply border-green-500;
+  }
+
+  .event--past {
+    @apply bg-gray-200 text-gray-500;
+  }
+
+  .event--weekend {
+    @apply border-blue-500;
+  }
+
+  .event--weekend-past {
+    @apply border-gray-500;
+  }
 }
