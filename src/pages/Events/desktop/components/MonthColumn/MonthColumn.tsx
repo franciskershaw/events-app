@@ -1,18 +1,17 @@
 import { Dayjs } from "dayjs";
 
+import { Event } from "../../../../../types/globalTypes";
 import { DayCard } from "../DayCard/DayCard";
 
 interface MonthColumnProps {
   month: Dayjs;
-  today: Dayjs;
-  eventsByDay: Record<string, { titles: string[]; locations: Set<string> }>;
+  eventsByDay: Record<string, Event[]>;
   showLocations: boolean;
   defaultLocation: string;
 }
 
 export const MonthColumn = ({
   month,
-  today,
   eventsByDay,
   showLocations = false,
   defaultLocation,
@@ -29,11 +28,12 @@ export const MonthColumn = ({
           const dateKey = currentDate.format("YYYY-MM-DD");
           const eventData = eventsByDay[dateKey];
 
+          console.log("MonthColumn eventData", eventData);
+
           return (
             <DayCard
               key={dayIndex}
               currentDate={currentDate}
-              today={today}
               eventData={eventData}
               showLocations={showLocations}
               defaultLocation={defaultLocation}

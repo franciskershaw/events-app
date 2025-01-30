@@ -77,34 +77,27 @@ export const generateMonthColumns = (startDate: Date, endDate: Date) => {
   return months;
 };
 
-export const getEventsByDay = (events: Event[]) => {
-  return events.reduce<
-    Record<string, { titles: string[]; locations: Set<string> }>
-  >((acc, event) => {
-    const startDate = dayjs(event.date.start);
-    const endDate = dayjs(event.date.end);
-    const eventTitle = event.unConfirmed ? `${event.title}?` : event.title;
-    const eventLocation = event.location?.city ?? "";
+export const getEventsByDay = (events: Event[]): Record<string, Event[]> => {
+  return events.reduce(
+    (acc, event) => {
+      const startDate = dayjs(event.date.start);
+      const endDate = dayjs(event.date.end);
 
-    let currentDate = startDate;
-    while (
-      currentDate.isBefore(endDate) ||
-      currentDate.isSame(endDate, "day")
-    ) {
-      const dateKey = currentDate.format("YYYY-MM-DD");
+      let currentDate = startDate;
+      while (
+        currentDate.isBefore(endDate) ||
+        currentDate.isSame(endDate, "day")
+      ) {
+        const dateKey = currentDate.format("YYYY-MM-DD");
 
-      if (!acc[dateKey]) {
-        acc[dateKey] = { titles: [], locations: new Set() };
+        acc[dateKey] = acc[dateKey] || [];
+        acc[dateKey].push(event);
+
+        currentDate = currentDate.add(1, "day");
       }
 
-      acc[dateKey].titles.push(eventTitle);
-      if (eventLocation) {
-        acc[dateKey].locations.add(eventLocation);
-      }
-
-      currentDate = currentDate.add(1, "day");
-    }
-
-    return acc;
-  }, {});
+      return acc;
+    },
+    {} as Record<string, Event[]>
+  );
 };

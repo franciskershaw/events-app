@@ -1,32 +1,45 @@
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
+
+import { useActiveDay } from "../../../../../contexts/ActiveDay/ActiveDayContext";
+import { Event } from "../../../../../types/globalTypes";
 
 interface DayCardProps {
   currentDate: Dayjs;
-  today: Dayjs;
-  eventData?: { titles: string[]; locations: Set<string> };
+  eventData?: Event[];
   showLocations: boolean;
   defaultLocation: string;
 }
 
 export const DayCard = ({
   currentDate,
-  today,
-  eventData,
+  eventData = [],
   showLocations,
   defaultLocation,
 }: DayCardProps) => {
+  const { activeDay, setActiveDay } = useActiveDay();
+  const isSelected = activeDay?.isSame(currentDate, "day");
+
+  const today = dayjs();
   const isToday = currentDate.isSame(today, "day");
   const isPast = currentDate.isBefore(today, "day");
   const isWeekend = currentDate.day() === 0 || currentDate.day() === 6;
 
-  const eventTitles = eventData?.titles.join(", ") || "";
-  const eventLocation = eventData?.locations.size
-    ? Array.from(eventData.locations).join(", ")
+  const eventTitles = eventData
+    .map((event) => (event.unConfirmed ? `${event.title}?` : event.title))
+    .join(", ");
+
+  const eventLocationsSet = new Set(
+    eventData.map((event) => event.location?.city).filter(Boolean)
+  );
+  const eventLocation = eventLocationsSet.size
+    ? Array.from(eventLocationsSet).join(", ")
     : "";
+
+  console.log("DayCard eventData", eventData);
 
   return (
     <div
-      className={`flex items-center text-sm rounded border event ${
+      className={`flex items-center text-sm rounded border event cursor-pointer ${
         isToday
           ? "event--today"
           : isWeekend && isPast
@@ -34,8 +47,8 @@ export const DayCard = ({
             : isWeekend
               ? "event--weekend"
               : "event--default"
-      } ${isPast && !isToday ? "event--past" : ""}`}
-      onClick={() => console.log(eventTitles)}
+      } ${isPast && !isToday ? "event--past" : ""} ${isSelected ? "event--selected font-bold" : ""}`}
+      onClick={() => setActiveDay(currentDate)}
     >
       <div className="border-r border-gray-300 py-1 text-center flex-shrink-0 w-12">
         {currentDate.format("ddd D")}

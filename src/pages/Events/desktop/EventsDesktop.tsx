@@ -1,9 +1,8 @@
-import dayjs from "dayjs";
-
 import {
   SidebarProvider,
   SidebarTrigger,
 } from "../../../components/ui/sidebar";
+import { ActiveDayProvider } from "../../../contexts/ActiveDay/ActiveDayContext";
 import { useSearch } from "../../../contexts/SearchEvents/SearchEventsContext";
 import { Event } from "../../../types/globalTypes";
 import {
@@ -20,7 +19,6 @@ export const EventsDesktop = () => {
   const events = filteredEvents
     .map((event) => (isEventTypeguard(event) ? event : null))
     .filter((event): event is Event => event !== null); // Get rid of EventFree type errors
-  const today = dayjs();
 
   const firstEventDate = new Date(
     Math.min(...events.map((event) => new Date(event.date.start).getTime()))
@@ -32,28 +30,33 @@ export const EventsDesktop = () => {
   const showLocations = true;
   const defaultLocation = "Bristol";
 
-  const eventsByDay = getEventsByDay(events);
+  const eventsByDay: Record<string, Event[]> = getEventsByDay(events);
   const monthColumns = generateMonthColumns(firstEventDate, lastEventDate);
 
+  console.log("EventsDesktop eventsByDay", eventsByDay);
+
   return (
-    <SidebarProvider>
-      <EventsSidebar />
-      <SidebarTrigger />
-      <div
-        className="grid gap-4 overflow-x-auto h-screen pl-4"
-        style={{ gridTemplateColumns: `repeat(${monthColumns.length}, 300px)` }}
-      >
-        {monthColumns.map((month) => (
-          <MonthColumn
-            key={month.format("MMMM YYYY")}
-            month={month}
-            today={today}
-            eventsByDay={eventsByDay}
-            showLocations={showLocations}
-            defaultLocation={defaultLocation}
-          />
-        ))}
-      </div>
-    </SidebarProvider>
+    <ActiveDayProvider>
+      <SidebarProvider>
+        <EventsSidebar eventsByDay={eventsByDay} />
+        <SidebarTrigger />
+        <div
+          className="grid gap-4 overflow-x-auto h-screen pl-4"
+          style={{
+            gridTemplateColumns: `repeat(${monthColumns.length}, 300px)`,
+          }}
+        >
+          {monthColumns.map((month) => (
+            <MonthColumn
+              key={month.format("MMMM YYYY")}
+              month={month}
+              eventsByDay={eventsByDay}
+              showLocations={showLocations}
+              defaultLocation={defaultLocation}
+            />
+          ))}
+        </div>
+      </SidebarProvider>
+    </ActiveDayProvider>
   );
 };
