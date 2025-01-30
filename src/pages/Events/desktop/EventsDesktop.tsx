@@ -1,5 +1,9 @@
 import dayjs from "dayjs";
 
+import {
+  SidebarProvider,
+  SidebarTrigger,
+} from "../../../components/ui/sidebar";
 import { useSearch } from "../../../contexts/SearchEvents/SearchEventsContext";
 import { Event } from "../../../types/globalTypes";
 import {
@@ -7,8 +11,8 @@ import {
   getEventsByDay,
   isEventTypeguard,
 } from "../helpers/helpers";
+import { EventsSidebar } from "./components/EventsSidebar/EventsSidebar";
 import { MonthColumn } from "./components/MonthColumn/MonthColumn";
-import Sidebar from "./components/Sidebar/Sidebar";
 
 export const EventsDesktop = () => {
   const { filteredEvents } = useSearch();
@@ -32,10 +36,11 @@ export const EventsDesktop = () => {
   const monthColumns = generateMonthColumns(firstEventDate, lastEventDate);
 
   return (
-    <>
-      <Sidebar />
+    <SidebarProvider>
+      <EventsSidebar />
+      <SidebarTrigger />
       <div
-        className="grid gap-4 overflow-x-auto h-screen pl-6"
+        className="grid gap-4 overflow-x-auto h-screen pl-4"
         style={{ gridTemplateColumns: `repeat(${monthColumns.length}, 300px)` }}
       >
         {monthColumns.map((month) => (
@@ -49,6 +54,6 @@ export const EventsDesktop = () => {
           />
         ))}
       </div>
-    </>
+    </SidebarProvider>
   );
 };

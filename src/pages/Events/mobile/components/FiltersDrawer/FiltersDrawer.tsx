@@ -59,11 +59,11 @@ const FiltersDrawer = () => {
     <Drawer>
       <DrawerTrigger asChild>
         <div
-          className="fixed bottom-0 left-0 right-0 h-6 bg-gray-100 rounded-t-lg z-30 flex justify-center items-center cursor-pointer"
+          className="fixed bottom-0 left-0 right-0 h-6 menu-trigger rounded-t-lg z-30 flex justify-center items-center cursor-pointer"
           role="button"
           tabIndex={0}
         >
-          <FaChevronUp className="text-gray-400" />
+          <FaChevronUp />
         </div>
       </DrawerTrigger>
 

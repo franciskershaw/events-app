@@ -35,6 +35,7 @@ export const DayCard = ({
               ? "event--weekend"
               : "event--default"
       } ${isPast && !isToday ? "event--past" : ""}`}
+      onClick={() => console.log(eventTitles)}
     >
       <div className="border-r border-gray-300 py-1 text-center flex-shrink-0 w-12">
         {currentDate.format("ddd D")}
