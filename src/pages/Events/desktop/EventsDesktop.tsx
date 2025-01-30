@@ -8,6 +8,7 @@ import {
   isEventTypeguard,
 } from "../helpers/helpers";
 import { MonthColumn } from "./components/MonthColumn/MonthColumn";
+import Sidebar from "./components/Sidebar/Sidebar";
 
 export const EventsDesktop = () => {
   const { filteredEvents } = useSearch();
@@ -31,20 +32,23 @@ export const EventsDesktop = () => {
   const monthColumns = generateMonthColumns(firstEventDate, lastEventDate);
 
   return (
-    <div
-      className="grid gap-4 overflow-x-auto h-screen"
-      style={{ gridTemplateColumns: `repeat(${monthColumns.length}, 300px)` }}
-    >
-      {monthColumns.map((month) => (
-        <MonthColumn
-          key={month.format("MMMM YYYY")}
-          month={month}
-          today={today}
-          eventsByDay={eventsByDay}
-          showLocations={showLocations}
-          defaultLocation={defaultLocation}
-        />
-      ))}
-    </div>
+    <>
+      <Sidebar />
+      <div
+        className="grid gap-4 overflow-x-auto h-screen pl-6"
+        style={{ gridTemplateColumns: `repeat(${monthColumns.length}, 300px)` }}
+      >
+        {monthColumns.map((month) => (
+          <MonthColumn
+            key={month.format("MMMM YYYY")}
+            month={month}
+            today={today}
+            eventsByDay={eventsByDay}
+            showLocations={showLocations}
+            defaultLocation={defaultLocation}
+          />
+        ))}
+      </div>
+    </>
   );
 };
