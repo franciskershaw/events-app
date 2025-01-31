@@ -1,10 +1,10 @@
 import { createContext, useContext, useState } from "react";
 
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 interface ActiveDayContextType {
-  activeDay: Dayjs | null;
-  setActiveDay: (day: Dayjs | null) => void;
+  activeDay: Dayjs;
+  setActiveDay: (day: Dayjs) => void;
 }
 
 const ActiveDayContext = createContext<ActiveDayContextType | undefined>(
@@ -16,7 +16,7 @@ export const ActiveDayProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [activeDay, setActiveDay] = useState<Dayjs | null>(null);
+  const [activeDay, setActiveDay] = useState<Dayjs>(dayjs());
 
   return (
     <ActiveDayContext.Provider value={{ activeDay, setActiveDay }}>

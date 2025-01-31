@@ -35,8 +35,6 @@ export const DayCard = ({
     ? Array.from(eventLocationsSet).join(", ")
     : "";
 
-  console.log("DayCard eventData", eventData);
-
   return (
     <div
       className={`flex items-center text-sm rounded border event cursor-pointer ${

@@ -28,8 +28,6 @@ export const MonthColumn = ({
           const dateKey = currentDate.format("YYYY-MM-DD");
           const eventData = eventsByDay[dateKey];
 
-          console.log("MonthColumn eventData", eventData);
-
           return (
             <DayCard
               key={dayIndex}
