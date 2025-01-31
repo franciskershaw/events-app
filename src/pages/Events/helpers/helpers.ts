@@ -15,6 +15,7 @@ export const transformEventFormValues = (values: EventFormValues) => ({
   },
   description: values.description,
   category: values.category,
+  unConfirmed: values.unConfirmed,
 });
 
 interface GroupedEvents {

@@ -2,23 +2,17 @@ import Hamburger from "@/components/layout/navigation/Hamburger/Hamburger";
 import { SearchBar } from "@/components/ui/search-bar";
 import UsersInitials from "@/components/user/UsersInitials/UsersInitials";
 
+import { useSearch } from "../../../../contexts/SearchEvents/SearchEventsContext";
 import { useScrollVisibility } from "../../../../hooks/utility/useScrollVisibility";
 
 interface EventsNavbarTopProps {
   query: string;
   setQuery: (query: string) => void;
-  activeFilterCount: number;
 }
 
-const EventsNavbarTop = ({
-  query,
-  setQuery,
-  activeFilterCount,
-}: EventsNavbarTopProps) => {
-  const placeholder = activeFilterCount
-    ? `${activeFilterCount} filter${activeFilterCount > 1 ? "s" : ""} applied`
-    : "Search by title, venue, city, category or date";
+const EventsNavbarTop = ({ query, setQuery }: EventsNavbarTopProps) => {
   const isNavbarVisible = useScrollVisibility();
+  const { activeFilterCount, clearAllFilters } = useSearch();
 
   return (
     <>
@@ -37,9 +31,10 @@ const EventsNavbarTop = ({
           <UsersInitials />
           <div className="flex-grow">
             <SearchBar
-              placeholder={placeholder}
               query={query}
               setQuery={setQuery}
+              clearFilters={clearAllFilters}
+              activeFilterCount={activeFilterCount}
             />
           </div>
           <div className="invisible">

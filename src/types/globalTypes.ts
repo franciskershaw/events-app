@@ -26,6 +26,7 @@ export interface Event {
   description?: string;
   createdAt: Date;
   updatedAt: Date;
+  unConfirmed: boolean;
 }
 
 export interface EventFree {
