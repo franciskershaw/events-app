@@ -5,8 +5,37 @@ import {
 } from "@/components/ui/sidebar";
 
 import { useActiveDay } from "../../../../../contexts/ActiveDay/ActiveDayContext";
+import { useModals } from "../../../../../contexts/Modals/ModalsContext";
 import { formatDate, formatTime } from "../../../../../lib/utils";
 import { Event } from "../../../../../types/globalTypes";
+
+const AddEventButton = () => {
+  const { openEventModal } = useModals();
+  const { activeDay } = useActiveDay();
+
+  return (
+    <button
+      className="text-blue-500 hover:underline mt-2 w-full"
+      onClick={() =>
+        openEventModal(
+          {
+            _id: "",
+            title: "",
+            date: { start: activeDay?.toISOString() ?? "", end: "" },
+            category: { _id: "", name: "", icon: "" },
+            createdBy: "",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            unConfirmed: false,
+          },
+          "addFromFreeEvent"
+        )
+      }
+    >
+      Add event +
+    </button>
+  );
+};
 
 export const EventsSidebar = ({
   eventsByDay,
@@ -39,43 +68,49 @@ export const EventsSidebar = ({
         <div className="p-2">
           {/* Active day summary - ability to confirm/edit/delete, coming up summary */}
           {events.length > 0 ? (
-            <ul>
-              {events.map((event) => {
-                console.log("event formatTime", formatTime(event.date));
-                console.log("event formatDate", formatDate(event.date));
+            <>
+              <ul>
+                {events.map((event) => {
+                  return (
+                    <li key={event._id} className="border-b p-2">
+                      {formatTime(event.date) && (
+                        <span>{formatTime(event.date)}: </span>
+                      )}
+                      {/* TODO: Go through category icons and map to React icon elements */}
+                      {/* <span>{event.category.icon}</span> */}
+                      <span>{event.title}</span>
+                      {event.unConfirmed && <span>(?)</span>}
 
-                return (
-                  <li key={event._id} className="border-b p-2">
-                    {formatTime(event.date) && (
-                      <span>{formatTime(event.date)}: </span>
-                    )}
-                    {/* TODO: Go through category icons and map to React icon elements */}
-                    {/* <span>{event.category.icon}</span> */}
-                    <span>{event.title}</span>
-                    {event.unConfirmed && <span>(?)</span>}
-
-                    <div className="text-xs text-gray-500">
-                      {formatDate(event.date) && (
-                        <span>{formatDate(event.date)} | </span>
+                      <div className="text-xs text-gray-500">
+                        {formatDate(event.date) && (
+                          <span>{formatDate(event.date)} | </span>
+                        )}
+                        <span>{event.category.name}</span>
+                        {event.location?.venue && (
+                          <span> | {event.location?.venue}</span>
+                        )}
+                        {event.location?.venue && (
+                          <span> | {event.location?.city}</span>
+                        )}
+                      </div>
+                      {event.description && (
+                        <div className="text-xs text-gray-500 italic mt-1">
+                          {event.description}
+                        </div>
                       )}
-                      <span>{event.category.name}</span>
-                      {event.location?.venue && (
-                        <span> | {event.location?.venue}</span>
-                      )}
-                      {event.location?.venue && (
-                        <span> | {event.location?.city}</span>
-                      )}
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
+                    </li>
+                  );
+                })}
+              </ul>
+              <AddEventButton />
+            </>
           ) : (
-            <p>No events on this day.</p>
+            <>
+              <p className="text-center">No events on this day.</p>
+              <AddEventButton />
+            </>
           )}
         </div>
-
-        {/* Click on free day - add event in */}
         {/* Search functionality */}
       </SidebarContent>
     </Sidebar>

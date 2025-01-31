@@ -54,7 +54,7 @@ export const DayCard = ({
 
       <div className="truncate p-1">{eventTitles}</div>
       {eventLocation && showLocations && eventLocation !== defaultLocation && (
-        <div className="text-xs p-0.5 border border-gray-300 rounded ml-auto mr-0.5 whitespace-nowrap">
+        <div className="text-xs p-0.5 border border-gray-300 rounded ml-auto mr-0.5 max-w-24 truncate">
           {eventLocation}
         </div>
       )}
