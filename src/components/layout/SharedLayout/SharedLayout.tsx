@@ -2,8 +2,8 @@ import { Outlet } from "react-router-dom";
 
 import { Toaster } from "@/components/ui/sonner";
 import useUser from "@/hooks/user/useUser";
-import AddEventModal from "@/pages/Events/mobile/components/EventModals/AddEventModal";
-import DeleteEventModal from "@/pages/Events/mobile/components/EventModals/DeleteEventModal";
+import AddEventModal from "@/pages/Events/components/EventModals/AddEventModal";
+import DeleteEventModal from "@/pages/Events/components/EventModals/DeleteEventModal";
 
 import { useViewport } from "../../../contexts/Viewport/ViewportContext";
 import { AuthenticatedLayoutDesktop } from "./desktop/SharedLayoutDesktop";

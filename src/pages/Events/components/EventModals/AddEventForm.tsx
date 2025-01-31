@@ -6,8 +6,8 @@ import { Input } from "@/components/ui/input";
 import { FormSelect } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-import { Checkbox } from "../../../../../components/ui/checkbox";
-import useEventForm from "../../../hooks/useEventForm";
+import { Checkbox } from "../../../../components/ui/checkbox";
+import useEventForm from "../../hooks/useEventForm";
 
 const AddEventForm = ({ formId }: { formId: string }) => {
   const { form, onSubmit, eventCategorySelectOptions } = useEventForm();

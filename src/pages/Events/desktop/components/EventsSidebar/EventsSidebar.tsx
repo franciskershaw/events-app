@@ -46,11 +46,6 @@ export const EventsSidebar = ({
   const dateKey = activeDay?.format("YYYY-MM-DD");
   const events = dateKey ? eventsByDay[dateKey] || [] : [];
 
-  console.log(
-    "activeDay",
-    activeDay && eventsByDay[activeDay?.format("YYYY-MM-DD")]
-  );
-
   return (
     <Sidebar>
       <SidebarHeader>

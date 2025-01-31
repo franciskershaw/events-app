@@ -33,8 +33,6 @@ export const EventsDesktop = () => {
   const eventsByDay: Record<string, Event[]> = getEventsByDay(events);
   const monthColumns = generateMonthColumns(firstEventDate, lastEventDate);
 
-  // console.log("EventsDesktop eventsByDay", eventsByDay);
-
   return (
     <ActiveDayProvider>
       <SidebarProvider>

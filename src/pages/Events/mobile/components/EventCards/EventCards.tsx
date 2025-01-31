@@ -6,7 +6,7 @@ import {
   groupEvents,
   isEventTypeguard,
 } from "../../../helpers/helpers";
-import DateScroller from "../DateScroller";
+import DateScroller from "../DateScroller/DateScroller";
 import EventCard from "./EventCard";
 import EventFreeCard from "./EventFreeCard";
 
