@@ -113,4 +113,9 @@
       @apply text-gray-500;
     }
   }
+
+  /* Desktop - date headers */
+  .date-header {
+    @apply border border-gray-300 bg-white rounded text-center p-2 sticky top-2 z-10 shadow outline outline-8 outline-white/75;
+  }
 }
