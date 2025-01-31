@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 
+import { isToday } from "date-fns";
 import { motion } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
 
@@ -9,8 +10,8 @@ import { useModals } from "@/contexts/Modals/ModalsContext";
 import { formatDate, formatTime, isWeekend } from "@/lib/utils";
 import { Event } from "@/types/globalTypes";
 
-import SwipeableIndicator from "../../../../components/utility/SwipeableIndicator/SwipeableIndicator";
-import useToggleConfirmEvent from "../../hooks/useToggleConfirmEvent";
+import SwipeableIndicator from "../../../../../components/utility/SwipeableIndicator/SwipeableIndicator";
+import useToggleConfirmEvent from "../../../hooks/useToggleConfirmEvent";
 
 const EventCard = ({ event }: { event: Event }) => {
   const { location, title, category, description } = event;
@@ -51,6 +52,7 @@ const EventCard = ({ event }: { event: Event }) => {
   const formattedDate = formatDate(event.date);
   const formattedTime = formatTime(event.date);
   const weekend = isWeekend(event.date.start);
+  const today = isToday(event.date.start);
 
   const handleClick = () => {
     if (description || location?.venue || formattedTime) {
@@ -67,8 +69,10 @@ const EventCard = ({ event }: { event: Event }) => {
 
   return (
     <div
-      className={`relative border rounded-md shadow-sm bg-white hover:shadow-md transition-all overflow-x-hidden ${
-        weekend ? "border-blue-500" : "border-gray-200"
+      className={`relative border rounded-md shadow-sm bg-white hover:shadow-md transition-all overflow-x-hidden event ${
+        weekend && "event--weekend"
+      } ${
+        today && "event--today"
       } ${event.unConfirmed === true ? "border-dashed" : ""}`}
       {...swipeHandlers}
     >
@@ -81,7 +85,7 @@ const EventCard = ({ event }: { event: Event }) => {
           <div className="flex items-center justify-between">
             <h2 className="font-semibold text-sm truncate flex-1">{title}</h2>
             {location?.city && (
-              <span className="ml-4 text-gray-700 font-medium text-sm">
+              <span className="ml-4 font-medium text-sm">
                 📍 {location.city}
               </span>
             )}
@@ -143,9 +147,7 @@ const EventCard = ({ event }: { event: Event }) => {
           )}
 
           {description && (
-            <p className="text-sm text-gray-700 leading-relaxed">
-              {description}
-            </p>
+            <p className="text-sm leading-relaxed">{description}</p>
           )}
         </div>
       </motion.div>
