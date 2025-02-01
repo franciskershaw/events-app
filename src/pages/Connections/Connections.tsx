@@ -1,15 +1,11 @@
-import { useState } from "react";
-
 import { Users } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
 import useUser from "@/hooks/user/useUser";
 
 import ConnectionModal from "./components/ConnectionModals/ConnectionModal";
 
 const Connections = () => {
-  const [isConnectionModalOpen, setIsConnectionModalOpen] = useState(false);
   const { user } = useUser();
   const connections = user?.connections;
 
@@ -33,12 +29,7 @@ const Connections = () => {
                   Get started by connecting with friends to see each other's
                   events.
                 </p>
-                <Button
-                  onClick={() => setIsConnectionModalOpen(true)}
-                  className="mt-4"
-                >
-                  Connect with a friend
-                </Button>
+                <ConnectionModal />
               </div>
             ) : (
               <div className="rounded-lg p-8">
@@ -48,10 +39,6 @@ const Connections = () => {
           </div>
         </div>
       </div>
-      <ConnectionModal
-        isOpen={isConnectionModalOpen}
-        onOpenChange={setIsConnectionModalOpen}
-      />
     </>
   );
 };

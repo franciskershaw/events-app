@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import dayjs from "dayjs";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -7,20 +9,36 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import useUser from "@/hooks/user/useUser";
 
-const ConnectionModal = ({
-  isOpen,
-  onOpenChange,
-}: {
-  isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
-}) => {
-  const [connectionId, setConnectionId] = useState<string>("");
+import useGenerateConnectionId from "../../hooks/useGenerateConnectionId";
+
+const ConnectionModal = () => {
+  const [connectionIdInput, setConnectionIdInput] = useState<string>("");
+
+  const { user } = useUser();
+  const { mutate: generateId, isPending } = useGenerateConnectionId();
+
+  const connectionId =
+    user?.connectionId?.id && dayjs().isBefore(user.connectionId.expiry)
+      ? user.connectionId.id
+      : undefined;
+
+  const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (!connectionId) {
+      generateId();
+    }
+  };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button className="mt-4">Connect with a friend</Button>
+      </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-center text-xl">
@@ -40,8 +58,18 @@ const ConnectionModal = ({
               Generate a temporary code to share with friends who want to
               connect with you
             </p>
-            <Button size="lg" className="w-full">
-              Generate Connection Code
+            <Button
+              size="lg"
+              className="w-full"
+              onClick={onClick}
+              disabled={isPending}
+              type="button"
+            >
+              {isPending
+                ? "Generating..."
+                : connectionId
+                  ? connectionId
+                  : "Generate Connection Code"}
             </Button>
           </div>
 
@@ -57,8 +85,8 @@ const ConnectionModal = ({
                 type="text"
                 placeholder="Enter connection code"
                 className="w-full"
-                value={connectionId}
-                onChange={(e) => setConnectionId(e.target.value)}
+                value={connectionIdInput}
+                onChange={(e) => setConnectionIdInput(e.target.value)}
               />
               <Button size="lg" className="w-full">
                 Connect

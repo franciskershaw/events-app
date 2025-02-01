@@ -4,6 +4,10 @@ export interface User {
   name: string;
   email: string;
   connections: string[];
+  connectionId?: {
+    id: string;
+    expiry: string;
+  };
   accessToken: string;
 }
 

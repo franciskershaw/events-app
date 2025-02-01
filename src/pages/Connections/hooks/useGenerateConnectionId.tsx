@@ -25,14 +25,17 @@ const useGenerateConnectionId = () => {
 
   return useMutation({
     mutationFn: generateConnectionId,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKeys.user] });
+    onSuccess: (connectionId) => {
+      queryClient.setQueryData([queryKeys.user], (oldData: typeof user) => {
+        if (!oldData) return oldData;
+        return {
+          ...oldData,
+          connectionId,
+        };
+      });
     },
     onError: (error) => {
       toast.error(error.message);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKeys.user] });
     },
   });
 };
