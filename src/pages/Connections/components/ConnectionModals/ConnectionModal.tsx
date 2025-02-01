@@ -1,6 +1,8 @@
 import { useState } from "react";
 
 import dayjs from "dayjs";
+import { Copy } from "lucide-react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -27,10 +29,25 @@ const ConnectionModal = () => {
       ? user.connectionId.id
       : undefined;
 
-  const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const copyToClipboard = async (code: string) => {
+    try {
+      await navigator.clipboard.writeText(code);
+      toast.success("Connection code copied to clipboard!");
+    } catch {
+      toast.error("Failed to copy code to clipboard");
+    }
+  };
+
+  const onClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (!connectionId) {
-      generateId();
+    if (connectionId) {
+      await copyToClipboard(connectionId);
+    } else {
+      generateId(undefined, {
+        onSuccess: (data) => {
+          copyToClipboard(data.id);
+        },
+      });
     }
   };
 
@@ -65,11 +82,16 @@ const ConnectionModal = () => {
               disabled={isPending}
               type="button"
             >
-              {isPending
-                ? "Generating..."
-                : connectionId
-                  ? connectionId
-                  : "Generate Connection Code"}
+              {isPending ? (
+                "Generating..."
+              ) : connectionId ? (
+                <span className="flex items-center gap-2 justify-center">
+                  {connectionId}
+                  <Copy className="h-4 w-4" />
+                </span>
+              ) : (
+                "Generate Connection Code"
+              )}
             </Button>
           </div>
 
