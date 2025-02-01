@@ -33,7 +33,7 @@ const useConnectUsers = () => {
         if (!oldData) return oldData;
         return {
           ...oldData,
-          connections: [...oldData.connections, connectedUser.id],
+          connections: [...oldData.connections, connectedUser],
         };
       });
       toast.success(`Connected with ${connectedUser.name}`);
