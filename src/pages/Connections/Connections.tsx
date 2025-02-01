@@ -1,5 +1,6 @@
-import { Users } from "lucide-react";
+import { Eye, Trash, Users } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
 import useUser from "@/hooks/user/useUser";
 
@@ -32,8 +33,25 @@ const Connections = () => {
                 <ConnectionModal />
               </div>
             ) : (
-              <div className="rounded-lg p-8">
+              <div className="flex flex-col gap-4">
+                <ConnectionModal />
                 <Users className="mx-auto h-12 w-12 text-gray-400" />
+                {connections?.map((connection) => (
+                  <div
+                    className="flex items-center justify-between"
+                    key={connection._id}
+                  >
+                    <h3>{connection.name}</h3>
+                    <div>
+                      <Button variant="outline">
+                        <Trash />
+                      </Button>
+                      <Button variant="outline">
+                        <Eye />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </div>
