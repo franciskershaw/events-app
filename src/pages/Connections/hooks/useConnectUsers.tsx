@@ -6,15 +6,17 @@ import useAxios from "@/hooks/axios/useAxios";
 import useUser from "@/hooks/user/useUser";
 import queryKeys from "@/tanstackQuery/queryKeys";
 
-const useGenerateConnectionId = () => {
+const useConnectUsers = () => {
   const queryClient = useQueryClient();
   const api = useAxios();
   const { user } = useUser();
 
-  const generateConnectionId = async () => {
+  const connectUsers = async (connectionId: string) => {
     const { data } = await api.post(
-      "/users/connection-id",
-      {},
+      "/users/connections",
+      {
+        connectionId,
+      },
       {
         headers: {
           Authorization: `Bearer ${user?.accessToken}`,
@@ -25,15 +27,16 @@ const useGenerateConnectionId = () => {
   };
 
   return useMutation({
-    mutationFn: generateConnectionId,
-    onSuccess: (connectionId) => {
+    mutationFn: connectUsers,
+    onSuccess: (connectedUser) => {
       queryClient.setQueryData([queryKeys.user], (oldData: typeof user) => {
         if (!oldData) return oldData;
         return {
           ...oldData,
-          connectionId,
+          connections: [...oldData.connections, connectedUser.id],
         };
       });
+      toast.success(`Connected with ${connectedUser.name}`);
     },
     onError: (error: AxiosError<{ message: string }>) => {
       toast.error(error.response?.data?.message || error.message);
@@ -41,4 +44,4 @@ const useGenerateConnectionId = () => {
   });
 };
 
-export default useGenerateConnectionId;
+export default useConnectUsers;

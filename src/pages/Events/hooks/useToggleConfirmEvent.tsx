@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import { toast } from "sonner";
 
 import useAxios from "@/hooks/axios/useAxios";
@@ -35,9 +36,9 @@ const useToggleConfirmEvent = () => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
       toast.success("Event confirmed!");
     },
-    onError: (error) => {
+    onError: (error: AxiosError<{ message: string }>) => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
     },
   });
 };

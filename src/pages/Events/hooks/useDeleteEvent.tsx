@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import { toast } from "sonner";
 
 import useAxios from "@/hooks/axios/useAxios";
@@ -26,8 +27,8 @@ const useDeleteEvent = () => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
       toast.success("Event deleted successfully");
     },
-    onError: (error) => {
-      toast.error(error.message);
+    onError: (error: AxiosError<{ message: string }>) => {
+      toast.error(error.response?.data?.message || error.message);
     },
   });
 };

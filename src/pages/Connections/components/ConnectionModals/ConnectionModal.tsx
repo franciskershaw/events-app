@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import useUser from "@/hooks/user/useUser";
 
+import useConnectUsers from "../../hooks/useConnectUsers";
 import useGenerateConnectionId from "../../hooks/useGenerateConnectionId";
 
 const ConnectionModal = () => {
@@ -23,6 +24,7 @@ const ConnectionModal = () => {
 
   const { user } = useUser();
   const { mutate: generateId, isPending } = useGenerateConnectionId();
+  const { mutate: connectUsers, isPending: isConnecting } = useConnectUsers();
 
   const connectionId =
     user?.connectionId?.id && dayjs().isBefore(user.connectionId.expiry)
@@ -110,8 +112,13 @@ const ConnectionModal = () => {
                 value={connectionIdInput}
                 onChange={(e) => setConnectionIdInput(e.target.value)}
               />
-              <Button size="lg" className="w-full">
-                Connect
+              <Button
+                disabled={isConnecting}
+                size="lg"
+                className="w-full"
+                onClick={() => connectUsers(connectionIdInput)}
+              >
+                {isConnecting ? "Connecting..." : "Connect"}
               </Button>
             </div>
           </div>

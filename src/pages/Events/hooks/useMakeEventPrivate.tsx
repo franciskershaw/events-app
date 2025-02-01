@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import { toast } from "sonner";
 
 import useAxios from "@/hooks/axios/useAxios";
@@ -29,8 +30,8 @@ const useMakeEventPrivate = () => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
       toast.success(`Event made ${response.private ? "private" : "visible"}`);
     },
-    onError: (error) => {
-      toast.error(`${error.message}`);
+    onError: (error: AxiosError<{ message: string }>) => {
+      toast.error(error.response?.data?.message || error.message);
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
