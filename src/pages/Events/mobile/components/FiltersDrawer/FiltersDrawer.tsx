@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { FaChevronUp, FaRegCalendar } from "react-icons/fa";
 
 import { Badge } from "@/components/ui/badge";
@@ -20,8 +18,6 @@ import { useSearch } from "../../../../../contexts/SearchEvents/SearchEventsCont
 import useFiltersDrawer from "./useFiltersDrawer";
 
 const FiltersDrawer = () => {
-  const [_activeFilterCount, setActiveFilterCount] = useState(0);
-
   const {
     appliedFilters,
     removeFilter,
@@ -32,7 +28,7 @@ const FiltersDrawer = () => {
     buttonStatus,
     handleCopyEventClick,
     getIcon,
-  } = useFiltersDrawer(setActiveFilterCount);
+  } = useFiltersDrawer();
 
   const {
     filteredEvents,

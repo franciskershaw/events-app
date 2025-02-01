@@ -272,7 +272,10 @@ const SidebarTrigger = React.forwardRef<
         toggleSidebar();
       }}
       data-sidebar="trigger"
-      className="h-screen rounded-none rounded-r menu-trigger p-0"
+      className={cn(
+        "h-screen rounded-none rounded-r menu-trigger p-0",
+        className
+      )}
       tabIndex={0}
       {...props}
     >

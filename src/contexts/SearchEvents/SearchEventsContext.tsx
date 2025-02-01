@@ -180,6 +180,7 @@ export const SearchProvider = ({
       activeFilterCount,
     }),
     [
+      activeFilterCount,
       query,
       filteredEvents,
       startDate,

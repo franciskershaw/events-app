@@ -17,7 +17,7 @@ import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
 
 import useCreateMessage from "../../../hooks/useCreateMessage";
 
-const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
+const useFiltersDrawer = () => {
   const {
     query,
     setQuery,
@@ -35,13 +35,9 @@ const useFiltersDrawer = (setActiveFilterCount: (count: number) => void) => {
     offset,
     activeButton,
     clearAllFilters,
-    activeFilterCount,
   } = useSearch();
 
   // Updates active filter number for search bar placeholder
-  useEffect(() => {
-    setActiveFilterCount(activeFilterCount);
-  }, [activeFilterCount, setActiveFilterCount]);
 
   // Manages applied date ranges
   const dateButtons = useMemo(() => {
