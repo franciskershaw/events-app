@@ -2,8 +2,8 @@ import Hamburger from "@/components/layout/navigation/Hamburger/Hamburger";
 import { SearchBar } from "@/components/ui/search-bar";
 import UsersInitials from "@/components/user/UsersInitials/UsersInitials";
 
-import { useSearch } from "../../../../contexts/SearchEvents/SearchEventsContext";
-import { useScrollVisibility } from "../../../../hooks/utility/useScrollVisibility";
+import { useSearch } from "../../../../../contexts/SearchEvents/SearchEventsContext";
+import { useScrollVisibility } from "../../../../../hooks/utility/useScrollVisibility";
 
 interface EventsNavbarTopProps {
   query: string;

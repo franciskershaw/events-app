@@ -37,33 +37,46 @@ DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName;
 
 const DrawerContent = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <DrawerPortal>
-    <DrawerOverlay />
-    <DrawerPrimitive.Content
-      ref={ref}
-      className={cn(
-        "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border bg-background focus-visible:outline-none",
-        className
-      )}
-      {...props}
-    >
-      <SwipeableIndicator orientation="horizontal" />
-      {children}
-    </DrawerPrimitive.Content>
-  </DrawerPortal>
-));
+  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content> & {
+    orientation?: "bottom" | "left";
+    overlay?: boolean;
+  }
+>(
+  (
+    { className, children, orientation = "bottom", overlay = true, ...props },
+    ref
+  ) => (
+    <DrawerPortal>
+      {overlay && <DrawerOverlay />}
+      <DrawerPrimitive.Content
+        ref={ref}
+        className={cn(
+          "fixed z-50 flex h-auto flex-col border bg-background focus-visible:outline-none transition-transform duration-300 ease-in-out",
+          {
+            "inset-x-0 bottom-0 mt-24 rounded-t-[10px]":
+              orientation === "bottom",
+            "inset-y-0 left-0 w-3/4 max-w-[324px] rounded-r-[10px]":
+              orientation === "left",
+          },
+          className
+        )}
+        {...props}
+      >
+        <SwipeableIndicator
+          orientation={orientation === "bottom" ? "horizontal" : "vertical"}
+        />
+        {children}
+      </DrawerPrimitive.Content>
+    </DrawerPortal>
+  )
+);
 DrawerContent.displayName = "DrawerContent";
 
 const DrawerHeader = ({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn("grid gap-1.5 p-4 text-center sm:text-left", className)}
-    {...props}
-  />
+  <div className={cn("grid gap-1.5 p-4 text-center", className)} {...props} />
 );
 DrawerHeader.displayName = "DrawerHeader";
 

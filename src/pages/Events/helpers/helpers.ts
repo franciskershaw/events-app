@@ -53,10 +53,51 @@ export const isEventTypeguard = (obj: unknown): obj is Event => {
 
   const eventObj = obj as Record<string, unknown>;
   return (
-    "title" in eventObj &&
-    "category" in eventObj &&
+    typeof eventObj._id === "string" &&
+    typeof eventObj.title === "string" &&
     typeof eventObj.category === "object" &&
     eventObj.category !== null &&
-    "_id" in eventObj.category
+    "_id" in eventObj.category &&
+    typeof eventObj.unConfirmed === "boolean"
+  );
+};
+
+// Desktop
+export const generateMonthColumns = (startDate: Date, endDate: Date) => {
+  const start = dayjs(startDate).startOf("month");
+  const end = dayjs(endDate).startOf("month");
+  const months = [];
+
+  let current = start;
+  while (current.isBefore(end) || current.isSame(end)) {
+    months.push(current);
+    current = current.add(1, "month");
+  }
+
+  return months;
+};
+
+export const getEventsByDay = (events: Event[]): Record<string, Event[]> => {
+  return events.reduce(
+    (acc, event) => {
+      const startDate = dayjs(event.date.start);
+      const endDate = dayjs(event.date.end);
+
+      let currentDate = startDate;
+      while (
+        currentDate.isBefore(endDate) ||
+        currentDate.isSame(endDate, "day")
+      ) {
+        const dateKey = currentDate.format("YYYY-MM-DD");
+
+        acc[dateKey] = acc[dateKey] || [];
+        acc[dateKey].push(event);
+
+        currentDate = currentDate.add(1, "day");
+      }
+
+      return acc;
+    },
+    {} as Record<string, Event[]>
   );
 };

@@ -1,37 +1,19 @@
-import {
-  SearchProvider,
-  useSearch,
-} from "../../contexts/SearchEvents/SearchEventsContext";
-import EventCards from "./components/EventCards/EventCards";
-import EventsNavbarTop from "./components/EventsNavbarTop/EventsNavbarTop";
-import FiltersDrawer from "./components/FiltersDrawer/FiltersDrawer";
+import { SearchProvider } from "../../contexts/SearchEvents/SearchEventsContext";
+import { useViewport } from "../../contexts/Viewport/ViewportContext";
+import { EventsDesktop } from "./desktop/EventsDesktop";
 import useGetEventCategories from "./hooks/useGetEventCategories";
 import useGetEvents from "./hooks/useGetEvents";
+import { EventsMobile } from "./mobile/EventsMobile";
 
 const Events = () => {
   const { events } = useGetEvents();
   const { eventCategories } = useGetEventCategories();
+  const { isMobile } = useViewport();
 
   return (
     <SearchProvider eventsDb={events} categories={eventCategories}>
-      <EventsWithSearch />
+      {isMobile ? <EventsMobile /> : <EventsDesktop />}
     </SearchProvider>
-  );
-};
-
-const EventsWithSearch = () => {
-  const { query, setQuery, filteredEvents } = useSearch();
-
-  return (
-    <>
-      <EventsNavbarTop query={query} setQuery={setQuery} />
-      {filteredEvents.length === 0 ? (
-        <p className="p-4">No events found.</p>
-      ) : (
-        <EventCards />
-      )}
-      <FiltersDrawer />
-    </>
   );
 };
 
