@@ -3,7 +3,7 @@ export interface User {
   _id: string;
   name: string;
   email: string;
-
+  connections: string[];
   accessToken: string;
 }
 

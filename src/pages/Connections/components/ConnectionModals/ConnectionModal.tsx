@@ -21,43 +21,55 @@ const ConnectionModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-xl">Share your events!</DialogTitle>
+          <DialogTitle className="text-center text-xl">
+            Connect with Friends
+          </DialogTitle>
+          <DialogDescription className="text-center text-sm text-muted-foreground">
+            Share your events with friends by either generating a code or
+            entering theirs
+          </DialogDescription>
         </DialogHeader>
-        <DialogDescription className="sr-only">
-          Modal for adding a new connection and sharing your connection ID with
-          others.
-        </DialogDescription>
-        <div className="space-y-4">
-          <Button size="lg" className="w-full">
-            Generate Connection ID
-          </Button>
-          <p className="text-sm text-start">
-            Connection with others allows them to see your events and add them
-            to their calendar, but you can make certain events private and
-            remove connections if you wish.
-          </p>
-          <div className="space-y-2">
-            <DialogTitle className="text-xl text-center">
-              Enter a connection ID to connect
-            </DialogTitle>
-            <p className="text-sm text-start">
-              Add someone's connection ID to connect with them.
-            </p>
 
-            <Input
-              id="connection-id"
-              type="text"
-              placeholder="Enter our connection ID"
-              className="w-full"
-              value={connectionId}
-              onChange={(e) => setConnectionId(e.target.value)}
-            />
+        <div className="grid gap-6">
+          {/* Share Your Code Section */}
+          <div className="rounded-lg bg-muted p-4">
+            <h3 className="mb-2 font-semibold">Share Your Code</h3>
+            <p className="mb-3 text-sm text-muted-foreground">
+              Generate a temporary code to share with friends who want to
+              connect with you
+            </p>
             <Button size="lg" className="w-full">
-              Add Connection
+              Generate Connection Code
             </Button>
           </div>
+
+          {/* Enter Someone's Code Section */}
+          <div className="rounded-lg bg-muted p-4">
+            <h3 className="mb-2 font-semibold">Connect with Someone</h3>
+            <p className="mb-3 text-sm text-muted-foreground">
+              Enter a connection code shared with you to connect with a friend
+            </p>
+            <div className="space-y-3">
+              <Input
+                id="connection-id"
+                type="text"
+                placeholder="Enter connection code"
+                className="w-full"
+                value={connectionId}
+                onChange={(e) => setConnectionId(e.target.value)}
+              />
+              <Button size="lg" className="w-full">
+                Connect
+              </Button>
+            </div>
+          </div>
+
+          <p className="text-xs text-center text-muted-foreground">
+            You can manage visibility of your events and remove connections at
+            any time
+          </p>
         </div>
       </DialogContent>
     </Dialog>
