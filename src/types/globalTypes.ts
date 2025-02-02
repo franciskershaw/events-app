@@ -3,7 +3,12 @@ export interface User {
   _id: string;
   name: string;
   email: string;
-  connections: { _id: string; name: string }[];
+  connections: { 
+    _id: string; 
+    name: string;
+    email: string;
+    hideEvents: boolean;
+  }[];
   connectionId?: {
     id: string;
     expiry: string;

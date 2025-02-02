@@ -24,7 +24,7 @@ const RemoveConnectionModal = ({ _id }: { _id: string }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button size="icon" variant="outline">
           <Trash />
         </Button>
       </DialogTrigger>

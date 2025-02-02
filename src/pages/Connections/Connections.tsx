@@ -1,4 +1,4 @@
-import { Eye, Users } from "lucide-react";
+import { Eye, EyeOff, Users } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
@@ -20,9 +20,9 @@ const Connections = () => {
         </div>
         <div>
           <Heading type="h2">Your Connections</Heading>
-          <div className="mt-4 text-center">
+          <div className="mt-4">
             {!connections?.length ? (
-              <div className="rounded-lg p-8">
+              <div className="rounded-lg border p-8 text-center">
                 <Users className="mx-auto h-12 w-12 text-gray-400" />
                 <h3 className="mt-4 text-sm font-semibold text-gray-900">
                   No connections yet
@@ -36,21 +36,24 @@ const Connections = () => {
             ) : (
               <div className="flex flex-col gap-4">
                 <ConnectionModal />
-                <Users className="mx-auto h-12 w-12 text-gray-400" />
-                {connections?.map((connection) => (
-                  <div
-                    className="flex items-center justify-between"
-                    key={connection._id}
-                  >
-                    <h3>{connection.name}</h3>
-                    <div>
-                      <RemoveConnectionModal _id={connection._id} />
-                      <Button variant="outline">
-                        <Eye />
-                      </Button>
+                <div className="space-y-2">
+                  {connections?.map((connection) => (
+                    <div
+                      className="flex items-center justify-between rounded-md border bg-white p-4 shadow-sm hover:shadow-md transition-all"
+                      key={connection._id}
+                    >
+                      <div className="flex flex-col">
+                        <h3 className="font-semibold">{connection.name}</h3>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button variant="outline" size="icon">
+                          {connection.hideEvents ? <EyeOff /> : <Eye />}
+                        </Button>
+                        <RemoveConnectionModal _id={connection._id} />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             )}
           </div>
