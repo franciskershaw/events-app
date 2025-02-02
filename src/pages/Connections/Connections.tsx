@@ -1,10 +1,11 @@
-import { Eye, Trash, Users } from "lucide-react";
+import { Eye, Users } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
 import useUser from "@/hooks/user/useUser";
 
 import ConnectionModal from "./components/ConnectionModals/ConnectionModal";
+import RemoveConnectionModal from "./components/ConnectionModals/RemoveConnectionModal";
 
 const Connections = () => {
   const { user } = useUser();
@@ -43,9 +44,7 @@ const Connections = () => {
                   >
                     <h3>{connection.name}</h3>
                     <div>
-                      <Button variant="outline">
-                        <Trash />
-                      </Button>
+                      <RemoveConnectionModal _id={connection._id} />
                       <Button variant="outline">
                         <Eye />
                       </Button>

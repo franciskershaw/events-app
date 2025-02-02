@@ -14,7 +14,7 @@ const useRemoveConnection = () => {
   const removeConnection = async (data: { _id: string }) => {
     const { _id } = data;
 
-    return await api.delete(`/connections/${_id}`, {
+    return await api.delete(`/users/connections/${_id}`, {
       headers: {
         Authorization: `Bearer ${user?.accessToken}`,
       },
@@ -23,8 +23,16 @@ const useRemoveConnection = () => {
 
   return useMutation({
     mutationFn: removeConnection,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKeys.user] });
+    onSuccess: (response) => {
+      queryClient.setQueryData([queryKeys.user], (oldData: typeof user) => {
+        if (!oldData) return oldData;
+        return {
+          ...oldData,
+          connections: oldData.connections.filter(
+            (connection) => connection._id !== response.data._id
+          ),
+        };
+      });
       queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
       toast.success("Connection removed successfully");
     },
