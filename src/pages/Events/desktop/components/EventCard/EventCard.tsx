@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 
 import { Event } from "@/types/globalTypes";
 
+import { getCategoryIcon } from "../../../../../lib/icons";
 import { formatDate, formatTime } from "../../../../../lib/utils";
 import EventCardActions from "../../../components/EventCardActions/EventCardActions";
 
@@ -37,14 +38,15 @@ const EventCard = ({ event }: EventCardProps) => {
     >
       <div>
         {formatTime(event.date) && <span>{formatTime(event.date)}: </span>}
-        {/* TODO: Go through category icons and map to React icon elements */}
-        {/* <span>{event.category.icon}</span> */}
         <span>{event.title}</span>
         {event.unConfirmed && <span>(?)</span>}
 
-        <div className="text-xs text-gray-500">
+        <div className="text-xs text-gray-500 flex items-center flex-wrap gap-1">
           {formatDate(event.date) && <span>{formatDate(event.date)} | </span>}
-          <span>{event.category.name}</span>
+          <span className="flex items-center gap-1">
+            {getCategoryIcon(event.category.name)}
+            {event.category.name}
+          </span>
           {event.location?.venue && <span> | {event.location?.venue}</span>}
           {event.location?.venue && <span> | {event.location?.city}</span>}
         </div>
