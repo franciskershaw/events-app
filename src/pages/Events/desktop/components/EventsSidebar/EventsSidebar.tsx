@@ -1,3 +1,7 @@
+import { useState } from "react";
+
+import { motion } from "framer-motion";
+
 import {
   Sidebar,
   SidebarContent,
@@ -8,7 +12,7 @@ import { useActiveDay } from "../../../../../contexts/ActiveDay/ActiveDayContext
 import { useModals } from "../../../../../contexts/Modals/ModalsContext";
 import { formatDate, formatTime } from "../../../../../lib/utils";
 import { Event } from "../../../../../types/globalTypes";
-import SwipeableWrapper from "../../../components/SwipeableWrapper/SwipeableWrapper";
+import EventCardActions from "../../../components/EventCardActions/EventCardActions";
 
 const AddEventButton = () => {
   const { openEventModal } = useModals();
@@ -66,12 +70,31 @@ export const EventsSidebar = ({
             <>
               <ul>
                 {events.map((event) => {
+                  const [isHovered, setIsHovered] = useState(false);
+                  let hoverTimeout: NodeJS.Timeout;
+
+                  const handleMouseEnter = () => {
+                    clearTimeout(hoverTimeout);
+                    hoverTimeout = setTimeout(() => {
+                      setIsHovered(true);
+                    }, 250);
+                  };
+
+                  const handleMouseLeave = () => {
+                    clearTimeout(hoverTimeout);
+                    hoverTimeout = setTimeout(() => {
+                      setIsHovered(false);
+                    }, 500);
+                  };
+
                   return (
-                    <SwipeableWrapper key={event._id} event={event}>
-                      <li
-                        key={event._id}
-                        className="border-b p-2 cursor-pointer"
-                      >
+                    <li
+                      key={event._id}
+                      className="border-b p-2 cursor-pointer relative"
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                      <div>
                         {formatTime(event.date) && (
                           <span>{formatTime(event.date)}: </span>
                         )}
@@ -97,8 +120,19 @@ export const EventsSidebar = ({
                             {event.description}
                           </div>
                         )}
-                      </li>
-                    </SwipeableWrapper>
+                      </div>
+                      <motion.div
+                        className="absolute top-0 bottom-0 left-0 right-0 transform -translate-y-full flex items-center justify-center bg-white bg-opacity-80"
+                        initial={{ x: 50, opacity: 0 }}
+                        animate={{
+                          x: isHovered ? 0 : 50,
+                          opacity: isHovered ? 1 : 0,
+                        }}
+                        transition={{ duration: 0.3, ease: "easeOut" }}
+                      >
+                        <EventCardActions event={event} />
+                      </motion.div>
+                    </li>
                   );
                 })}
               </ul>

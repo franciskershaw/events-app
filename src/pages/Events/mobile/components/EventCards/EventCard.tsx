@@ -5,22 +5,18 @@ import { motion } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { useModals } from "@/contexts/Modals/ModalsContext";
 import { formatDate, formatTime, isWeekend } from "@/lib/utils";
 import { Event } from "@/types/globalTypes";
 
 import SwipeableIndicator from "../../../../../components/utility/SwipeableIndicator/SwipeableIndicator";
-import useToggleConfirmEvent from "../../../hooks/useToggleConfirmEvent";
+import EventCardActions from "../../../components/EventCardActions/EventCardActions";
 
 const EventCard = ({ event }: { event: Event }) => {
   const { location, title, category, description } = event;
   const [isOpen, setIsOpen] = useState(false);
   const [isSwiped, setIsSwiped] = useState(false);
-  const { openEventModal, openDeleteEventModal } = useModals();
   const swipeBlockRef = useRef(false);
   const duration = 0.3;
-  const { mutate: toggleEventConfirmation } = useToggleConfirmEvent();
 
   const toggleBody = () => {
     if (!swipeBlockRef.current && !isSwiped) {
@@ -60,13 +56,6 @@ const EventCard = ({ event }: { event: Event }) => {
     }
   };
 
-  const handleConfirmEvent = () => {
-    toggleEventConfirmation({
-      eventId: event._id,
-      unConfirmed: event.unConfirmed,
-    });
-  };
-
   return (
     <div
       className={`relative border rounded-md shadow-sm bg-white hover:shadow-md transition-all overflow-x-hidden event ${
@@ -103,25 +92,9 @@ const EventCard = ({ event }: { event: Event }) => {
           animate={{ translateX: isSwiped ? 0 : "100%" }}
           transition={{ duration }}
         >
-          <div className="relative flex items-center justify-center gap-4 h-full">
+          <div className="relative flex items-center justify-center h-full">
             <SwipeableIndicator orientation="vertical" alignment="left" />
-            {event.unConfirmed === true && (
-              <Button size="round" onClick={handleConfirmEvent}>
-                Confirm
-              </Button>
-            )}
-            <Button
-              size="round"
-              onClick={() => openEventModal({ ...event, _id: "" }, "copy")}
-            >
-              Copy
-            </Button>
-            <Button size="round" onClick={() => openEventModal(event, "edit")}>
-              Edit
-            </Button>
-            <Button size="round" onClick={() => openDeleteEventModal(event)}>
-              Delete
-            </Button>
+            <EventCardActions event={event} />
           </div>
         </motion.div>
       </div>
