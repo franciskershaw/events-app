@@ -9,6 +9,7 @@ import { formatDate, formatTime, isWeekend } from "@/lib/utils";
 import { Event } from "@/types/globalTypes";
 
 import SwipeableIndicator from "../../../../../components/utility/SwipeableIndicator/SwipeableIndicator";
+import { getCategoryIcon } from "../../../../../lib/icons";
 import EventCardActions from "../../../components/EventCardActions/EventCardActions";
 
 const EventCard = ({ event }: { event: Event }) => {
@@ -81,7 +82,10 @@ const EventCard = ({ event }: { event: Event }) => {
           </div>
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">{formattedDate}</span>
-            <Badge variant="secondary">{category.name}</Badge>
+            <Badge variant="secondary">
+              {getCategoryIcon(category.name)}
+              <span className="ml-1">{category.name}</span>
+            </Badge>
           </div>
         </div>
         {/* Action buttons */}
