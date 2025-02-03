@@ -9,6 +9,14 @@ export interface User {
     email: string;
     hideEvents: boolean;
   }[];
+  preferences: {
+    connectionPreferences: Record<
+      string,
+      {
+        hideEvents: boolean;
+      }
+    >;
+  };
   connectionId?: {
     id: string;
     expiry: string;

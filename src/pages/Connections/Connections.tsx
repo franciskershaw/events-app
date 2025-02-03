@@ -1,4 +1,6 @@
-import { Eye, EyeOff, Users } from "lucide-react";
+import { useMemo } from "react";
+
+import { Eye, EyeOff, Loader2, Users } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
@@ -6,11 +8,13 @@ import useUser from "@/hooks/user/useUser";
 
 import ConnectionModal from "./components/ConnectionModals/ConnectionModal";
 import RemoveConnectionModal from "./components/ConnectionModals/RemoveConnectionModal";
+import useUpdateConnectionPreferences from "./hooks/useUpdateConnectionPreferences";
 
 const Connections = () => {
   const { user } = useUser();
-  const connections = user?.connections;
-
+  const connections = useMemo(() => user?.connections, [user]);
+  const { mutate: updateConnectionVisibility, isPending } =
+    useUpdateConnectionPreferences();
   return (
     <>
       <div className="flex flex-col gap-8 px-7 py-7">
@@ -46,8 +50,24 @@ const Connections = () => {
                         <h3 className="font-semibold">{connection.name}</h3>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Button variant="outline" size="icon">
-                          {connection.hideEvents ? <EyeOff /> : <Eye />}
+                        <Button
+                          onClick={() => {
+                            updateConnectionVisibility({
+                              connectionId: connection._id,
+                              hideEvents: !connection.hideEvents,
+                            });
+                          }}
+                          variant="outline"
+                          size="icon"
+                          disabled={isPending}
+                        >
+                          {isPending ? (
+                            <Loader2 className="animate-spin" />
+                          ) : connection.hideEvents ? (
+                            <EyeOff />
+                          ) : (
+                            <Eye />
+                          )}
                         </Button>
                         <RemoveConnectionModal _id={connection._id} />
                       </div>
