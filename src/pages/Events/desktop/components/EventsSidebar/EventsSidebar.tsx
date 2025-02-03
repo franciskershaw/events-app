@@ -1,7 +1,3 @@
-import { useState } from "react";
-
-import { motion } from "framer-motion";
-
 import {
   Sidebar,
   SidebarContent,
@@ -10,9 +6,8 @@ import {
 
 import { useActiveDay } from "../../../../../contexts/ActiveDay/ActiveDayContext";
 import { useModals } from "../../../../../contexts/Modals/ModalsContext";
-import { formatDate, formatTime } from "../../../../../lib/utils";
 import { Event } from "../../../../../types/globalTypes";
-import EventCardActions from "../../../components/EventCardActions/EventCardActions";
+import EventCard from "../EventCard/EventCard";
 
 const AddEventButton = () => {
   const { openEventModal } = useModals();
@@ -69,72 +64,9 @@ export const EventsSidebar = ({
           {events.length > 0 ? (
             <>
               <ul>
-                {events.map((event) => {
-                  const [isHovered, setIsHovered] = useState(false);
-                  let hoverTimeout: NodeJS.Timeout;
-
-                  const handleMouseEnter = () => {
-                    clearTimeout(hoverTimeout);
-                    hoverTimeout = setTimeout(() => {
-                      setIsHovered(true);
-                    }, 250);
-                  };
-
-                  const handleMouseLeave = () => {
-                    clearTimeout(hoverTimeout);
-                    hoverTimeout = setTimeout(() => {
-                      setIsHovered(false);
-                    }, 500);
-                  };
-
-                  return (
-                    <li
-                      key={event._id}
-                      className="border-b p-2 cursor-pointer relative"
-                      onMouseEnter={handleMouseEnter}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      <div>
-                        {formatTime(event.date) && (
-                          <span>{formatTime(event.date)}: </span>
-                        )}
-                        {/* TODO: Go through category icons and map to React icon elements */}
-                        {/* <span>{event.category.icon}</span> */}
-                        <span>{event.title}</span>
-                        {event.unConfirmed && <span>(?)</span>}
-
-                        <div className="text-xs text-gray-500">
-                          {formatDate(event.date) && (
-                            <span>{formatDate(event.date)} | </span>
-                          )}
-                          <span>{event.category.name}</span>
-                          {event.location?.venue && (
-                            <span> | {event.location?.venue}</span>
-                          )}
-                          {event.location?.venue && (
-                            <span> | {event.location?.city}</span>
-                          )}
-                        </div>
-                        {event.description && (
-                          <div className="text-xs text-gray-500 italic mt-1">
-                            {event.description}
-                          </div>
-                        )}
-                      </div>
-                      <motion.div
-                        className="absolute top-0 bottom-0 left-0 right-0 transform -translate-y-full flex items-center justify-center bg-white bg-opacity-80"
-                        initial={{ x: 50, opacity: 0 }}
-                        animate={{
-                          x: isHovered ? 0 : 50,
-                          opacity: isHovered ? 1 : 0,
-                        }}
-                        transition={{ duration: 0.3, ease: "easeOut" }}
-                      >
-                        <EventCardActions event={event} />
-                      </motion.div>
-                    </li>
-                  );
-                })}
+                {events.map((event) => (
+                  <EventCard event={event} key={event._id} />
+                ))}
               </ul>
               <AddEventButton />
             </>

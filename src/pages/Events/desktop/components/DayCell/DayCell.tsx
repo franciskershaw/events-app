@@ -3,19 +3,19 @@ import dayjs, { Dayjs } from "dayjs";
 import { useActiveDay } from "../../../../../contexts/ActiveDay/ActiveDayContext";
 import { Event } from "../../../../../types/globalTypes";
 
-interface DayCardProps {
+interface DayCellProps {
   currentDate: Dayjs;
   eventData?: Event[];
   showLocations: boolean;
   defaultLocation: string;
 }
 
-export const DayCard = ({
+export const DayCell = ({
   currentDate,
   eventData = [],
   showLocations,
   defaultLocation,
-}: DayCardProps) => {
+}: DayCellProps) => {
   const { activeDay, setActiveDay } = useActiveDay();
   const isSelected = activeDay?.isSame(currentDate, "day");
 
