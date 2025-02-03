@@ -42,7 +42,18 @@ const Combobox = ({
 }: ComboboxProps) => {
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [prevValue, setPrevValue] = useState(value);
   const { isMobile } = useViewport();
+
+  const handleOpenChange = (newOpenState: boolean) => {
+    if (newOpenState) {
+      setPrevValue(value);
+    } else {
+      setSearchValue("");
+      onChange(prevValue);
+    }
+    setOpen(newOpenState);
+  };
 
   useEffect(() => {
     if (disabled && value) {
@@ -64,7 +75,7 @@ const Combobox = ({
   }
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
@@ -72,7 +83,7 @@ const Combobox = ({
           aria-expanded={open}
           disabled={disabled}
           className={cn(
-            "min-w-[140px] truncate justify-start font-normal",
+            "min-w-[140px] w-full truncate justify-start font-normal",
             !value && "text-muted-foreground",
             disabled && "cursor-not-allowed opacity-50"
           )}
@@ -114,9 +125,9 @@ const Combobox = ({
               {options.map((option) => (
                 <CommandItem
                   key={option.value}
-                  value={option.value}
-                  onSelect={(currentValue) => {
-                    onChange(currentValue === value ? "" : currentValue);
+                  value={option.label}
+                  onSelect={() => {
+                    onChange(option.value);
                     setOpen(false);
                   }}
                 >
