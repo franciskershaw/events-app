@@ -95,6 +95,11 @@ const EventCard = ({ event }: { event: Event }) => {
           initial={{ translateX: "100%" }}
           animate={{ translateX: isSwiped ? 0 : "100%" }}
           transition={{ duration }}
+          onClick={() => {
+            setTimeout(() => {
+              setIsSwiped(false);
+            }, 500);
+          }}
         >
           <div className="relative flex items-center justify-center h-full">
             <SwipeableIndicator orientation="vertical" alignment="left" />
