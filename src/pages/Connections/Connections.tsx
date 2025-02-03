@@ -1,6 +1,4 @@
-import { useMemo } from "react";
-
-import { Eye, EyeOff, Loader2, Users } from "lucide-react";
+import { Eye, EyeOff, Users } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
@@ -12,7 +10,7 @@ import useUpdateConnectionPreferences from "./hooks/useUpdateConnectionPreferenc
 
 const Connections = () => {
   const { user } = useUser();
-  const connections = useMemo(() => user?.connections, [user]);
+  const connections = user?.connections;
   const { mutate: updateConnectionVisibility, isPending } =
     useUpdateConnectionPreferences();
   return (
@@ -59,11 +57,14 @@ const Connections = () => {
                           }}
                           variant="outline"
                           size="icon"
-                          disabled={isPending}
                         >
-                          {isPending ? (
-                            <Loader2 className="animate-spin" />
-                          ) : connection.hideEvents ? (
+                          {connection.hideEvents ? (
+                            isPending ? (
+                              <Eye />
+                            ) : (
+                              <EyeOff />
+                            )
+                          ) : isPending ? (
                             <EyeOff />
                           ) : (
                             <Eye />
