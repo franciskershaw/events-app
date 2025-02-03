@@ -3,19 +3,19 @@ import dayjs, { Dayjs } from "dayjs";
 import { useActiveDay } from "../../../../../contexts/ActiveDay/ActiveDayContext";
 import { Event } from "../../../../../types/globalTypes";
 
-interface DayCardProps {
+interface DayCellProps {
   currentDate: Dayjs;
   eventData?: Event[];
   showLocations: boolean;
   defaultLocation: string;
 }
 
-export const DayCard = ({
+export const DayCell = ({
   currentDate,
   eventData = [],
   showLocations,
   defaultLocation,
-}: DayCardProps) => {
+}: DayCellProps) => {
   const { activeDay, setActiveDay } = useActiveDay();
   const isSelected = activeDay?.isSame(currentDate, "day");
 
@@ -48,13 +48,13 @@ export const DayCard = ({
       } ${isPast && !isToday ? "event--past" : ""} ${isSelected ? "event--selected font-bold" : ""}`}
       onClick={() => setActiveDay(currentDate)}
     >
-      <div className="border-r border-gray-300 py-1 text-center flex-shrink-0 w-12">
+      <div className="border-r border-gray-300 py-1 text-center flex-shrink-0 w-12 event-date">
         {currentDate.format("ddd D")}
       </div>
 
       <div className="truncate p-1">{eventTitles}</div>
       {eventLocation && showLocations && eventLocation !== defaultLocation && (
-        <div className="text-xs p-0.5 border border-gray-300 rounded ml-auto mr-0.5 max-w-24 truncate">
+        <div className="text-xs p-0.5 border border-gray-300 rounded ml-auto mr-0.5 max-w-24 truncate flex-shrink-0">
           {eventLocation}
         </div>
       )}

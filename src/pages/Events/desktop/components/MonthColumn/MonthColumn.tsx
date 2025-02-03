@@ -1,7 +1,7 @@
 import { Dayjs } from "dayjs";
 
 import { Event } from "../../../../../types/globalTypes";
-import { DayCard } from "../DayCard/DayCard";
+import { DayCell } from "../DayCell/DayCell";
 
 interface MonthColumnProps {
   month: Dayjs;
@@ -29,7 +29,7 @@ export const MonthColumn = ({
           const eventData = eventsByDay[dateKey];
 
           return (
-            <DayCard
+            <DayCell
               key={dayIndex}
               currentDate={currentDate}
               eventData={eventData}

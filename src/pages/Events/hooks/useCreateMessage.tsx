@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { format } from "date-fns";
 import dayjs from "dayjs";
 
-import { Event, EventFree } from "@/types/globalTypes"; // Replace with the actual path
+import { Event, EventFree } from "@/types/globalTypes";
 
 import { isEventTypeguard } from "../helpers/helpers";
 

@@ -3,10 +3,10 @@ import dayjs from "dayjs";
 import { DateTime } from "@/components/ui/date-time";
 import { Form, FormInput } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { FormSelect } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
 import { Checkbox } from "../../../../components/ui/checkbox";
+import { Combobox } from "../../../../components/ui/combobox";
 import useEventForm from "../../hooks/useEventForm";
 
 const AddEventForm = ({ formId }: { formId: string }) => {
@@ -53,12 +53,19 @@ const AddEventForm = ({ formId }: { formId: string }) => {
         />
       </FormInput>
 
-      <FormSelect
-        name="category"
-        label="Category*"
-        placeholder="Select a category"
-        options={eventCategorySelectOptions}
-      />
+      <FormInput name="category" label="Category*">
+        <div>
+          <Combobox
+            value={form.watch("category")}
+            onChange={(value) =>
+              form.setValue("category", value, { shouldValidate: true })
+            }
+            options={eventCategorySelectOptions}
+            placeholder="Select a category"
+            role="add"
+          />
+        </div>
+      </FormInput>
 
       <FormInput name="venue" label="Venue">
         <Input placeholder="Event venue (optional)" />
