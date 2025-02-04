@@ -25,8 +25,19 @@ export const DayCell = ({
   const isWeekend = currentDate.day() === 0 || currentDate.day() === 6;
 
   const eventTitles = eventData
-    .map((event) => (event.unConfirmed ? `${event.title}?` : event.title))
-    .join(", ");
+    .filter((event) => event.category.name !== "Holiday")
+    .map((event, index) => (
+      <span key={event._id}>
+        {event.category.name === "Reminder" ? (
+          <i>{event.unConfirmed ? `${event.title}?` : event.title}</i>
+        ) : event.unConfirmed ? (
+          `${event.title}?`
+        ) : (
+          event.title
+        )}
+        {index < eventData.length - 1 && ", "}
+      </span>
+    ));
 
   const eventLocationsSet = new Set(
     eventData.map((event) => event.location?.city).filter(Boolean)
