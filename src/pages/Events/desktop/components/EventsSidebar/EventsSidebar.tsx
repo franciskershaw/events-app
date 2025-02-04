@@ -115,7 +115,11 @@ export const EventsSidebar = ({
                           {formatTime(event.date) && (
                             <span>{formatTime(event.date)}: </span>
                           )}
-                          {event.title} @ {event.location?.venue}
+                          {event.title}
+                          {event.unConfirmed && <span>(?)</span>}
+                          {event.location?.venue && (
+                            <span> @ {event.location?.venue}</span>
+                          )}
                         </li>
                       ))}
                     </ol>
