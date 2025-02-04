@@ -25,20 +25,20 @@ export const DayCell = ({
   const isWeekend = currentDate.day() === 0 || currentDate.day() === 6;
 
   const eventTitles = eventData
-    .filter((event) => event.category.name !== "Holiday") // Exclude Holidays
-    .map((event) =>
-      event.category.name === "Reminder" ? (
-        <i key={event._id}>
-          {event.unConfirmed ? `${event.title}?` : event.title}
-        </i>
-      ) : (
-        <span key={event._id}>
-          {event.unConfirmed ? `${event.title}?` : event.title}
-        </span>
-      )
-    );
+    .filter((event) => event.category.name !== "Holiday") // TODO: Find better way to do this via category.name
+    .map((event, index, array) => (
+      <span key={event._id}>
+        {event.category.name === "Reminder" ? (
+          <i>{event.unConfirmed ? `${event.title}?` : event.title}</i>
+        ) : event.unConfirmed ? (
+          `${event.title}?`
+        ) : (
+          event.title
+        )}
+        {index < array.length - 1 && ", "}{" "}
+      </span>
+    ));
 
-  // Only join elements with a comma if there are multiple
   const formattedTitles = eventTitles.length > 0 ? <>{eventTitles}</> : null;
 
   const eventLocationsSet = new Set(
