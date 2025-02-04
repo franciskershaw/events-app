@@ -35,8 +35,14 @@ const SearchBar = ({
     ? `${activeFilterCount} filter${activeFilterCount > 1 ? "s" : ""} applied`
     : "Search by title, venue, city, category or date";
 
+  // Filter dropdown options based on query input
+  const filteredOptions = predefinedOptions.filter((option) =>
+    option.label.toLowerCase().includes(query.toLowerCase())
+  );
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
+    setIsDropdownOpen(e.target.value.length > 0 && filteredOptions.length > 0);
   };
 
   const handleOptionSelect = (value: string) => {
@@ -51,7 +57,7 @@ const SearchBar = ({
   };
 
   const handleFocus = () => {
-    if (!skipFocusRef.current) {
+    if (!skipFocusRef.current && filteredOptions.length > 0) {
       setIsDropdownOpen(true);
     }
     skipFocusRef.current = false;
@@ -71,7 +77,7 @@ const SearchBar = ({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [filteredOptions]);
 
   return (
     <div ref={searchBarRef} className="relative w-full" onFocus={handleFocus}>
@@ -102,13 +108,13 @@ const SearchBar = ({
         )}
       </div>
 
-      {/* Dropdown menu */}
-      {isDropdownOpen && (
+      {/* Dropdown menu (only show if filtered options exist) */}
+      {isDropdownOpen && filteredOptions.length > 0 && (
         <div
           ref={dropdownRef}
           className="absolute left-0 right-0 mt-2 bg-white border border-gray-300 rounded-md shadow-md z-10"
         >
-          {predefinedOptions.map((option) => (
+          {filteredOptions.map((option) => (
             <button
               key={option.value}
               className="w-full text-left text-sm px-3 py-2 hover:bg-gray-100 focus:outline-none"

@@ -25,19 +25,21 @@ export const DayCell = ({
   const isWeekend = currentDate.day() === 0 || currentDate.day() === 6;
 
   const eventTitles = eventData
-    .filter((event) => event.category.name !== "Holiday")
-    .map((event, index) => (
-      <span key={event._id}>
-        {event.category.name === "Reminder" ? (
-          <i>{event.unConfirmed ? `${event.title}?` : event.title}</i>
-        ) : event.unConfirmed ? (
-          `${event.title}?`
-        ) : (
-          event.title
-        )}
-        {index < eventData.length - 1 && ", "}
-      </span>
-    ));
+    .filter((event) => event.category.name !== "Holiday") // Exclude Holidays
+    .map((event) =>
+      event.category.name === "Reminder" ? (
+        <i key={event._id}>
+          {event.unConfirmed ? `${event.title}?` : event.title}
+        </i>
+      ) : (
+        <span key={event._id}>
+          {event.unConfirmed ? `${event.title}?` : event.title}
+        </span>
+      )
+    );
+
+  // Only join elements with a comma if there are multiple
+  const formattedTitles = eventTitles.length > 0 ? <>{eventTitles}</> : null;
 
   const eventLocationsSet = new Set(
     eventData.map((event) => event.location?.city).filter(Boolean)
@@ -63,7 +65,7 @@ export const DayCell = ({
         {currentDate.format("ddd D")}
       </div>
 
-      <div className="truncate p-1">{eventTitles}</div>
+      <div className="truncate p-1">{formattedTitles}</div>
       {eventLocation && showLocations && eventLocation !== defaultLocation && (
         <div className="text-xs p-0.5 border border-gray-300 rounded ml-auto mr-0.5 max-w-24 truncate flex-shrink-0">
           {eventLocation}

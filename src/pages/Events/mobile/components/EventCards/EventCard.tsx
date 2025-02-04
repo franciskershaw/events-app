@@ -87,6 +87,11 @@ const EventCard = ({ event }: { event: Event }) => {
               <span className="ml-1">{category.name}</span>
             </Badge>
           </div>
+          {(location?.venue || formattedTime || description) && (
+            <div className="absolute bottom-1 left-0 right-0 flex">
+              <SwipeableIndicator orientation="horizontal" />
+            </div>
+          )}
         </div>
         {/* Action buttons */}
         <motion.div
