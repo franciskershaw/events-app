@@ -42,11 +42,29 @@ export const useEventsFree = ({
 
     const allDays = eachDayOfInterval({ start: today, end: rangeEndDate });
 
-    const eventDays = eventsDb.flatMap((event) => {
-      const eventStart = new Date(event.date.start);
-      const eventEnd = new Date(event.date.end || event.date.start);
-      return eachDayOfInterval({ start: eventStart, end: eventEnd });
-    });
+    const holidayLocations = new Map<string, string>();
+
+    eventsDb
+      .filter((event) => event.category.name === "Holiday")
+      .forEach((event) => {
+        const eventDays = eachDayOfInterval({
+          start: new Date(event.date.start),
+          end: new Date(event.date.end || event.date.start),
+        });
+
+        eventDays.forEach((day) => {
+          const dayKey = day.toISOString().split("T")[0];
+          holidayLocations.set(dayKey, event.location?.city || "Bristol");
+        });
+      });
+
+    const eventDays = eventsDb
+      .filter((event) => !["Holiday", "Reminder"].includes(event.category.name))
+      .flatMap((event) => {
+        const eventStart = new Date(event.date.start);
+        const eventEnd = new Date(event.date.end || event.date.start);
+        return eachDayOfInterval({ start: eventStart, end: eventEnd });
+      });
 
     let eventFreeDays = allDays.filter(
       (day) => !eventDays.some((eventDay) => isSameDay(day, eventDay))
@@ -56,9 +74,15 @@ export const useEventsFree = ({
       eventFreeDays = eventFreeDays.filter((day) => day >= startDate);
     }
 
-    return eventFreeDays.map((day) => ({
-      _id: `free-${day.toISOString()}`,
-      date: { start: day.toISOString(), end: day.toISOString() },
-    }));
+    return eventFreeDays.map((day) => {
+      const dayKey = day.toISOString().split("T")[0];
+      const locationCity = holidayLocations.get(dayKey) || "Bristol";
+
+      return {
+        _id: `free-${day.toISOString()}`,
+        date: { start: day.toISOString(), end: day.toISOString() },
+        location: { city: locationCity },
+      };
+    });
   }, [eventsDb, startDate, endDate, query]);
 };

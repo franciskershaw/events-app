@@ -11,6 +11,9 @@ export interface User {
 export type BaseEvent = {
   _id: string;
   date: EventDate;
+  location?: {
+    city: string;
+  };
 };
 export interface Event {
   _id: string;
@@ -32,6 +35,9 @@ export interface Event {
 export interface EventFree {
   _id: string;
   date: EventDate;
+  location?: {
+    city: string;
+  };
 }
 
 export interface EventCategory {
