@@ -2,6 +2,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "../../../components/ui/sidebar";
+import { LOCATION_DEFAULT, LOCATION_SHOW } from "../../../constants/app";
 import { ActiveDayProvider } from "../../../contexts/ActiveDay/ActiveDayContext";
 import { useSearch } from "../../../contexts/SearchEvents/SearchEventsContext";
 import { Event } from "../../../types/globalTypes";
@@ -27,9 +28,6 @@ export const EventsDesktop = () => {
     Math.max(...events.map((event) => new Date(event.date.start).getTime()))
   );
 
-  const showLocations = true;
-  const defaultLocation = "Bristol";
-
   const eventsByDay: Record<string, Event[]> = getEventsByDay(events);
   const monthColumns = generateMonthColumns(firstEventDate, lastEventDate);
 
@@ -49,8 +47,8 @@ export const EventsDesktop = () => {
               key={month.format("MMMM YYYY")}
               month={month}
               eventsByDay={eventsByDay}
-              showLocations={showLocations}
-              defaultLocation={defaultLocation}
+              showLocations={LOCATION_SHOW}
+              defaultLocation={LOCATION_DEFAULT}
             />
           ))}
         </div>

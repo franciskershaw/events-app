@@ -2,6 +2,11 @@ import { useMemo } from "react";
 
 import { eachDayOfInterval, isSameDay } from "date-fns";
 
+import {
+  CATEGORY_HOLIDAY,
+  CATEGORY_REMINDER,
+  LOCATION_DEFAULT,
+} from "../../../constants/app";
 import { Event, EventFree } from "../../../types/globalTypes";
 import { splitQueryParts } from "../helpers";
 
@@ -45,7 +50,7 @@ export const useEventsFree = ({
     const holidayLocations = new Map<string, string>();
 
     eventsDb
-      .filter((event) => event.category.name === "Holiday")
+      .filter((event) => event.category.name === CATEGORY_HOLIDAY)
       .forEach((event) => {
         const eventDays = eachDayOfInterval({
           start: new Date(event.date.start),
@@ -54,12 +59,18 @@ export const useEventsFree = ({
 
         eventDays.forEach((day) => {
           const dayKey = day.toISOString().split("T")[0];
-          holidayLocations.set(dayKey, event.location?.city || "Bristol");
+          holidayLocations.set(
+            dayKey,
+            event.location?.city || LOCATION_DEFAULT
+          );
         });
       });
 
     const eventDays = eventsDb
-      .filter((event) => !["Holiday", "Reminder"].includes(event.category.name))
+      .filter(
+        (event) =>
+          ![CATEGORY_HOLIDAY, CATEGORY_REMINDER].includes(event.category.name)
+      )
       .flatMap((event) => {
         const eventStart = new Date(event.date.start);
         const eventEnd = new Date(event.date.end || event.date.start);
@@ -76,7 +87,7 @@ export const useEventsFree = ({
 
     return eventFreeDays.map((day) => {
       const dayKey = day.toISOString().split("T")[0];
-      const locationCity = holidayLocations.get(dayKey) || "Bristol";
+      const locationCity = holidayLocations.get(dayKey) || LOCATION_DEFAULT;
 
       return {
         _id: `free-${day.toISOString()}`,

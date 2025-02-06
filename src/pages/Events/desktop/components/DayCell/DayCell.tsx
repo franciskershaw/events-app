@@ -1,5 +1,9 @@
 import dayjs, { Dayjs } from "dayjs";
 
+import {
+  CATEGORY_HOLIDAY,
+  CATEGORY_REMINDER,
+} from "../../../../../constants/app";
 import { useActiveDay } from "../../../../../contexts/ActiveDay/ActiveDayContext";
 import { Event } from "../../../../../types/globalTypes";
 
@@ -25,10 +29,10 @@ export const DayCell = ({
   const isWeekend = currentDate.day() === 0 || currentDate.day() === 6;
 
   const eventTitles = eventData
-    .filter((event) => event.category.name !== "Holiday") // TODO: Find better way to do this via category.name
+    .filter((event) => event.category.name !== CATEGORY_HOLIDAY)
     .map((event, index, array) => (
       <span key={event._id}>
-        {event.category.name === "Reminder" ? (
+        {event.category.name === CATEGORY_REMINDER ? (
           <i>{event.unConfirmed ? `${event.title}?` : event.title}</i>
         ) : event.unConfirmed ? (
           `${event.title}?`
