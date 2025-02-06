@@ -104,22 +104,6 @@ export const SearchProvider = ({
       }));
   }, [filteredEvents, categories]);
 
-  // Filtered locations
-  // const filteredLocations = useMemo(() => {
-  //   const validEvents = filteredEvents.filter(isEventTypeguard);
-
-  //   const locationsInFilteredEvents = new Set(
-  //     validEvents.flatMap((event) =>
-  //       [event.location?.city, event.location?.venue].filter(Boolean)
-  //     )
-  //   );
-
-  //   return Array.from(locationsInFilteredEvents).map((location) => ({
-  //     value: location!,
-  //     label: location!,
-  //   }));
-  // }, [filteredEvents]);
-
   const filteredLocations = useMemo(() => {
     const locationsInFilteredEvents = new Set(
       filteredEvents.flatMap((event) => [

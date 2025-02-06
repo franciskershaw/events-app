@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 
 import { Event, EventFree } from "@/types/globalTypes";
 
+import { LOCATION_DEFAULT } from "../../../constants/app";
 import { isEventTypeguard } from "../helpers/helpers";
 
 interface UseCreateMessageProps {
@@ -63,7 +64,12 @@ const useCreateMessage = ({
 
     if (showEventsFree) {
       const eventsFree = filteredEvents
-        .map((event) => `- ${formatDate(event.date.start)}`)
+        .map((event) => {
+          const date = formatDate(event.date.start);
+          const city = event.location?.city;
+
+          return `- ${date}${city && city !== LOCATION_DEFAULT ? ` (${city})` : ""}`;
+        })
         .join("\n");
 
       // Free events
