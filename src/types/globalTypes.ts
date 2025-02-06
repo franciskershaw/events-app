@@ -13,6 +13,7 @@ export type BaseEvent = {
   date: EventDate;
   location?: {
     city: string;
+    venue: string | null;
   };
 };
 export interface Event {
@@ -37,6 +38,7 @@ export interface EventFree {
   date: EventDate;
   location?: {
     city: string;
+    venue: null;
   };
 }
 

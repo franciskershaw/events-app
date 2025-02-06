@@ -118,7 +118,6 @@ const FiltersDrawer = () => {
               onChange={setSelectedLocation}
               options={locations}
               placeholder="Locations"
-              disabled={showEventsFree}
             />
           </div>
           <div className="grid grid-cols-2 gap-4 w-full">

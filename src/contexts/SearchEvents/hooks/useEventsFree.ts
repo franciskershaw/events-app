@@ -92,7 +92,7 @@ export const useEventsFree = ({
       return {
         _id: `free-${day.toISOString()}`,
         date: { start: day.toISOString(), end: day.toISOString() },
-        location: { city: locationCity },
+        location: { city: locationCity, venue: null },
       };
     });
   }, [eventsDb, startDate, endDate, query]);

@@ -8,7 +8,7 @@ import { Event, EventFree } from "@/types/globalTypes";
 import { isEventTypeguard } from "../helpers/helpers";
 
 interface UseCreateMessageProps {
-  filteredEvents: Event[] | EventFree[];
+  filteredEvents: (Event | EventFree)[];
   startDate: Date | null;
   endDate: Date | null;
   selectedCategory: string;
