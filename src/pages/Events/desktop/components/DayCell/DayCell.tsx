@@ -41,11 +41,21 @@ export const DayCell = ({
 
   const formattedTitles = eventTitles.length > 0 ? <>{eventTitles}</> : null;
 
-  const eventLocationsSet = new Set(
-    eventData.map((event) => event.location?.city).filter(Boolean)
-  );
-  const eventLocation = eventLocationsSet.size
-    ? Array.from(eventLocationsSet).join(", ")
+  const eventLocationsMap = new Map<string, boolean>();
+
+  eventData.forEach((event) => {
+    if (event.location?.city) {
+      eventLocationsMap.set(
+        event.location.city,
+        eventLocationsMap.get(event.location.city) || event.unConfirmed
+      );
+    }
+  });
+
+  const eventLocation = eventLocationsMap.size
+    ? Array.from(eventLocationsMap)
+        .map(([city, unConfirmed]) => (unConfirmed ? `${city}(?)` : city))
+        .join(", ")
     : "";
 
   return (
