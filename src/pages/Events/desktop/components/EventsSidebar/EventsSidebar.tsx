@@ -28,7 +28,7 @@ const AddEventButton = () => {
             title: "",
             date: { start: activeDay?.toISOString() ?? "", end: "" },
             category: { _id: "", name: "", icon: "" },
-            createdBy: "",
+            createdBy: { _id: "", name: "" },
             createdAt: new Date(),
             updatedAt: new Date(),
             unConfirmed: false,

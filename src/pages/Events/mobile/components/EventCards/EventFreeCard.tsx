@@ -28,7 +28,7 @@ const EventFreeCard = ({ event }: { event: EventFree }) => {
               venue: "",
               city: event.location?.city ? event.location?.city : "",
             },
-            createdBy: "",
+            createdBy: { _id: "", name: "" },
             createdAt: new Date(),
             updatedAt: new Date(),
             unConfirmed: false,
