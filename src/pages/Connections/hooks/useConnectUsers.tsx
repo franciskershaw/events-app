@@ -36,6 +36,9 @@ const useConnectUsers = () => {
           connections: [...oldData.connections, connectedUser],
         };
       });
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.events],
+      });
       toast.success(`Connected with ${connectedUser.name}`);
     },
     onError: (error: AxiosError<{ message: string }>) => {
