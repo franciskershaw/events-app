@@ -17,8 +17,6 @@ const useAuth = () => {
         return response.data;
       }
     } catch (error) {
-      console.log("catching an error");
-      console.log(error);
       if (error instanceof Error && "response" in error) {
         const serverError = error as {
           response: { data: { message: string } };
