@@ -11,7 +11,7 @@ import {
 } from "../helpers";
 
 interface UseFilterEventsProps {
-  events: Event[] | EventFree[];
+  events: (Event | EventFree)[];
   query: string;
   startDate: Date | null;
   endDate: Date | null;
@@ -75,11 +75,20 @@ export const useFilterEvents = ({
         (!startDate || eventEndDate >= startDate) &&
         (!endDate || eventStartDate <= endDate);
 
+      // Match location
+      const eventCity = event.location?.city?.toLowerCase() || "";
+      const eventVenue = event.location?.venue?.toLowerCase() || "";
+      const matchesLocation =
+        !selectedLocation ||
+        eventCity === selectedLocation.toLowerCase() ||
+        eventVenue === selectedLocation.toLowerCase();
+
       if (showEventsFree) {
         return (
           (textKeywords.length === 0 || matchesTextQuery) &&
           matchesQueryDateRange &&
-          matchesManualDateRange
+          matchesManualDateRange &&
+          matchesLocation
         );
       }
 
@@ -94,14 +103,6 @@ export const useFilterEvents = ({
       const matchesCategorySelect =
         !selectedCategory ||
         categoryName.toLowerCase() === selectedCategory.toLowerCase();
-
-      // Match location
-      const eventCity = event.location?.city?.toLowerCase() || "";
-      const eventVenue = event.location?.venue?.toLowerCase() || "";
-      const matchesLocation =
-        !selectedLocation ||
-        eventCity === selectedLocation.toLowerCase() ||
-        eventVenue === selectedLocation.toLowerCase();
 
       return (
         (textKeywords.length === 0 ||

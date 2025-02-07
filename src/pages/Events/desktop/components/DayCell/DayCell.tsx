@@ -1,5 +1,9 @@
 import dayjs, { Dayjs } from "dayjs";
 
+import {
+  CATEGORY_HOLIDAY,
+  CATEGORY_REMINDER,
+} from "../../../../../constants/app";
 import { useActiveDay } from "../../../../../contexts/ActiveDay/ActiveDayContext";
 import { Event } from "../../../../../types/globalTypes";
 
@@ -25,10 +29,10 @@ export const DayCell = ({
   const isWeekend = currentDate.day() === 0 || currentDate.day() === 6;
 
   const eventTitles = eventData
-    .filter((event) => event.category.name !== "Holiday") // TODO: Find better way to do this via category.name
+    .filter((event) => event.category.name !== CATEGORY_HOLIDAY)
     .map((event, index, array) => (
       <span key={event._id}>
-        {event.category.name === "Reminder" ? (
+        {event.category.name === CATEGORY_REMINDER ? (
           <i>{event.unConfirmed ? `${event.title}?` : event.title}</i>
         ) : event.unConfirmed ? (
           `${event.title}?`
@@ -41,11 +45,21 @@ export const DayCell = ({
 
   const formattedTitles = eventTitles.length > 0 ? <>{eventTitles}</> : null;
 
-  const eventLocationsSet = new Set(
-    eventData.map((event) => event.location?.city).filter(Boolean)
-  );
-  const eventLocation = eventLocationsSet.size
-    ? Array.from(eventLocationsSet).join(", ")
+  const eventLocationsMap = new Map<string, boolean>();
+
+  eventData.forEach((event) => {
+    if (event.location?.city) {
+      eventLocationsMap.set(
+        event.location.city,
+        eventLocationsMap.get(event.location.city) || event.unConfirmed
+      );
+    }
+  });
+
+  const eventLocation = eventLocationsMap.size
+    ? Array.from(eventLocationsMap)
+        .map(([city, unConfirmed]) => (unConfirmed ? `${city}(?)` : city))
+        .join(", ")
     : "";
 
   return (

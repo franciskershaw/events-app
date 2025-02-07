@@ -48,7 +48,7 @@ const EventCard = ({ event }: EventCardProps) => {
             {event.category.name}
           </span>
           {event.location?.venue && <span> | {event.location?.venue}</span>}
-          {event.location?.venue && <span> | {event.location?.city}</span>}
+          {event.location?.city && <span> | {event.location?.city}</span>}
         </div>
         {event.description && (
           <div className="text-xs text-gray-500 italic mt-1">
