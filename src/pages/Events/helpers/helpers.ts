@@ -103,11 +103,11 @@ export const getEventsByDay = (events: Event[]): Record<string, Event[]> => {
   );
 };
 
-interface UseShareEventProps {
+interface ShareEventProps {
   event: Event;
 }
 
-export const shareEvent = ({ event }: UseShareEventProps) => {
+export const shareEvent = ({ event }: ShareEventProps) => {
   const eventTime = format(new Date(event.date.start), "h:mmaaa");
   const eventDay = format(new Date(event.date.start), "EEEE do MMM");
 
