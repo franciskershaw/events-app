@@ -34,24 +34,14 @@ const useUpdateConnectionPreferences = () => {
 
   return useMutation({
     mutationFn: updateConnectionVisibility,
-    onSuccess: (response: {
-      _id: string;
-      preferences: { hideEvents: boolean };
-    }) => {
+    onSuccess: (response: { _id: string; hideEvents: boolean }) => {
       queryClient.setQueryData([queryKeys.user], (oldData: typeof user) => {
         if (!oldData) return oldData;
         return {
           ...oldData,
-          preferences: {
-            ...oldData.preferences,
-            connectionPreferences: {
-              ...oldData.preferences.connectionPreferences,
-              [response._id]: response.preferences,
-            },
-          },
           connections: oldData.connections.map((connection) =>
             connection._id === response._id
-              ? { ...connection, hideEvents: response.preferences.hideEvents }
+              ? { ...connection, hideEvents: response.hideEvents }
               : connection
           ),
         };
