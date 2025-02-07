@@ -1,11 +1,11 @@
-import { Trash } from "lucide-react";
+import { Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -13,44 +13,42 @@ import {
 
 import useRemoveConnection from "../../hooks/useRemoveConnection";
 
-const RemoveConnectionModal = ({ _id }: { _id: string }) => {
-  const removeConnection = useRemoveConnection();
+interface RemoveConnectionModalProps {
+  _id: string;
+}
 
-  const onDelete = () => {
-    if (_id) {
-      removeConnection.mutate({ _id });
-    }
-  };
+const RemoveConnectionModal = ({ _id }: RemoveConnectionModalProps) => {
+  const { mutate: removeConnection, isPending } = useRemoveConnection();
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="icon" variant="outline">
-          <Trash />
+        <Button
+          variant="outline"
+          size="sm"
+          className="gap-2 text-destructive hover:text-destructive"
+        >
+          <Trash2 className="h-4 w-4" />
+          <span className="hidden lg:block">Delete</span>
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="text-center text-xl">
-            Remove Connection
-          </DialogTitle>
+          <DialogTitle>Remove Connection</DialogTitle>
+          <DialogDescription>
+            Are you sure you want to remove this connection? You will no longer
+            see their events.
+          </DialogDescription>
         </DialogHeader>
-        <DialogDescription className="sr-only">
-          Modal for confirming removal of connection
-        </DialogDescription>
-        <div className="text-center space-y-5">
-          <div className="">
-            <p>Are you sure you want to remove this connection?</p>
-          </div>
-
-          <div className="flex justify-center items-center gap-6">
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
-            <Button onClick={onDelete} variant="destructive">
-              Remove
-            </Button>
-          </div>
-        </div>
+        <DialogFooter>
+          <Button
+            variant="destructive"
+            onClick={() => removeConnection({ _id })}
+            disabled={isPending}
+          >
+            {isPending ? "Removing..." : "Remove Connection"}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
