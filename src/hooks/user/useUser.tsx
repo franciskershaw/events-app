@@ -42,7 +42,7 @@ const useUser = () => {
       queryClient.setQueryData([queryKeys.user], null);
       queryClient.removeQueries({ queryKey: [queryKeys.events] });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 

@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import useAxios from "@/hooks/axios/useAxios";
 import queryKeys from "@/tanstackQuery/queryKeys";
+import { Event } from "@/types/globalTypes";
 
 import useUser from "../../../hooks/user/useUser";
 
@@ -14,7 +15,15 @@ const useGetEvents = () => {
       headers: { Authorization: `Bearer ${user?.accessToken}` },
     });
 
-    return data;
+    // Filter out events from connections with hideEvents: true
+    const filteredEvents = data.filter((event: Event) => {
+      const connection = user?.connections.find(
+        (conn) => conn._id === event.createdBy._id
+      );
+      return !connection || !connection.hideEvents;
+    });
+
+    return filteredEvents;
   };
 
   const {

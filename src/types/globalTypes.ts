@@ -35,7 +35,10 @@ export interface Event {
   };
   category: EventCategory;
   additionalAttributes?: Record<string, string>;
-  createdBy: string;
+  createdBy: {
+    _id: string;
+    name: string;
+  };
   description?: string;
   createdAt: Date;
   updatedAt: Date;
