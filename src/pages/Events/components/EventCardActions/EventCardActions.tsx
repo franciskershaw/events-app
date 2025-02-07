@@ -8,6 +8,7 @@ import useUser from "@/hooks/user/useUser";
 import { Event } from "@/types/globalTypes";
 
 import { shareEvent } from "../../helpers/helpers";
+import useMakeEventPrivate from "../../hooks/useMakeEventPrivate";
 import useToggleConfirmEvent from "../../hooks/useToggleConfirmEvent";
 
 interface EventCardActionsProps {
@@ -17,8 +18,11 @@ interface EventCardActionsProps {
 const EventCardActions = ({ event }: EventCardActionsProps) => {
   const { openEventModal, openDeleteEventModal } = useModals();
   const { mutate: toggleEventConfirmation } = useToggleConfirmEvent();
+  const { mutate: makeEventPrivate } = useMakeEventPrivate();
 
   const { user } = useUser();
+
+  const ownsEvent = event.createdBy._id === user?._id;
 
   const [buttonStatus, setButtonStatus] = useState<
     "default" | "success" | "error"
@@ -63,7 +67,7 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
 
   return (
     <div className="flex gap-2">
-      {event.unConfirmed && (
+      {event.unConfirmed && ownsEvent && (
         <Button
           size="round"
           onClick={() =>
@@ -95,10 +99,13 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
       >
         Copy
       </Button>
-      {event.createdBy._id === user?._id && (
+      {ownsEvent && (
         <>
           <Button size="round" onClick={() => openEventModal(event, "edit")}>
             Edit
+          </Button>
+          <Button size="round" onClick={() => makeEventPrivate(event._id)}>
+            {event.private ? "Public" : "Private"}
           </Button>
           <Button size="round" onClick={() => openDeleteEventModal(event)}>
             Delete

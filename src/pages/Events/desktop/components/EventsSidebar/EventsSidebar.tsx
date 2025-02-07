@@ -32,6 +32,7 @@ const AddEventButton = () => {
             createdAt: new Date(),
             updatedAt: new Date(),
             unConfirmed: false,
+            private: false,
           },
           "addFromFreeEvent"
         )
