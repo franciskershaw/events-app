@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import dayjs from "dayjs";
 
 import { BaseEvent, Event } from "../../../types/globalTypes";
@@ -100,4 +101,23 @@ export const getEventsByDay = (events: Event[]): Record<string, Event[]> => {
     },
     {} as Record<string, Event[]>
   );
+};
+
+interface UseShareEventProps {
+  event: Event;
+}
+
+export const shareEvent = ({ event }: UseShareEventProps) => {
+  const eventTime = format(new Date(event.date.start), "h:mmaaa");
+  const eventDay = format(new Date(event.date.start), "EEEE do MMM");
+
+  let message = `I'm going to ${event.title}`;
+
+  if (event.location?.venue) {
+    message += ` at ${event.location.venue}`;
+  }
+
+  message += ` at ${eventTime} on ${eventDay}`;
+
+  return message;
 };

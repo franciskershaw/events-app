@@ -4,7 +4,10 @@ import { isToday } from "date-fns";
 import { motion } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
 
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { getInitials } from "@/components/user/UserInitials/UserInitials";
+import useUser from "@/hooks/user/useUser";
 import { formatDate, formatTime, isWeekend } from "@/lib/utils";
 import { Event } from "@/types/globalTypes";
 
@@ -17,6 +20,10 @@ const EventCard = ({ event }: { event: Event }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSwiped, setIsSwiped] = useState(false);
   const swipeBlockRef = useRef(false);
+
+  const { user } = useUser();
+  const isOwnEvent = user?._id === event.createdBy._id;
+
   const duration = 0.3;
 
   const toggleBody = () => {
@@ -59,21 +66,34 @@ const EventCard = ({ event }: { event: Event }) => {
 
   return (
     <div
-      className={`relative border rounded-md shadow-sm bg-white hover:shadow-md transition-all overflow-x-hidden event ${
+      className={`relative border rounded-md shadow-sm hover:shadow-md transition-all overflow-x-hidden event ${
         weekend && "event--weekend"
       } ${
         today && "event--today"
-      } ${event.unConfirmed === true ? "border-dashed" : ""}`}
+      } ${event.unConfirmed === true ? "border-dashed" : ""} ${
+        !isOwnEvent ? "bg-gray-50/80" : "bg-white"
+      }`}
       {...swipeHandlers}
     >
       <div onClick={handleClick}>
         {/* Main event card */}
         <div
-          className={`relative flex flex-col gap-3 p-4 cursor-pointer z-10 ${event.unConfirmed === true ? "opacity-50" : ""}`}
+          className={`relative flex flex-col gap-3 p-4 cursor-pointer z-10 ${
+            event.unConfirmed === true ? "opacity-50" : ""
+          } ${!isOwnEvent ? "opacity-80" : ""}`}
         >
           <SwipeableIndicator orientation="vertical" alignment="right" />
           <div className="flex items-center justify-between">
-            <h2 className="font-semibold text-sm truncate flex-1">{title}</h2>
+            <div className="flex items-center gap-2 flex-1 min-w-0">
+              {!isOwnEvent && (
+                <Avatar className="h-6 w-6 bg-primary text-primary-foreground">
+                  <AvatarFallback className="text-xs bg-primary text-primary-foreground">
+                    {getInitials(event.createdBy.name)}
+                  </AvatarFallback>
+                </Avatar>
+              )}
+              <h2 className="font-semibold text-sm truncate">{title}</h2>
+            </div>
             {location?.city && (
               <span className="ml-4 font-medium text-sm">
                 📍 {location.city}

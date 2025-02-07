@@ -4,9 +4,10 @@ import { FaCheck, FaTimes } from "react-icons/fa";
 
 import { Button } from "@/components/ui/button";
 import { useModals } from "@/contexts/Modals/ModalsContext";
+import useUser from "@/hooks/user/useUser";
 import { Event } from "@/types/globalTypes";
 
-import useShareEvent from "../../hooks/useShareEvent";
+import { shareEvent } from "../../helpers/helpers";
 import useToggleConfirmEvent from "../../hooks/useToggleConfirmEvent";
 
 interface EventCardActionsProps {
@@ -17,12 +18,14 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
   const { openEventModal, openDeleteEventModal } = useModals();
   const { mutate: toggleEventConfirmation } = useToggleConfirmEvent();
 
+  const { user } = useUser();
+
   const [buttonStatus, setButtonStatus] = useState<
     "default" | "success" | "error"
   >("default");
 
   const handleShare = () => {
-    const message = useShareEvent({ event });
+    const message = shareEvent({ event });
     if (!message) {
       setButtonStatus("error");
       resetButton();
@@ -92,12 +95,16 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
       >
         Copy
       </Button>
-      <Button size="round" onClick={() => openEventModal(event, "edit")}>
-        Edit
-      </Button>
-      <Button size="round" onClick={() => openDeleteEventModal(event)}>
-        Delete
-      </Button>
+      {event.createdBy._id === user?._id && (
+        <>
+          <Button size="round" onClick={() => openEventModal(event, "edit")}>
+            Edit
+          </Button>
+          <Button size="round" onClick={() => openDeleteEventModal(event)}>
+            Delete
+          </Button>
+        </>
+      )}
     </div>
   );
 };
