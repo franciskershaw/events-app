@@ -185,10 +185,7 @@ const useFiltersDrawer = () => {
     if (!message) {
       setButtonStatus("error");
       setButtonText("No events");
-      setTimeout(() => {
-        setButtonStatus("default");
-        setButtonText("Copy event text");
-      }, 2000);
+      resetButton();
       return;
     }
 
@@ -197,19 +194,20 @@ const useFiltersDrawer = () => {
       .then(() => {
         setButtonStatus("success");
         setButtonText("Events copied");
-        setTimeout(() => {
-          setButtonStatus("default");
-          setButtonText("Copy event text");
-        }, 2000);
+        resetButton();
       })
       .catch(() => {
         setButtonStatus("error");
         setButtonText("Failed to copy");
-        setTimeout(() => {
-          setButtonStatus("default");
-          setButtonText("Copy event text");
-        }, 2000);
+        resetButton();
       });
+  };
+
+  const resetButton = () => {
+    setTimeout(() => {
+      setButtonStatus("default");
+      setButtonText("Copy event text");
+    }, 2000);
   };
 
   const getIcon = () => {

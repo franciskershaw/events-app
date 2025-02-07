@@ -86,11 +86,15 @@
 
   /* Event card styling */
   .event {
-    @apply bg-white border-gray-300;
+    @apply bg-white border-gray-300 overflow-hidden;
   }
 
   .event--today {
     @apply border-green-500;
+
+    .event-date {
+      @apply bg-green-100;
+    }
   }
 
   .event--past {
@@ -99,10 +103,18 @@
 
   .event--weekend {
     @apply border-blue-500;
+
+    .event-date {
+      @apply bg-blue-100;
+    }
   }
 
   .event--weekend-past {
     @apply border-gray-400;
+
+    .event-date {
+      @apply bg-gray-100;
+    }
   }
 
   /* Menu drawers */
