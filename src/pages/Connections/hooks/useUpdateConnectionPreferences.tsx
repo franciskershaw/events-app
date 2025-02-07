@@ -4,12 +4,16 @@ import { toast } from "sonner";
 
 import useAxios from "@/hooks/axios/useAxios";
 import useUser from "@/hooks/user/useUser";
+import useGetEvents from "@/pages/Events/hooks/useGetEvents";
 import queryKeys from "@/tanstackQuery/queryKeys";
 
 const useUpdateConnectionPreferences = () => {
   const queryClient = useQueryClient();
   const api = useAxios();
   const { user } = useUser();
+
+  // Makes sure events are fetched when connection visibility preferences are updated
+  useGetEvents();
 
   const updateConnectionVisibility = async ({
     connectionId,
@@ -51,9 +55,7 @@ const useUpdateConnectionPreferences = () => {
       toast.error(error.response?.data?.message || error.message);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: [queryKeys.events],
-      });
+      queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
     },
   });
 };
