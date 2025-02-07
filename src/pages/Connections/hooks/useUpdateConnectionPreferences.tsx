@@ -54,9 +54,6 @@ const useUpdateConnectionPreferences = () => {
     onError: (error: AxiosError<{ message: string }>) => {
       toast.error(error.response?.data?.message || error.message);
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
-    },
   });
 };
 
