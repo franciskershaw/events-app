@@ -1,6 +1,7 @@
 import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
 
 import { useScrollVisibility } from "../../../../../hooks/utility/useScrollVisibility";
+import { EventFree } from "../../../../../types/globalTypes";
 import {
   filterTodayEvents,
   groupEvents,
@@ -29,7 +30,7 @@ const EventCards = () => {
           <div className="space-y-2 px-4 py-5 bg-blue-100">
             {todayEvents.map((event) =>
               showEventsFree ? (
-                <EventFreeCard key={event._id} event={event} />
+                <EventFreeCard key={event._id} event={event as EventFree} />
               ) : isEventTypeguard(event) ? (
                 <EventCard key={event._id} event={event} />
               ) : null
@@ -44,7 +45,7 @@ const EventCards = () => {
           <div className="space-y-2 px-4 py-5 bg-blue-100">
             {monthEvents.map((event) =>
               showEventsFree ? (
-                <EventFreeCard key={event._id} event={event} />
+                <EventFreeCard key={event._id} event={event as EventFree} />
               ) : isEventTypeguard(event) ? (
                 <EventCard key={event._id} event={event} />
               ) : null

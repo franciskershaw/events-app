@@ -28,6 +28,10 @@ export interface User {
 export type BaseEvent = {
   _id: string;
   date: EventDate;
+  location?: {
+    city: string;
+    venue: string | null;
+  };
 };
 export interface Event {
   _id: string;
@@ -49,6 +53,10 @@ export interface Event {
 export interface EventFree {
   _id: string;
   date: EventDate;
+  location?: {
+    city: string;
+    venue: null;
+  };
 }
 
 export interface EventCategory {

@@ -24,6 +24,10 @@ const EventFreeCard = ({ event }: { event: EventFree }) => {
             title: "",
             date: { start: event.date.start, end: "" },
             category: { _id: "", name: "", icon: "" },
+            location: {
+              venue: "",
+              city: event.location?.city ? event.location?.city : "",
+            },
             createdBy: "",
             createdAt: new Date(),
             updatedAt: new Date(),
@@ -35,7 +39,7 @@ const EventFreeCard = ({ event }: { event: EventFree }) => {
     >
       <div className="flex items-center justify-between text-sm px-4 py-2">
         <span>{formattedDate}</span>
-        <Badge variant="secondary">Free</Badge>
+        <Badge variant="secondary">{event.location?.city}</Badge>
       </div>
     </div>
   );

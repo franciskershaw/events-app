@@ -16,7 +16,7 @@ interface DateFilters {
 interface SearchContextProps extends DateFilters {
   query: string;
   setQuery: (query: string) => void;
-  filteredEvents: Event[] | EventFree[];
+  filteredEvents: (Event | EventFree)[];
   showEventsFree: boolean;
   setShowEventsFree: (value: boolean) => void;
   selectedCategory: string;
@@ -104,20 +104,20 @@ export const SearchProvider = ({
       }));
   }, [filteredEvents, categories]);
 
-  // Filtered locations
   const filteredLocations = useMemo(() => {
-    const validEvents = filteredEvents.filter(isEventTypeguard);
-
     const locationsInFilteredEvents = new Set(
-      validEvents.flatMap((event) =>
-        [event.location?.city, event.location?.venue].filter(Boolean)
-      )
+      filteredEvents.flatMap((event) => [
+        event.location?.city,
+        event.location?.venue,
+      ])
     );
 
-    return Array.from(locationsInFilteredEvents).map((location) => ({
-      value: location!,
-      label: location!,
-    }));
+    return Array.from(locationsInFilteredEvents)
+      .filter((location) => location && location !== null)
+      .map((location) => ({
+        value: location!,
+        label: location!,
+      }));
   }, [filteredEvents]);
 
   // Set offset and active buttons in filter drawer
