@@ -63,6 +63,7 @@ const modalsReducer = (
         ...state,
         isEventModalOpen: false,
         isDeleteEventModalOpen: false,
+        isConnectionsModalOpen: false,
         mode: null,
       };
 
