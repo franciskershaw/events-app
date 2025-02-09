@@ -43,6 +43,7 @@ export interface Event {
   createdAt: Date;
   updatedAt: Date;
   unConfirmed: boolean;
+  private: boolean;
 }
 
 export interface EventFree {
