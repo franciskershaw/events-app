@@ -66,14 +66,19 @@ export const isEventTypeguard = (obj: unknown): obj is Event => {
 
 // Desktop
 export const generateMonthColumns = (startDate: Date, endDate: Date) => {
-  const start = dayjs(startDate).startOf("month");
+  const start = isNaN(startDate.getTime())
+    ? dayjs().startOf("month")
+    : dayjs(startDate).startOf("month");
   const end = dayjs(endDate).startOf("month");
   const months = [];
 
   let current = start;
-  while (current.isBefore(end) || current.isSame(end)) {
+  let count = 0;
+
+  while (current.isBefore(end) || current.isSame(end) || count < 6) {
     months.push(current);
     current = current.add(1, "month");
+    count++;
   }
 
   return months;
