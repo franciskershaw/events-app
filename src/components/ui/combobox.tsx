@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-import { useViewport } from "../../contexts/Viewport/ViewportContext";
+import { useIsMobile } from "../../hooks/use-mobile";
 import { BasicSelect } from "./select";
 
 interface ComboboxProps {
@@ -43,7 +43,7 @@ const Combobox = ({
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [prevValue, setPrevValue] = useState(value);
-  const { isMobile } = useViewport();
+  const isMobile = useIsMobile();
 
   const handleOpenChange = (newOpenState: boolean) => {
     if (newOpenState) {
