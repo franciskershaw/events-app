@@ -12,6 +12,7 @@ import { useActiveDay } from "../../../../../contexts/ActiveDay/ActiveDayContext
 import { useModals } from "../../../../../contexts/Modals/ModalsContext";
 import { formatTime } from "../../../../../lib/utils";
 import { Event } from "../../../../../types/globalTypes";
+import { UserEventInitials } from "../../../components/UserEventInitials/UserEventInitials";
 import EventCard from "../EventCard/EventCard";
 
 const AddEventButton = () => {
@@ -113,14 +114,17 @@ export const EventsSidebar = ({
                           key={event._id}
                           className="text-sm text-gray-500 list-disc list-outside ml-4"
                         >
-                          {formatTime(event.date) && (
-                            <span>{formatTime(event.date)}: </span>
-                          )}
-                          {event.title}
-                          {event.unConfirmed && <span>(?)</span>}
-                          {event.location?.venue && (
-                            <span> @ {event.location?.venue}</span>
-                          )}
+                          <div className="flex gap-1 items-center">
+                            <UserEventInitials event={event} />
+                            <span>
+                              {formatTime(event.date) &&
+                                `${formatTime(event.date)}: `}
+                              {event.title}
+                              {event.unConfirmed && "(?)"}
+                              {event.location?.venue &&
+                                ` @ ${event.location?.venue}`}
+                            </span>
+                          </div>
                         </li>
                       ))}
                     </ol>
