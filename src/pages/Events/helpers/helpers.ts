@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import dayjs from "dayjs";
 
+import useUser from "../../../hooks/user/useUser";
 import { BaseEvent, Event } from "../../../types/globalTypes";
 import { EventFormValues } from "../hooks/useEventForm";
 
@@ -65,14 +66,19 @@ export const isEventTypeguard = (obj: unknown): obj is Event => {
 
 // Desktop
 export const generateMonthColumns = (startDate: Date, endDate: Date) => {
-  const start = dayjs(startDate).startOf("month");
+  const start = isNaN(startDate.getTime())
+    ? dayjs().startOf("month")
+    : dayjs(startDate).startOf("month");
   const end = dayjs(endDate).startOf("month");
   const months = [];
 
   let current = start;
-  while (current.isBefore(end) || current.isSame(end)) {
+  let count = 0;
+
+  while (current.isBefore(end) || current.isSame(end) || count < 6) {
     months.push(current);
     current = current.add(1, "month");
+    count++;
   }
 
   return months;
@@ -120,4 +126,9 @@ export const shareEvent = ({ event }: ShareEventProps) => {
   message += ` at ${eventTime} on ${eventDay}`;
 
   return message;
+};
+
+export const isUserEvent = ({ event }: { event: Event }) => {
+  const { user } = useUser();
+  return user?._id === event.createdBy._id;
 };

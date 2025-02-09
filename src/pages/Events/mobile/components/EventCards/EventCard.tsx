@@ -4,16 +4,15 @@ import { isToday } from "date-fns";
 import { motion } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { getInitials } from "@/components/user/UserInitials/UserInitials";
-import useUser from "@/hooks/user/useUser";
 import { formatDate, formatTime, isWeekend } from "@/lib/utils";
 import { Event } from "@/types/globalTypes";
 
 import SwipeableIndicator from "../../../../../components/utility/SwipeableIndicator/SwipeableIndicator";
 import { getCategoryIcon } from "../../../../../lib/icons";
 import EventCardActions from "../../../components/EventCardActions/EventCardActions";
+import { UserEventInitials } from "../../../components/UserEventInitials/UserEventInitials";
+import { isUserEvent } from "../../../helpers/helpers";
 
 const EventCard = ({ event }: { event: Event }) => {
   const { location, title, category, description } = event;
@@ -21,8 +20,7 @@ const EventCard = ({ event }: { event: Event }) => {
   const [isSwiped, setIsSwiped] = useState(false);
   const swipeBlockRef = useRef(false);
 
-  const { user } = useUser();
-  const isOwnEvent = user?._id === event.createdBy._id;
+  const userEvent = isUserEvent({ event });
 
   const duration = 0.3;
 
@@ -71,7 +69,7 @@ const EventCard = ({ event }: { event: Event }) => {
       } ${
         today && "event--today"
       } ${event.unConfirmed === true ? "border-dashed" : ""} ${
-        !isOwnEvent ? "bg-gray-50/80" : "bg-white"
+        !userEvent ? "bg-gray-50/80" : "bg-white"
       }`}
       {...swipeHandlers}
     >
@@ -80,18 +78,12 @@ const EventCard = ({ event }: { event: Event }) => {
         <div
           className={`relative flex flex-col gap-3 p-4 cursor-pointer z-10 ${
             event.unConfirmed === true ? "opacity-50" : ""
-          } ${!isOwnEvent ? "opacity-80" : ""}`}
+          } ${!userEvent ? "opacity-80" : ""}`}
         >
           <SwipeableIndicator orientation="vertical" alignment="right" />
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 flex-1 min-w-0">
-              {!isOwnEvent && (
-                <Avatar className="h-6 w-6 bg-primary text-primary-foreground">
-                  <AvatarFallback className="text-xs bg-primary text-primary-foreground">
-                    {getInitials(event.createdBy.name)}
-                  </AvatarFallback>
-                </Avatar>
-              )}
+              <UserEventInitials event={event} />
               <h2 className="font-semibold text-sm truncate">{title}</h2>
             </div>
             {location?.city && (

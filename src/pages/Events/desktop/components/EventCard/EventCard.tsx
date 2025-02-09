@@ -7,6 +7,7 @@ import { Event } from "@/types/globalTypes";
 import { getCategoryIcon } from "../../../../../lib/icons";
 import { formatDate, formatTime } from "../../../../../lib/utils";
 import EventCardActions from "../../../components/EventCardActions/EventCardActions";
+import { UserEventInitials } from "../../../components/UserEventInitials/UserEventInitials";
 
 interface EventCardProps {
   event: Event;
@@ -37,10 +38,14 @@ const EventCard = ({ event }: EventCardProps) => {
       onMouseLeave={handleMouseLeave}
     >
       <div>
-        {formatTime(event.date) && <span>{formatTime(event.date)}: </span>}
-        <span>{event.title}</span>
-        {event.unConfirmed && <span>(?)</span>}
-
+        <div className="flex items-center flex-wrap gap-1">
+          <UserEventInitials event={event} />
+          <span>
+            {formatTime(event.date) && <span>{formatTime(event.date)}: </span>}
+            {event.title}
+            {event.unConfirmed && "(?)"}
+          </span>
+        </div>
         <div className="text-xs text-gray-500 flex items-center flex-wrap gap-1">
           {formatDate(event.date) && <span>{formatDate(event.date)} | </span>}
           <span className="flex items-center gap-1">

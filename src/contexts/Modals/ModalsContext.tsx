@@ -4,12 +4,14 @@ import { Event } from "@/types/globalTypes";
 
 // Define modal names as constants
 const MODAL_EVENT = "event";
+const MODAL_CONNECTIONS = "connections";
 
-type ModalMode = "edit" | "copy" | "addFromFreeEvent";
+type ModalMode = "edit" | "copy" | "addFromFreeEvent" | "connections";
 
 type ModalsState = {
   isEventModalOpen: boolean;
   isDeleteEventModalOpen: boolean;
+  isConnectionsModalOpen: boolean;
   selectedEvent: Event | null;
   mode: ModalMode | null;
 };
@@ -18,6 +20,7 @@ type ModalsState = {
 type ModalsAction =
   | { type: "OPEN_EVENT_MODAL"; data?: Event; mode: ModalMode }
   | { type: "OPEN_DELETE_EVENT_MODAL"; data: Event }
+  | { type: "OPEN_CONNECTIONS_MODAL" }
   | { type: "CLOSE_MODAL" }
   | { type: "RESET_SELECTED_DATA" };
 
@@ -25,6 +28,7 @@ type ModalsAction =
 const initialState: ModalsState = {
   isEventModalOpen: false,
   isDeleteEventModalOpen: false,
+  isConnectionsModalOpen: false,
   selectedEvent: null,
   mode: null,
 };
@@ -48,12 +52,18 @@ const modalsReducer = (
         isDeleteEventModalOpen: true,
         selectedEvent: action.data,
       };
+    case "OPEN_CONNECTIONS_MODAL":
+      return {
+        ...state,
+        isConnectionsModalOpen: true,
+      };
 
     case "CLOSE_MODAL":
       return {
         ...state,
         isEventModalOpen: false,
         isDeleteEventModalOpen: false,
+        isConnectionsModalOpen: false,
         mode: null,
       };
 
@@ -73,6 +83,7 @@ const modalsReducer = (
 type ModalsContextType = ModalsState & {
   openEventModal: (data?: Event, mode?: ModalMode) => void;
   openDeleteEventModal: (data: Event) => void;
+  openConnectionsModal: () => void;
   closeModal: () => void;
   resetSelectedData: () => void;
 };
@@ -93,6 +104,10 @@ const ModalsProvider = ({ children }: { children: ReactNode }) => {
     dispatch({ type: "OPEN_DELETE_EVENT_MODAL", data });
   };
 
+  const openConnectionsModal = () => {
+    dispatch({ type: "OPEN_CONNECTIONS_MODAL" });
+  };
+
   const closeModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
   };
@@ -107,6 +122,7 @@ const ModalsProvider = ({ children }: { children: ReactNode }) => {
         ...state,
         openEventModal,
         openDeleteEventModal,
+        openConnectionsModal,
         closeModal,
         resetSelectedData,
       }}
@@ -125,4 +141,4 @@ const useModals = () => {
   return context;
 };
 
-export { MODAL_EVENT, ModalsProvider, useModals };
+export { MODAL_CONNECTIONS, MODAL_EVENT, ModalsProvider, useModals };
