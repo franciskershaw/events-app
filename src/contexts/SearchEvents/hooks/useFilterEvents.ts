@@ -43,14 +43,14 @@ export const useFilterEvents = ({
     const textKeywords = textQuery.split(/\s+/).filter(Boolean);
 
     return events.filter((event) => {
+      // User connection events
       if (user && isEventTypeguard(event)) {
-        if (event.createdBy._id === user._id) return true;
-
-        // Check if event belongs to a connection with hideEvents true
-        const connection = user.connections.find(
-          (conn) => conn._id === event.createdBy._id
-        );
-        if (connection && connection.hideEvents) return false;
+        if (event.createdBy._id !== user._id) {
+          const connection = user.connections.find(
+            (conn) => conn._id === event.createdBy._id
+          );
+          if (connection?.hideEvents) return false;
+        }
       }
 
       // Match text fields (title, venue, city) against each keyword

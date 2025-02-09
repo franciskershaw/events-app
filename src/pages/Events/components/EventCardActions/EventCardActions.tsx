@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { FaCheck, FaTimes } from "react-icons/fa";
 
@@ -24,30 +24,24 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
     "default" | "success" | "error"
   >("default");
 
+  useEffect(() => {
+    if (buttonStatus !== "default") {
+      const timer = setTimeout(() => setButtonStatus("default"), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [buttonStatus]);
+
   const handleShare = () => {
     const message = shareEvent({ event });
     if (!message) {
       setButtonStatus("error");
-      resetButton();
       return;
     }
 
     navigator.clipboard
       .writeText(message)
-      .then(() => {
-        setButtonStatus("success");
-        resetButton();
-      })
-      .catch(() => {
-        setButtonStatus("error");
-        resetButton();
-      });
-  };
-
-  const resetButton = () => {
-    setTimeout(() => {
-      setButtonStatus("default");
-    }, 2000);
+      .then(() => setButtonStatus("success"))
+      .catch(() => setButtonStatus("error"));
   };
 
   const getShareButtonContent = () => {
@@ -86,6 +80,13 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
               ? "destructive"
               : "default"
         }
+        className={`transition-all duration-300 ${
+          buttonStatus === "success"
+            ? "bg-green-500"
+            : buttonStatus === "error"
+              ? "bg-red-500"
+              : "bg-gray-500"
+        }`}
       >
         {getShareButtonContent()}
       </Button>
