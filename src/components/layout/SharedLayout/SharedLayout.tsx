@@ -21,7 +21,7 @@ const SharedLayout = () => {
   const { isMobile } = useViewport();
   const { user, fetchingUser } = useUser();
 
-  if (fetchingUser) {
+  if (fetchingUser && !user) {
     return <div>Loading...</div>;
   }
 
