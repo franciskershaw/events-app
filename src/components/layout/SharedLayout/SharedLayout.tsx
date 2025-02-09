@@ -11,6 +11,7 @@ import AddEventModal from "@/pages/Events/components/EventModals/AddEventModal";
 import DeleteEventModal from "@/pages/Events/components/EventModals/DeleteEventModal";
 
 import { useIsMobile } from "../../../hooks/use-mobile";
+import ConnectionsModal from "../../../pages/Events/components/ConnectionsModal/ConnectionsModal";
 
 const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   const { openEventModal } = useModals();
@@ -81,6 +82,7 @@ const SharedLayout = () => {
         <>
           <AddEventModal />
           <DeleteEventModal />
+          <ConnectionsModal />
         </>
       )}
     </>

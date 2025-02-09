@@ -1,9 +1,11 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 type Size = "sm" | "md" | "lg" | "xl";
+type Colour = "default" | "dark";
 
 interface UserInitialsProps {
   size?: Size;
+  colour?: Colour;
   name?: string;
 }
 
@@ -20,6 +22,7 @@ export const getInitials = (name: string) => {
 
 const UserInitials: React.FC<UserInitialsProps> = ({
   size = "md",
+  colour = "default",
   name = "",
 }) => {
   const sizeClasses: Record<Size, string> = {
@@ -36,9 +39,16 @@ const UserInitials: React.FC<UserInitialsProps> = ({
     xl: "text-4xl",
   };
 
+  const colourClasses: Record<Colour, string> = {
+    default: "text-primary",
+    dark: "bg-primary text-primary-foreground",
+  };
+
   return (
     <Avatar className={sizeClasses[size]}>
-      <AvatarFallback className={`${fontSizeClasses[size]} text-primary`}>
+      <AvatarFallback
+        className={`${fontSizeClasses[size]} ${colourClasses[colour]}`}
+      >
         {getInitials(name)}
       </AvatarFallback>
     </Avatar>
