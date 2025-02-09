@@ -89,7 +89,7 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
             ? "bg-green-500"
             : buttonStatus === "error"
               ? "bg-red-500"
-              : "bg-gray-500"
+              : "bg-primary"
         }`}
       >
         {getShareButtonContent()}
@@ -105,11 +105,11 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
           <Button size="round" onClick={() => openEventModal(event, "edit")}>
             Edit
           </Button>
-          <Button size="round" onClick={() => makeEventPrivate(event._id)}>
-            {event.private ? "Public" : "Private"}
-          </Button>
           <Button size="round" onClick={() => openDeleteEventModal(event)}>
             Delete
+          </Button>
+          <Button size="round" onClick={() => makeEventPrivate(event._id)}>
+            {event.private ? "Public" : "Private"}
           </Button>
         </>
       )}
