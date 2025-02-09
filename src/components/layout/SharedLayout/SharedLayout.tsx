@@ -23,7 +23,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
       <Sidebar />
       {!isEventsPage ||
         (!isMobile && (
-          <div className="fixed top-4 right-4 z-50">
+          <div className={`fixed ${isMobile ? "top-4" : "top-2"} right-4 z-50`}>
             <Hamburger />
           </div>
         ))}
