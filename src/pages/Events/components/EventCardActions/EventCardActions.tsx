@@ -89,7 +89,7 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
             ? "bg-green-500"
             : buttonStatus === "error"
               ? "bg-red-500"
-              : "bg-primary"
+              : ""
         }`}
       >
         {getShareButtonContent()}

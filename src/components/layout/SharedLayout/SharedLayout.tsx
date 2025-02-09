@@ -21,26 +21,29 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="relative">
       <Sidebar />
-      {!isEventsPage ||
-        (!isMobile && (
-          <div className={`fixed ${isMobile ? "top-4" : "top-2"} right-4 z-50`}>
-            <Hamburger />
-          </div>
-        ))}
+      {(!isEventsPage || !isMobile) && (
+        <div
+          className={`fixed ${isMobile ? "top-4 right-4" : "top-2 right-2"} z-50`}
+        >
+          <Hamburger />
+        </div>
+      )}
       <div className="min-h-screen flex flex-col">
         <main
-          className={`bg-white flex-grow mb-4 ${isEventsPage && isMobile ? "mt-[84px]" : ""}`}
+          className={`bg-white flex-grow ${isEventsPage && isMobile ? "mt-[84px] mb-4" : ""}`}
         >
           {children}
         </main>
       </div>
-      <Button
-        size="round"
-        onClick={() => openEventModal()}
-        className="fixed bottom-2 right-4 z-30 h-14 w-14 shadow-lg"
-      >
-        <FaPlus className="h-5 w-5" />
-      </Button>
+      {isEventsPage && (
+        <Button
+          size="round"
+          onClick={() => openEventModal()}
+          className={`fixed ${isMobile ? "bottom-4 right-4" : "bottom-2 right-2"} z-30 h-14 w-14 shadow-lg`}
+        >
+          <FaPlus className="h-5 w-5" />
+        </Button>
+      )}
     </div>
   );
 };

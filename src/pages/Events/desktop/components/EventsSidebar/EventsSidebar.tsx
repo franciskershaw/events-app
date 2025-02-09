@@ -13,6 +13,7 @@ import { useModals } from "../../../../../contexts/Modals/ModalsContext";
 import { formatTime } from "../../../../../lib/utils";
 import { Event } from "../../../../../types/globalTypes";
 import { UserEventInitials } from "../../../components/UserEventInitials/UserEventInitials";
+import { EmptyState } from "../EmptyState/EmptyState";
 import EventCard from "../EventCard/EventCard";
 
 const AddEventButton = () => {
@@ -72,30 +73,38 @@ export const EventsSidebar = ({
 
   return (
     <Sidebar>
-      <SidebarHeader>
-        <div className="date-header m-2 mb-0">
-          <h2 className="text-lg font-semibold">
-            {activeDay.format("dddd Do MMMM")}
-          </h2>
-        </div>
-      </SidebarHeader>
+      {Object.keys(eventsByDay).length > 0 && (
+        <SidebarHeader>
+          <div className="date-header m-2 mb-0">
+            <h2 className="text-lg font-semibold">
+              {activeDay.format("dddd Do MMMM")}
+            </h2>
+          </div>
+        </SidebarHeader>
+      )}
       <SidebarContent>
         <div className="p-2">
           {/* Events - today */}
-          {events.length > 0 ? (
-            <>
-              <ul>
-                {events.map((event) => (
-                  <EventCard event={event} key={event._id} />
-                ))}
-              </ul>
-              <AddEventButton />
-            </>
+          {Object.keys(eventsByDay).length === 0 ? (
+            <EmptyState />
           ) : (
-            <div className="px-2">
-              <p className="text-center mt-4">No events on this day.</p>
-              <AddEventButton />
-            </div>
+            <>
+              {events.length > 0 ? (
+                <>
+                  <ul>
+                    {events.map((event) => (
+                      <EventCard event={event} key={event._id} />
+                    ))}
+                  </ul>
+                  <AddEventButton />
+                </>
+              ) : (
+                <div className="px-2">
+                  <p className="text-center mt-4">No events on this day.</p>
+                  <AddEventButton />
+                </div>
+              )}
+            </>
           )}
 
           {/* Events - next 7 days */}

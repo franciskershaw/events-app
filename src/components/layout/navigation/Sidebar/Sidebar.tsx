@@ -24,7 +24,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`fixed top-0 left-0 h-full bg-primary text-primary-foreground transform ${isMobile ? "w-full" : "w-1/4"} max-w-[400px] ${
+      className={`fixed top-0 left-0 h-full bg-primary text-primary-foreground transform ${isMobile ? "w-full" : "w-1/3 max-w-[400px]"}  ${
         isExpanded ? "translate-x-0" : "-translate-x-full"
       } transition-transform duration-500 ease-in-out z-40`}
     >
