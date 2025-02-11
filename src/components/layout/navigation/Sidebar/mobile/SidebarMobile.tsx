@@ -6,9 +6,9 @@ import { useSidebar } from "@/contexts/Sidebar/SidebarContext";
 import useUser from "@/hooks/user/useUser";
 import useAuth from "@/pages/Auth/hooks/useAuth";
 
-import { useIsMobile } from "../../../../hooks/use-mobile";
+import { useIsMobile } from "../../../../../hooks/use-mobile";
 
-const Sidebar = () => {
+const SidebarMobile = () => {
   const { isExpanded, toggleSidebar } = useSidebar();
   const location = useLocation();
   const isAuthPage = location.pathname === "/";
@@ -68,4 +68,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default SidebarMobile;

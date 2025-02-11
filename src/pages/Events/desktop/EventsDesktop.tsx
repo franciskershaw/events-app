@@ -11,7 +11,7 @@ import {
   getEventsByDay,
   isEventTypeguard,
 } from "../helpers/helpers";
-import { EventsSidebar } from "./components/EventsSidebar/EventsSidebar";
+import { EventsSummary } from "./components/EventsSummary/EventsSummary";
 import { MonthColumn } from "./components/MonthColumn/MonthColumn";
 
 export const EventsDesktop = () => {
@@ -34,7 +34,7 @@ export const EventsDesktop = () => {
   return (
     <ActiveDayProvider>
       <SidebarProvider>
-        <EventsSidebar eventsByDay={eventsByDay} />
+        <EventsSummary eventsByDay={eventsByDay} />
         <SidebarTrigger />
         <div
           className="grid gap-4 overflow-x-auto h-screen pl-4"

@@ -2,8 +2,7 @@ import { FaPlus } from "react-icons/fa";
 import { Outlet, useLocation } from "react-router-dom";
 
 import Hamburger from "@/components/layout/navigation/Hamburger/Hamburger";
-import Sidebar from "@/components/layout/navigation/Sidebar/Sidebar";
-import { Button } from "@/components/ui/button";
+import SidebarMobile from "@/components/layout/navigation/Sidebar/mobile/SidebarMobile";
 import { Toaster } from "@/components/ui/sonner";
 import { useModals } from "@/contexts/Modals/ModalsContext";
 import useUser from "@/hooks/user/useUser";
@@ -12,6 +11,7 @@ import DeleteEventModal from "@/pages/Events/components/EventModals/DeleteEventM
 
 import { useIsMobile } from "../../../hooks/use-mobile";
 import ConnectionsModal from "../../../pages/Events/components/ConnectionsModal/ConnectionsModal";
+import { Button } from "../../ui/button";
 
 const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   const { openEventModal } = useModals();
@@ -21,14 +21,6 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="relative">
-      <Sidebar />
-      {(!isEventsPage || !isMobile) && (
-        <div
-          className={`fixed ${isMobile ? "top-4 right-4" : "top-2 right-2"} z-50`}
-        >
-          <Hamburger />
-        </div>
-      )}
       <div className="min-h-screen flex flex-col">
         <main
           className={`bg-white flex-grow ${isEventsPage && isMobile ? "mt-[84px] mb-4" : ""}`}
@@ -36,14 +28,22 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
           {children}
         </main>
       </div>
-      {isEventsPage && (
-        <Button
-          size="round"
-          onClick={() => openEventModal()}
-          className={`fixed ${isMobile ? "bottom-4 right-4" : "bottom-2 right-2"} z-30 h-14 w-14 shadow-lg`}
-        >
-          <FaPlus className="h-5 w-5" />
-        </Button>
+      {isMobile ? (
+        <>
+          <SidebarMobile />
+          <div className="fixed top-4 right-4 z-50">
+            <Hamburger />
+          </div>
+          <Button
+            size="round"
+            onClick={() => openEventModal()}
+            className="fixed bottom-4 right-4 z-30 h-14 w-14 shadow-lg"
+          >
+            <FaPlus className="h-5 w-5" />
+          </Button>
+        </>
+      ) : (
+        <>boop</>
       )}
     </div>
   );

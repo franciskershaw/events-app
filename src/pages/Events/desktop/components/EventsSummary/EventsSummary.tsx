@@ -45,7 +45,7 @@ const AddEventButton = () => {
   );
 };
 
-export const EventsSidebar = ({
+export const EventsSummary = ({
   eventsByDay,
 }: {
   eventsByDay: Record<string, Event[]>;
