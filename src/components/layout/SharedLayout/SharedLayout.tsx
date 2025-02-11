@@ -12,6 +12,7 @@ import DeleteEventModal from "@/pages/Events/components/EventModals/DeleteEventM
 import { useIsMobile } from "../../../hooks/use-mobile";
 import ConnectionsModal from "../../../pages/Events/components/ConnectionsModal/ConnectionsModal";
 import { Button } from "../../ui/button";
+import { SidebarDesktop } from "../navigation/Sidebar/desktop/SidebarDesktop";
 
 const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   const { openEventModal } = useModals();
@@ -20,15 +21,16 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   const isMobile = useIsMobile();
 
   return (
-    <div className="relative">
-      <div className="min-h-screen flex flex-col">
-        <main
-          className={`bg-white flex-grow ${isEventsPage && isMobile ? "mt-[84px] mb-4" : ""}`}
-        >
-          {children}
-        </main>
-      </div>
-      {isMobile ? (
+    <div className="relative flex min-h-screen">
+      {!isMobile && <SidebarDesktop />}
+
+      <main
+        className={`bg-white flex-grow ${isEventsPage && isMobile ? "mt-[84px] mb-4" : ""}`}
+      >
+        {children}
+      </main>
+
+      {isMobile && (
         <>
           <SidebarMobile />
           <div className="fixed top-4 right-4 z-50">
@@ -42,8 +44,6 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
             <FaPlus className="h-5 w-5" />
           </Button>
         </>
-      ) : (
-        <>boop</>
       )}
     </div>
   );

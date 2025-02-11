@@ -1,7 +1,3 @@
-import {
-  SidebarProvider,
-  SidebarTrigger,
-} from "../../../components/ui/sidebar";
 import { LOCATION_DEFAULT, LOCATION_SHOW } from "../../../constants/app";
 import { ActiveDayProvider } from "../../../contexts/ActiveDay/ActiveDayContext";
 import { useSearch } from "../../../contexts/SearchEvents/SearchEventsContext";
@@ -11,7 +7,6 @@ import {
   getEventsByDay,
   isEventTypeguard,
 } from "../helpers/helpers";
-import { EventsSummary } from "./components/EventsSummary/EventsSummary";
 import { MonthColumn } from "./components/MonthColumn/MonthColumn";
 
 export const EventsDesktop = () => {
@@ -33,26 +28,22 @@ export const EventsDesktop = () => {
 
   return (
     <ActiveDayProvider>
-      <SidebarProvider>
-        <EventsSummary eventsByDay={eventsByDay} />
-        <SidebarTrigger />
-        <div
-          className="grid gap-4 overflow-x-auto h-screen pl-4"
-          style={{
-            gridTemplateColumns: `repeat(${monthColumns.length}, 300px)`,
-          }}
-        >
-          {monthColumns.map((month) => (
-            <MonthColumn
-              key={month.format("MMMM YYYY")}
-              month={month}
-              eventsByDay={eventsByDay}
-              showLocations={LOCATION_SHOW}
-              defaultLocation={LOCATION_DEFAULT}
-            />
-          ))}
-        </div>
-      </SidebarProvider>
+      <div
+        className="grid gap-4 h-screen pl-8"
+        style={{
+          gridTemplateColumns: `repeat(${monthColumns.length}, 300px)`,
+        }}
+      >
+        {monthColumns.map((month) => (
+          <MonthColumn
+            key={month.format("MMMM YYYY")}
+            month={month}
+            eventsByDay={eventsByDay}
+            showLocations={LOCATION_SHOW}
+            defaultLocation={LOCATION_DEFAULT}
+          />
+        ))}
+      </div>
     </ActiveDayProvider>
   );
 };

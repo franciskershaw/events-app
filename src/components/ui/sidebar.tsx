@@ -140,7 +140,7 @@ const SidebarProvider = React.forwardRef<
               } as React.CSSProperties
             }
             className={cn(
-              "group/sidebar-wrapper flex min-h-svh w-full has-[[data-variant=inset]]:bg-sidebar",
+              "group/sidebar-wrapper flex min-h-svh w-full has-[[data-variant=inset]]:bg-sidebar z-20",
               className
             )}
             ref={ref}
@@ -225,6 +225,7 @@ const Sidebar = React.forwardRef<
           className={cn(
             "relative h-svh w-[--sidebar-width] bg-transparent transition-[width] duration-200 ease-linear",
             "group-data-[collapsible=offcanvas]:w-0",
+            "data-[state=collapsed]:w-0 overflow-hidden",
             "group-data-[side=right]:rotate-180",
             variant === "floating" || variant === "inset"
               ? "group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4))]"
@@ -273,7 +274,7 @@ const SidebarTrigger = React.forwardRef<
       }}
       data-sidebar="trigger"
       className={cn(
-        "h-screen rounded-none rounded-r menu-trigger p-0",
+        "w-4 h-screen absolute top-0 bottom-0 right-[-16px] rounded-none rounded-r menu-trigger p-0",
         className
       )}
       tabIndex={0}
