@@ -7,17 +7,20 @@ import {
 import { LOCATION_DEFAULT, LOCATION_SHOW } from "../../../constants/app";
 import { ActiveDayProvider } from "../../../contexts/ActiveDay/ActiveDayContext";
 import { useSearch } from "../../../contexts/SearchEvents/SearchEventsContext";
+import { useSidebarContent } from "../../../contexts/Sidebar/desktop/SidebarContentContext";
 import { Event } from "../../../types/globalTypes";
 import {
   generateMonthColumns,
   getEventsByDay,
   isEventTypeguard,
 } from "../helpers/helpers";
+import { EventsSearch } from "./components/EventsSearch/EventsSearch";
 import { EventsSummary } from "./components/EventsSummary/EventsSummary";
 import { MonthColumn } from "./components/MonthColumn/MonthColumn";
 
 export const EventsDesktop = () => {
   const { filteredEvents } = useSearch();
+  const { sidebarContent } = useSidebarContent();
 
   const events = filteredEvents
     .map((event) => (isEventTypeguard(event) ? event : null))
@@ -38,7 +41,11 @@ export const EventsDesktop = () => {
       <SidebarProvider>
         <Sidebar>
           <SidebarContent>
-            <EventsSummary eventsByDay={eventsByDay} />
+            {sidebarContent === "events" ? (
+              <EventsSummary eventsByDay={eventsByDay} />
+            ) : (
+              <EventsSearch />
+            )}
           </SidebarContent>
           <SidebarTrigger />
         </Sidebar>

@@ -8,6 +8,7 @@ import useUser from "@/hooks/user/useUser";
 import AddEventModal from "@/pages/Events/components/EventModals/AddEventModal";
 import DeleteEventModal from "@/pages/Events/components/EventModals/DeleteEventModal";
 
+import { SidebarContentProvider } from "../../../contexts/Sidebar/desktop/SidebarContentContext";
 import { useIsMobile } from "../../../hooks/use-mobile";
 import ConnectionsModal from "../../../pages/Events/components/ConnectionsModal/ConnectionsModal";
 import { Button } from "../../ui/button";
@@ -20,28 +21,36 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   const isMobile = useIsMobile();
 
   return (
-    <div className="relative flex min-h-screen">
-      {isMobile ? (
-        <>
-          <NavMobile />
-          <Button
-            size="round"
-            onClick={() => openEventModal()}
-            className="fixed bottom-4 right-4 z-40 h-14 w-14 shadow-lg"
-          >
-            <FaPlus className="h-5 w-5" />
-          </Button>
-        </>
-      ) : (
-        <NavDesktop />
-      )}
-
-      <main
-        className={`bg-white flex-grow ${isMobile && isEventsPage ? "mt-[84px] mb-4" : ""} ${!isMobile ? "ml-20 " : ""}`}
-      >
-        {children}
-      </main>
-    </div>
+    <SidebarContentProvider>
+      <div className="relative flex min-h-screen">
+        {isMobile ? (
+          <>
+            <NavMobile />
+            <Button
+              size="round"
+              onClick={() => openEventModal()}
+              className="fixed bottom-4 right-4 z-40 h-14 w-14 shadow-lg"
+            >
+              <FaPlus className="h-5 w-5" />
+            </Button>
+            <main
+              className={`bg-white flex-grow ${isMobile && isEventsPage ? "mt-[84px] mb-4" : ""} ${!isMobile ? "ml-20 " : ""}`}
+            >
+              {children}
+            </main>
+          </>
+        ) : (
+          <>
+            <NavDesktop />
+            <main
+              className={`bg-white flex-grow ${isMobile && isEventsPage ? "mt-[84px] mb-4" : ""} ${!isMobile ? "ml-20 " : ""}`}
+            >
+              {children}
+            </main>
+          </>
+        )}
+      </div>
+    </SidebarContentProvider>
   );
 };
 

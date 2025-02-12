@@ -2,7 +2,7 @@ import { Calendar, LogOut, Users } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 import UserInitials from "@/components/user/UserInitials/UserInitials";
-import { useSidebar } from "@/contexts/Sidebar/SidebarContext";
+import { useSidebar } from "@/contexts/Sidebar/mobile/SidebarContext";
 import useUser from "@/hooks/user/useUser";
 import useAuth from "@/pages/Auth/hooks/useAuth";
 
