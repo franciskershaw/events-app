@@ -1,21 +1,26 @@
 import {
+  Sidebar,
+  SidebarContent,
   SidebarProvider,
   SidebarTrigger,
 } from "../../../components/ui/sidebar";
 import { LOCATION_DEFAULT, LOCATION_SHOW } from "../../../constants/app";
 import { ActiveDayProvider } from "../../../contexts/ActiveDay/ActiveDayContext";
 import { useSearch } from "../../../contexts/SearchEvents/SearchEventsContext";
+import { useSidebarContent } from "../../../contexts/Sidebar/desktop/SidebarContentContext";
 import { Event } from "../../../types/globalTypes";
 import {
   generateMonthColumns,
   getEventsByDay,
   isEventTypeguard,
 } from "../helpers/helpers";
-import { EventsSidebar } from "./components/EventsSidebar/EventsSidebar";
+import { EventsSearch } from "./components/EventsSearch/EventsSearch";
+import { EventsSummary } from "./components/EventsSummary/EventsSummary";
 import { MonthColumn } from "./components/MonthColumn/MonthColumn";
 
 export const EventsDesktop = () => {
   const { filteredEvents } = useSearch();
+  const { sidebarContent } = useSidebarContent();
 
   const events = filteredEvents
     .map((event) => (isEventTypeguard(event) ? event : null))
@@ -34,10 +39,19 @@ export const EventsDesktop = () => {
   return (
     <ActiveDayProvider>
       <SidebarProvider>
-        <EventsSidebar eventsByDay={eventsByDay} />
-        <SidebarTrigger />
+        <Sidebar>
+          <SidebarContent>
+            {sidebarContent === "events" ? (
+              <EventsSummary eventsByDay={eventsByDay} />
+            ) : (
+              <EventsSearch />
+            )}
+          </SidebarContent>
+          <SidebarTrigger />
+        </Sidebar>
+
         <div
-          className="grid gap-4 overflow-x-auto h-screen pl-4"
+          className="grid gap-4 h-screen pl-12"
           style={{
             gridTemplateColumns: `repeat(${monthColumns.length}, 300px)`,
           }}

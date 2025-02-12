@@ -1,4 +1,4 @@
-import { useSidebar } from "@/contexts/Sidebar/SidebarContext";
+import { useSidebar } from "@/contexts/Sidebar/mobile/SidebarContext";
 
 import { useIsMobile } from "../../../../hooks/use-mobile";
 

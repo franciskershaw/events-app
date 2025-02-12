@@ -4,7 +4,7 @@ import { createRoot } from "react-dom/client";
 
 import App from "./App.tsx";
 import { ModalsProvider } from "./contexts/Modals/ModalsContext.tsx";
-import { SidebarProvider } from "./contexts/Sidebar/SidebarContext.tsx";
+import { SidebarProvider } from "./contexts/Sidebar/mobile/SidebarContext.tsx";
 import TanstackProvider from "./tanstackQuery/TanstackProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
