@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useModals } from "../../../../../contexts/Modals/ModalsContext";
 import useUser from "../../../../../hooks/user/useUser";
 import useAuth from "../../../../../pages/Auth/hooks/useAuth";
-import UserInitials from "../../../../user/UserInitials/UserInitials";
+import UsersInitials from "../../../../user/UsersInitials/UsersInitials";
 
 export const NavDesktop = () => {
   const { user } = useUser();
@@ -15,7 +15,7 @@ export const NavDesktop = () => {
   return (
     <nav className="nav-desktop">
       <button className="nav-link-wrapper">
-        <UserInitials size="md" name={user?.name} />
+        <UsersInitials />
         {user?.name && <h3>{user.name}</h3>}
       </button>
       <button onClick={() => openEventModal()} className="nav-link-wrapper">

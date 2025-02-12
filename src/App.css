@@ -128,12 +128,12 @@
 
   /* Desktop - date headers */
   .date-header {
-    @apply border border-gray-300 bg-white rounded text-center p-2 sticky top-2 z-10 shadow outline outline-8 outline-white/75;
+    @apply border border-gray-300 bg-white rounded text-center p-2 sticky top-2 shadow outline outline-8 outline-white/75;
   }
 
   /* Desktop - nav links */
   .nav-desktop {
-    @apply bg-primary text-primary-foreground p-2 space-y-2 h-screen w-fit sticky top-0 bottom-0 left-0 z-50 transition-all duration-500 ease-in-out;
+    @apply bg-primary text-primary-foreground p-4 space-y-4 h-screen w-fit fixed top-0 bottom-0 left-0 z-50 transition-all duration-500 ease-in-out;
   }
 
   .nav-desktop:hover h3 {
