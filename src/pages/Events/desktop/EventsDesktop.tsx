@@ -29,7 +29,7 @@ export const EventsDesktop = () => {
   return (
     <ActiveDayProvider>
       <div
-        className="grid gap-4 h-screen pl-8"
+        className="grid gap-4 h-screen pl-4"
         style={{
           gridTemplateColumns: `repeat(${monthColumns.length}, 300px)`,
         }}

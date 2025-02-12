@@ -130,4 +130,25 @@
   .date-header {
     @apply border border-gray-300 bg-white rounded text-center p-2 sticky top-2 z-10 shadow outline outline-8 outline-white/75;
   }
+
+  /* Desktop - nav links */
+  .nav-desktop {
+    @apply bg-primary text-primary-foreground p-2 space-y-2 h-screen w-fit sticky top-0 bottom-0 left-0 z-50 transition-all duration-500 ease-in-out;
+  }
+
+  .nav-desktop:hover h3 {
+    @apply max-w-36 opacity-100 px-4;
+  }
+
+  .nav-link-wrapper {
+    @apply flex items-center;
+  }
+
+  .nav-link-wrapper h3 {
+    @apply max-w-0 text-lg opacity-0 overflow-hidden transition-all duration-500 ease-in-out whitespace-nowrap;
+  }
+
+  .nav-link-icon {
+    @apply h-12 w-12 rounded-full text-primary bg-secondary flex items-center justify-center;
+  }
 }
