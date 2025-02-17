@@ -27,7 +27,9 @@ const EventCards = () => {
 
   return (
     <div
-      className={`transition-transform duration-300 ${isNavbarVisible ? "translate-y-[0px]" : "-translate-y-[84px]"}`}
+      className={`transition-transform duration-300 w-full max-w-[100vw] ${
+        isNavbarVisible ? "translate-y-[0px]" : "-translate-y-[84px]"
+      }`}
     >
       {todayEvents.length > 0 && (
         <>
