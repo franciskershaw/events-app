@@ -6,13 +6,15 @@ import { useSidebar } from "@/contexts/Sidebar/mobile/SidebarContext";
 import useUser from "@/hooks/user/useUser";
 import useAuth from "@/pages/Auth/hooks/useAuth";
 
+import { NAV_HEIGHT } from "../../../../../constants/app";
+import { useScrollVisibility } from "../../../../../hooks/utility/useScrollVisibility";
 import Hamburger from "../../Hamburger/Hamburger";
 
 const NavMobile = () => {
   const { isExpanded, toggleSidebar } = useSidebar();
   const location = useLocation();
   const isAuthPage = location.pathname === "/";
-  const isEventsPage = location.pathname === "/events";
+  const isNavbarVisible = useScrollVisibility();
   const { user } = useUser();
   const { logout } = useAuth();
 
@@ -24,11 +26,11 @@ const NavMobile = () => {
 
   return (
     <>
-      {!isEventsPage && (
-        <div className="fixed top-4 right-4 z-50">
-          <Hamburger />
-        </div>
-      )}
+      <div
+        className={`fixed top-4 right-4 z-[45] transition-transform duration-300 ${isNavbarVisible ? "translate-y-[0px]" : `-translate-y-[${NAV_HEIGHT}]`}`}
+      >
+        <Hamburger />
+      </div>
       <div
         className={`fixed top-0 left-0 h-full bg-primary text-primary-foreground transform w-full ${
           isExpanded ? "translate-x-0" : "-translate-x-full"

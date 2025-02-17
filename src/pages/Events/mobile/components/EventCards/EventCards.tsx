@@ -2,7 +2,7 @@ import { useMemo } from "react";
 
 import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
 
-import { CATEGORY_FREE } from "../../../../../constants/app";
+import { CATEGORY_FREE, NAV_HEIGHT } from "../../../../../constants/app";
 import { useScrollVisibility } from "../../../../../hooks/utility/useScrollVisibility";
 import { filterTodayEvents, groupEvents } from "../../../helpers/helpers";
 import DateScroller from "../DateScroller/DateScroller";
@@ -28,7 +28,7 @@ const EventCards = () => {
   return (
     <div
       className={`transition-transform duration-300 w-full max-w-[100vw] ${
-        isNavbarVisible ? "translate-y-[0px]" : "-translate-y-[84px]"
+        isNavbarVisible ? "translate-y-[0px]" : `-translate-y-[${NAV_HEIGHT}]`
       }`}
     >
       {todayEvents.length > 0 && (
