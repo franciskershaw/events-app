@@ -17,14 +17,14 @@ export interface User {
 }
 
 // Events
-export type BaseEvent = {
-  _id: string;
-  date: EventDate;
-  location?: {
-    city: string;
-    venue: string | null;
-  };
-};
+// export type BaseEvent = {
+//   _id: string;
+//   date: EventDate;
+//   location?: {
+//     city: string;
+//     venue: string | null;
+//   };
+// };
 export interface Event {
   _id: string;
   title: string;
@@ -46,14 +46,14 @@ export interface Event {
   private: boolean;
 }
 
-export interface EventFree {
-  _id: string;
-  date: EventDate;
-  location?: {
-    city: string;
-    venue: null;
-  };
-}
+// export interface EventFree {
+//   _id: string;
+//   date: EventDate;
+//   location?: {
+//     city: string;
+//     venue: null;
+//   };
+// }
 
 export interface EventCategory {
   _id: string;

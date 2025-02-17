@@ -2,7 +2,7 @@ import { useMemo } from "react";
 
 import useUser from "../../../hooks/user/useUser";
 import { isEventTypeguard } from "../../../pages/Events/helpers/helpers";
-import { Event, EventFree } from "../../../types/globalTypes";
+import { Event } from "../../../types/globalTypes";
 import {
   getNestedValue,
   isDateInRange,
@@ -12,7 +12,7 @@ import {
 } from "../helpers";
 
 interface UseFilterEventsProps {
-  events: (Event | EventFree)[];
+  events: Event[];
   query: string;
   startDate: Date | null;
   endDate: Date | null;

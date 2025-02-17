@@ -1,18 +1,12 @@
 import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
 
 import { useScrollVisibility } from "../../../../../hooks/utility/useScrollVisibility";
-import { EventFree } from "../../../../../types/globalTypes";
-import {
-  filterTodayEvents,
-  groupEvents,
-  isEventTypeguard,
-} from "../../../helpers/helpers";
+import { filterTodayEvents, groupEvents } from "../../../helpers/helpers";
 import DateScroller from "../DateScroller/DateScroller";
 import EventCard from "./EventCard";
-import EventFreeCard from "./EventFreeCard";
 
 const EventCards = () => {
-  const { filteredEvents, showEventsFree } = useSearch();
+  const { filteredEvents } = useSearch();
   const isNavbarVisible = useScrollVisibility();
 
   const todayEvents = filterTodayEvents(filteredEvents);
@@ -28,13 +22,16 @@ const EventCards = () => {
         <>
           <DateScroller label="Today" />
           <div className="space-y-2 px-4 py-5 bg-blue-100">
-            {todayEvents.map((event) =>
+            {/* {todayEvents.map((event) =>
               showEventsFree ? (
                 <EventFreeCard key={event._id} event={event as EventFree} />
               ) : isEventTypeguard(event) ? (
                 <EventCard key={event._id} event={event} />
               ) : null
-            )}
+            )} */}
+            {todayEvents.map((event) => (
+              <EventCard key={event._id} event={event} />
+            ))}
           </div>
         </>
       )}
@@ -42,7 +39,7 @@ const EventCards = () => {
       {Object.entries(upcomingEvents).map(([month, monthEvents]) => (
         <div key={month}>
           <DateScroller date={monthEvents[0].date.start} />
-          <div className="space-y-2 px-4 py-5 bg-blue-100">
+          {/* <div className="space-y-2 px-4 py-5 bg-blue-100">
             {monthEvents.map((event) =>
               showEventsFree ? (
                 <EventFreeCard key={event._id} event={event as EventFree} />
@@ -50,6 +47,11 @@ const EventCards = () => {
                 <EventCard key={event._id} event={event} />
               ) : null
             )}
+          </div> */}
+          <div className="space-y-2 px-4 py-5 bg-blue-100">
+            {monthEvents.map((event) => (
+              <EventCard key={event._id} event={event} />
+            ))}
           </div>
         </div>
       ))}

@@ -1,12 +1,12 @@
 import { isToday } from "date-fns";
 
 import { formatDate, isWeekend } from "@/lib/utils";
-import { EventFree } from "@/types/globalTypes";
+import { Event } from "@/types/globalTypes";
 
 import { Badge } from "../../../../../components/ui/badge";
 import { useModals } from "../../../../../contexts/Modals/ModalsContext";
 
-const EventFreeCard = ({ event }: { event: EventFree }) => {
+const EventFreeCard = ({ event }: { event: Event }) => {
   const { openEventModal } = useModals();
   const formattedDate = formatDate(event.date);
   const weekend = isWeekend(event.date.start);

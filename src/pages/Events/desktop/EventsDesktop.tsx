@@ -9,11 +9,7 @@ import { ActiveDayProvider } from "../../../contexts/ActiveDay/ActiveDayContext"
 import { useSearch } from "../../../contexts/SearchEvents/SearchEventsContext";
 import { useSidebarContent } from "../../../contexts/Sidebar/desktop/SidebarContentContext";
 import { Event } from "../../../types/globalTypes";
-import {
-  generateMonthColumns,
-  getEventsByDay,
-  isEventTypeguard,
-} from "../helpers/helpers";
+import { generateMonthColumns, getEventsByDay } from "../helpers/helpers";
 import { EventsSearch } from "./components/EventsSearch/EventsSearch";
 import { EventsSummary } from "./components/EventsSummary/EventsSummary";
 import { MonthColumn } from "./components/MonthColumn/MonthColumn";
@@ -22,18 +18,22 @@ export const EventsDesktop = () => {
   const { filteredEvents } = useSearch();
   const { sidebarContent } = useSidebarContent();
 
-  const events = filteredEvents
-    .map((event) => (isEventTypeguard(event) ? event : null))
-    .filter((event): event is Event => event !== null); // Get rid of EventFree type errors
+  // const events = filteredEvents
+  //   .map((event) => (isEventTypeguard(event) ? event : null))
+  //   .filter((event): event is Event => event !== null); // Get rid of EventFree type errors
 
   const firstEventDate = new Date(
-    Math.min(...events.map((event) => new Date(event.date.start).getTime()))
+    Math.min(
+      ...filteredEvents.map((event) => new Date(event.date.start).getTime())
+    )
   );
   const lastEventDate = new Date(
-    Math.max(...events.map((event) => new Date(event.date.start).getTime()))
+    Math.max(
+      ...filteredEvents.map((event) => new Date(event.date.start).getTime())
+    )
   );
 
-  const eventsByDay: Record<string, Event[]> = getEventsByDay(events);
+  const eventsByDay: Record<string, Event[]> = getEventsByDay(filteredEvents);
   const monthColumns = generateMonthColumns(firstEventDate, lastEventDate);
 
   return (

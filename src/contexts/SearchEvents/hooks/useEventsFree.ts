@@ -7,7 +7,7 @@ import {
   CATEGORY_REMINDER,
   LOCATION_DEFAULT,
 } from "../../../constants/app";
-import { Event, EventFree } from "../../../types/globalTypes";
+import { Event } from "../../../types/globalTypes";
 import { splitQueryParts } from "../helpers";
 
 interface UseEventsFreeProps {
@@ -22,7 +22,7 @@ export const useEventsFree = ({
   startDate,
   endDate,
   query,
-}: UseEventsFreeProps): EventFree[] => {
+}: UseEventsFreeProps): Event[] => {
   return useMemo(() => {
     const today = new Date();
 
@@ -91,8 +91,24 @@ export const useEventsFree = ({
 
       return {
         _id: `free-${day.toISOString()}`,
+        title: "",
         date: { start: day.toISOString(), end: day.toISOString() },
-        location: { city: locationCity, venue: null },
+        location: { city: locationCity, venue: "" },
+        category: {
+          _id: "free",
+          name: "Free",
+          icon: "Free",
+        },
+        additionalAttributes: {},
+        createdBy: {
+          _id: "",
+          name: "",
+        },
+        description: "",
+        createdAt: new Date(day),
+        updatedAt: new Date(day),
+        unConfirmed: false,
+        private: false,
       };
     });
   }, [eventsDb, startDate, endDate, query]);

@@ -1,3 +1,4 @@
+import { useEventsFree } from "../../contexts/SearchEvents/hooks/useEventsFree";
 import { SearchProvider } from "../../contexts/SearchEvents/SearchEventsContext";
 import { useIsMobile } from "../../hooks/use-mobile";
 import { EventsDesktop } from "./desktop/EventsDesktop";
@@ -10,8 +11,20 @@ const Events = () => {
   const { eventCategories } = useGetEventCategories();
   const isMobile = useIsMobile();
 
+  const eventsFree = useEventsFree({
+    eventsDb: events,
+    startDate: null,
+    endDate: null,
+    query: "",
+  });
+
+  const eventsAll = [...events, ...eventsFree].sort(
+    (a, b) =>
+      new Date(a.date.start).getTime() - new Date(b.date.start).getTime()
+  );
+
   return (
-    <SearchProvider eventsDb={events} categories={eventCategories}>
+    <SearchProvider eventsDb={eventsAll} categories={eventCategories}>
       {isMobile ? <EventsMobile /> : <EventsDesktop />}
     </SearchProvider>
   );
