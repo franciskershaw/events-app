@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
 
 import { CATEGORY_FREE } from "../../../../../constants/app";
@@ -11,9 +13,16 @@ const EventCards = () => {
   const { filteredEvents } = useSearch();
   const isNavbarVisible = useScrollVisibility();
 
-  const todayEvents = filterTodayEvents(filteredEvents);
-  const upcomingEvents = groupEvents(
-    filteredEvents.filter((event) => !todayEvents.includes(event))
+  const todayEvents = useMemo(
+    () => filterTodayEvents(filteredEvents),
+    [filteredEvents]
+  );
+  const upcomingEvents = useMemo(
+    () =>
+      groupEvents(
+        filteredEvents.filter((event) => !todayEvents.includes(event))
+      ),
+    [todayEvents, filteredEvents]
   );
 
   return (

@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import dayjs from "dayjs";
 
+import { CATEGORY_FREE } from "../../../constants/app";
 import useUser from "../../../hooks/user/useUser";
 import { Event } from "../../../types/globalTypes";
 import { EventFormValues } from "../hooks/useEventForm";
@@ -37,8 +38,9 @@ export const filterTodayEvents = (events: Event[]) => {
   });
 };
 
+// Group events by month and remove free days from days where there is already an event
 export const groupEvents = (events: Event[]): GroupedEvents => {
-  return events.reduce((acc: GroupedEvents, event) => {
+  const grouped = events.reduce((acc: GroupedEvents, event) => {
     const month = dayjs(event.date.start).format("MMMM YYYY");
     if (!acc[month]) {
       acc[month] = [];
@@ -46,6 +48,22 @@ export const groupEvents = (events: Event[]): GroupedEvents => {
     acc[month] = [...acc[month], event];
     return acc;
   }, {});
+
+  const occupiedDates = new Set(
+    events
+      .filter((event) => event.category._id !== CATEGORY_FREE)
+      .map((event) => event.date.start)
+  );
+
+  Object.keys(grouped).forEach((month) => {
+    grouped[month] = grouped[month].filter(
+      (event) =>
+        event.category._id !== CATEGORY_FREE ||
+        !occupiedDates.has(event.date.start)
+    );
+  });
+
+  return grouped;
 };
 
 // Desktop
