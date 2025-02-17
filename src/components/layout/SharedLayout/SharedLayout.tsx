@@ -50,7 +50,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
 const UnauthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="min-h-screen">
-      <main>{children} hello</main>
+      <main>{children}</main>
     </div>
   );
 };
