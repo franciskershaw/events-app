@@ -22,6 +22,11 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   const isMobile = useIsMobile();
   const { isExpanded } = useSidebar();
 
+  const styles =
+    isMobile && isEventsPage
+      ? { marginTop: NAV_HEIGHT, marginBottom: "16px" }
+      : {};
+
   return (
     <div className="relative flex min-h-screen">
       {isMobile ? (
@@ -42,7 +47,8 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
       )}
 
       <main
-        className={`bg-white flex-grow ${isMobile && isEventsPage ? `mt-[${NAV_HEIGHT}] mb-4` : ""} ${!isMobile ? "ml-20 " : ""}`}
+        className={`bg-white flex-grow ${!isMobile ? "ml-20" : ""}`}
+        style={styles}
       >
         {children}
       </main>
