@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { eachDayOfInterval, isSameDay } from "date-fns";
+import { eachDayOfInterval } from "date-fns";
 
 import {
   CATEGORY_FREE,
@@ -49,37 +49,33 @@ export const useEventsFree = ({
     const allDays = eachDayOfInterval({ start: today, end: rangeEndDate });
 
     const holidayLocations = new Map<string, string>();
+    eventsDb.forEach((event) => {
+      if (event.category.name !== CATEGORY_HOLIDAY) return;
 
-    eventsDb
-      .filter((event) => event.category.name === CATEGORY_HOLIDAY)
-      .forEach((event) => {
-        const eventDays = eachDayOfInterval({
-          start: new Date(event.date.start),
-          end: new Date(event.date.end || event.date.start),
-        });
-
-        eventDays.forEach((day) => {
-          const dayKey = day.toISOString().split("T")[0];
-          holidayLocations.set(
-            dayKey,
-            event.location?.city || LOCATION_DEFAULT
-          );
-        });
+      eachDayOfInterval({
+        start: new Date(event.date.start),
+        end: new Date(event.date.end || event.date.start),
+      }).forEach((day) => {
+        holidayLocations.set(
+          day.toISOString().split("T")[0],
+          event.location?.city || LOCATION_DEFAULT
+        );
       });
+    });
 
-    const eventDays = eventsDb
-      .filter(
-        (event) =>
-          ![CATEGORY_HOLIDAY, CATEGORY_REMINDER].includes(event.category.name)
-      )
-      .flatMap((event) => {
-        const eventStart = new Date(event.date.start);
-        const eventEnd = new Date(event.date.end || event.date.start);
-        return eachDayOfInterval({ start: eventStart, end: eventEnd });
-      });
+    const eventDays = new Set<string>();
+    eventsDb.forEach((event) => {
+      if ([CATEGORY_HOLIDAY, CATEGORY_REMINDER].includes(event.category.name))
+        return;
+
+      eachDayOfInterval({
+        start: new Date(event.date.start),
+        end: new Date(event.date.end || event.date.start),
+      }).forEach((day) => eventDays.add(day.toISOString().split("T")[0]));
+    });
 
     let eventFreeDays = allDays.filter(
-      (day) => !eventDays.some((eventDay) => isSameDay(day, eventDay))
+      (day) => !eventDays.has(day.toISOString().split("T")[0])
     );
 
     if (startDate) {

@@ -90,7 +90,7 @@ export const SearchProvider = ({
         value: category.name,
         label: category.name,
       }));
-  }, [filteredEvents, categories]);
+  }, [filteredEvents]);
 
   const filteredLocations = useMemo(() => {
     const locationsInFilteredEvents = new Set(

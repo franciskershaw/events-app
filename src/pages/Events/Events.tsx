@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { useEventsFree } from "../../contexts/SearchEvents/hooks/useEventsFree";
 import { SearchProvider } from "../../contexts/SearchEvents/SearchEventsContext";
 import { useIsMobile } from "../../hooks/use-mobile";
@@ -18,9 +20,13 @@ const Events = () => {
     query: "",
   });
 
-  const eventsAll = [...events, ...eventsFree].sort(
-    (a, b) =>
-      new Date(a.date.start).getTime() - new Date(b.date.start).getTime()
+  const eventsAll = useMemo(
+    () =>
+      [...events, ...eventsFree].sort(
+        (a, b) =>
+          new Date(a.date.start).getTime() - new Date(b.date.start).getTime()
+      ),
+    [events, eventsFree]
   );
 
   return (
