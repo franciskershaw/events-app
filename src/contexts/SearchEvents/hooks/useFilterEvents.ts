@@ -44,8 +44,8 @@ export const useFilterEvents = ({
 
     return events.filter((event) => {
       // Include/exclude free events
-      const isFreeEvent = event.category._id === CATEGORY_FREE;
-      if (!showEventsFree && isFreeEvent) return false;
+      const isEventFree = event.category._id === CATEGORY_FREE;
+      if (!showEventsFree && isEventFree) return false;
 
       // User connection events
       if (user) {
@@ -102,7 +102,7 @@ export const useFilterEvents = ({
 
       // Match categories
       const categoryId = event.category._id;
-      const categoryName = categoryLookup[categoryId];
+      const categoryName = categoryLookup[categoryId] || CATEGORY_FREE;
       const matchesCategoryQuery = textKeywords.some((keyword) =>
         categoryName.toLowerCase().includes(keyword.toLowerCase())
       );

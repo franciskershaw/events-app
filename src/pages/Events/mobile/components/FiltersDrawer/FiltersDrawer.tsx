@@ -106,8 +106,6 @@ const FiltersDrawer = () => {
               onChange={setSelectedCategory}
               options={categories}
               placeholder="Categories"
-              role="add"
-              disabled={showEventsFree}
             />
             <Combobox
               value={selectedLocation}

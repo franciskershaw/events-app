@@ -15,7 +15,7 @@ const EventFreeCard = ({ event }: { event: Event }) => {
     <div
       className={`border rounded-md shadow-sm bg-white hover:shadow-md transition-all cursor-pointer ${
         weekend && "event--weekend"
-      } ${today && "event--today"}`}
+      } ${today ? "event--today" : "mx-2"}`}
       onClick={() =>
         openEventModal(
           {
