@@ -12,14 +12,14 @@ import { Event } from "../../../types/globalTypes";
 import { splitQueryParts } from "../helpers";
 
 interface UseEventsFreeProps {
-  eventsDb: Event[];
+  events: Event[];
   startDate: Date | null;
   endDate: Date | null;
   query: string;
 }
 
 export const useEventsFree = ({
-  eventsDb,
+  events,
   startDate,
   endDate,
   query,
@@ -27,7 +27,7 @@ export const useEventsFree = ({
   return useMemo(() => {
     const today = new Date();
 
-    const furthestEventDate = eventsDb.reduce(
+    const furthestEventDate = events.reduce(
       (latest, event) =>
         new Date(event.date.end || event.date.start) > latest
           ? new Date(event.date.end || event.date.start)
@@ -49,7 +49,7 @@ export const useEventsFree = ({
     const allDays = eachDayOfInterval({ start: today, end: rangeEndDate });
 
     const holidayLocations = new Map<string, string>();
-    eventsDb.forEach((event) => {
+    events.forEach((event) => {
       if (event.category.name !== CATEGORY_HOLIDAY) return;
 
       eachDayOfInterval({
@@ -64,7 +64,7 @@ export const useEventsFree = ({
     });
 
     const eventDays = new Set<string>();
-    eventsDb.forEach((event) => {
+    events.forEach((event) => {
       if ([CATEGORY_HOLIDAY, CATEGORY_REMINDER].includes(event.category.name))
         return;
 
@@ -108,5 +108,5 @@ export const useEventsFree = ({
         private: false,
       };
     });
-  }, [eventsDb, startDate, endDate, query]);
+  }, [events, startDate, endDate, query]);
 };

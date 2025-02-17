@@ -3,18 +3,25 @@ import { useMemo } from "react";
 import { useEventsFree } from "../../contexts/SearchEvents/hooks/useEventsFree";
 import { SearchProvider } from "../../contexts/SearchEvents/SearchEventsContext";
 import { useIsMobile } from "../../hooks/use-mobile";
+import useUser from "../../hooks/user/useUser";
+import { Event } from "../../types/globalTypes";
 import { EventsDesktop } from "./desktop/EventsDesktop";
 import useGetEventCategories from "./hooks/useGetEventCategories";
 import useGetEvents from "./hooks/useGetEvents";
 import { EventsMobile } from "./mobile/EventsMobile";
 
 const Events = () => {
+  const { user } = useUser();
   const { events } = useGetEvents();
   const { eventCategories } = useGetEventCategories();
   const isMobile = useIsMobile();
 
+  const userEvents = events.filter(
+    (event: Event) => event.createdBy._id === user?._id
+  );
+
   const eventsFree = useEventsFree({
-    eventsDb: events,
+    events: userEvents,
     startDate: null,
     endDate: null,
     query: "",
