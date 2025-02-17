@@ -8,7 +8,6 @@ import {
   FaGlassCheers,
   FaMusic,
   FaPlane,
-  FaPlus,
   FaTrain,
   FaUserMd,
   FaUtensils,
@@ -31,7 +30,6 @@ const categoryIcons: Record<string, JSX.Element> = {
   Sport: <FaFutbol />,
   Wedding: <FaChurch />,
   Work: <FaBriefcase />,
-  Free: <FaPlus />,
 };
 
 export const getCategoryIcon = (categoryName: string) => {

@@ -3,7 +3,6 @@ import { isToday } from "date-fns";
 import { formatDate, isWeekend } from "@/lib/utils";
 import { Event } from "@/types/globalTypes";
 
-import { Badge } from "../../../../../components/ui/badge";
 import { useModals } from "../../../../../contexts/Modals/ModalsContext";
 
 const EventFreeCard = ({ event }: { event: Event }) => {
@@ -40,7 +39,11 @@ const EventFreeCard = ({ event }: { event: Event }) => {
     >
       <div className="flex items-center justify-between text-sm px-4 py-2">
         <span>{formattedDate}</span>
-        <Badge variant="secondary">{event.location?.city}</Badge>
+        {event.location?.city && (
+          <span className="ml-4 font-medium text-sm">
+            📍 {event.location.city}
+          </span>
+        )}
       </div>
     </div>
   );

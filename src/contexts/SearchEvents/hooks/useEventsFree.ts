@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { eachDayOfInterval, isSameDay } from "date-fns";
 
 import {
+  CATEGORY_FREE,
   CATEGORY_HOLIDAY,
   CATEGORY_REMINDER,
   LOCATION_DEFAULT,
@@ -95,9 +96,9 @@ export const useEventsFree = ({
         date: { start: day.toISOString(), end: day.toISOString() },
         location: { city: locationCity, venue: "" },
         category: {
-          _id: "free",
-          name: "Free",
-          icon: "Free",
+          _id: CATEGORY_FREE,
+          name: CATEGORY_FREE,
+          icon: "",
         },
         additionalAttributes: {},
         createdBy: {
