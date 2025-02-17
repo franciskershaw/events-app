@@ -2,6 +2,7 @@ import Hamburger from "@/components/layout/navigation/Hamburger/Hamburger";
 import { SearchBar } from "@/components/ui/search-bar";
 
 import UsersInitials from "../../../../../components/user/UsersInitials/UsersInitials";
+import { NAV_HEIGHT } from "../../../../../constants/app";
 import { useSearch } from "../../../../../contexts/SearchEvents/SearchEventsContext";
 import { useScrollVisibility } from "../../../../../hooks/utility/useScrollVisibility";
 
@@ -16,7 +17,7 @@ const EventsNavbarTop = ({ query, setQuery }: EventsNavbarTopProps) => {
 
   return (
     <nav
-      className={`box fixed top-0 left-0 right-0 bg-white z-30 transition-transform duration-300 ${isNavbarVisible ? "translate-y-[0px]" : "-translate-y-[84px]"}`}
+      className={`box fixed top-0 left-0 right-0 bg-white z-30 transition-transform duration-300 ${isNavbarVisible ? "translate-y-[0px]" : `-translate-y-[${NAV_HEIGHT}]`}`}
     >
       <div className="flex justify-between items-center w-full p-4 space-x-4">
         <UsersInitials />

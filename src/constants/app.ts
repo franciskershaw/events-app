@@ -1,3 +1,5 @@
+export const NAV_HEIGHT = "84px";
+
 // TODO: Replace with category data restructure
 export const CATEGORY_HOLIDAY = "Holiday";
 export const CATEGORY_REMINDER = "Reminder";

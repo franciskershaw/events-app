@@ -8,6 +8,7 @@ import useUser from "@/hooks/user/useUser";
 import AddEventModal from "@/pages/Events/components/EventModals/AddEventModal";
 import DeleteEventModal from "@/pages/Events/components/EventModals/DeleteEventModal";
 
+import { NAV_HEIGHT } from "../../../constants/app";
 import { useIsMobile } from "../../../hooks/use-mobile";
 import ConnectionsModal from "../../../pages/Events/components/ConnectionsModal/ConnectionsModal";
 import { Button } from "../../ui/button";
@@ -39,7 +40,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
       )}
 
       <main
-        className={`bg-white flex-grow ${isMobile && isEventsPage ? "mt-[84px] mb-4" : ""} ${!isMobile ? "ml-20 " : ""}`}
+        className={`bg-white flex-grow ${isMobile && isEventsPage ? `mt-[${NAV_HEIGHT}] mb-4` : ""} ${!isMobile ? "ml-20 " : ""}`}
       >
         {children}
       </main>

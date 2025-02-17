@@ -6,6 +6,7 @@ import { useSidebar } from "@/contexts/Sidebar/mobile/SidebarContext";
 import useUser from "@/hooks/user/useUser";
 import useAuth from "@/pages/Auth/hooks/useAuth";
 
+import { NAV_HEIGHT } from "../../../../../constants/app";
 import { useScrollVisibility } from "../../../../../hooks/utility/useScrollVisibility";
 import Hamburger from "../../Hamburger/Hamburger";
 
@@ -26,7 +27,7 @@ const NavMobile = () => {
   return (
     <>
       <div
-        className={`fixed top-4 right-4 z-[45] transition-transform duration-300 ${isNavbarVisible ? "translate-y-[0px]" : "-translate-y-[84px]"}`}
+        className={`fixed top-4 right-4 z-[45] transition-transform duration-300 ${isNavbarVisible ? "translate-y-[0px]" : `-translate-y-[${NAV_HEIGHT}]`}`}
       >
         <Hamburger />
       </div>
