@@ -1,6 +1,5 @@
 import { createContext, useContext, useMemo, useState } from "react";
 
-import { isEventTypeguard } from "../../pages/Events/helpers/helpers";
 import { Event } from "../../types/globalTypes";
 import { createCategoryLookup } from "./helpers";
 import { useFilterEvents } from "./hooks/useFilterEvents";
@@ -81,10 +80,8 @@ export const SearchProvider = ({
 
   // Filtered categories
   const filteredCategories = useMemo(() => {
-    const validEvents = filteredEvents.filter(isEventTypeguard);
-
     const categoriesInFilteredEvents = new Set(
-      validEvents.map((event) => event.category._id)
+      filteredEvents.map((event) => event.category._id)
     );
 
     return categories

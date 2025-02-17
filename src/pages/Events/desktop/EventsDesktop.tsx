@@ -18,10 +18,6 @@ export const EventsDesktop = () => {
   const { filteredEvents } = useSearch();
   const { sidebarContent } = useSidebarContent();
 
-  // const events = filteredEvents
-  //   .map((event) => (isEventTypeguard(event) ? event : null))
-  //   .filter((event): event is Event => event !== null); // Get rid of EventFree type errors
-
   const firstEventDate = new Date(
     Math.min(
       ...filteredEvents.map((event) => new Date(event.date.start).getTime())

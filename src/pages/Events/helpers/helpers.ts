@@ -2,7 +2,7 @@ import { format } from "date-fns";
 import dayjs from "dayjs";
 
 import useUser from "../../../hooks/user/useUser";
-import { BaseEvent, Event } from "../../../types/globalTypes";
+import { Event } from "../../../types/globalTypes";
 import { EventFormValues } from "../hooks/useEventForm";
 
 export const transformEventFormValues = (values: EventFormValues) => ({
@@ -21,10 +21,10 @@ export const transformEventFormValues = (values: EventFormValues) => ({
 });
 
 interface GroupedEvents {
-  [key: string]: BaseEvent[];
+  [key: string]: Event[];
 }
 
-export const filterTodayEvents = (events: BaseEvent[]): BaseEvent[] => {
+export const filterTodayEvents = (events: Event[]) => {
   const today = dayjs().startOf("day");
   return events.filter((event) => {
     const startDate = dayjs(event.date.start);
@@ -37,7 +37,7 @@ export const filterTodayEvents = (events: BaseEvent[]): BaseEvent[] => {
   });
 };
 
-export const groupEvents = (events: BaseEvent[]): GroupedEvents => {
+export const groupEvents = (events: Event[]): GroupedEvents => {
   return events.reduce((acc: GroupedEvents, event) => {
     const month = dayjs(event.date.start).format("MMMM YYYY");
     if (!acc[month]) {
@@ -46,22 +46,6 @@ export const groupEvents = (events: BaseEvent[]): GroupedEvents => {
     acc[month] = [...acc[month], event];
     return acc;
   }, {});
-};
-
-export const isEventTypeguard = (obj: unknown): obj is Event => {
-  if (!obj || typeof obj !== "object") {
-    return false;
-  }
-
-  const eventObj = obj as Record<string, unknown>;
-  return (
-    typeof eventObj._id === "string" &&
-    typeof eventObj.title === "string" &&
-    typeof eventObj.category === "object" &&
-    eventObj.category !== null &&
-    "_id" in eventObj.category &&
-    typeof eventObj.unConfirmed === "boolean"
-  );
 };
 
 // Desktop

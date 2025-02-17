@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 
 import useUser from "../../../hooks/user/useUser";
-import { isEventTypeguard } from "../../../pages/Events/helpers/helpers";
 import { Event } from "../../../types/globalTypes";
 import {
   getNestedValue,
@@ -44,7 +43,7 @@ export const useFilterEvents = ({
 
     return events.filter((event) => {
       // User connection events
-      if (user && isEventTypeguard(event)) {
+      if (user) {
         if (event.createdBy._id !== user._id) {
           const connection = user.connections.find(
             (conn) => conn._id === event.createdBy._id
@@ -95,17 +94,6 @@ export const useFilterEvents = ({
         !selectedLocation ||
         eventCity === selectedLocation.toLowerCase() ||
         eventVenue === selectedLocation.toLowerCase();
-
-      if (showEventsFree) {
-        return (
-          (textKeywords.length === 0 || matchesTextQuery) &&
-          matchesQueryDateRange &&
-          matchesManualDateRange &&
-          matchesLocation
-        );
-      }
-
-      if (!isEventTypeguard(event)) return false;
 
       // Match categories
       const categoryId = event.category._id;

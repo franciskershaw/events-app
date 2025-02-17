@@ -6,7 +6,6 @@ import dayjs from "dayjs";
 import { Event } from "@/types/globalTypes";
 
 import { LOCATION_DEFAULT } from "../../../constants/app";
-import { isEventTypeguard } from "../helpers/helpers";
 
 interface UseCreateMessageProps {
   filteredEvents: Event[];
@@ -53,12 +52,9 @@ const useCreateMessage = ({
     const formatEvents = () =>
       filteredEvents
         .map((event) => {
-          if (isEventTypeguard(event)) {
-            return `- ${formatDate(event.date.start)}: ${event.title}${
-              event.location?.venue ? ` @ ${event.location.venue}` : ""
-            }`;
-          }
-          return null;
+          return `- ${formatDate(event.date.start)}: ${event.title}${
+            event.location?.venue ? ` @ ${event.location.venue}` : ""
+          }`;
         })
         .join("\n");
 
