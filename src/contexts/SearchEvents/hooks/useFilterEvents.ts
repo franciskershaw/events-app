@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { CATEGORY_FREE } from "../../../constants/app";
 import useUser from "../../../hooks/user/useUser";
 import { Event } from "../../../types/globalTypes";
 import {
@@ -42,6 +43,10 @@ export const useFilterEvents = ({
     const textKeywords = textQuery.split(/\s+/).filter(Boolean);
 
     return events.filter((event) => {
+      // Include/exclude free events
+      const isFreeEvent = event.category._id === CATEGORY_FREE;
+      if (!showEventsFree && isFreeEvent) return false;
+
       // User connection events
       if (user) {
         if (event.createdBy._id !== user._id) {
