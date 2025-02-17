@@ -71,7 +71,7 @@ export const DayCell = ({
   eventData
     .filter((event) => user?._id === event.createdBy._id)
     .forEach((event) => {
-      if (event.location?.city) {
+      if (event.location?.city && event.location.city !== defaultLocation) {
         eventLocationsMap.set(
           event.location.city,
           eventLocationsMap.get(event.location.city) || event.unConfirmed
@@ -103,7 +103,7 @@ export const DayCell = ({
       </div>
 
       <div className="truncate p-1">{eventTitles}</div>
-      {eventLocation && showLocations && eventLocation !== defaultLocation && (
+      {eventLocation && showLocations && (
         <div className="text-xs p-0.5 border border-gray-300 rounded ml-auto mr-0.5 max-w-24 truncate flex-shrink-0">
           {eventLocation}
         </div>

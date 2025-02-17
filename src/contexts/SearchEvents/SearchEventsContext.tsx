@@ -1,9 +1,7 @@
 import { createContext, useContext, useMemo, useState } from "react";
 
-import { isEventTypeguard } from "../../pages/Events/helpers/helpers";
-import { Event, EventFree } from "../../types/globalTypes";
+import { Event } from "../../types/globalTypes";
 import { createCategoryLookup } from "./helpers";
-import { useEventsFree } from "./hooks/useEventsFree";
 import { useFilterEvents } from "./hooks/useFilterEvents";
 
 interface DateFilters {
@@ -16,7 +14,7 @@ interface DateFilters {
 interface SearchContextProps extends DateFilters {
   query: string;
   setQuery: (query: string) => void;
-  filteredEvents: (Event | EventFree)[];
+  filteredEvents: Event[];
   showEventsFree: boolean;
   setShowEventsFree: (value: boolean) => void;
   selectedCategory: string;
@@ -68,17 +66,9 @@ export const SearchProvider = ({
     [categories]
   );
 
-  // Calculate free events
-  const eventsFree = useEventsFree({
-    eventsDb,
-    startDate,
-    endDate,
-    query,
-  });
-
   // Filter events based on all criteria
   const filteredEvents = useFilterEvents({
-    events: showEventsFree ? eventsFree : eventsDb,
+    events: eventsDb,
     query,
     startDate,
     endDate,
@@ -90,10 +80,8 @@ export const SearchProvider = ({
 
   // Filtered categories
   const filteredCategories = useMemo(() => {
-    const validEvents = filteredEvents.filter(isEventTypeguard);
-
     const categoriesInFilteredEvents = new Set(
-      validEvents.map((event) => event.category._id)
+      filteredEvents.map((event) => event.category._id)
     );
 
     return categories

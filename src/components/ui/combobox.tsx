@@ -94,7 +94,11 @@ const Combobox = ({
             : placeholder}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start" side="top">
+      <PopoverContent
+        className="w-auto md:min-w-[250px] p-0"
+        align="start"
+        side="top"
+      >
         <Command>
           <CommandInput
             placeholder={`Search ${placeholder.toLowerCase()}...`}

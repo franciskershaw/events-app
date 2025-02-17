@@ -1,39 +1,46 @@
+import { useMemo } from "react";
+
 import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
 
+import { CATEGORY_FREE, NAV_HEIGHT } from "../../../../../constants/app";
 import { useScrollVisibility } from "../../../../../hooks/utility/useScrollVisibility";
-import { EventFree } from "../../../../../types/globalTypes";
-import {
-  filterTodayEvents,
-  groupEvents,
-  isEventTypeguard,
-} from "../../../helpers/helpers";
+import { filterTodayEvents, groupEvents } from "../../../helpers/helpers";
 import DateScroller from "../DateScroller/DateScroller";
 import EventCard from "./EventCard";
 import EventFreeCard from "./EventFreeCard";
 
 const EventCards = () => {
-  const { filteredEvents, showEventsFree } = useSearch();
+  const { filteredEvents } = useSearch();
   const isNavbarVisible = useScrollVisibility();
 
-  const todayEvents = filterTodayEvents(filteredEvents);
-  const upcomingEvents = groupEvents(
-    filteredEvents.filter((event) => !todayEvents.includes(event))
+  const todayEvents = useMemo(
+    () => filterTodayEvents(filteredEvents),
+    [filteredEvents]
+  );
+  const upcomingEvents = useMemo(
+    () =>
+      groupEvents(
+        filteredEvents.filter((event) => !todayEvents.includes(event))
+      ),
+    [todayEvents, filteredEvents]
   );
 
   return (
     <div
-      className={`transition-transform duration-300 ${isNavbarVisible ? "translate-y-[0px]" : "-translate-y-[84px]"}`}
+      className={`transition-transform duration-300 w-full max-w-[100vw] ${
+        isNavbarVisible ? "translate-y-[0px]" : `-translate-y-[${NAV_HEIGHT}]`
+      }`}
     >
       {todayEvents.length > 0 && (
         <>
           <DateScroller label="Today" />
           <div className="space-y-2 px-4 py-5 bg-blue-100">
             {todayEvents.map((event) =>
-              showEventsFree ? (
-                <EventFreeCard key={event._id} event={event as EventFree} />
-              ) : isEventTypeguard(event) ? (
+              event.category._id === CATEGORY_FREE ? (
+                <EventFreeCard key={event._id} event={event} />
+              ) : (
                 <EventCard key={event._id} event={event} />
-              ) : null
+              )
             )}
           </div>
         </>
@@ -44,11 +51,11 @@ const EventCards = () => {
           <DateScroller date={monthEvents[0].date.start} />
           <div className="space-y-2 px-4 py-5 bg-blue-100">
             {monthEvents.map((event) =>
-              showEventsFree ? (
-                <EventFreeCard key={event._id} event={event as EventFree} />
-              ) : isEventTypeguard(event) ? (
+              event.category._id === CATEGORY_FREE ? (
+                <EventFreeCard key={event._id} event={event} />
+              ) : (
                 <EventCard key={event._id} event={event} />
-              ) : null
+              )
             )}
           </div>
         </div>

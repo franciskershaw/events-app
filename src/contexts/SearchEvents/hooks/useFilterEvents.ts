@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 
+import { CATEGORY_FREE } from "../../../constants/app";
 import useUser from "../../../hooks/user/useUser";
-import { isEventTypeguard } from "../../../pages/Events/helpers/helpers";
-import { Event, EventFree } from "../../../types/globalTypes";
+import { Event } from "../../../types/globalTypes";
 import {
   getNestedValue,
   isDateInRange,
@@ -12,7 +12,7 @@ import {
 } from "../helpers";
 
 interface UseFilterEventsProps {
-  events: (Event | EventFree)[];
+  events: Event[];
   query: string;
   startDate: Date | null;
   endDate: Date | null;
@@ -43,8 +43,12 @@ export const useFilterEvents = ({
     const textKeywords = textQuery.split(/\s+/).filter(Boolean);
 
     return events.filter((event) => {
+      // Include/exclude free events
+      const isEventFree = event.category._id === CATEGORY_FREE;
+      if (!showEventsFree && isEventFree) return false;
+
       // User connection events
-      if (user && isEventTypeguard(event)) {
+      if (user) {
         if (event.createdBy._id !== user._id) {
           const connection = user.connections.find(
             (conn) => conn._id === event.createdBy._id
@@ -96,20 +100,9 @@ export const useFilterEvents = ({
         eventCity === selectedLocation.toLowerCase() ||
         eventVenue === selectedLocation.toLowerCase();
 
-      if (showEventsFree) {
-        return (
-          (textKeywords.length === 0 || matchesTextQuery) &&
-          matchesQueryDateRange &&
-          matchesManualDateRange &&
-          matchesLocation
-        );
-      }
-
-      if (!isEventTypeguard(event)) return false;
-
       // Match categories
       const categoryId = event.category._id;
-      const categoryName = categoryLookup[categoryId];
+      const categoryName = categoryLookup[categoryId] || CATEGORY_FREE;
       const matchesCategoryQuery = textKeywords.some((keyword) =>
         categoryName.toLowerCase().includes(keyword.toLowerCase())
       );

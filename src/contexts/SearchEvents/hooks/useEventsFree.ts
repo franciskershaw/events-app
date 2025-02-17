@@ -1,32 +1,33 @@
 import { useMemo } from "react";
 
-import { eachDayOfInterval, isSameDay } from "date-fns";
+import { eachDayOfInterval } from "date-fns";
 
 import {
+  CATEGORY_FREE,
   CATEGORY_HOLIDAY,
   CATEGORY_REMINDER,
   LOCATION_DEFAULT,
 } from "../../../constants/app";
-import { Event, EventFree } from "../../../types/globalTypes";
+import { Event } from "../../../types/globalTypes";
 import { splitQueryParts } from "../helpers";
 
 interface UseEventsFreeProps {
-  eventsDb: Event[];
+  events: Event[];
   startDate: Date | null;
   endDate: Date | null;
   query: string;
 }
 
 export const useEventsFree = ({
-  eventsDb,
+  events,
   startDate,
   endDate,
   query,
-}: UseEventsFreeProps): EventFree[] => {
+}: UseEventsFreeProps): Event[] => {
   return useMemo(() => {
     const today = new Date();
 
-    const furthestEventDate = eventsDb.reduce(
+    const furthestEventDate = events.reduce(
       (latest, event) =>
         new Date(event.date.end || event.date.start) > latest
           ? new Date(event.date.end || event.date.start)
@@ -48,37 +49,33 @@ export const useEventsFree = ({
     const allDays = eachDayOfInterval({ start: today, end: rangeEndDate });
 
     const holidayLocations = new Map<string, string>();
+    events.forEach((event) => {
+      if (event.category.name !== CATEGORY_HOLIDAY) return;
 
-    eventsDb
-      .filter((event) => event.category.name === CATEGORY_HOLIDAY)
-      .forEach((event) => {
-        const eventDays = eachDayOfInterval({
-          start: new Date(event.date.start),
-          end: new Date(event.date.end || event.date.start),
-        });
-
-        eventDays.forEach((day) => {
-          const dayKey = day.toISOString().split("T")[0];
-          holidayLocations.set(
-            dayKey,
-            event.location?.city || LOCATION_DEFAULT
-          );
-        });
+      eachDayOfInterval({
+        start: new Date(event.date.start),
+        end: new Date(event.date.end || event.date.start),
+      }).forEach((day) => {
+        holidayLocations.set(
+          day.toISOString().split("T")[0],
+          event.location?.city || LOCATION_DEFAULT
+        );
       });
+    });
 
-    const eventDays = eventsDb
-      .filter(
-        (event) =>
-          ![CATEGORY_HOLIDAY, CATEGORY_REMINDER].includes(event.category.name)
-      )
-      .flatMap((event) => {
-        const eventStart = new Date(event.date.start);
-        const eventEnd = new Date(event.date.end || event.date.start);
-        return eachDayOfInterval({ start: eventStart, end: eventEnd });
-      });
+    const eventDays = new Set<string>();
+    events.forEach((event) => {
+      if ([CATEGORY_HOLIDAY, CATEGORY_REMINDER].includes(event.category.name))
+        return;
+
+      eachDayOfInterval({
+        start: new Date(event.date.start),
+        end: new Date(event.date.end || event.date.start),
+      }).forEach((day) => eventDays.add(day.toISOString().split("T")[0]));
+    });
 
     let eventFreeDays = allDays.filter(
-      (day) => !eventDays.some((eventDay) => isSameDay(day, eventDay))
+      (day) => !eventDays.has(day.toISOString().split("T")[0])
     );
 
     if (startDate) {
@@ -91,9 +88,25 @@ export const useEventsFree = ({
 
       return {
         _id: `free-${day.toISOString()}`,
+        title: "",
         date: { start: day.toISOString(), end: day.toISOString() },
-        location: { city: locationCity, venue: null },
+        location: { city: locationCity, venue: "" },
+        category: {
+          _id: CATEGORY_FREE,
+          name: CATEGORY_FREE,
+          icon: "",
+        },
+        additionalAttributes: {},
+        createdBy: {
+          _id: "",
+          name: "",
+        },
+        description: "",
+        createdAt: new Date(day),
+        updatedAt: new Date(day),
+        unConfirmed: false,
+        private: false,
       };
     });
-  }, [eventsDb, startDate, endDate, query]);
+  }, [events, startDate, endDate, query]);
 };

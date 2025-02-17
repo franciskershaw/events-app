@@ -105,7 +105,7 @@ const useFiltersDrawer = () => {
       case "location":
         setSelectedLocation("");
         break;
-      case "freeDays":
+      case "eventsFree":
         setShowEventsFree(false);
         break;
       default:
@@ -151,8 +151,8 @@ const useFiltersDrawer = () => {
 
     if (showEventsFree) {
       filters.push({
-        label: `Free days`,
-        type: "freeDays",
+        label: `Showing free days`,
+        type: "eventsFree",
       });
     }
 
