@@ -27,7 +27,10 @@ const NavMobile = () => {
   return (
     <>
       <div
-        className={`fixed top-4 right-4 z-[45] transition-transform duration-300 ${isNavbarVisible ? "translate-y-[0px]" : `-translate-y-[${NAV_HEIGHT}]`}`}
+        className="fixed top-4 right-4 z-[45] transition-transform duration-300"
+        style={{
+          transform: `translateY(${isNavbarVisible ? "0px" : `-${NAV_HEIGHT}`})`,
+        }}
       >
         <Hamburger />
       </div>

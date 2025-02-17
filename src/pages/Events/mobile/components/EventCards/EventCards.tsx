@@ -27,7 +27,10 @@ const EventCards = () => {
 
   return (
     <div
-      className={`transition-transform duration-300 ${isNavbarVisible ? "translate-y-[0px]" : `-translate-y-[${NAV_HEIGHT}]`}`}
+      className="transition-transform duration-300"
+      style={{
+        transform: `translateY(${isNavbarVisible ? "0px" : `-${NAV_HEIGHT}`})`,
+      }}
     >
       {todayEvents.length > 0 && (
         <>

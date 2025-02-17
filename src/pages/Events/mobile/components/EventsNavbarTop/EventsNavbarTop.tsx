@@ -17,7 +17,10 @@ const EventsNavbarTop = ({ query, setQuery }: EventsNavbarTopProps) => {
 
   return (
     <nav
-      className={`box fixed top-0 left-0 right-0 bg-white z-30 transition-transform duration-300 ${isNavbarVisible ? "translate-y-[0px]" : `-translate-y-[${NAV_HEIGHT}]`}`}
+      className="box fixed top-0 left-0 right-0 bg-white z-30 transition-transform duration-300"
+      style={{
+        transform: `translateY(${isNavbarVisible ? "0px" : `-${NAV_HEIGHT}`})`,
+      }}
     >
       <div className="flex justify-between items-center w-full p-4 space-x-4">
         <UsersInitials />
