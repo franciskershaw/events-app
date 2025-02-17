@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 interface SidebarContextType {
   isExpanded: boolean;
@@ -25,6 +31,18 @@ export const SidebarProvider = ({ children }: SidebarProviderProps) => {
 
   const toggleSidebar = () => setIsExpanded((prev) => !prev);
   const closeSidebar = () => setIsExpanded(false);
+
+  // Handle body scroll locking
+  useEffect(() => {
+    if (isExpanded) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isExpanded]);
 
   return (
     <SidebarContext.Provider

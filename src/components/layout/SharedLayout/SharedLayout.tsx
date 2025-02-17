@@ -4,6 +4,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import NavMobile from "@/components/layout/navigation/Nav/mobile/NavMobile";
 import { Toaster } from "@/components/ui/sonner";
 import { useModals } from "@/contexts/Modals/ModalsContext";
+import { useSidebar } from "@/contexts/Sidebar/mobile/SidebarContext";
 import useUser from "@/hooks/user/useUser";
 import AddEventModal from "@/pages/Events/components/EventModals/AddEventModal";
 import DeleteEventModal from "@/pages/Events/components/EventModals/DeleteEventModal";
@@ -18,6 +19,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
   const isEventsPage = location.pathname === "/events";
   const isMobile = useIsMobile();
+  const { isExpanded } = useSidebar();
 
   return (
     <div className="relative flex min-h-screen">
@@ -27,7 +29,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
           <Button
             size="round"
             onClick={() => openEventModal()}
-            className="fixed bottom-4 right-4 z-40 h-14 w-14 shadow-lg"
+            className={`fixed bottom-4 right-4 z-40 h-14 w-14 shadow-lg ${isExpanded ? "opacity-0 pointer-events-none" : "opacity-100"}`}
           >
             <FaPlus className="h-5 w-5" />
           </Button>
