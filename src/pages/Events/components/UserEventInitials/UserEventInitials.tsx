@@ -2,12 +2,12 @@ import { Event } from "@/types/globalTypes";
 
 import { Avatar, AvatarFallback } from "../../../../components/ui/avatar";
 import { getInitials } from "../../../../components/user/UserInitials/UserInitials";
-import { isUserEvent } from "../../helpers/helpers";
+import useIsUserEvent from "../../../../hooks/user/useIsUserEvent";
 
 export const UserEventInitials = ({ event }: { event: Event }) => {
-  const userEvent = isUserEvent({ event });
+  const isUserEvent = useIsUserEvent(event);
 
-  if (userEvent === true) return;
+  if (isUserEvent === true) return;
 
   return (
     <Avatar className="h-6 w-6 bg-primary text-primary-foreground">

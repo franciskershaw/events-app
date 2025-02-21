@@ -2,7 +2,6 @@ import { format } from "date-fns";
 import dayjs from "dayjs";
 
 import { CATEGORY_FREE } from "../../../constants/app";
-import useUser from "../../../hooks/user/useUser";
 import { Event } from "../../../types/globalTypes";
 import { EventFormValues } from "../hooks/useEventForm";
 
@@ -128,9 +127,4 @@ export const shareEvent = ({ event }: ShareEventProps) => {
   message += ` at ${eventTime} on ${eventDay}`;
 
   return message;
-};
-
-export const isUserEvent = ({ event }: { event: Event }) => {
-  const { user } = useUser();
-  return user?._id === event.createdBy._id;
 };

@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
 
 import { Badge } from "@/components/ui/badge";
+import useIsUserEvent from "@/hooks/user/useIsUserEvent";
 import { formatDate, formatTime, isWeekend } from "@/lib/utils";
 import { Event } from "@/types/globalTypes";
 
@@ -12,15 +13,15 @@ import SwipeableIndicator from "../../../../../components/utility/SwipeableIndic
 import { getCategoryIcon } from "../../../../../lib/icons";
 import EventCardActions from "../../../components/EventCardActions/EventCardActions";
 import { UserEventInitials } from "../../../components/UserEventInitials/UserEventInitials";
-import { isUserEvent } from "../../../helpers/helpers";
 
 const EventCard = ({ event }: { event: Event }) => {
   const { location, title, category, description } = event;
   const [isOpen, setIsOpen] = useState(false);
   const [isSwiped, setIsSwiped] = useState(false);
+
   const swipeBlockRef = useRef(false);
 
-  const userEvent = isUserEvent({ event });
+  const isUserEvent = useIsUserEvent(event);
 
   const duration = 0.3;
 
@@ -69,7 +70,7 @@ const EventCard = ({ event }: { event: Event }) => {
       } ${
         today && "event--today"
       } ${event.unConfirmed === true ? "border-dashed" : ""} ${
-        !userEvent ? "bg-gray-50/80" : "bg-white"
+        !isUserEvent ? "bg-gray-50/80" : "bg-white"
       }`}
       {...swipeHandlers}
     >
@@ -78,7 +79,7 @@ const EventCard = ({ event }: { event: Event }) => {
         <div
           className={`relative flex flex-col gap-3 p-4 cursor-pointer z-10 ${
             event.unConfirmed === true ? "opacity-50" : ""
-          } ${!userEvent ? "opacity-80" : ""}`}
+          } ${!isUserEvent ? "opacity-80" : ""}`}
         >
           <SwipeableIndicator orientation="vertical" alignment="right" />
           <div className="flex items-center justify-between">
