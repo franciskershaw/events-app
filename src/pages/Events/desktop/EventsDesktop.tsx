@@ -32,7 +32,7 @@ export const EventsDesktop = () => {
   const eventsByDay: Record<string, Event[]> = getEventsByDay(filteredEvents);
   const monthColumns = generateMonthColumns(firstEventDate, lastEventDate);
 
-  console.log(eventsByDay);
+  const filtersActive = activeFilterCount > 0 ? true : false;
 
   return (
     <ActiveDayProvider>
@@ -42,7 +42,7 @@ export const EventsDesktop = () => {
             {sidebarContent === "events" ? (
               <EventsSummary eventsByDay={eventsByDay} />
             ) : (
-              <EventsSearch />
+              <EventsSearch eventsByDay={eventsByDay} filters={filtersActive} />
             )}
           </SidebarContent>
           <SidebarTrigger />
@@ -61,7 +61,7 @@ export const EventsDesktop = () => {
               eventsByDay={eventsByDay}
               showLocations={LOCATION_SHOW}
               defaultLocation={LOCATION_DEFAULT}
-              filters={activeFilterCount > 0 ? true : false}
+              filters={filtersActive}
             />
           ))}
         </div>
