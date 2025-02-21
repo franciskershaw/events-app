@@ -7,7 +7,7 @@ import { useModals } from "../../../../../contexts/Modals/ModalsContext";
 import { formatTime } from "../../../../../lib/utils";
 import { Event } from "../../../../../types/globalTypes";
 import { UserEventInitials } from "../../../components/UserEventInitials/UserEventInitials";
-import { EmptyState } from "../EmptyState/EmptyState";
+import { EmptyStateNoEvents } from "../EmptyStateNoEvents/EmptyStateNoEvents";
 import EventCard from "../EventCard/EventCard";
 
 const AddEventButton = () => {
@@ -77,7 +77,7 @@ export const EventsSummary = ({
       <div className="p-2">
         {/* Events - today */}
         {Object.keys(eventsByDay).length === 0 ? (
-          <EmptyState />
+          <EmptyStateNoEvents />
         ) : (
           <>
             {events.length > 0 ? (

@@ -1,4 +1,4 @@
-export const EmptyState = () => {
+export const EmptyStateNoEvents = () => {
   return (
     <div className="text-center px-4 absolute top-0 bottom-0 left-0 right-0 flex flex-col justify-center">
       <h4 className="text-xl font-bold mb-4">No events yet?</h4>
