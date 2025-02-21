@@ -12,6 +12,7 @@ interface DateFilters {
 }
 
 interface SearchContextProps extends DateFilters {
+  allEvents: Event[];
   query: string;
   setQuery: (query: string) => void;
   filteredEvents: Event[];
@@ -145,6 +146,7 @@ export const SearchProvider = ({
 
   const contextValue = useMemo(
     () => ({
+      allEvents: eventsDb,
       query,
       setQuery,
       filteredEvents,

@@ -13,6 +13,7 @@ interface DayCellProps {
   eventData?: Event[];
   showLocations: boolean;
   defaultLocation: string;
+  filters: boolean;
 }
 
 export const DayCell = ({
@@ -20,6 +21,7 @@ export const DayCell = ({
   eventData = [],
   showLocations,
   defaultLocation,
+  filters,
 }: DayCellProps) => {
   const { activeDay, setActiveDay } = useActiveDay();
   const isSelected = activeDay?.isSame(currentDate, "day");
@@ -88,13 +90,17 @@ export const DayCell = ({
   return (
     <div
       className={`flex items-center text-sm rounded border event cursor-pointer ${
-        isToday
-          ? "event--today"
-          : isWeekend && isPast
-            ? "event--weekend-past"
-            : isWeekend
-              ? "event--weekend"
-              : "event--default"
+        filters
+          ? eventData.length > 0
+            ? "event--today"
+            : "event--past"
+          : isToday
+            ? "event--today"
+            : isWeekend && isPast
+              ? "event--weekend-past"
+              : isWeekend
+                ? "event--weekend"
+                : "event--default"
       } ${isPast && !isToday ? "event--past" : ""} ${isSelected ? "event--selected font-bold" : ""}`}
       onClick={() => setActiveDay(currentDate)}
     >
