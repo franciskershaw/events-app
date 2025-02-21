@@ -2,11 +2,12 @@ import { createContext, ReactNode, useContext, useReducer } from "react";
 
 import { Event } from "@/types/globalTypes";
 
-// Define modal names as constants
-const MODAL_EVENT = "event";
-const MODAL_CONNECTIONS = "connections";
-
-type ModalMode = "edit" | "copy" | "addFromFreeEvent" | "connections";
+type ModalMode =
+  | "add"
+  | "edit"
+  | "copy"
+  | "addFromFreeEvent"
+  | "copyFromConnection";
 
 type ModalsState = {
   isEventModalOpen: boolean;
@@ -65,6 +66,7 @@ const modalsReducer = (
         isDeleteEventModalOpen: false,
         isConnectionsModalOpen: false,
         mode: null,
+        selectedEvent: null,
       };
 
     case "RESET_SELECTED_DATA":
@@ -96,7 +98,7 @@ const ModalsProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(modalsReducer, initialState);
 
   // Action dispatchers
-  const openEventModal = (data?: Event, mode: ModalMode = "edit") => {
+  const openEventModal = (data?: Event, mode: ModalMode = "add") => {
     dispatch({ type: "OPEN_EVENT_MODAL", data, mode });
   };
 
@@ -141,4 +143,4 @@ const useModals = () => {
   return context;
 };
 
-export { MODAL_CONNECTIONS, MODAL_EVENT, ModalsProvider, useModals };
+export { ModalsProvider, useModals };

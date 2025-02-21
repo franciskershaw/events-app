@@ -5,7 +5,9 @@ import { CATEGORY_FREE } from "../../../constants/app";
 import { Event } from "../../../types/globalTypes";
 import { EventFormValues } from "../hooks/useEventForm";
 
-export const transformEventFormValues = (values: EventFormValues) => ({
+export const transformEventFormValues = (
+  values: EventFormValues & { copiedFrom?: string }
+) => ({
   title: values.title,
   date: {
     start: values.datetime,
@@ -18,6 +20,7 @@ export const transformEventFormValues = (values: EventFormValues) => ({
   description: values.description,
   category: values.category,
   unConfirmed: values.unConfirmed,
+  copiedFrom: values.copiedFrom,
 });
 
 interface GroupedEvents {

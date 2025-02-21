@@ -14,19 +14,35 @@ import AddEventForm from "./AddEventForm";
 const AddEventModal = () => {
   const { selectedEvent, closeModal, isEventModalOpen, mode } = useModals();
   const id = selectedEvent?._id || "addEvent";
+
+  const { title, button } = (() => {
+    switch (mode) {
+      case "edit":
+        return {
+          title: "Edit event",
+          button: "Save changes",
+        };
+      case "copy":
+      case "copyFromConnection":
+        return {
+          title: "Copy event",
+          button: "Create copy",
+        };
+      case "addFromFreeEvent":
+      case "add":
+      default:
+        return {
+          title: "Add event",
+          button: "Add event",
+        };
+    }
+  })();
+
   return (
     <Dialog open={isEventModalOpen} onOpenChange={closeModal}>
       <DialogContent className="flex flex-col max-h-dvh md:max-h-[90dvh] p-0">
         <DialogHeader className="px-6 pt-6">
-          <DialogTitle>
-            {mode === "copy"
-              ? "Copy event"
-              : mode === "addFromFreeEvent"
-                ? "Add event"
-                : selectedEvent
-                  ? "Edit event"
-                  : "Add event"}
-          </DialogTitle>
+          <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
         <DialogDescription className="sr-only">
           Modal for adding a new event
@@ -41,13 +57,7 @@ const AddEventModal = () => {
             Cancel
           </Button>
           <Button form={id} type="submit">
-            {mode === "copy"
-              ? "Create copy"
-              : mode === "addFromFreeEvent"
-                ? "Add event"
-                : selectedEvent
-                  ? "Save changes"
-                  : "Add event"}
+            {button}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import dayjs from "dayjs";
@@ -62,6 +62,18 @@ const useEventForm = () => {
     },
   });
 
+  const datetime = form.watch("datetime");
+
+  const copiedFromId = useMemo(() => {
+    if (mode !== "copyFromConnection" || !selectedEvent?._id) {
+      return undefined;
+    }
+
+    return dayjs(datetime).isSame(selectedEvent.date.start, "day")
+      ? selectedEvent._id
+      : undefined;
+  }, [mode, selectedEvent, datetime]);
+
   // Watch the start date and update end date if needed
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
@@ -86,15 +98,28 @@ const useEventForm = () => {
   }, [form]);
 
   const onSubmit = (values: EventFormValues) => {
-    if (mode === "copy" || mode === "addFromFreeEvent" || !selectedEvent) {
-      addEvent.mutate(values);
-    } else {
-      editEvent.mutate(values);
+    switch (mode) {
+      case "edit": {
+        editEvent.mutate(values);
+        break;
+      }
+      default: {
+        const payload = {
+          ...values,
+          ...(copiedFromId && { copiedFrom: copiedFromId }),
+        };
+        addEvent.mutate(payload);
+      }
     }
     closeModal();
   };
 
-  return { form, onSubmit, eventCategorySelectOptions };
+  return {
+    form,
+    onSubmit,
+    eventCategorySelectOptions,
+    copiedFromId,
+  };
 };
 
 export default useEventForm;

@@ -96,7 +96,9 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
       </Button>
       <Button
         size="round"
-        onClick={() => openEventModal({ ...event, _id: "" }, "copy")}
+        onClick={() =>
+          openEventModal(event, ownsEvent ? "copy" : "copyFromConnection")
+        }
       >
         Copy
       </Button>
