@@ -137,7 +137,7 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
                   )}
                   disabled={disabled}
                 >
-                  <CalendarIcon className="mr-2 h-4 w-4 flex-shrink-0" />
+                  <CalendarIcon className="mr-2 md:mr-0 h-4 w-4 flex-shrink-0" />
                   {effectiveValue ? (
                     <div className="truncate">
                       <span className="inline max-[380px]:hidden">

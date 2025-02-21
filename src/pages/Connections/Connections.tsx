@@ -6,7 +6,7 @@ import useUser from "@/hooks/user/useUser";
 import ConnectionForm from "./components/ConnectionForm/ConnectionForm";
 import ConnectionListItem from "./components/ConnectionListItem/ConnectionListItem";
 import ConnectionModal from "./components/ConnectionModals/ConnectionModal";
-import { EmptyState } from "./components/EmptyState/EmptyState";
+import { EmptyStateNoConnections } from "./components/EmptyStateNoConnections/EmptyStateNoConnections";
 
 const Connections = () => {
   const { user } = useUser();
@@ -26,7 +26,7 @@ const Connections = () => {
               {!connections?.length ? (
                 <div className="rounded-lg border p-8 text-center">
                   <Users className="mx-auto h-12 w-12 text-gray-400" />
-                  <EmptyState />
+                  <EmptyStateNoConnections />
                   <div className="lg:hidden">
                     <ConnectionModal />
                   </div>
