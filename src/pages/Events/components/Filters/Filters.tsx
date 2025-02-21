@@ -74,8 +74,8 @@ const Filters = () => {
           </div>
         </>
       )}
-      <div className="flex flex-col justify-center items-center space-y-4 pb-4">
-        <div className="grid grid-cols-2 gap-4 w-full">
+      <div className="flex flex-col justify-center items-center space-y-4 pb-4 md:pb-0">
+        <div className="w-full grid grid-cols-2 md:grid-cols-1 gap-4 md:gap-2 lg:grid-cols-2">
           <Combobox
             value={selectedCategory}
             onChange={setSelectedCategory}
@@ -88,8 +88,6 @@ const Filters = () => {
             options={locations}
             placeholder="Locations"
           />
-        </div>
-        <div className="grid grid-cols-2 gap-4 w-full">
           <DateTime
             placeholder="Start date"
             value={startDate || null}
@@ -136,12 +134,12 @@ const Filters = () => {
             </div>
           ))}
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 md:flex-col md:w-full lg:flex-row">
           <Button
             size="default"
             variant={showEventsFree ? "outline" : "default"}
             onClick={() => setShowEventsFree(!showEventsFree)}
-            className="min-w-40"
+            className="min-w-40 md:min-w-0 md:w-full"
           >
             <FaRegCalendar />
             {showEventsFree ? "Hide" : "Show"} free days
@@ -150,7 +148,7 @@ const Filters = () => {
             size="default"
             variant={buttonStatus}
             onClick={handleCopyEventClick}
-            className="min-w-40"
+            className="min-w-40 md:min-w-0 md:w-full"
           >
             {getIcon()}
             {buttonText}
