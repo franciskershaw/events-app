@@ -1,4 +1,4 @@
-export const EmptyState = () => {
+export const EmptyStateNoConnections = () => {
   return (
     <>
       <h3 className="mt-4 text-sm font-semibold text-gray-900">

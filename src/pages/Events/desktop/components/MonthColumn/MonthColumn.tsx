@@ -8,6 +8,7 @@ interface MonthColumnProps {
   eventsByDay: Record<string, Event[]>;
   showLocations: boolean;
   defaultLocation: string;
+  filters: boolean;
 }
 
 export const MonthColumn = ({
@@ -15,6 +16,7 @@ export const MonthColumn = ({
   eventsByDay,
   showLocations = false,
   defaultLocation,
+  filters = false,
 }: MonthColumnProps) => {
   return (
     <div className="border rounded p-2 bg-white shadow">
@@ -35,6 +37,7 @@ export const MonthColumn = ({
               eventData={eventData}
               showLocations={showLocations}
               defaultLocation={defaultLocation}
+              filters={filters}
             />
           );
         })}

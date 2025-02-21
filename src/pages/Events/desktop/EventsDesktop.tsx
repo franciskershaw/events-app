@@ -15,7 +15,7 @@ import { EventsSummary } from "./components/EventsSummary/EventsSummary";
 import { MonthColumn } from "./components/MonthColumn/MonthColumn";
 
 export const EventsDesktop = () => {
-  const { filteredEvents } = useSearch();
+  const { filteredEvents, activeFilterCount } = useSearch();
   const { sidebarContent } = useSidebarContent();
 
   const firstEventDate = new Date(
@@ -32,6 +32,8 @@ export const EventsDesktop = () => {
   const eventsByDay: Record<string, Event[]> = getEventsByDay(filteredEvents);
   const monthColumns = generateMonthColumns(firstEventDate, lastEventDate);
 
+  const filtersActive = activeFilterCount > 0 ? true : false;
+
   return (
     <ActiveDayProvider>
       <SidebarProvider>
@@ -40,7 +42,7 @@ export const EventsDesktop = () => {
             {sidebarContent === "events" ? (
               <EventsSummary eventsByDay={eventsByDay} />
             ) : (
-              <EventsSearch />
+              <EventsSearch eventsByDay={eventsByDay} filters={filtersActive} />
             )}
           </SidebarContent>
           <SidebarTrigger />
@@ -59,6 +61,7 @@ export const EventsDesktop = () => {
               eventsByDay={eventsByDay}
               showLocations={LOCATION_SHOW}
               defaultLocation={LOCATION_DEFAULT}
+              filters={filtersActive}
             />
           ))}
         </div>

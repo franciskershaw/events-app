@@ -46,11 +46,7 @@ export const NavDesktop = () => {
         </div>
         <h3>Search</h3>
       </Link>
-      <Link
-        to="/connections"
-        onClick={() => console.log("Hi")}
-        className="nav-link-wrapper"
-      >
+      <Link to="/connections" className="nav-link-wrapper">
         <div className="nav-link-icon">
           <Users />
         </div>
