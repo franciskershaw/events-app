@@ -6,7 +6,7 @@ import { Event } from "../../../types/globalTypes";
 import { EventFormValues } from "../hooks/useEventForm";
 
 export const transformEventFormValues = (
-  values: EventFormValues & { copiedFrom?: string | null }
+  values: EventFormValues & { copiedFrom?: string }
 ) => ({
   title: values.title,
   date: {

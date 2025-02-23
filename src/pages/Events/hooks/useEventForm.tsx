@@ -8,7 +8,6 @@ import { z } from "zod";
 import { useModals } from "@/contexts/Modals/ModalsContext";
 
 import useAddEvent from "./useAddEvent";
-import useCheckEventLinks from "./useCheckEventLinks";
 import useEditEvent from "./useEditEvent";
 import useGetEventCategories from "./useGetEventCategories";
 
@@ -38,8 +37,6 @@ const useEventForm = () => {
   const editEvent = useEditEvent();
 
   const { closeModal, selectedEvent, mode } = useModals();
-
-  const linkedEventIds = useCheckEventLinks();
 
   const form = useForm<EventFormValues>({
     resolver: zodResolver(eventFormSchema),
@@ -113,11 +110,8 @@ const useEventForm = () => {
   const onSubmit = (values: EventFormValues) => {
     switch (mode) {
       case "edit": {
-        if (!selectedEvent?._id) throw new Error("No event ID found");
         const payload = {
           ...values,
-          _id: selectedEvent._id,
-          linkedEventIds,
           ...(copiedFromId === ""
             ? { copiedFrom: null }
             : { copiedFrom: copiedFromId }),

@@ -14,55 +14,19 @@ const useEditEvent = () => {
   const api = useAxios();
   const { user } = useUser();
 
-  const editEvent = async (
-    values: EventFormValues & {
-      _id: string;
-      linkedEventIds: string[];
-      copiedFrom?: string | null;
-    }
-  ) => {
+  const editEvent = async (values: EventFormValues) => {
     const transformedValues = transformEventFormValues(values);
     const { data } = await api.put(`/events/${values._id}`, transformedValues, {
-      headers: { Authorization: `Bearer ${user?.accessToken}` },
+      headers: {
+        Authorization: `Bearer ${user?.accessToken}`,
+      },
     });
     return data;
   };
 
-  const clearLinksMutation = useMutation({
-    mutationFn: async (eventIds: string[]) => {
-      const { data } = await api.patch(
-        "/events/linked/unlink",
-        { eventIds },
-        {
-          headers: {
-            Authorization: `Bearer ${user?.accessToken}`,
-          },
-        }
-      );
-      return data;
-    },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
-      toast.success(`Unlinked ${data.modifiedCount} events`);
-    },
-  });
-
   return useMutation({
     mutationFn: editEvent,
-    onSuccess: (
-      _,
-      values: EventFormValues & {
-        _id: string;
-        linkedEventIds: string[];
-        copiedFrom?: string | null;
-      }
-    ) => {
-      const hasLinkedEvents = values.linkedEventIds.length > 0;
-      const dateWasChanged = values.copiedFrom === null;
-
-      if (hasLinkedEvents && dateWasChanged) {
-        clearLinksMutation.mutate(values.linkedEventIds);
-      }
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
       toast.success("Event edited successfully");
     },
