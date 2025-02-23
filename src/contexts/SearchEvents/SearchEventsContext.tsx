@@ -182,6 +182,7 @@ export const SearchProvider = ({
       filteredCategories,
       offset,
       activeButton,
+      eventsDb,
     ]
   );
 
