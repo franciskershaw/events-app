@@ -65,13 +65,23 @@ const useEventForm = () => {
   const datetime = form.watch("datetime");
 
   const copiedFromId = useMemo(() => {
-    if (mode !== "copyFromConnection" || !selectedEvent?._id) {
-      return undefined;
+    if (!selectedEvent?._id) return null;
+
+    // If editing an event that was copied from another event
+    if (mode === "edit" && selectedEvent.copiedFrom) {
+      return dayjs(datetime).isSame(selectedEvent.date.start, "day")
+        ? selectedEvent.copiedFrom
+        : ""; // Return empty string if date changed
     }
 
-    return dayjs(datetime).isSame(selectedEvent.date.start, "day")
-      ? selectedEvent._id
-      : undefined;
+    // If copying from a connection's event
+    if (mode === "copyFromConnection") {
+      return dayjs(datetime).isSame(selectedEvent.date.start, "day")
+        ? selectedEvent._id
+        : null;
+    }
+
+    return null;
   }, [mode, selectedEvent, datetime]);
 
   // Watch the start date and update end date if needed
@@ -100,7 +110,13 @@ const useEventForm = () => {
   const onSubmit = (values: EventFormValues) => {
     switch (mode) {
       case "edit": {
-        editEvent.mutate(values);
+        const payload = {
+          ...values,
+          ...(copiedFromId === ""
+            ? { copiedFrom: null }
+            : { copiedFrom: copiedFromId }),
+        };
+        editEvent.mutate(payload);
         break;
       }
       default: {
@@ -119,6 +135,7 @@ const useEventForm = () => {
     onSubmit,
     eventCategorySelectOptions,
     copiedFromId,
+    mode,
   };
 };
 

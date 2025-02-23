@@ -36,6 +36,7 @@ export interface Event {
   updatedAt: Date;
   unConfirmed: boolean;
   private: boolean;
+  copiedFrom?: string | null;
 }
 
 export interface EventCategory {

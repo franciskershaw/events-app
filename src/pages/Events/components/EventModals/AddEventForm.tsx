@@ -10,21 +10,33 @@ import { Combobox } from "../../../../components/ui/combobox";
 import useEventForm from "../../hooks/useEventForm";
 
 const AddEventForm = ({ formId }: { formId: string }) => {
-  const { form, onSubmit, eventCategorySelectOptions, copiedFromId } =
+  const { form, mode, onSubmit, eventCategorySelectOptions, copiedFromId } =
     useEventForm();
 
   return (
     <Form {...{ form, onSubmit, id: formId }}>
-      {copiedFromId && (
-        <FormDescription className="mb-4 bg-muted p-4 rounded-lg space-y-2">
-          <span>
-            This will create a linked copy of your connection's event, with only
-            your version shown to avoid duplicates in your calendars.
-          </span>
-          <span>
-            If you change the start date, they'll be treated as separate and you
-            will see both events once more.
-          </span>
+      {(copiedFromId || (mode == "edit" && copiedFromId === "")) && (
+        <FormDescription className="mb-4 bg-muted p-4 rounded-lg grid grid-cols-1 gap-2">
+          {mode === "copyFromConnection" ? (
+            <>
+              <span>
+                This will create a linked copy of your connection's event, with
+                only your version shown to avoid duplicates in your calendars.
+              </span>
+              <span>
+                If you change the start date, they'll be treated as separate and
+                you will see both events once more.
+              </span>
+            </>
+          ) : (
+            <>
+              <span>This event was copied from another event.</span>
+              <span>
+                If you change the start date, they'll be treated as separate and
+                you will see both events once more.
+              </span>
+            </>
+          )}
         </FormDescription>
       )}
 
