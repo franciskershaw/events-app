@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 
 import { LoadingOverlay } from "@/components/ui/loading-overlay";
+
 import { useEventsFree } from "../../contexts/SearchEvents/hooks/useEventsFree";
 import { SearchProvider } from "../../contexts/SearchEvents/SearchEventsContext";
 import { useIsMobile } from "../../hooks/use-mobile";
