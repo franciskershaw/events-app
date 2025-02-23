@@ -2,6 +2,8 @@ import { useMemo } from "react";
 
 import dayjs from "dayjs";
 
+import { SearchBar } from "../../../../../components/ui/search-bar";
+import { useSearch } from "../../../../../contexts/SearchEvents/SearchEventsContext";
 import { formatTime } from "../../../../../lib/utils";
 import { Event } from "../../../../../types/globalTypes";
 import { EmptyStateNoResults } from "../../../components/EmptyStateNoResults/EmptyStateNoResults";
@@ -15,6 +17,8 @@ export const EventsSearch = ({
   eventsByDay: Record<string, Event[]>;
   filters: boolean;
 }) => {
+  const { activeFilterCount, clearAllFilters, query, setQuery } = useSearch();
+
   const results = useMemo(() => {
     return Object.entries(eventsByDay).map(([date, events]) => ({
       date,
@@ -26,6 +30,14 @@ export const EventsSearch = ({
     <>
       <div className="date-header m-2 mb-0">
         <h2 className="text-lg font-semibold">Search events</h2>
+      </div>
+      <div className="px-2">
+        <SearchBar
+          query={query}
+          setQuery={setQuery}
+          clearFilters={clearAllFilters}
+          activeFilterCount={activeFilterCount}
+        />
       </div>
       <div className="p-2 pt-0 flex flex-col h-full overflow-hidden">
         <div className="flex-1 overflow-y-auto px-2 relative">
