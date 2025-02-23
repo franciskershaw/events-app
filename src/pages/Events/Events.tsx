@@ -15,7 +15,7 @@ import { EventsMobile } from "./mobile/EventsMobile";
 const Events = () => {
   const { user } = useUser();
   const { events, fetchingEvents } = useGetEvents();
-  const { eventCategories, fetchingEventCategories } = useGetEventCategories();
+  const { eventCategories } = useGetEventCategories();
   const isMobile = useIsMobile();
 
   const userEvents = events.filter(
@@ -38,7 +38,7 @@ const Events = () => {
     [events, eventsFree]
   );
 
-  if (fetchingEvents || fetchingEventCategories) {
+  if (fetchingEvents) {
     return <LoadingOverlay />;
   }
 
