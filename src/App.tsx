@@ -8,8 +8,6 @@ import Auth from "./pages/Auth/Auth";
 import Connections from "./pages/Connections/Connections";
 import Events from "./pages/Events/Events";
 
-// import Settings from "./pages/Settings/Settings";
-
 function App() {
   return (
     <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
@@ -22,9 +20,6 @@ function App() {
           <Route path="/connections" element={<PrivateRoute />}>
             <Route index element={<Connections />} />
           </Route>
-          {/* <Route path="/settings" element={<PrivateRoute />}>
-            <Route index element={<Settings />} />
-          </Route> */}
         </Route>
       </Routes>
     </Router>

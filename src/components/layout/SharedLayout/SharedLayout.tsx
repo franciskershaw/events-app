@@ -2,6 +2,7 @@ import { FaPlus } from "react-icons/fa";
 import { Outlet, useLocation } from "react-router-dom";
 
 import NavMobile from "@/components/layout/navigation/Nav/mobile/NavMobile";
+import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import { Toaster } from "@/components/ui/sonner";
 import { useModals } from "@/contexts/Modals/ModalsContext";
 import { useSidebar } from "@/contexts/Sidebar/mobile/SidebarContext";
@@ -67,8 +68,8 @@ const UnauthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
 const SharedLayout = () => {
   const { user, fetchingUser } = useUser();
 
-  if (fetchingUser && !user) {
-    return <div>Loading...</div>;
+  if (fetchingUser) {
+    return <LoadingOverlay fullPage />;
   }
 
   return (

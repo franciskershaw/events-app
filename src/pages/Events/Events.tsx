@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import { useEventsFree } from "../../contexts/SearchEvents/hooks/useEventsFree";
 import { SearchProvider } from "../../contexts/SearchEvents/SearchEventsContext";
 import { useIsMobile } from "../../hooks/use-mobile";
@@ -12,8 +13,8 @@ import { EventsMobile } from "./mobile/EventsMobile";
 
 const Events = () => {
   const { user } = useUser();
-  const { events } = useGetEvents();
-  const { eventCategories } = useGetEventCategories();
+  const { events, fetchingEvents } = useGetEvents();
+  const { eventCategories, fetchingEventCategories } = useGetEventCategories();
   const isMobile = useIsMobile();
 
   const userEvents = events.filter(
@@ -35,6 +36,10 @@ const Events = () => {
       ),
     [events, eventsFree]
   );
+
+  if (fetchingEvents || fetchingEventCategories) {
+    return <LoadingOverlay />;
+  }
 
   return (
     <SearchProvider eventsDb={eventsAll} categories={eventCategories}>

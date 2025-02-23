@@ -136,6 +136,7 @@ const useEventForm = () => {
     eventCategorySelectOptions,
     copiedFromId,
     mode,
+    isSubmitting: addEvent.isPending || editEvent.isPending,
   };
 };
 
