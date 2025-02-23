@@ -7,6 +7,7 @@ import { useSearch } from "../../../../../contexts/SearchEvents/SearchEventsCont
 import { formatTime } from "../../../../../lib/utils";
 import { Event } from "../../../../../types/globalTypes";
 import { EmptyStateNoResults } from "../../../components/EmptyStateNoResults/EmptyStateNoResults";
+import { EmptyStateNoSearch } from "../../../components/EmptyStateNoSearch/EmptyStateNoSearch";
 import Filters from "../../../components/Filters/Filters";
 import { UserEventInitials } from "../../../components/UserEventInitials/UserEventInitials";
 
@@ -75,6 +76,7 @@ export const EventsSearch = ({
               </ul>
             </>
           )}
+          {activeFilterCount === 0 && <EmptyStateNoSearch />}
           {results.length === 0 && <EmptyStateNoResults />}
         </div>
         <div className="sticky bottom-0 left-0 right-0">
