@@ -6,11 +6,11 @@ import FiltersDrawer from "./../mobile/components/FiltersDrawer/FiltersDrawer";
 import { EmptyStateNoEvents } from "./components/EmptyStateNoEvents/EmptyStateNoEvents";
 
 export const EventsMobile = () => {
-  const { query, setQuery, filteredEvents, activeFilterCount } = useSearch();
+  const { filteredEvents, activeFilterCount } = useSearch();
 
   return (
     <>
-      <EventsNavbarTop query={query} setQuery={setQuery} />
+      <EventsNavbarTop />
       {filteredEvents.length === 0 ? (
         activeFilterCount > 0 ? (
           <EmptyStateNoResults />

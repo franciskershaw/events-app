@@ -6,14 +6,9 @@ import { NAV_HEIGHT } from "../../../../../constants/app";
 import { useSearch } from "../../../../../contexts/SearchEvents/SearchEventsContext";
 import { useScrollVisibility } from "../../../../../hooks/utility/useScrollVisibility";
 
-interface EventsNavbarTopProps {
-  query: string;
-  setQuery: (query: string) => void;
-}
-
-const EventsNavbarTop = ({ query, setQuery }: EventsNavbarTopProps) => {
+const EventsNavbarTop = () => {
   const isNavbarVisible = useScrollVisibility();
-  const { activeFilterCount, clearAllFilters } = useSearch();
+  const { activeFilterCount, clearAllFilters, query, setQuery } = useSearch();
 
   return (
     <nav
