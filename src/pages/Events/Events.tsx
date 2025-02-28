@@ -38,7 +38,7 @@ const Events = () => {
     [events, eventsFree]
   );
 
-  if (fetchingEvents) {
+  if (fetchingEvents && !events.length) {
     return <LoadingOverlay />;
   }
 

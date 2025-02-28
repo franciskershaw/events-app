@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "sonner";
 
+import { useModals } from "@/contexts/Modals/ModalsContext";
 import useAxios from "@/hooks/axios/useAxios";
 import useUser from "@/hooks/user/useUser";
 import queryKeys from "@/tanstackQuery/queryKeys";
@@ -13,6 +14,7 @@ const useEditEvent = () => {
   const queryClient = useQueryClient();
   const api = useAxios();
   const { user } = useUser();
+  const { closeModal } = useModals();
 
   const editEvent = async (values: EventFormValues) => {
     const transformedValues = transformEventFormValues(values);
@@ -29,6 +31,7 @@ const useEditEvent = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
       toast.success("Event edited successfully");
+      closeModal();
     },
     onError: (error: AxiosError<{ message: string }>) => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.events] });

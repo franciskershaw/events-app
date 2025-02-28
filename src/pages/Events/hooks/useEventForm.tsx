@@ -36,7 +36,7 @@ const useEventForm = () => {
   const addEvent = useAddEvent();
   const editEvent = useEditEvent();
 
-  const { closeModal, selectedEvent, mode } = useModals();
+  const { selectedEvent, mode } = useModals();
 
   const form = useForm<EventFormValues>({
     resolver: zodResolver(eventFormSchema),
@@ -127,7 +127,6 @@ const useEventForm = () => {
         addEvent.mutate(payload);
       }
     }
-    closeModal();
   };
 
   return {
