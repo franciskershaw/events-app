@@ -76,7 +76,7 @@ const AddEventForm = ({ formId }: { formId: string }) => {
           />
         </FormInput>
 
-        <div className="flex justify-around pt-2">
+        <div className="flex items-center justify-around pt-3">
           <FormInput
             name="unConfirmed"
             label="Unconfirmed"
