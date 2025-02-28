@@ -33,7 +33,7 @@ const EventCard = ({ event }: EventCardProps) => {
 
   return (
     <li
-      className="border-b p-2 cursor-pointer relative"
+      className="border-b p-4 cursor-pointer relative"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

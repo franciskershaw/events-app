@@ -1,10 +1,21 @@
 import { useEffect, useState } from "react";
 
-import { FaCheck, FaTimes } from "react-icons/fa";
+import {
+  FaCheck,
+  FaCopy,
+  FaEdit,
+  FaLock,
+  FaShare,
+  FaThumbsUp,
+  FaTimes,
+  FaTrash,
+  FaUnlock,
+} from "react-icons/fa";
 
 import { Button } from "@/components/ui/button";
 import { useModals } from "@/contexts/Modals/ModalsContext";
 import useUser from "@/hooks/user/useUser";
+import { cn } from "@/lib/utils";
 import { Event } from "@/types/globalTypes";
 
 import { shareEvent } from "../../helpers/helpers";
@@ -51,31 +62,69 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
   const getShareButtonContent = () => {
     switch (buttonStatus) {
       case "error":
-        return <FaTimes />;
+        return (
+          <div className="flex items-center">
+            <FaTimes className="mr-1 text-[10px]" />
+            <span>Error</span>
+          </div>
+        );
       case "success":
-        return <FaCheck />;
+        return (
+          <div className="flex items-center">
+            <FaCheck className="mr-1 text-[10px]" />
+            <span>Copied</span>
+          </div>
+        );
       default:
-        return "Share";
+        return (
+          <div className="flex items-center">
+            <FaShare className="mr-1 text-[10px]" />
+            <span>Share</span>
+          </div>
+        );
     }
   };
 
   return (
-    <div className="flex gap-2">
-      {event.unConfirmed && ownsEvent && (
+    <div className="flex flex-wrap gap-1.5 justify-center">
+      {/* Top row - Edit, Copy, Delete */}
+      {ownsEvent && (
         <Button
-          size="round"
-          onClick={() =>
-            toggleEventConfirmation({
-              eventId: event._id,
-              unConfirmed: event.unConfirmed,
-            })
-          }
+          size="sm"
+          variant="outline"
+          onClick={() => openEventModal(event, "edit")}
+          className="text-xs px-2 py-1 h-7 w-[84px]"
         >
-          Confirm
+          <FaEdit className="mr-1 text-[10px]" />
+          Edit
         </Button>
       )}
       <Button
-        size="round"
+        size="sm"
+        variant="outline"
+        onClick={() =>
+          openEventModal(event, ownsEvent ? "copy" : "copyFromConnection")
+        }
+        className="text-xs px-2 py-1 h-7 w-[84px]"
+      >
+        <FaCopy className="mr-1 text-[10px]" />
+        Copy
+      </Button>
+      {ownsEvent && (
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => openDeleteEventModal(event)}
+          className="text-xs px-2 py-1 h-7 border-red-300 hover:bg-red-50 w-[84px]"
+        >
+          <FaTrash className="mr-1 text-[10px] text-red-500" />
+          Delete
+        </Button>
+      )}
+
+      {/* Bottom row - Share, Public/Private, Confirm */}
+      <Button
+        size="sm"
         onClick={handleShare}
         variant={
           buttonStatus === "success"
@@ -84,36 +133,49 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
               ? "destructive"
               : "default"
         }
-        className={`transition-all duration-300 ${
-          buttonStatus === "success"
-            ? "bg-green-500"
-            : buttonStatus === "error"
-              ? "bg-red-500"
-              : ""
-        }`}
+        className={cn(
+          "text-xs px-2 py-1 h-7 transition-all duration-300 w-[84px]",
+          buttonStatus === "success" ? "bg-green-500" : "",
+          buttonStatus === "error" ? "bg-red-500" : ""
+        )}
       >
         {getShareButtonContent()}
       </Button>
-      <Button
-        size="round"
-        onClick={() =>
-          openEventModal(event, ownsEvent ? "copy" : "copyFromConnection")
-        }
-      >
-        Copy
-      </Button>
       {ownsEvent && (
-        <>
-          <Button size="round" onClick={() => openEventModal(event, "edit")}>
-            Edit
-          </Button>
-          <Button size="round" onClick={() => openDeleteEventModal(event)}>
-            Delete
-          </Button>
-          <Button size="round" onClick={() => makeEventPrivate(event._id)}>
-            {event.private ? "Public" : "Private"}
-          </Button>
-        </>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => makeEventPrivate(event._id)}
+          className="text-xs px-2 py-1 h-7 w-[84px]"
+        >
+          {event.private ? (
+            <>
+              <FaUnlock className="mr-1 text-[10px]" />
+              Public
+            </>
+          ) : (
+            <>
+              <FaLock className="mr-1 text-[10px]" />
+              Private
+            </>
+          )}
+        </Button>
+      )}
+      {event.unConfirmed && ownsEvent && (
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() =>
+            toggleEventConfirmation({
+              eventId: event._id,
+              unConfirmed: event.unConfirmed,
+            })
+          }
+          className="text-xs px-2 py-1 h-7 w-[84px]"
+        >
+          <FaThumbsUp className="mr-1 text-[10px]" />
+          Confirm
+        </Button>
       )}
     </div>
   );
