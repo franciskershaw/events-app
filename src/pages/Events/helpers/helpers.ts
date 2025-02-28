@@ -20,6 +20,7 @@ export const transformEventFormValues = (
   description: values.description,
   category: values.category,
   unConfirmed: values.unConfirmed,
+  private: values.private,
   copiedFrom: values.copiedFrom,
 });
 

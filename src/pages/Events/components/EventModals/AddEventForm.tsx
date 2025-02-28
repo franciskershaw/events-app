@@ -4,9 +4,9 @@ import { DateTime } from "@/components/ui/date-time";
 import { Form, FormDescription, FormInput } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { LoadingOverlay } from "@/components/ui/loading-overlay";
+import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 
-import { Checkbox } from "../../../../components/ui/checkbox";
 import { Combobox } from "../../../../components/ui/combobox";
 import useEventForm from "../../hooks/useEventForm";
 
@@ -76,18 +76,32 @@ const AddEventForm = ({ formId }: { formId: string }) => {
           />
         </FormInput>
 
-        <FormInput
-          name="unConfirmed"
-          label="Unconfirmed?"
-          className="m-0 flex items-center"
-        >
-          <Checkbox
-            checked={form.watch("unConfirmed")}
-            onCheckedChange={(checked) =>
-              form.setValue("unConfirmed", !!checked, { shouldValidate: true })
-            }
-          />
-        </FormInput>
+        <div className="flex justify-around pt-2">
+          <FormInput
+            name="unConfirmed"
+            label="Unconfirmed"
+            className="flex items-center space-y-0 gap-3"
+          >
+            <Switch
+              checked={form.watch("unConfirmed")}
+              onCheckedChange={(checked) =>
+                form.setValue("unConfirmed", checked, { shouldValidate: true })
+              }
+            />
+          </FormInput>
+          <FormInput
+            name="private"
+            label="Private"
+            className="flex items-center space-y-0 gap-3"
+          >
+            <Switch
+              checked={form.watch("private")}
+              onCheckedChange={(checked) =>
+                form.setValue("private", checked, { shouldValidate: true })
+              }
+            />
+          </FormInput>
+        </div>
 
         <FormInput name="category" label="Category*">
           <div>

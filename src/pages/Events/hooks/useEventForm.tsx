@@ -18,6 +18,7 @@ const eventFormSchema = z
     datetime: z.date({ required_error: "Start date is required" }),
     endDatetime: z.date().nullable().optional(),
     unConfirmed: z.boolean().optional().default(false),
+    private: z.boolean().optional().default(false),
     category: z.string().min(1, "Please select a category"),
     venue: z.string().optional(),
     city: z.string().optional(),
@@ -55,6 +56,7 @@ const useEventForm = () => {
           ? dayjs(selectedEvent.date.end).toDate()
           : null,
       unConfirmed: selectedEvent?.unConfirmed ?? false,
+      private: selectedEvent?.private ?? false,
       category: selectedEvent?.category._id ?? "",
       venue: selectedEvent?.location?.venue ?? "",
       city: selectedEvent?.location?.city ?? "",
