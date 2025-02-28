@@ -79,7 +79,7 @@ src/
 - Event filtering and categorization
 - Real-time notifications
 - Form validation
-- Interactive calendar selection
+- Interactive calendar selection 
 
 ## 📝 Development Guidelines
 
