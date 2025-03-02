@@ -88,7 +88,7 @@ const EventCard = ({ event }: { event: Event }) => {
               <h2 className="font-semibold text-sm truncate">{title}</h2>
             </div>
             {location?.city && (
-              <span className="ml-4 font-medium text-sm">
+              <span className="ml-4 font-medium text-sm max-w-[50%] truncate">
                 📍 {location.city}
               </span>
             )}
@@ -137,7 +137,9 @@ const EventCard = ({ event }: { event: Event }) => {
             <div className="mx-[-1rem] px-4 py-2 bg-gray-200 overflow-x-auto">
               <div className="flex items-center gap-2 text-sm whitespace-nowrap min-w-min">
                 {location?.venue && (
-                  <Badge variant="secondary">{location.venue}</Badge>
+                  <Badge variant="secondary" className="max-w-[200px] truncate">
+                    {location.venue}
+                  </Badge>
                 )}
                 {formattedTime && (
                   <Badge variant="secondary">{formattedTime}</Badge>
