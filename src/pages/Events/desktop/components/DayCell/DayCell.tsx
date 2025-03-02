@@ -1,5 +1,7 @@
 import dayjs, { Dayjs } from "dayjs";
 
+import { useSidebarContent } from "@/contexts/Sidebar/desktop/SidebarContentContext";
+
 import {
   CATEGORY_HOLIDAY,
   CATEGORY_REMINDER,
@@ -26,6 +28,7 @@ export const DayCell = ({
   const { activeDay, setActiveDay } = useActiveDay();
   const isSelected = activeDay?.isSame(currentDate, "day");
   const { user } = useUser();
+  const { setSidebarContent, sidebarContent } = useSidebarContent();
 
   const today = dayjs();
   const isToday = currentDate.isSame(today, "day");
@@ -102,7 +105,12 @@ export const DayCell = ({
                 ? "event--weekend"
                 : "event--default"
       } ${isPast && !isToday ? "event--past" : ""} ${isSelected ? "event--selected font-bold" : ""}`}
-      onClick={() => setActiveDay(currentDate)}
+      onClick={() => {
+        setActiveDay(currentDate);
+        if (sidebarContent === "search") {
+          setSidebarContent("events");
+        }
+      }}
     >
       <div className="border-r border-gray-300 py-1 text-center flex-shrink-0 w-12 event-date">
         {currentDate.format("ddd D")}
