@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 
 import { LoadingOverlay } from "@/components/ui/loading-overlay";
+import usePageTitle from "@/hooks/usePageTitle";
 
 import { useEventsFree } from "../../contexts/SearchEvents/hooks/useEventsFree";
 import { SearchProvider } from "../../contexts/SearchEvents/SearchEventsContext";
@@ -17,6 +18,8 @@ const Events = () => {
   const { events, fetchingEvents } = useGetEvents();
   const { eventCategories } = useGetEventCategories();
   const isMobile = useIsMobile();
+
+  usePageTitle("Events");
 
   const userEvents = events.filter(
     (event: Event) => event.createdBy._id === user?._id

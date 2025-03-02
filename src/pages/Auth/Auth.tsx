@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
+import usePageTitle from "@/hooks/usePageTitle";
 import useUser from "@/hooks/user/useUser";
 
 import LocalForm from "./components/LocalForm/LocalForm";
@@ -13,6 +14,8 @@ import OrDivider from "./components/OrDivider/OrDivider";
 const Auth = () => {
   const { user } = useUser();
   const navigate = useNavigate();
+
+  usePageTitle("Login");
 
   useEffect(() => {
     if (user) {

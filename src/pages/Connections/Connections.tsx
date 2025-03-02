@@ -1,6 +1,7 @@
 import { Users } from "lucide-react";
 
 import Heading from "@/components/ui/heading";
+import usePageTitle from "@/hooks/usePageTitle";
 import useUser from "@/hooks/user/useUser";
 
 import ConnectionForm from "./components/ConnectionForm/ConnectionForm";
@@ -11,6 +12,8 @@ import { EmptyStateNoConnections } from "./components/EmptyStateNoConnections/Em
 const Connections = () => {
   const { user } = useUser();
   const connections = user?.connections;
+
+  usePageTitle("Connections");
 
   return (
     <>
