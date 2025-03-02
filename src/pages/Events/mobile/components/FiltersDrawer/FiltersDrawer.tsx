@@ -1,5 +1,3 @@
-import { FaChevronUp } from "react-icons/fa";
-
 import {
   Drawer,
   DrawerContent,
@@ -16,11 +14,12 @@ const FiltersDrawer = () => {
     <Drawer>
       <DrawerTrigger asChild>
         <div
-          className="fixed bottom-0 left-0 right-0 h-6 menu-trigger rounded-t-lg z-30 flex justify-center items-center cursor-pointer"
+          className="fixed bottom-0 left-0 right-0 h-6 bg-gray-100 rounded-t-lg shadow-md z-30 flex items-center justify-center gap-2 cursor-pointer"
           role="button"
+          aria-label="Open filters"
           tabIndex={0}
         >
-          <FaChevronUp />
+          <div className="w-20 h-1 bg-gray-300 rounded-full"></div>
         </div>
       </DrawerTrigger>
 
