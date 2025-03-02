@@ -22,7 +22,10 @@ const AddEventButton = () => {
           {
             _id: "",
             title: "",
-            date: { start: activeDay?.toISOString() ?? "", end: "" },
+            date: {
+              start: activeDay ? activeDay.startOf("day").toISOString() : "",
+              end: "",
+            },
             category: { _id: "", name: "", icon: "" },
             createdBy: { _id: "", name: "" },
             createdAt: new Date(),
