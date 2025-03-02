@@ -137,7 +137,7 @@
   }
 
   .nav-desktop:hover h3 {
-    @apply max-w-36 opacity-100 px-4;
+    @apply max-w-60 opacity-100 px-4;
   }
 
   .nav-link-wrapper {
