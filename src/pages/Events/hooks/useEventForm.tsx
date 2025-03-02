@@ -14,15 +14,27 @@ import useGetEventCategories from "./useGetEventCategories";
 const eventFormSchema = z
   .object({
     _id: z.string().optional(),
-    title: z.string().min(1, "Title is required"),
+    title: z
+      .string()
+      .min(3, "Title must be at least 3 characters long")
+      .max(100, "Title cannot exceed 100 characters"),
     datetime: z.date({ required_error: "Start date is required" }),
     endDatetime: z.date().nullable().optional(),
     unConfirmed: z.boolean().optional().default(false),
     private: z.boolean().optional().default(false),
     category: z.string().min(1, "Please select a category"),
-    venue: z.string().optional(),
-    city: z.string().optional(),
-    description: z.string().optional(),
+    venue: z
+      .string()
+      .max(150, "Venue name cannot exceed 150 characters")
+      .optional(),
+    city: z
+      .string()
+      .max(50, "City name cannot exceed 50 characters")
+      .optional(),
+    description: z
+      .string()
+      .max(2000, "Description cannot exceed 2000 characters")
+      .optional(),
   })
   .refine((data) => !data.endDatetime || data.endDatetime >= data.datetime, {
     message: "End date must be the same as or after the start date.",

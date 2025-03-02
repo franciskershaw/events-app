@@ -51,7 +51,7 @@ const AddEventForm = ({ formId }: { formId: string }) => {
         )}
 
         <FormInput name="title" label="Title*">
-          <Input placeholder="Event title" />
+          <Input placeholder="Event title" maxLength={100} />
         </FormInput>
 
         <FormInput name="datetime" label="Start Date*">
@@ -117,15 +117,18 @@ const AddEventForm = ({ formId }: { formId: string }) => {
         </FormInput>
 
         <FormInput name="venue" label="Venue">
-          <Input placeholder="Event venue (optional)" />
+          <Input placeholder="Event venue (optional)" maxLength={150} />
         </FormInput>
 
         <FormInput name="city" label="City">
-          <Input placeholder="City (optional)" />
+          <Input placeholder="City (optional)" maxLength={50} />
         </FormInput>
 
         <FormInput name="description" label="Description">
-          <Textarea placeholder="Any extra details about the event..." />
+          <Textarea
+            placeholder="Any extra details about the event..."
+            maxLength={2000}
+          />
         </FormInput>
       </Form>
     </div>
