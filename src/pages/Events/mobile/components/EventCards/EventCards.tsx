@@ -11,7 +11,7 @@ import EventFreeCard from "./EventFreeCard";
 
 const EventCards = () => {
   const { filteredEvents } = useSearch();
-  const isNavbarVisible = useScrollVisibility();
+  const { isVisible: isNavbarVisible, isNearBottom } = useScrollVisibility();
 
   const todayEvents = useMemo(
     () => filterTodayEvents(filteredEvents),
@@ -29,7 +29,9 @@ const EventCards = () => {
     <div
       className="transition-transform duration-300 w-full max-w-[100vw]"
       style={{
-        transform: `translateY(${isNavbarVisible ? "0px" : `-${NAV_HEIGHT}`})`,
+        transform: isNearBottom
+          ? "none"
+          : `translateY(${isNavbarVisible ? "0px" : `-${NAV_HEIGHT}`})`,
       }}
     >
       {todayEvents.length > 0 && (

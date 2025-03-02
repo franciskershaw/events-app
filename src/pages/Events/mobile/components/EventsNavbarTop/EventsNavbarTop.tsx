@@ -7,7 +7,7 @@ import { useSearch } from "../../../../../contexts/SearchEvents/SearchEventsCont
 import { useScrollVisibility } from "../../../../../hooks/utility/useScrollVisibility";
 
 const EventsNavbarTop = () => {
-  const isNavbarVisible = useScrollVisibility();
+  const { isVisible: isNavbarVisible } = useScrollVisibility();
   const { activeFilterCount, clearAllFilters, query, setQuery } = useSearch();
 
   return (

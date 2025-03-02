@@ -1,16 +1,27 @@
 import { useEffect, useState } from "react";
 
-export const useScrollVisibility = (threshold = 50) => {
+export const useScrollVisibility = (threshold = 50, bottomOffset = 100) => {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [isNearBottom, setIsNearBottom] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
 
-      if (currentScrollY > lastScrollY && currentScrollY > threshold) {
+      const isAtBottom =
+        documentHeight - (currentScrollY + windowHeight) < bottomOffset;
+      setIsNearBottom(isAtBottom);
+
+      if (
+        currentScrollY > lastScrollY &&
+        currentScrollY > threshold &&
+        !isAtBottom
+      ) {
         setIsVisible(false);
-      } else if (currentScrollY < lastScrollY) {
+      } else if (currentScrollY < lastScrollY || isAtBottom) {
         setIsVisible(true);
       }
 
@@ -19,10 +30,12 @@ export const useScrollVisibility = (threshold = 50) => {
 
     window.addEventListener("scroll", handleScroll);
 
+    handleScroll();
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [lastScrollY, threshold]);
+  }, [lastScrollY, threshold, bottomOffset]);
 
-  return isVisible;
+  return { isVisible, isNearBottom };
 };

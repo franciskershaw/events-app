@@ -14,7 +14,7 @@ const NavMobile = () => {
   const { isExpanded, toggleSidebar } = useSidebar();
   const location = useLocation();
   const isAuthPage = location.pathname === "/";
-  const isNavbarVisible = useScrollVisibility();
+  const { isVisible: isNavbarVisible } = useScrollVisibility();
   const { user } = useUser();
   const { logout } = useAuth();
 
