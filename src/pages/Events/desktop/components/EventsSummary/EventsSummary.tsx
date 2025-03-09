@@ -3,44 +3,12 @@ import { useMemo } from "react";
 import dayjs from "dayjs";
 
 import { useActiveDay } from "../../../../../contexts/ActiveDay/ActiveDayContext";
-import { useModals } from "../../../../../contexts/Modals/ModalsContext";
 import { formatTime } from "../../../../../lib/utils";
 import { Event } from "../../../../../types/globalTypes";
 import { UserEventInitials } from "../../../components/UserEventInitials/UserEventInitials";
+import { AddEventButton } from "../AddEventButton/AddEventButton";
 import { EmptyStateNoEvents } from "../EmptyStateNoEvents/EmptyStateNoEvents";
 import EventCard from "../EventCard/EventCard";
-
-const AddEventButton = () => {
-  const { openEventModal } = useModals();
-  const { activeDay } = useActiveDay();
-
-  return (
-    <button
-      className="text-blue-500 hover:underline my-4 w-full"
-      onClick={() =>
-        openEventModal(
-          {
-            _id: "",
-            title: "",
-            date: {
-              start: activeDay ? activeDay.startOf("day").toISOString() : "",
-              end: "",
-            },
-            category: { _id: "", name: "", icon: "" },
-            createdBy: { _id: "", name: "" },
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            unConfirmed: false,
-            private: false,
-          },
-          "addFromFreeEvent"
-        )
-      }
-    >
-      Add event +
-    </button>
-  );
-};
 
 export const EventsSummary = ({
   eventsByDay,

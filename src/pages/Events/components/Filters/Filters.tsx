@@ -139,7 +139,7 @@ const Filters = () => {
             size="default"
             variant={showEventsFree ? "outline" : "default"}
             onClick={() => setShowEventsFree(!showEventsFree)}
-            className="min-w-40 md:min-w-0 md:w-full"
+            className="min-w-40 md:hidden"
           >
             <FaRegCalendar />
             {showEventsFree ? "Hide" : "Show"} free days
