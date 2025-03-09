@@ -1,10 +1,13 @@
 import { EmptyState } from "../../../components/EmptyState/EmptyState";
+import { AddEventButton } from "../AddEventButton/AddEventButton";
 
 export const EmptyStateNoEvents = () => {
   return (
     <EmptyState heading="No events yet?">
       <ul className="space-y-2">
-        <li>Get started by adding an event with the bottom right button ➕</li>
+        <li>
+          Get started by <AddEventButton text="adding an event" /> ➕
+        </li>
         <li>
           Click on a specific day to see a summary of what's going on on that
           date 🗓️

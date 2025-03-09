@@ -52,32 +52,34 @@ export const EventsSearch = ({
                       {dayjs(date).format("dddd Do MMMM")}
                     </h4>
                     <ol>
-                      {events.map((event) => (
-                        <li
-                          key={event._id}
-                          className="text-sm text-gray-500 list-disc list-outside ml-4"
-                        >
-                          <div className="flex gap-1 items-center">
-                            <UserEventInitials event={event} />
-                            <span>
-                              {formatTime(event.date) &&
-                                `${formatTime(event.date)}: `}
-                              {event.title}
-                              {event.unConfirmed && "(?)"}
-                              {event.location?.venue &&
-                                ` @ ${event.location?.venue}`}
-                            </span>
-                          </div>
-                        </li>
-                      ))}
+                      {events
+                        .filter((event) => event.category.name !== "Free")
+                        .map((event) => (
+                          <li key={event._id} className="text-sm text-gray-500">
+                            <div className="flex gap-1 items-center">
+                              <UserEventInitials event={event} />
+                              <span>
+                                {formatTime(event.date) &&
+                                  `${formatTime(event.date)}: `}
+                                {event.title}
+                                {event.unConfirmed && "(?)"}
+                                {event.location?.venue &&
+                                  ` @ ${event.location?.venue}`}
+                              </span>
+                            </div>
+                          </li>
+                        ))}
                     </ol>
                   </li>
                 ))}
               </ul>
             </>
           )}
-          {activeFilterCount === 0 && <EmptyStateNoSearch />}
-          {results.length === 0 && <EmptyStateNoResults />}
+          {activeFilterCount === 0 ? (
+            <EmptyStateNoSearch />
+          ) : results.length === 0 ? (
+            <EmptyStateNoResults />
+          ) : null}
         </div>
         <div className="sticky bottom-0 left-0 right-0">
           <hr className="mb-2"></hr>
