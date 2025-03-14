@@ -240,7 +240,7 @@ describe("Form components", () => {
           <FormItem className="custom-item-class">
             <FormLabel className="custom-label-class">Custom Label</FormLabel>
             <FormControl>
-              <input data-testid="custom-input" />
+              <Input data-testid="custom-input" />
             </FormControl>
             <FormDescription className="custom-desc-class">
               Custom Description
