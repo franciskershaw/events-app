@@ -17,22 +17,29 @@ vi.mock("next-themes", () => ({
 
 // Mock the sonner Toaster component
 vi.mock("sonner", () => ({
-  Toaster: vi.fn(({ theme, className, toastOptions, ...props }) => (
-    <div
-      data-testid="mock-sonner"
-      data-theme={theme}
-      data-classname={className}
-      data-toast-options={JSON.stringify(toastOptions)}
-      {...Object.fromEntries(
-        Object.entries(props).map(([key, value]) => [
-          key,
-          typeof value === "boolean" ? String(value) : value,
-        ])
-      )}
-    >
-      Sonner Toast
-    </div>
-  )),
+  Toaster: vi.fn(({ theme, className, toastOptions, ...props }) => {
+    // Convert all props to data-* attributes
+    const dataProps: Record<string, string> = {};
+
+    // Add all remaining props as data attributes
+    Object.entries(props).forEach(([key, value]) => {
+      const dataKey = `data-${key.toLowerCase()}`;
+      dataProps[dataKey] =
+        typeof value === "boolean" ? String(value) : String(value ?? "");
+    });
+
+    return (
+      <div
+        data-testid="mock-sonner"
+        data-theme={theme}
+        data-classname={className}
+        data-toast-options={JSON.stringify(toastOptions)}
+        {...dataProps}
+      >
+        Sonner Toast
+      </div>
+    );
+  }),
 }));
 
 describe("Toaster component", () => {
@@ -115,8 +122,8 @@ describe("Toaster component", () => {
     render(<Toaster position="top-right" closeButton />);
 
     const mockSonner = screen.getByTestId("mock-sonner");
-    expect(mockSonner).toHaveAttribute("position", "top-right");
-    expect(mockSonner).toHaveAttribute("closeButton", "true");
+    expect(mockSonner).toHaveAttribute("data-position", "top-right");
+    expect(mockSonner).toHaveAttribute("data-closebutton", "true");
   });
 
   it("merges custom toastOptions with defaults", () => {
