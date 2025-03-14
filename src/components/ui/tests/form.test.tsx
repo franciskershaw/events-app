@@ -141,15 +141,9 @@ describe("Form components", () => {
     expect(screen.getByTestId("test-input")).toHaveValue("test value");
 
     // Submit the form directly
-    const formElement = document.getElementById("test-form") as HTMLFormElement;
     await userEvent
       .setup()
       .click(screen.getByRole("button", { name: "Submit Simple Form" }));
-
-    // Since we're using a simple submit without validation, we can directly fire the submit event
-    formElement?.dispatchEvent(
-      new Event("submit", { bubbles: true, cancelable: true })
-    );
 
     // Now the handler should be called
     expect(handleSubmit).toHaveBeenCalledWith(
