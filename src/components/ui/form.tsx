@@ -20,6 +20,7 @@ type FormProps<TFieldValues extends FieldValues> = {
   form: UseFormReturn<TFieldValues>;
   children: React.ReactNode;
   className?: string;
+  id?: string;
 };
 
 const Form = <TFieldValues extends FieldValues>({
