@@ -2,7 +2,7 @@
 
 A calendar and event management application built with React, TypeScript, and Vite. The application focuses on event categorization, enhanced mobile visibility, and collaborative features for shared calendars.
 
-## 📋 Core Functionality
+## 📋 Core Functionalities
 
 - Advanced event categorization and filtering
 - Mobile-optimized list view for upcoming events
