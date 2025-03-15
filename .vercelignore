@@ -1,0 +1,3 @@
+**/*.test.tsx
+**/*.spec.tsx
+vitest.config.ts
