@@ -10,12 +10,14 @@ import { useSearch } from "../../../contexts/SearchEvents/SearchEventsContext";
 import { useSidebarContent } from "../../../contexts/Sidebar/desktop/SidebarContentContext";
 import { Event } from "../../../types/globalTypes";
 import { generateMonthColumns, getEventsByDay } from "../helpers/helpers";
+import useGetPastMonthEvents from "../hooks/useGetPastMonthEvents";
 import { EventsSearch } from "./components/EventsSearch/EventsSearch";
 import { EventsSummary } from "./components/EventsSummary/EventsSummary";
 import { MonthColumn } from "./components/MonthColumn/MonthColumn";
 
 export const EventsDesktop = () => {
   const { filteredEvents, activeFilterCount } = useSearch();
+  const { eventsPastMonth } = useGetPastMonthEvents();
   const { sidebarContent } = useSidebarContent();
 
   const firstEventDate = new Date(
@@ -29,7 +31,10 @@ export const EventsDesktop = () => {
     )
   );
 
-  const eventsByDay: Record<string, Event[]> = getEventsByDay(filteredEvents);
+  const eventsByDay: Record<string, Event[]> = getEventsByDay([
+    ...filteredEvents,
+    ...(activeFilterCount === 0 ? eventsPastMonth : []),
+  ]);
   const monthColumns = generateMonthColumns(firstEventDate, lastEventDate);
 
   const filtersActive = activeFilterCount > 0 ? true : false;

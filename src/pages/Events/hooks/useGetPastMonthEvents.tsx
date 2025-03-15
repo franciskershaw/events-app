@@ -17,8 +17,6 @@ const useGetPastMonthEvents = () => {
     return data;
   };
 
-  console.log("Hook", getPastMonthEvents());
-
   const {
     data: eventsPastMonth = [],
     isFetching: fetchingEvents,
