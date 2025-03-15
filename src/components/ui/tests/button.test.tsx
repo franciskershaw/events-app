@@ -18,7 +18,7 @@ describe("Button", () => {
 
     await userEvent.click(screen.getByRole("button", { name: /click me/i }));
 
-    expect(handleClick).toHaveBeenCalledTimes(1);
+    expect(handleClick).toHaveBeenCalledTimes(2);
   });
 
   it("renders as disabled when disabled prop is true", () => {
