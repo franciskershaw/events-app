@@ -101,6 +101,25 @@ const AddEventForm = ({ formId }: { formId: string }) => {
               }
             />
           </FormInput>
+          <FormInput
+            name="recurrence.isRecurring"
+            label="Recurring"
+            className="flex items-center space-y-0 gap-3"
+          >
+            <Switch
+              checked={form.watch("recurrence.isRecurring")}
+              onCheckedChange={(checked) => {
+                form.setValue(
+                  "recurrence",
+                  {
+                    ...form.watch("recurrence"),
+                    isRecurring: checked,
+                  },
+                  { shouldValidate: true }
+                );
+              }}
+            />
+          </FormInput>
         </div>
 
         <FormInput name="category" label="Category*">

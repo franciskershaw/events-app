@@ -37,6 +37,16 @@ export interface Event {
   unConfirmed: boolean;
   private: boolean;
   copiedFrom?: string | null;
+  recurrence?: {
+    isRecurring: boolean;
+    pattern?: {
+      frequency: "daily" | "weekly" | "monthly" | "yearly";
+      interval: number;
+      daysOfWeek?: number[]; // 0 = Sunday, 6 = Saturday
+      endDate?: Date;
+      count?: number;
+    };
+  };
 }
 
 export interface EventCategory {

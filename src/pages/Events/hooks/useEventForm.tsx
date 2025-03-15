@@ -35,6 +35,26 @@ const eventFormSchema = z
       .string()
       .max(2000, "Description cannot exceed 2000 characters")
       .optional(),
+    recurrence: z
+      .object({
+        isRecurring: z.boolean().default(false),
+        pattern: z.object({
+          frequency: z
+            .enum(["daily", "weekly", "monthly", "yearly"])
+            .default("weekly"),
+          interval: z.number().min(1).default(1),
+          daysOfWeek: z
+            .array(z.number().min(0).max(6)) // 0 = Sunday, 6 = Saturday
+            .default([]),
+          endDate: z.date().optional(),
+          count: z.number().min(1).optional(),
+        }),
+      })
+      .optional()
+      .default({
+        isRecurring: false,
+        pattern: { frequency: "weekly", interval: 1, daysOfWeek: [] },
+      }),
   })
   .refine((data) => !data.endDatetime || data.endDatetime >= data.datetime, {
     message: "End date must be the same as or after the start date.",
@@ -73,6 +93,18 @@ const useEventForm = () => {
       venue: selectedEvent?.location?.venue ?? "",
       city: selectedEvent?.location?.city ?? "",
       description: selectedEvent?.description ?? "",
+      recurrence: {
+        isRecurring: selectedEvent?.recurrence?.isRecurring ?? false,
+        pattern: {
+          frequency: selectedEvent?.recurrence?.pattern?.frequency ?? "weekly",
+          interval: selectedEvent?.recurrence?.pattern?.interval ?? 1,
+          daysOfWeek: selectedEvent?.recurrence?.pattern?.daysOfWeek ?? [],
+          endDate: selectedEvent?.recurrence?.pattern?.endDate
+            ? dayjs(selectedEvent.recurrence.pattern.endDate).toDate()
+            : undefined,
+          count: selectedEvent?.recurrence?.pattern?.count ?? undefined,
+        },
+      },
     },
   });
 

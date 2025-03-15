@@ -22,6 +22,7 @@ export const transformEventFormValues = (
   unConfirmed: values.unConfirmed,
   private: values.private,
   copiedFrom: values.copiedFrom,
+  recurrence: values.recurrence,
 });
 
 interface GroupedEvents {
