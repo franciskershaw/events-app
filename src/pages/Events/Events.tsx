@@ -11,13 +11,17 @@ import { Event } from "../../types/globalTypes";
 import { EventsDesktop } from "./desktop/EventsDesktop";
 import useGetEventCategories from "./hooks/useGetEventCategories";
 import useGetEvents from "./hooks/useGetEvents";
+import useGetPastMonthEvents from "./hooks/useGetPastMonthEvents";
 import { EventsMobile } from "./mobile/EventsMobile";
 
 const Events = () => {
   const { user } = useUser();
   const { events, fetchingEvents } = useGetEvents();
+  const { eventsPastMonth } = useGetPastMonthEvents();
   const { eventCategories } = useGetEventCategories();
   const isMobile = useIsMobile();
+
+  console.log("Events", eventsPastMonth);
 
   usePageTitle("Events");
 
@@ -34,7 +38,7 @@ const Events = () => {
 
   const eventsAll = useMemo(
     () =>
-      [...events, ...eventsFree].sort(
+      [...events, ...eventsPastMonth, ...eventsFree].sort(
         (a, b) =>
           new Date(a.date.start).getTime() - new Date(b.date.start).getTime()
       ),
