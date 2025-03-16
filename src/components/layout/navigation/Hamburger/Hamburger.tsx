@@ -1,6 +1,5 @@
 import { useSidebar } from "@/contexts/Sidebar/mobile/SidebarContext";
-
-import { useIsMobile } from "../../../../hooks/use-mobile";
+import { useIsMobile } from "@/hooks/utility/use-mobile";
 
 const Hamburger = () => {
   const { isExpanded, toggleSidebar } = useSidebar();

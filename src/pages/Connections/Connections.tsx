@@ -1,7 +1,7 @@
 import { Users } from "lucide-react";
 
 import Heading from "@/components/ui/heading";
-import usePageTitle from "@/hooks/usePageTitle";
+import usePageTitle from "@/hooks/utility/usePageTitle";
 import useUser from "@/hooks/user/useUser";
 
 import ConnectionForm from "./components/ConnectionForm/ConnectionForm";
