@@ -3,8 +3,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Import the mocked hooks after mocking them
 import { useSidebar } from "@/contexts/Sidebar/mobile/SidebarContext";
+import { useIsMobile } from "@/hooks/utility/use-mobile";
 
-import { useIsMobile } from "../../../../hooks/use-mobile";
 import Hamburger from "./Hamburger";
 
 // Mock the custom hooks
@@ -12,7 +12,7 @@ vi.mock("@/contexts/Sidebar/mobile/SidebarContext", () => ({
   useSidebar: vi.fn(),
 }));
 
-vi.mock("../../../../hooks/use-mobile", () => ({
+vi.mock("@/hooks/utility/use-mobile", () => ({
   useIsMobile: vi.fn(),
 }));
 

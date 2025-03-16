@@ -6,8 +6,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { useModals } from "@/contexts/Modals/ModalsContext";
 import { useSidebar } from "@/contexts/Sidebar/mobile/SidebarContext";
-import { useIsMobile } from "@/hooks/use-mobile";
 import useUser from "@/hooks/user/useUser";
+import { useIsMobile } from "@/hooks/utility/use-mobile";
 import { TestRouter } from "@/test/TestRouter";
 
 import SharedLayout from "./SharedLayout";
@@ -17,7 +17,7 @@ vi.mock("@/hooks/user/useUser", () => ({
   default: vi.fn(),
 }));
 
-vi.mock("@/hooks/use-mobile", () => ({
+vi.mock("@/hooks/utility/use-mobile", () => ({
   useIsMobile: vi.fn(),
 }));
 

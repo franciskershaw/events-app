@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
-import usePageTitle from "@/hooks/usePageTitle";
+import usePageTitle from "@/hooks/utility/usePageTitle";
 import useUser from "@/hooks/user/useUser";
 
 import LocalForm from "./components/LocalForm/LocalForm";

@@ -15,7 +15,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/utility/use-mobile";
 import { cn } from "@/lib/utils";
 
 const TRIGGER_WIDTH = "32px";
