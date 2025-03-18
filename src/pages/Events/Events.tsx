@@ -9,6 +9,7 @@ import { useIsMobile } from "../../hooks/use-mobile";
 import useUser from "../../hooks/user/useUser";
 import { Event } from "../../types/globalTypes";
 import { EventsDesktop } from "./desktop/EventsDesktop";
+import { generateRecurringEventInstances } from "./helpers/helpers";
 import useGetEventCategories from "./hooks/useGetEventCategories";
 import useGetEvents from "./hooks/useGetEvents";
 import { EventsMobile } from "./mobile/EventsMobile";
@@ -33,7 +34,9 @@ const Events = () => {
   });
 
   const eventsAll = useMemo(() => {
-    const allEvents = [...events, ...eventsFree];
+    const allEvents = [...events, ...eventsFree].flatMap((event) =>
+      generateRecurringEventInstances(event)
+    );
 
     return allEvents.sort(
       (a, b) =>

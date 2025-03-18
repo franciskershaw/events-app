@@ -7,6 +7,7 @@ import { z } from "zod";
 
 import { useModals } from "@/contexts/Modals/ModalsContext";
 
+import { getFrequencyOptions } from "../helpers/getRecurringFrequencyOptions";
 import useAddEvent from "./useAddEvent";
 import useEditEvent from "./useEditEvent";
 import useGetEventCategories from "./useGetEventCategories";
@@ -65,6 +66,7 @@ export type EventFormValues = z.infer<typeof eventFormSchema>;
 
 const useEventForm = () => {
   const { eventCategorySelectOptions } = useGetEventCategories();
+  const recurringFrequencySelectOptions = getFrequencyOptions();
 
   const addEvent = useAddEvent();
   const editEvent = useEditEvent();
@@ -179,6 +181,7 @@ const useEventForm = () => {
     form,
     onSubmit,
     eventCategorySelectOptions,
+    recurringFrequencySelectOptions,
     copiedFromId,
     mode,
     isSubmitting: addEvent.isPending || editEvent.isPending,

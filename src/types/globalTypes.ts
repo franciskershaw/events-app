@@ -17,6 +17,7 @@ export interface User {
 }
 
 // Events
+export type Frequency = "daily" | "weekly" | "monthly" | "yearly";
 export interface Event {
   _id: string;
   title: string;
@@ -40,7 +41,7 @@ export interface Event {
   recurrence?: {
     isRecurring: boolean;
     pattern?: {
-      frequency: "daily" | "weekly" | "monthly" | "yearly";
+      frequency: Frequency;
       interval: number;
       daysOfWeek?: number[]; // 0 = Sunday, 6 = Saturday
       endDate?: Date;

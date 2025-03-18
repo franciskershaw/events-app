@@ -8,6 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 
 import { Combobox } from "../../../../components/ui/combobox";
+import { Frequency } from "../../../../types/globalTypes";
 import useEventForm from "../../hooks/useEventForm";
 
 const AddEventForm = ({ formId }: { formId: string }) => {
@@ -16,6 +17,7 @@ const AddEventForm = ({ formId }: { formId: string }) => {
     mode,
     onSubmit,
     eventCategorySelectOptions,
+    recurringFrequencySelectOptions,
     copiedFromId,
     isSubmitting,
   } = useEventForm();
@@ -121,6 +123,29 @@ const AddEventForm = ({ formId }: { formId: string }) => {
             />
           </FormInput>
         </div>
+
+        {form.watch("recurrence.isRecurring") === true && (
+          <div>
+            <FormInput name="recurrence.pattern.frequency" label="Frequency*">
+              <div>
+                <Combobox
+                  value={form.watch("recurrence.pattern.frequency")}
+                  onChange={(value) =>
+                    form.setValue(
+                      "recurrence.pattern.frequency",
+                      value as Frequency,
+                      {
+                        shouldValidate: true,
+                      }
+                    )
+                  }
+                  options={recurringFrequencySelectOptions}
+                  placeholder="Select a frequency"
+                />
+              </div>
+            </FormInput>
+          </div>
+        )}
 
         <FormInput name="category" label="Category*">
           <div>

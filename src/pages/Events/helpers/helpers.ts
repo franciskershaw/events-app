@@ -133,3 +133,59 @@ export const shareEvent = ({ event }: ShareEventProps) => {
 
   return message;
 };
+
+export const generateRecurringEventInstances = (event: Event): Event[] => {
+  if (!event.recurrence?.isRecurring || !event.recurrence.pattern) {
+    return [event]; // Return the base event if recurrence is disabled or pattern is missing
+  }
+
+  const { frequency, interval, daysOfWeek, endDate, count } =
+    event.recurrence.pattern;
+  const instances: Event[] = [event]; // Start with the base event
+
+  let currentDate = dayjs(event.date.start); // Start from the base event's start date
+
+  // Generate instances until the end date, count, or 10 instances is reached
+  while (instances.length < 10) {
+    // Calculate the next occurrence date based on the frequency
+    switch (frequency) {
+      case "daily":
+        currentDate = currentDate.add(interval, "day");
+        break;
+      case "weekly":
+        currentDate = currentDate.add(interval, "week");
+        break;
+      case "monthly":
+        currentDate = currentDate.add(interval, "month");
+        break;
+      case "yearly":
+        currentDate = currentDate.add(interval, "year");
+        break;
+      default:
+        throw new Error(`Unsupported frequency: ${frequency}`);
+    }
+
+    // Stop if the end date is reached
+    if (endDate && currentDate.isAfter(endDate)) {
+      break;
+    }
+
+    // Stop if the count is reached
+    if (count && instances.length >= count) {
+      break;
+    }
+
+    // Clone the base event and update the date
+    const newInstance = { ...event };
+    newInstance.date = {
+      start: currentDate.toISOString(),
+      end: currentDate
+        .add(dayjs(event.date.end).diff(dayjs(event.date.start)), "millisecond")
+        .toISOString(),
+    };
+
+    instances.push(newInstance);
+  }
+
+  return instances;
+};
