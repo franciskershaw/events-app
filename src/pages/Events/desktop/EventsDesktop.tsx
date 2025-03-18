@@ -9,6 +9,7 @@ import { ActiveDayProvider } from "../../../contexts/ActiveDay/ActiveDayContext"
 import { useSearch } from "../../../contexts/SearchEvents/SearchEventsContext";
 import { useSidebarContent } from "../../../contexts/Sidebar/desktop/SidebarContentContext";
 import { Event } from "../../../types/globalTypes";
+import { getFirstAndLastEventDates } from "../helpers/getFirstAndLastEventDates";
 import { generateMonthColumns, getEventsByDay } from "../helpers/helpers";
 import useGetPastMonthEvents from "../hooks/useGetPastMonthEvents";
 import { EventsSearch } from "./components/EventsSearch/EventsSearch";
@@ -20,21 +21,14 @@ export const EventsDesktop = () => {
   const { eventsPastMonth } = useGetPastMonthEvents();
   const { sidebarContent } = useSidebarContent();
 
-  const firstEventDate = new Date(
-    Math.min(
-      ...filteredEvents.map((event) => new Date(event.date.start).getTime())
-    )
-  );
-  const lastEventDate = new Date(
-    Math.max(
-      ...filteredEvents.map((event) => new Date(event.date.start).getTime())
-    )
-  );
+  const [firstEventDate, lastEventDate] =
+    getFirstAndLastEventDates(filteredEvents);
 
   const eventsByDay: Record<string, Event[]> = getEventsByDay([
     ...filteredEvents,
     ...(activeFilterCount === 0 ? eventsPastMonth : []),
   ]);
+
   const monthColumns = generateMonthColumns(firstEventDate, lastEventDate);
 
   const filtersActive = activeFilterCount > 0 ? true : false;

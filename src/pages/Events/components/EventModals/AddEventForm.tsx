@@ -125,7 +125,7 @@ const AddEventForm = ({ formId }: { formId: string }) => {
         </div>
 
         {form.watch("recurrence.isRecurring") === true && (
-          <div>
+          <div className="p-4 pt-2 border-y">
             <FormInput name="recurrence.pattern.frequency" label="Frequency*">
               <div>
                 <Combobox
