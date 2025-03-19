@@ -8,5 +8,5 @@ export const getFirstAndLastEventDates = (events: Event[]) => {
     Math.max(...events.map((event) => new Date(event.date.start).getTime()))
   );
 
-  return [firstEventDate, lastEventDate];
+  return { firstEventDate, lastEventDate };
 };

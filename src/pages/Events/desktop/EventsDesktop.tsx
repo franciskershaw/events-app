@@ -9,8 +9,9 @@ import { ActiveDayProvider } from "../../../contexts/ActiveDay/ActiveDayContext"
 import { useSearch } from "../../../contexts/SearchEvents/SearchEventsContext";
 import { useSidebarContent } from "../../../contexts/Sidebar/desktop/SidebarContentContext";
 import { Event } from "../../../types/globalTypes";
+import { generateMonthColumns } from "../helpers/generateMonthColumns";
 import { getFirstAndLastEventDates } from "../helpers/getFirstAndLastEventDates";
-import { generateMonthColumns, getEventsByDay } from "../helpers/helpers";
+import { getEventsByDay } from "../helpers/helpers";
 import useGetPastMonthEvents from "../hooks/useGetPastMonthEvents";
 import { EventsSearch } from "./components/EventsSearch/EventsSearch";
 import { EventsSummary } from "./components/EventsSummary/EventsSummary";
@@ -21,7 +22,7 @@ export const EventsDesktop = () => {
   const { eventsPastMonth } = useGetPastMonthEvents();
   const { sidebarContent } = useSidebarContent();
 
-  const [firstEventDate, lastEventDate] =
+  const { firstEventDate, lastEventDate } =
     getFirstAndLastEventDates(filteredEvents);
 
   const eventsByDay: Record<string, Event[]> = getEventsByDay([

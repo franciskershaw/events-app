@@ -71,25 +71,6 @@ export const groupEvents = (events: Event[]): GroupedEvents => {
 };
 
 // Desktop
-export const generateMonthColumns = (startDate: Date, endDate: Date) => {
-  const start = isNaN(startDate.getTime())
-    ? dayjs().startOf("month")
-    : dayjs(startDate).startOf("month");
-  const end = dayjs(endDate).startOf("month");
-  const months = [];
-
-  let current = start;
-  let count = 0;
-
-  while (current.isBefore(end) || current.isSame(end) || count < 6) {
-    months.push(current);
-    current = current.add(1, "month");
-    count++;
-  }
-
-  return months;
-};
-
 export const getEventsByDay = (events: Event[]): Record<string, Event[]> => {
   return events.reduce(
     (acc, event) => {
@@ -132,60 +113,4 @@ export const shareEvent = ({ event }: ShareEventProps) => {
   message += ` at ${eventTime} on ${eventDay}`;
 
   return message;
-};
-
-export const generateRecurringEventInstances = (event: Event): Event[] => {
-  if (!event.recurrence?.isRecurring || !event.recurrence.pattern) {
-    return [event]; // Return the base event if recurrence is disabled or pattern is missing
-  }
-
-  const { frequency, interval, daysOfWeek, endDate, count } =
-    event.recurrence.pattern;
-  const instances: Event[] = [event]; // Start with the base event
-
-  let currentDate = dayjs(event.date.start); // Start from the base event's start date
-
-  // Generate instances until the end date, count, or 10 instances is reached
-  while (instances.length < 10) {
-    // Calculate the next occurrence date based on the frequency
-    switch (frequency) {
-      case "daily":
-        currentDate = currentDate.add(interval, "day");
-        break;
-      case "weekly":
-        currentDate = currentDate.add(interval, "week");
-        break;
-      case "monthly":
-        currentDate = currentDate.add(interval, "month");
-        break;
-      case "yearly":
-        currentDate = currentDate.add(interval, "year");
-        break;
-      default:
-        throw new Error(`Unsupported frequency: ${frequency}`);
-    }
-
-    // Stop if the end date is reached
-    if (endDate && currentDate.isAfter(endDate)) {
-      break;
-    }
-
-    // Stop if the count is reached
-    if (count && instances.length >= count) {
-      break;
-    }
-
-    // Clone the base event and update the date
-    const newInstance = { ...event };
-    newInstance.date = {
-      start: currentDate.toISOString(),
-      end: currentDate
-        .add(dayjs(event.date.end).diff(dayjs(event.date.start)), "millisecond")
-        .toISOString(),
-    };
-
-    instances.push(newInstance);
-  }
-
-  return instances;
 };

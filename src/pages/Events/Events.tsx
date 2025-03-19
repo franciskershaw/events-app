@@ -9,7 +9,8 @@ import { useIsMobile } from "../../hooks/use-mobile";
 import useUser from "../../hooks/user/useUser";
 import { Event } from "../../types/globalTypes";
 import { EventsDesktop } from "./desktop/EventsDesktop";
-import { generateRecurringEventInstances } from "./helpers/helpers";
+import { generateRecurringEvents } from "./helpers/generateRecurringEvents";
+import { getFirstAndLastEventDates } from "./helpers/getFirstAndLastEventDates";
 import useGetEventCategories from "./hooks/useGetEventCategories";
 import useGetEvents from "./hooks/useGetEvents";
 import { EventsMobile } from "./mobile/EventsMobile";
@@ -33,9 +34,12 @@ const Events = () => {
     query: "",
   });
 
+  const { lastEventDate } = getFirstAndLastEventDates(userEvents);
+  // console.log(lastEventDate);
+
   const eventsAll = useMemo(() => {
     const allEvents = [...events, ...eventsFree].flatMap((event) =>
-      generateRecurringEventInstances(event)
+      generateRecurringEvents(event, lastEventDate)
     );
 
     return allEvents.sort(
