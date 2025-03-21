@@ -1,27 +1,31 @@
 # Organisey - Frontend
 
-A calendar and event management application built with React, TypeScript, and Vite. The application focuses on event categorization, enhanced mobile visibility, and collaborative features for shared calendars.
+![Organisey](/public/amiresponsive.png)
+
+Oraganisy is a calendar and event management application designed to bring clarity to your schedule. The app helps you categorise and manage your events intuitively, making it easy to see when you're actually free. Perfect for both personal use and collaboratively - sync your calendar another user to get shared visibility of your schedules, helping you plan together.
+
+This repository is in relation to the user interface layer of the application written in React, Typescript, and Tailwind. The backend API layer is stored in [this repository](https://github.com/franciskershaw/events-api), and the live website can be found [here](https://www.organisey.co.uk/).
 
 ## 📋 Core Functionality
 
-- Advanced event categorization and filtering
-- Mobile-optimized list view for upcoming events
-- Shared calendar capabilities for viewing others' events
+- Advanced event categorisation and filtering
+- Mobile-optimised list view for upcoming events
+- Shared calendar capabilities for viewing other consenting users' events
 - Multi-view calendar interface
-- Cross-device synchronization
+- Cross-device synchronisation
 
 ## 🔧 Technical Implementation
 
 - React (v18) with TypeScript
-- Component architecture using Radix UI primitives
+- Component architecture using ShadCN/Radix UI primitives
 - Responsive layouts with Tailwind CSS
 - Form validation using React Hook Form and Zod
 - Data management with TanStack Query
 - Date operations with date-fns and Day.js
 - Motion feedback with Framer Motion
 - System notifications via Sonner
-- Theme adaptation with next-themes
 - Route management with React Router
+- Unit tests with Vitest
 
 ## 🛠️ Tech Stack
 
@@ -29,8 +33,9 @@ A calendar and event management application built with React, TypeScript, and Vi
 - **Build Tool:** Vite
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS
-- **UI Components:** Radix UI
-- **State Management:** TanStack Query
+- **UI Components:** ShadCN/Radix UI
+- **Server State Management:** TanStack Query
+- **Client State Management:** React Context
 - **Form Management:** React Hook Form
 - **Validation:** Zod
 - **Routing:** React Router DOM
@@ -44,7 +49,7 @@ A calendar and event management application built with React, TypeScript, and Vi
    ```bash
    npm install
    ```
-3. Configure environment variables in `.env.local`
+3. Configure the `VITE_API_URL` variable in `.env.local` - this should point to the localhost port your corresponding api is running on
 4. Start the development server:
    ```bash
    npm run dev
@@ -56,6 +61,10 @@ A calendar and event management application built with React, TypeScript, and Vi
 - `npm run build` - Build for production
 - `npm run lint` - Run ESLint
 - `npm run preview` - Preview production build
+- `npm run test` - Run all tests once
+- `npm run test:watch` - Run tests in watch mode
+- `npm run test:coverage` - Generate test coverage report
+- `npm run test:ui` - Open tests in UI mode with detailed reporting
 
 ## 🌳 Project Structure
 
@@ -79,7 +88,7 @@ src/
 - Event filtering and categorization
 - Real-time notifications
 - Form validation
-- Interactive calendar selection 
+- Interactive calendar selection
 
 ## 📝 Development Guidelines
 
