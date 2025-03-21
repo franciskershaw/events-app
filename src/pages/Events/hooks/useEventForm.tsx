@@ -44,17 +44,14 @@ const eventFormSchema = z
             .enum(["daily", "weekly", "monthly", "yearly"])
             .default("weekly"),
           interval: z.number().min(1).default(1),
-          daysOfWeek: z
-            .array(z.number().min(0).max(6)) // 0 = Sunday, 6 = Saturday
-            .default([]),
-          endDate: z.date().optional(),
-          count: z.number().min(1).optional(),
+          startDate: z.date().nullable().optional(),
+          endDate: z.date().nullable().optional(),
         }),
       })
       .optional()
       .default({
         isRecurring: false,
-        pattern: { frequency: "weekly", interval: 1, daysOfWeek: [] },
+        pattern: { frequency: "weekly", interval: 1 },
       }),
   })
   .refine((data) => !data.endDatetime || data.endDatetime >= data.datetime, {
@@ -81,9 +78,14 @@ const useEventForm = () => {
           ? ""
           : selectedEvent?._id || "",
       title: selectedEvent?.title ?? "",
-      datetime: selectedEvent?.date.start
-        ? dayjs(selectedEvent.date.start).toDate()
-        : dayjs().startOf("day").toDate(),
+      datetime:
+        mode === "edit" &&
+        selectedEvent?.recurrence?.isRecurring &&
+        selectedEvent.recurrence.pattern?.startDate
+          ? dayjs(selectedEvent.recurrence.pattern.startDate).toDate()
+          : selectedEvent?.date.start
+            ? dayjs(selectedEvent.date.start).toDate()
+            : dayjs().startOf("day").toDate(),
       endDatetime:
         selectedEvent?.date.end &&
         !dayjs(selectedEvent.date.end).isSame(selectedEvent.date.start)
@@ -100,11 +102,17 @@ const useEventForm = () => {
         pattern: {
           frequency: selectedEvent?.recurrence?.pattern?.frequency ?? "weekly",
           interval: selectedEvent?.recurrence?.pattern?.interval ?? 1,
-          daysOfWeek: selectedEvent?.recurrence?.pattern?.daysOfWeek ?? [],
+          startDate:
+            selectedEvent?.recurrence?.pattern?.startDate ||
+            selectedEvent?.date.start
+              ? dayjs(
+                  selectedEvent.recurrence?.pattern?.startDate ||
+                    selectedEvent.date.start
+                ).toDate()
+              : dayjs().startOf("day").toDate(),
           endDate: selectedEvent?.recurrence?.pattern?.endDate
             ? dayjs(selectedEvent.recurrence.pattern.endDate).toDate()
-            : undefined,
-          count: selectedEvent?.recurrence?.pattern?.count ?? undefined,
+            : null,
         },
       },
     },

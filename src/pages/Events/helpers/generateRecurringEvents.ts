@@ -11,8 +11,7 @@ export const generateRecurringEvents = (
     return [event]; // Return the base event if recurrence is disabled or pattern is missing
   }
 
-  const { frequency, interval, daysOfWeek, endDate, count } =
-    event.recurrence.pattern;
+  const { frequency, interval, endDate } = event.recurrence.pattern;
   const instances: Event[] = [event]; // Start with the base event
 
   let currentDate = dayjs(event.date.start); // Start from the base event's start date
@@ -71,11 +70,6 @@ export const generateRecurringEvents = (
 
     // Stop if the end date is reached
     if (endDate && currentDate.isAfter(endDate)) {
-      break;
-    }
-
-    // Stop if the count is reached
-    if (count && instances.length >= count) {
       break;
     }
 

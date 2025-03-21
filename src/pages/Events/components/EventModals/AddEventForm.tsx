@@ -125,7 +125,7 @@ const AddEventForm = ({ formId }: { formId: string }) => {
         </div>
 
         {form.watch("recurrence.isRecurring") === true && (
-          <div className="p-4 pt-2 border-y">
+          <div className="p-4 pt-2 border-y space-y-2">
             <FormInput name="recurrence.pattern.frequency" label="Frequency*">
               <div>
                 <Combobox
@@ -143,6 +143,22 @@ const AddEventForm = ({ formId }: { formId: string }) => {
                   placeholder="Select a frequency"
                 />
               </div>
+            </FormInput>
+
+            <FormInput
+              name="recurrence.pattern.endDate"
+              label="Recurrence End Date"
+            >
+              <DateTime
+                onChange={(date) =>
+                  form.setValue("recurrence.pattern.endDate", date ?? null)
+                }
+                disablePast
+                minDate={form.watch("datetime")}
+                showTime
+                allowClear
+                toDate={dayjs().add(5, "years").endOf("year").toDate()}
+              />
             </FormInput>
           </div>
         )}

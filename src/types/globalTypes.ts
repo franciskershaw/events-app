@@ -43,9 +43,8 @@ export interface Event {
     pattern?: {
       frequency: Frequency;
       interval: number;
-      daysOfWeek?: number[]; // 0 = Sunday, 6 = Saturday
+      startDate: Date;
       endDate?: Date;
-      count?: number;
     };
   };
 }
