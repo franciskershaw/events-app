@@ -2,17 +2,22 @@
 
 ![Organisey](/public/amiresponsive.png)
 
-Oraganisy is a calendar and event management application designed to bring clarity to your schedule. The app helps you categorise and manage your events intuitively, making it easy to see when you're actually free. Perfect for both personal use and collaboratively - sync your calendar another user to get shared visibility of your schedules, helping you plan together.
+Organisey is a calendar and event management application designed to bring clarity to your schedule. The app helps you categorise and manage your events intuitively, making it easy to see when you're actually free. Perfect for both personal use and collaboratively - sync your calendar with another user to get shared visibility of your schedules, helping you plan together.
 
-This repository is in relation to the user interface layer of the application written in React, Typescript, and Tailwind. The backend API layer is stored in [this repository](https://github.com/franciskershaw/events-api), and the live website can be found [here](https://www.organisey.co.uk/).
+This repository contains the user interface layer of the application written in React, TypeScript, and Tailwind. The backend API layer is stored in [this repository](https://github.com/franciskershaw/events-api), and the live website can be found [here](https://www.organisey.co.uk/).
 
-## 📋 Core Functionality
+## ✨ Key Features
 
-- Advanced event categorisation and filtering
-- Mobile-optimised list view for upcoming events
-- Shared calendar capabilities for viewing other consenting users' events
-- Multi-view calendar interface
-- Cross-device synchronisation
+- **Smart Event Management**: Create, edit, copy, and delete events with an intuitive interface
+- **Event Categorisation**: Organise events by type (Work, Holiday, Birthday, Dinner, etc.) with visual icon indicators
+- **Free Time Visibility**: Easily identify when you're available with clear visual indicators
+- **Connection System**: Connect with partners or friends to share and view each other's calendars
+- **Multi-View Calendar**: Toggle between different calendar views to suit your planning style
+- **Event Sharing**: Share event details with others via your preferred messaging apps
+- **Authentication Options**: Log in with Google or use email/password authentication
+- **Responsive Design**: Optimised for both desktop and mobile devices with specialised views
+- **Accessibility**: WCAG-compliant components for an inclusive user experience
+- **Real-Time Notifications**: Immediate feedback on actions with Sonner toast notifications
 
 ## 🔧 Technical Implementation
 
@@ -85,7 +90,7 @@ src/
 - Responsive grid and list views
 - System-aware theme switching
 - WCAG-compliant components
-- Event filtering and categorization
+- Event filtering and categorisation
 - Real-time notifications
 - Form validation
 - Interactive calendar selection
@@ -107,6 +112,19 @@ Required environment variables for `.env.local`:
 VITE_API_URL=your_api_url
 ```
 
-## 📄 License
+## 📱 Screenshots
 
-Private repository - All rights reserved
+![mobile](/public/screenshot1.png)
+![mobile with filters](/public/screenshot2.png)
+![desktop](/public/screenshot3.png)
+
+## 🚀 Deployment
+
+The application is deployed using [your deployment platform] and follows a CI/CD pipeline with [any relevant details]. The production version can be accessed at [https://www.organisey.co.uk/](https://www.organisey.co.uk/).
+
+## 🔄 Future Enhancements
+
+- Bug fixes
+- Recurring events
+- Notifications / reminders
+- Access to past events data
