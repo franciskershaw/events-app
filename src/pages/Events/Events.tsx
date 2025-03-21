@@ -35,7 +35,6 @@ const Events = () => {
   });
 
   const { lastEventDate } = getFirstAndLastEventDates(userEvents);
-  // console.log(lastEventDate);
 
   const eventsAll = useMemo(() => {
     const allEvents = [...events, ...eventsFree].flatMap((event) =>

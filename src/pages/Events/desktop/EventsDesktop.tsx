@@ -22,11 +22,21 @@ export const EventsDesktop = () => {
   const { eventsPastMonth } = useGetPastMonthEvents();
   const { sidebarContent } = useSidebarContent();
 
-  const { firstEventDate, lastEventDate } =
-    getFirstAndLastEventDates(filteredEvents);
+  const filteredEventsWithoutPast = filteredEvents.filter((event) => {
+    const eventEndDate = new Date(event.date.end);
+    const firstDayOfMonth = new Date();
+    firstDayOfMonth.setDate(1);
+    firstDayOfMonth.setHours(0, 0, 0, 0);
+
+    return eventEndDate >= firstDayOfMonth;
+  });
+
+  const { firstEventDate, lastEventDate } = getFirstAndLastEventDates(
+    filteredEventsWithoutPast
+  );
 
   const eventsByDay: Record<string, Event[]> = getEventsByDay([
-    ...filteredEvents,
+    ...filteredEventsWithoutPast,
     ...(activeFilterCount === 0 ? eventsPastMonth : []),
   ]);
 

@@ -9,4 +9,4 @@ export const CATEGORY_FREE = "Free";
 export const LOCATION_DEFAULT = "Bristol";
 export const LOCATION_SHOW = true;
 
-export const DESKTOP_MIN_VISIBLE_MONTHS = 13;
+export const DESKTOP_MIN_VISIBLE_MONTHS = 12;

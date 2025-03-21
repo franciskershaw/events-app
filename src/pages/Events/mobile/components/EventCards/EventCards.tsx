@@ -13,6 +13,13 @@ const EventCards = () => {
   const { filteredEvents } = useSearch();
   const { isVisible: isNavbarVisible, isNearBottom } = useScrollVisibility();
 
+  const filteredEventsWithoutPast = filteredEvents.filter((event) => {
+    const eventEndDate = new Date(event.date.end);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return eventEndDate >= today;
+  });
+
   const todayEvents = useMemo(
     () => filterTodayEvents(filteredEvents),
     [filteredEvents]
@@ -20,9 +27,11 @@ const EventCards = () => {
   const upcomingEvents = useMemo(
     () =>
       groupEvents(
-        filteredEvents.filter((event) => !todayEvents.includes(event))
+        filteredEventsWithoutPast.filter(
+          (event) => !todayEvents.includes(event)
+        )
       ),
-    [todayEvents, filteredEvents]
+    [todayEvents, filteredEventsWithoutPast]
   );
 
   return (

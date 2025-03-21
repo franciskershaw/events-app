@@ -5,15 +5,14 @@ import { Event } from "../../../types/globalTypes";
 
 export const generateRecurringEvents = (
   event: Event,
-  lastEventDate: Date // Pass lastEventDate as a parameter
+  lastEventDate: Date
 ): Event[] => {
   if (!event.recurrence?.isRecurring || !event.recurrence.pattern) {
-    return [event]; // Return the base event if recurrence is disabled or pattern is missing
+    return [event];
   }
 
   const { frequency, interval, endDate } = event.recurrence.pattern;
   const instances: Event[] = [event]; // Start with the base event
-
   let currentDate = dayjs(event.date.start); // Start from the base event's start date
 
   const minVisibleDate = dayjs()
@@ -22,8 +21,8 @@ export const generateRecurringEvents = (
 
   // Determine the end date for recurrence generation
   const recurrenceEndDate = dayjs(lastEventDate).isAfter(minVisibleDate)
-    ? lastEventDate // Use lastEventDate if it's greater
-    : minVisibleDate.toDate(); // Otherwise, use today + DESKTOP_MIN_VISIBLE_MONTHS
+    ? lastEventDate
+    : minVisibleDate.toDate();
 
   // Calculate the difference between currentDate and recurrenceEndDate
   const diffInDays = dayjs(recurrenceEndDate).diff(currentDate, "day");
@@ -52,7 +51,6 @@ export const generateRecurringEvents = (
 
   // Generate instances up to the maximum number or until count/endDate is reached
   for (let i = 0; i < maxInstances; i++) {
-    // Calculate the next occurrence date based on the frequency
     switch (frequency) {
       case "daily":
         currentDate = currentDate.add(interval, "day");
@@ -68,7 +66,6 @@ export const generateRecurringEvents = (
         break;
     }
 
-    // Stop if the end date is reached
     if (endDate && currentDate.isAfter(endDate)) {
       break;
     }
