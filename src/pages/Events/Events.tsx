@@ -9,6 +9,8 @@ import { useIsMobile } from "../../hooks/utility/use-mobile";
 import useUser from "../../hooks/user/useUser";
 import { Event } from "../../types/globalTypes";
 import { EventsDesktop } from "./desktop/EventsDesktop";
+import { generateRecurringEvents } from "./helpers/generateRecurringEvents";
+import { getFirstAndLastEventDates } from "./helpers/getFirstAndLastEventDates";
 import useGetEventCategories from "./hooks/useGetEventCategories";
 import useGetEvents from "./hooks/useGetEvents";
 import { EventsMobile } from "./mobile/EventsMobile";
@@ -32,14 +34,18 @@ const Events = () => {
     query: "",
   });
 
-  const eventsAll = useMemo(
-    () =>
-      [...events, ...eventsFree].sort(
-        (a, b) =>
-          new Date(a.date.start).getTime() - new Date(b.date.start).getTime()
-      ),
-    [events, eventsFree]
-  );
+  const { lastEventDate } = getFirstAndLastEventDates(userEvents);
+
+  const eventsAll = useMemo(() => {
+    const allEvents = [...events, ...eventsFree].flatMap((event) =>
+      generateRecurringEvents(event, lastEventDate)
+    );
+
+    return allEvents.sort(
+      (a, b) =>
+        new Date(a.date.start).getTime() - new Date(b.date.start).getTime()
+    );
+  }, [events, eventsFree, isMobile]);
 
   if (fetchingEvents && !events.length) {
     return <LoadingOverlay />;

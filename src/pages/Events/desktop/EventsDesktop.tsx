@@ -9,27 +9,37 @@ import { ActiveDayProvider } from "../../../contexts/ActiveDay/ActiveDayContext"
 import { useSearch } from "../../../contexts/SearchEvents/SearchEventsContext";
 import { useSidebarContent } from "../../../contexts/Sidebar/desktop/SidebarContentContext";
 import { Event } from "../../../types/globalTypes";
-import { generateMonthColumns, getEventsByDay } from "../helpers/helpers";
+import { generateMonthColumns } from "../helpers/generateMonthColumns";
+import { getFirstAndLastEventDates } from "../helpers/getFirstAndLastEventDates";
+import { getEventsByDay } from "../helpers/helpers";
+import useGetPastMonthEvents from "../hooks/useGetPastMonthEvents";
 import { EventsSearch } from "./components/EventsSearch/EventsSearch";
 import { EventsSummary } from "./components/EventsSummary/EventsSummary";
 import { MonthColumn } from "./components/MonthColumn/MonthColumn";
 
 export const EventsDesktop = () => {
   const { filteredEvents, activeFilterCount } = useSearch();
+  const { eventsPastMonth } = useGetPastMonthEvents();
   const { sidebarContent } = useSidebarContent();
 
-  const firstEventDate = new Date(
-    Math.min(
-      ...filteredEvents.map((event) => new Date(event.date.start).getTime())
-    )
-  );
-  const lastEventDate = new Date(
-    Math.max(
-      ...filteredEvents.map((event) => new Date(event.date.start).getTime())
-    )
+  const filteredEventsWithoutPast = filteredEvents.filter((event) => {
+    const eventEndDate = new Date(event.date.end);
+    const firstDayOfMonth = new Date();
+    firstDayOfMonth.setDate(1);
+    firstDayOfMonth.setHours(0, 0, 0, 0);
+
+    return eventEndDate >= firstDayOfMonth;
+  });
+
+  const { firstEventDate, lastEventDate } = getFirstAndLastEventDates(
+    filteredEventsWithoutPast
   );
 
-  const eventsByDay: Record<string, Event[]> = getEventsByDay(filteredEvents);
+  const eventsByDay: Record<string, Event[]> = getEventsByDay([
+    ...filteredEventsWithoutPast,
+    ...(activeFilterCount === 0 ? eventsPastMonth : []),
+  ]);
+
   const monthColumns = generateMonthColumns(firstEventDate, lastEventDate);
 
   const filtersActive = activeFilterCount > 0 ? true : false;

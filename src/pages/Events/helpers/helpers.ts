@@ -22,6 +22,7 @@ export const transformEventFormValues = (
   unConfirmed: values.unConfirmed,
   private: values.private,
   copiedFrom: values.copiedFrom,
+  recurrence: values.recurrence,
 });
 
 interface GroupedEvents {
@@ -70,25 +71,6 @@ export const groupEvents = (events: Event[]): GroupedEvents => {
 };
 
 // Desktop
-export const generateMonthColumns = (startDate: Date, endDate: Date) => {
-  const start = isNaN(startDate.getTime())
-    ? dayjs().startOf("month")
-    : dayjs(startDate).startOf("month");
-  const end = dayjs(endDate).startOf("month");
-  const months = [];
-
-  let current = start;
-  let count = 0;
-
-  while (current.isBefore(end) || current.isSame(end) || count < 6) {
-    months.push(current);
-    current = current.add(1, "month");
-    count++;
-  }
-
-  return months;
-};
-
 export const getEventsByDay = (events: Event[]): Record<string, Event[]> => {
   return events.reduce(
     (acc, event) => {

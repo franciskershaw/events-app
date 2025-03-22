@@ -17,6 +17,7 @@ export interface User {
 }
 
 // Events
+export type Frequency = "daily" | "weekly" | "monthly" | "yearly";
 export interface Event {
   _id: string;
   title: string;
@@ -37,6 +38,15 @@ export interface Event {
   unConfirmed: boolean;
   private: boolean;
   copiedFrom?: string | null;
+  recurrence?: {
+    isRecurring: boolean;
+    pattern?: {
+      frequency: Frequency;
+      interval: number;
+      startDate: Date;
+      endDate?: Date;
+    };
+  };
 }
 
 export interface EventCategory {

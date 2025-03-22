@@ -8,6 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 
 import { Combobox } from "../../../../components/ui/combobox";
+import { Frequency } from "../../../../types/globalTypes";
 import useEventForm from "../../hooks/useEventForm";
 
 const AddEventForm = ({ formId }: { formId: string }) => {
@@ -16,6 +17,7 @@ const AddEventForm = ({ formId }: { formId: string }) => {
     mode,
     onSubmit,
     eventCategorySelectOptions,
+    recurringFrequencySelectOptions,
     copiedFromId,
     isSubmitting,
   } = useEventForm();
@@ -101,7 +103,65 @@ const AddEventForm = ({ formId }: { formId: string }) => {
               }
             />
           </FormInput>
+          <FormInput
+            name="recurrence.isRecurring"
+            label="Recurring"
+            className="flex items-center space-y-0 gap-3"
+          >
+            <Switch
+              checked={form.watch("recurrence.isRecurring")}
+              onCheckedChange={(checked) => {
+                form.setValue(
+                  "recurrence",
+                  {
+                    ...form.watch("recurrence"),
+                    isRecurring: checked,
+                  },
+                  { shouldValidate: true }
+                );
+              }}
+            />
+          </FormInput>
         </div>
+
+        {form.watch("recurrence.isRecurring") === true && (
+          <div className="p-4 pt-2 border-y space-y-2">
+            <FormInput name="recurrence.pattern.frequency" label="Frequency*">
+              <div>
+                <Combobox
+                  value={form.watch("recurrence.pattern.frequency")}
+                  onChange={(value) =>
+                    form.setValue(
+                      "recurrence.pattern.frequency",
+                      value as Frequency,
+                      {
+                        shouldValidate: true,
+                      }
+                    )
+                  }
+                  options={recurringFrequencySelectOptions}
+                  placeholder="Select a frequency"
+                />
+              </div>
+            </FormInput>
+
+            <FormInput
+              name="recurrence.pattern.endDate"
+              label="Recurrence End Date"
+            >
+              <DateTime
+                onChange={(date) =>
+                  form.setValue("recurrence.pattern.endDate", date ?? null)
+                }
+                disablePast
+                minDate={form.watch("datetime")}
+                showTime
+                allowClear
+                toDate={dayjs().add(5, "years").endOf("year").toDate()}
+              />
+            </FormInput>
+          </div>
+        )}
 
         <FormInput name="category" label="Category*">
           <div>

@@ -8,3 +8,5 @@ export const CATEGORY_FREE = "Free";
 // TODO: Replace with settings in profile
 export const LOCATION_DEFAULT = "Bristol";
 export const LOCATION_SHOW = true;
+
+export const DESKTOP_MIN_VISIBLE_MONTHS = 12;
