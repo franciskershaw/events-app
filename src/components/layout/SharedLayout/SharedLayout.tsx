@@ -11,7 +11,7 @@ import AddEventModal from "@/pages/Events/components/EventModals/AddEventModal";
 import DeleteEventModal from "@/pages/Events/components/EventModals/DeleteEventModal";
 
 import { NAV_HEIGHT } from "../../../constants/app";
-import { useIsMobile } from "../../../hooks/use-mobile";
+import { useIsMobile } from "../../../hooks/utility/use-mobile";
 import ConnectionsModal from "../../../pages/Events/components/ConnectionsModal/ConnectionsModal";
 import { Button } from "../../ui/button";
 import { NavDesktop } from "../navigation/Nav/desktop/NavDesktop";

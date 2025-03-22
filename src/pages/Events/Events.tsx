@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 
 import { LoadingOverlay } from "@/components/ui/loading-overlay";
-import usePageTitle from "@/hooks/usePageTitle";
+import usePageTitle from "@/hooks/utility/usePageTitle";
 
 import { useEventsFree } from "../../contexts/SearchEvents/hooks/useEventsFree";
 import { SearchProvider } from "../../contexts/SearchEvents/SearchEventsContext";
-import { useIsMobile } from "../../hooks/use-mobile";
+import { useIsMobile } from "../../hooks/utility/use-mobile";
 import useUser from "../../hooks/user/useUser";
 import { Event } from "../../types/globalTypes";
 import { EventsDesktop } from "./desktop/EventsDesktop";

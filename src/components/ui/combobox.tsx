@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-import { useIsMobile } from "../../hooks/use-mobile";
+import { useIsMobile } from "../../hooks/utility/use-mobile";
 import { BasicSelect } from "./select";
 
 interface ComboboxProps {
