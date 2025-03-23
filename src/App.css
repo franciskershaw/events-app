@@ -2,33 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 @layer base {
-  /* :root {
-    --radius: 0.5rem;
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  } */
-
   :root {
     --radius: 0.5rem;
 
@@ -41,13 +14,12 @@
     --popover: 0 100% 100%; /* White */
     --popover-foreground: 0 100% 0%; /* Black */
 
-    /* Primary Colors */
-    --primary: 0 100% 50%; /* Bright Red */
+    --primary: 0 100% 0%; /* Black */
     --primary-foreground: 0 100% 100%; /* White */
 
-    /* Secondary Colors */
-    --secondary: 60 100% 50%; /* Bright Yellow */
-    --secondary-foreground: 60 100% 10%; /* Dark Yellow */
+    --secondary: 214, 95%, 53%; /* light blue */
+    --secondary-foreground: 0 100% 100%; /* White */
+    --secondary-light: 214, 95%, 93%; /* very light blue */
 
     --muted-light: 220 13% 95%; /* gray-100 */
     --muted: 220 13% 91%; /* gray-200 */
@@ -78,13 +50,13 @@
 
     /* Sidebar Colors */
     --sidebar-background: 0 100% 100%; /* White */
-    --sidebar-foreground: 240 100% 10%; /* Dark Blue */
-    --sidebar-primary: 240 100% 50%; /* Bright Blue */
-    --sidebar-primary-foreground: 0 100% 100%; /* White */
-    --sidebar-accent: 300 100% 90%; /* Light Purple */
-    --sidebar-accent-foreground: 300 100% 10%; /* Dark Purple */
-    --sidebar-border: 220 100% 75%; /* Light Blue */
-    --sidebar-ring: 217.2 91.2% 59.8%; /* Bright Blue */
+    --sidebar-foreground: 240 100% 10%; /* unused */
+    --sidebar-primary: 240 100% 50%; /* unused */
+    --sidebar-primary-foreground: 0 100% 100%; /* unused */
+    --sidebar-accent: 300 100% 90%; /* unused */
+    --sidebar-accent-foreground: 300 100% 10%; /* unused */
+    --sidebar-border: 220 100% 75%; /* unused */
+    --sidebar-ring: 217.2 91.2% 59.8%; /* unused */
   }
 
   .dark {
@@ -141,10 +113,10 @@
   }
 
   .event--weekend {
-    @apply border-highlight;
+    @apply border-secondary;
 
     .event-date {
-      @apply bg-highlight-light;
+      @apply bg-secondary-light;
     }
   }
 
