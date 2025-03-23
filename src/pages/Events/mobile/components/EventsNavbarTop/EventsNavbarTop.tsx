@@ -12,7 +12,7 @@ const EventsNavbarTop = () => {
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 bg-white z-30 transition-transform duration-300"
+      className="fixed top-0 left-0 right-0 bg-primary z-30 transition-transform duration-300"
       style={{
         transform: `translateY(${isNavbarVisible ? "0px" : `-${NAV_HEIGHT}`})`,
       }}

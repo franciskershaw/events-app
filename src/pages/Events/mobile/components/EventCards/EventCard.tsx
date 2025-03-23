@@ -69,9 +69,7 @@ const EventCard = ({ event }: { event: Event }) => {
         weekend && "event--weekend"
       } ${
         today && "event--today"
-      } ${event.unConfirmed === true ? "border-dashed" : ""} ${
-        !isUserEvent ? "bg-muted-light/80" : "bg-white"
-      }`}
+      } ${event.unConfirmed === true ? "border-dashed" : ""}`}
       {...swipeHandlers}
     >
       <div onClick={handleClick}>
@@ -134,7 +132,7 @@ const EventCard = ({ event }: { event: Event }) => {
       >
         <div className="px-4 pb-4 pt-0 space-y-4">
           {(location?.venue || formattedTime) && (
-            <div className="mx-[-1rem] px-4 py-2 bg-primary overflow-x-auto">
+            <div className="mx-[-1rem] px-4 py-2 bg-muted overflow-x-auto">
               <div className="flex items-center gap-2 text-sm whitespace-nowrap min-w-min">
                 {location?.venue && (
                   <Badge variant="secondary" className="max-w-[200px] truncate">

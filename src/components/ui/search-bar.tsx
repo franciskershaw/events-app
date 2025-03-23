@@ -84,13 +84,13 @@ const SearchBar = ({
       {/* Search bar */}
       <div
         className={cn(
-          "relative flex h-9 items-center rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm placeholder:text-muted-foreground focus-within:ring-1 focus-within:ring-ring"
+          "relative flex h-9 items-center rounded-md border bg-input px-3 py-1 text-sm shadow-sm placeholder:text-muted-foreground focus-within:ring-1 focus-within:ring-ring"
         )}
       >
         <input
           type="text"
           placeholder={placeholder}
-          className="flex-grow bg-transparent outline-none"
+          className="flex-grow outline-none"
           value={query}
           onChange={handleInputChange}
           id="search-bar"
