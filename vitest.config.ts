@@ -25,6 +25,8 @@ export default defineConfig({
         "node_modules/**",
         "dist/**",
         "**/*.d.ts",
+        "src/types/**",
+        "src/test/**",
       ],
     },
     include: ["**/*.{test,spec}.{js,jsx,ts,tsx}"],
