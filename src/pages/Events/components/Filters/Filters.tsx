@@ -120,7 +120,7 @@ const Filters = () => {
                 <Button
                   size="round"
                   variant={
-                    activeButton === button.label ? "outline" : "default"
+                    activeButton === button.label ? "default" : "outline"
                   }
                 >
                   {button.label}
@@ -137,7 +137,7 @@ const Filters = () => {
         <div className="flex gap-2 md:flex-col md:w-full lg:flex-row">
           <Button
             size="default"
-            variant={showEventsFree ? "outline" : "default"}
+            variant={showEventsFree ? "default" : "outline"}
             onClick={() => setShowEventsFree(!showEventsFree)}
             className="min-w-40 md:hidden"
           >

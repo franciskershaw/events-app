@@ -23,11 +23,7 @@ const RemoveConnectionModal = ({ _id }: RemoveConnectionModalProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="gap-2 text-destructive hover:text-destructive"
-        >
+        <Button variant="destructive" size="sm" className="gap-2">
           <Trash2 className="h-4 w-4" />
           <span className="hidden lg:block">Delete</span>
         </Button>

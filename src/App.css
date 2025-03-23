@@ -14,27 +14,28 @@
     --popover: 0 100% 100%; /* White */
     --popover-foreground: 0 100% 0%; /* Black */
 
-    --primary: 0 100% 0%; /* Black */
-    --primary-foreground: 0 100% 100%; /* White */
+    --primary: 158, 49%, 47%; /* Mint Green */
+    --primary-foreground: 0 100% 0%; /* Black */
+    --primary-light: 156, 52%, 74%; /* Celadon */
+    --primary-lightest: 156, 52%, 94%; /* Mint Cream */
 
-    --secondary: 214, 95%, 53%; /* light blue */
-    --secondary-foreground: 0 100% 100%; /* White */
-    --secondary-light: 214, 95%, 93%; /* very light blue */
+    --secondary: 0 100% 100%; /* White */
+    --secondary-foreground: 158, 50%, 20%; /* Dark Green */
 
     --muted-light: 220 13% 95%; /* gray-100 */
     --muted: 220 13% 91%; /* gray-200 */
     --muted-foreground: 220 13% 45%; /* gray-500 */
 
-    --highlight: 217 91% 60%; /* blue-500 */
-    --highlight-foreground: 214 100% 92%; /* blue-100 */
-    --highlight-light: 214 100% 92%; /* blue-100 */
+    --highlight: 158, 49%, 47%; /* Mint Green */
+    --highlight-foreground: 214 100% 92%: 0 100% 0%; /* Black */
+    --highlight-light: 156, 52%, 94%; /* Mint Cream */
 
-    --accent: 0 0% 96.1%; /* blue-500 */
-    --accent-foreground: 0 0% 9%; /* blue-100 */
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
 
-    --success: 142 71% 45%; /* green-500 */
-    --success-foreground: 142 81% 93%; /* green-100 */
-    --success-light: 142 81% 93%; /* green-100 */
+    --success: 158, 49%, 47%; /* Mint Green */
+    --success-foreground: 0 100% 0%; /* Black */
+    --success-light: 156, 52%, 94%; /* Mint Cream */
 
     --destructive: 0 84% 60%; /* red-500 */
     --destructive-foreground: 0 0% 100%; /* white */
@@ -44,12 +45,11 @@
     --border-dark: 220 13% 69%; /* gray-400 */
 
     --input: 0 100% 100%; /* White */
-    --input-accent: 220 13% 95%; /* gray-100 */
 
     --ring: 0 100% 0%; /* Black */
 
     /* Sidebar Colors */
-    --sidebar-background: 0 100% 100%; /* White */
+    --sidebar-background: 156, 52%, 94%; /* Mint Cream */
     --sidebar-foreground: 240 100% 10%; /* unused */
     --sidebar-primary: 240 100% 50%; /* unused */
     --sidebar-primary-foreground: 0 100% 100%; /* unused */
@@ -101,10 +101,10 @@
   }
 
   .event--today {
-    @apply border-success;
+    @apply border-highlight;
 
     .event-date {
-      @apply bg-success-light;
+      @apply bg-highlight;
     }
   }
 
@@ -113,10 +113,10 @@
   }
 
   .event--weekend {
-    @apply border-secondary;
+    @apply border-highlight;
 
     .event-date {
-      @apply bg-secondary-light;
+      @apply bg-highlight-light;
     }
   }
 
@@ -130,21 +130,21 @@
 
   /* Menu drawers */
   .menu-trigger {
-    @apply !bg-muted border;
+    @apply !bg-primary;
 
     svg {
-      @apply text-muted-foreground;
+      @apply text-primary-foreground;
     }
   }
 
   /* Desktop - date headers */
   .date-header {
-    @apply border bg-event rounded text-center p-2 sticky top-2 shadow outline outline-8 outline-event/75;
+    @apply border bg-event rounded text-center p-2 sticky top-2 shadow outline outline-8 outline-event/60;
   }
 
   /* Desktop - nav links */
   .nav-desktop {
-    @apply bg-primary text-primary-foreground p-4 space-y-4 h-screen w-fit fixed top-0 bottom-0 left-0 z-50 transition-all duration-500 ease-in-out;
+    @apply bg-primary text-primary-foreground border-background border-r p-4 space-y-4 h-screen w-fit fixed top-0 bottom-0 left-0 z-50 transition-all duration-500 ease-in-out;
   }
 
   .nav-desktop:hover h3 {

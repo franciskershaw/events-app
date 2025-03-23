@@ -169,8 +169,8 @@ const useFilters = () => {
   // Sets UI and message for copy events
   const [buttonText, setButtonText] = useState("Copy event text");
   const [buttonStatus, setButtonStatus] = useState<
-    "default" | "success" | "error"
-  >("default");
+    "outline" | "success" | "error"
+  >("outline");
 
   const message = useCreateMessage({
     filteredEvents,

@@ -113,11 +113,11 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
       {ownsEvent && (
         <Button
           size="sm"
-          variant="outline"
+          variant="destructive"
           onClick={() => openDeleteEventModal(event)}
           className="text-xs px-2 py-1 h-7 w-[84px]"
         >
-          <FaTrash className="mr-1 text-[10px] text-destructive" />
+          <FaTrash className="mr-1 text-[10px]" />
           Delete
         </Button>
       )}
@@ -131,7 +131,7 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
             ? "success"
             : buttonStatus === "error"
               ? "destructive"
-              : "default"
+              : "outline"
         }
         className={cn(
           "text-xs px-2 py-1 h-7 transition-all duration-300 w-[84px]",
