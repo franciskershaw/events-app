@@ -236,8 +236,8 @@ describe("Drawer component", () => {
     // Check that the drawer is visible but no overlay is present
     await waitFor(() => {
       expect(screen.getByText("Drawer without Overlay")).toBeInTheDocument();
-      // This is a bit of an implementation detail, but we can check that there's no element with bg-black/80 class
-      const overlays = document.querySelectorAll(".bg-black\\/80");
+      // This is a bit of an implementation detail, but we can check that there's no element with bg-foreground/80 class
+      const overlays = document.querySelectorAll(".bg-foreground\\/80");
       expect(overlays.length).toBe(0);
     });
   });
