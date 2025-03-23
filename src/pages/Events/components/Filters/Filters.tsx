@@ -51,7 +51,7 @@ const Filters = () => {
             Showing {filteredEvents.length} result
             {filteredEvents.length !== 1 ? "s" : ""}.{" "}
             <button
-              className="text-blue-500 hover:underline"
+              className="text-accent hover:underline"
               onClick={clearAllFilters}
             >
               Clear filters ✕

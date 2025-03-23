@@ -74,6 +74,37 @@ const NavMobile = () => {
               Logout
             </button>
           </nav>
+          <div className="flex flex-wrap gap-2">
+            <div className="h-20 w-20 rounded-full bg-background text-xs text-foreground flex justify-center items-center">
+              background
+              <br />
+              foreground
+            </div>
+            <div className="h-20 w-20 rounded-full bg-card text-card-foreground text-xs flex justify-center items-center">
+              card
+            </div>
+            <div className="h-20 w-20 rounded-full bg-popover text-popover-foreground text-xs flex justify-center items-center">
+              popover
+            </div>
+            <div className="h-20 w-20 rounded-full bg-primary text-primary-foreground text-xs flex justify-center items-center">
+              primary
+            </div>
+            <div className="h-20 w-20 rounded-full bg-secondary text-secondary-foreground text-xs flex justify-center items-center">
+              secondary
+            </div>
+            <div className="h-20 w-20 rounded-full bg-muted text-muted-foreground text-xs flex justify-center items-center">
+              muted
+            </div>
+            <div className="h-20 w-20 rounded-full bg-accent text-accent-foreground text-xs flex justify-center items-center">
+              accent
+            </div>
+            <div className="h-20 w-20 rounded-full bg-destructive text-destructive-foreground text-xs flex justify-center items-center">
+              destructive
+            </div>
+            <div className="h-20 w-20 rounded-full bg-input text-xs flex justify-center items-center">
+              input
+            </div>
+          </div>
         </div>
       </div>
     </>

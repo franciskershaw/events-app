@@ -112,7 +112,7 @@ const Combobox = ({
             <CommandEmpty>
               {role === "add" ? (
                 <button
-                  className="text-blue-500 hover:underline px-4"
+                  className="text-accent hover:underline px-4"
                   onClick={() => {
                     if (onAddOption) {
                       onAddOption(searchValue);
