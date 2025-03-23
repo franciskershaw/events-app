@@ -135,7 +135,7 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
         }
         className={cn(
           "text-xs px-2 py-1 h-7 transition-all duration-300 w-[84px]",
-          buttonStatus === "success" ? "bg-green-500" : "",
+          buttonStatus === "success" ? "bg-success" : "",
           buttonStatus === "error" ? "bg-red-500" : ""
         )}
       >

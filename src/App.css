@@ -67,6 +67,10 @@
     --accent-foreground: 214 100% 92%; /* blue-100 */
     --accent-light: 214 100% 92%; /* blue-100 */
 
+    --success: 142 71% 45%; /* green-500 */
+    --success-foreground: 142 81% 93%; /* green-100 */
+    --success-light: 142 81% 93%; /* green-100 */
+
     /* Destructive Colors */
     --destructive: 0 100% 50%; /* Bright Red */
     --destructive-foreground: 0 100% 100%; /* White */
@@ -149,10 +153,10 @@
   }
 
   .event--today {
-    @apply border-green-500;
+    @apply border-success;
 
     .event-date {
-      @apply bg-green-100;
+      @apply bg-success-light;
     }
   }
 
