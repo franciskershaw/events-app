@@ -57,7 +57,7 @@ const Filters = () => {
               Clear filters ✕
             </button>
           </div>
-          <div className="mx-[-1rem] px-4 py-2 mb-4 bg-gray-200 overflow-x-auto">
+          <div className="mx-[-1rem] px-4 py-2 mb-4 bg-muted overflow-x-auto">
             <div className="flex items-center gap-2 text-sm whitespace-nowrap min-w-min">
               {appliedFilters.map((filter, index) => (
                 <button onClick={() => removeFilter(filter.type)} key={index}>

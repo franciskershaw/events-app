@@ -46,7 +46,7 @@ const EventCard = ({ event }: EventCardProps) => {
             {event.unConfirmed && "(?)"}
           </span>
         </div>
-        <div className="text-xs text-gray-500 flex items-center flex-wrap gap-1">
+        <div className="text-xs text-muted-foreground flex items-center flex-wrap gap-1">
           {formatDate(event.date) && <span>{formatDate(event.date)} | </span>}
           <span className="flex items-center gap-1">
             {getCategoryIcon(event.category.name)}
@@ -56,7 +56,7 @@ const EventCard = ({ event }: EventCardProps) => {
           {event.location?.city && <span> | {event.location?.city}</span>}
         </div>
         {event.description && (
-          <div className="text-xs text-gray-500 italic mt-1">
+          <div className="text-xs text-muted-foreground italic mt-1">
             {event.description}
           </div>
         )}

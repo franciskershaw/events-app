@@ -117,7 +117,7 @@ const SearchBar = ({
           {filteredOptions.map((option) => (
             <button
               key={option.value}
-              className="w-full text-left text-sm px-3 py-2 hover:bg-gray-100 focus:outline-none"
+              className="w-full text-left text-sm px-3 py-2 hover:bg-muted-light focus:outline-none"
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => handleOptionSelect(option.value)}
             >

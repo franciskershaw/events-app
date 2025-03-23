@@ -68,7 +68,7 @@ const LocalForm = () => {
           <Input type="password" placeholder="Confirm your password" />
         </FormInput>
       )}
-      <div className="text-sm text-gray-500 text-center">
+      <div className="text-sm text-center">
         {isRegister ? (
           <>
             Already have an account?{" "}

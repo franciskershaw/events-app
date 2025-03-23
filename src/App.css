@@ -54,9 +54,9 @@
     --secondary: 60 100% 50%; /* Bright Yellow */
     --secondary-foreground: 60 100% 10%; /* Dark Yellow */
 
-    /* Muted Colors */
-    --muted: 240 100% 90%; /* Light Blue */
-    --muted-foreground: 240 100% 30%; /* Medium Blue */
+    --muted-light: 220 13% 95%; /* gray-100 */
+    --muted: 220 13% 91%; /* gray-200 */
+    --muted-foreground: 220 13% 45%; /* gray-500 */
 
     --accent: 217 91% 60%; /* blue-500 */
     --accent-foreground: 214 100% 92%; /* blue-100 */
@@ -125,10 +125,6 @@
     @apply bg-background text-foreground;
   }
 
-  .box {
-    @apply border-2 border-black bg-white;
-  }
-
   /* Event card styling */
   .event {
     @apply bg-white border overflow-hidden;
@@ -143,7 +139,7 @@
   }
 
   .event--past {
-    @apply bg-gray-200 text-gray-500;
+    @apply bg-muted text-muted-foreground;
   }
 
   .event--weekend {
@@ -158,16 +154,16 @@
     @apply border-border-dark;
 
     .event-date {
-      @apply bg-gray-100;
+      @apply bg-muted-light;
     }
   }
 
   /* Menu drawers */
   .menu-trigger {
-    @apply !bg-gray-200 border;
+    @apply !bg-muted border;
 
     svg {
-      @apply text-gray-500;
+      @apply text-muted-foreground;
     }
   }
 
