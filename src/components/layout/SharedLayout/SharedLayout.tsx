@@ -48,7 +48,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
       )}
 
       <main
-        className={`bg-white flex-grow ${!isMobile ? "ml-20" : ""}`}
+        className={`bg-background flex-grow ${!isMobile ? "ml-20" : ""}`}
         style={styles}
       >
         {children}

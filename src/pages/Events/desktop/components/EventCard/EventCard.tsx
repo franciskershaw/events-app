@@ -62,7 +62,7 @@ const EventCard = ({ event }: EventCardProps) => {
         )}
       </div>
       <motion.div
-        className="absolute top-0 bottom-0 left-0 right-0 transform -translate-y-full flex items-center justify-center bg-white bg-opacity-80"
+        className="absolute top-0 bottom-0 left-0 right-0 transform -translate-y-full flex items-center justify-center bg-event bg-opacity-80"
         initial={{ x: 50, opacity: 0 }}
         animate={{
           x: isHovered ? 0 : 50,

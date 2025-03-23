@@ -127,7 +127,7 @@ const Filters = () => {
                 </Button>
               </LongPress>
               {offset > 0 && activeButton === button.label && (
-                <div className="text-xs absolute bg-white border rounded-full w-5 h-5 top-[-4px] right-[-4px] flex justify-center items-center">
+                <div className="text-xs absolute bg-background border rounded-full w-5 h-5 top-[-4px] right-[-4px] flex justify-center items-center">
                   +{offset}
                 </div>
               )}

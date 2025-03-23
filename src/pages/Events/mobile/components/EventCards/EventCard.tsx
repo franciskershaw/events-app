@@ -106,7 +106,7 @@ const EventCard = ({ event }: { event: Event }) => {
         </div>
         {/* Action buttons */}
         <motion.div
-          className="absolute top-0 right-0 bottom-0 bg-white bg-opacity-80 z-20"
+          className="absolute top-0 right-0 bottom-0 bg-event bg-opacity-80 z-20"
           style={{ width: "100%" }}
           initial={{ translateX: "100%" }}
           animate={{ translateX: isSwiped ? 0 : "100%" }}

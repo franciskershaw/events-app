@@ -17,6 +17,10 @@ export default {
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        event: {
+          DEFAULT: "hsl(var(--event))",
+          foreground: "hsl(var(--event-foreground))",
+        },
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",

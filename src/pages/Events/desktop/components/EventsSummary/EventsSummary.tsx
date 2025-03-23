@@ -39,7 +39,7 @@ export const EventsSummary = ({
   return (
     <>
       {Object.keys(eventsByDay).length > 0 && (
-        <div className="date-header m-2 mb-0">
+        <div className="date-header m-2 mb-0 z-40">
           <h2 className="text-lg font-semibold">
             {activeDay.format("dddd Do MMMM")}
           </h2>

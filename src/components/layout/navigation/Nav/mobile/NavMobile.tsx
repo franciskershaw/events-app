@@ -53,14 +53,14 @@ const NavMobile = () => {
             <Link
               to="/connections"
               onClick={handleLinkClick}
-              className="flex items-center gap-3 text-lg hover:text-accent-foreground transition-colors"
+              className="flex items-center gap-3 text-lg hover:underline transition-colors"
             >
               <Users className="h-5 w-5" />
               Connections
             </Link>
             <Link
               to="/events"
-              className="flex items-center gap-3 text-lg hover:text-accent-foreground transition-colors"
+              className="flex items-center gap-3 text-lg hover:underline transition-colors"
               onClick={handleLinkClick}
             >
               <Calendar className="h-5 w-5" />
@@ -68,7 +68,7 @@ const NavMobile = () => {
             </Link>
             <button
               onClick={logout}
-              className="flex items-center gap-3 text-lg w-full text-left"
+              className="flex items-center gap-3 text-lg w-full text-left hover:underline"
             >
               <LogOut className="h-5 w-5" />
               Logout

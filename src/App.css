@@ -35,6 +35,9 @@
     --background: 0 100% 100%; /* White */
     --foreground: 0 100% 0%; /* Black */
 
+    --event: 0 100% 100%; /* White */
+    --event-foreground: 0 100% 0%; /* Black */
+
     --popover: 0 100% 100%; /* White */
     --popover-foreground: 0 100% 0%; /* Black */
 
@@ -122,7 +125,7 @@
 
   /* Event card styling */
   .event {
-    @apply bg-white border overflow-hidden;
+    @apply bg-event border overflow-hidden;
   }
 
   .event--today {
@@ -164,7 +167,7 @@
 
   /* Desktop - date headers */
   .date-header {
-    @apply border bg-white rounded text-center p-2 sticky top-2 shadow outline outline-8 outline-white/75;
+    @apply border bg-event rounded text-center p-2 sticky top-2 shadow outline outline-8 outline-event/75;
   }
 
   /* Desktop - nav links */
@@ -185,7 +188,7 @@
   }
 
   .nav-link-icon {
-    @apply h-12 w-12 rounded-full text-primary bg-secondary flex items-center justify-center;
+    @apply h-12 w-12 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center;
   }
 }
 
