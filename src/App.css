@@ -21,11 +21,6 @@
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -71,23 +66,15 @@
     --success-foreground: 142 81% 93%; /* green-100 */
     --success-light: 142 81% 93%; /* green-100 */
 
-    /* Destructive Colors */
-    --destructive: 0 100% 50%; /* Bright Red */
-    --destructive-foreground: 0 100% 100%; /* White */
+    --destructive: 0 84% 60%; /* red-500 */
+    --destructive-foreground: 0 0% 100%; /* white */
+    --destructive-light: 0 86% 77%; /* red-300 */
 
-    /* Border and Input Colors */
-    --border: 0 100% 75%; /* Light Red */
-    --input: 0 100% 75%; /* Light Red */
+    --border: 220 13% 83%; /* gray-300 */
+    --border-dark: 220 13% 69%; /* gray-400 */
+    --input: 220 13% 83%; /* gray-300 */
 
-    /* Ring Color */
-    --ring: 0 100% 50%; /* Bright Red */
-
-    /* Chart Colors */
-    --chart-1: 12 76% 61%; /* Orange */
-    --chart-2: 173 58% 39%; /* Teal */
-    --chart-3: 197 37% 24%; /* Dark Blue */
-    --chart-4: 43 74% 66%; /* Yellow */
-    --chart-5: 27 87% 67%; /* Gold */
+    --ring: 217 91% 60%; /* blue-500 */
 
     /* Sidebar Colors */
     --sidebar-background: 0 100% 90%; /* Light Red */
@@ -120,11 +107,6 @@
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -149,7 +131,7 @@
 
   /* Event card styling */
   .event {
-    @apply bg-white border-gray-300 overflow-hidden;
+    @apply bg-white border overflow-hidden;
   }
 
   .event--today {
@@ -173,7 +155,7 @@
   }
 
   .event--weekend-past {
-    @apply border-gray-400;
+    @apply border-border-dark;
 
     .event-date {
       @apply bg-gray-100;
@@ -182,7 +164,7 @@
 
   /* Menu drawers */
   .menu-trigger {
-    @apply !bg-gray-200 border border-gray-300;
+    @apply !bg-gray-200 border;
 
     svg {
       @apply text-gray-500;
@@ -191,7 +173,7 @@
 
   /* Desktop - date headers */
   .date-header {
-    @apply border border-gray-300 bg-white rounded text-center p-2 sticky top-2 shadow outline outline-8 outline-white/75;
+    @apply border bg-white rounded text-center p-2 sticky top-2 shadow outline outline-8 outline-white/75;
   }
 
   /* Desktop - nav links */

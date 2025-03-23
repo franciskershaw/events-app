@@ -52,16 +52,12 @@ export default {
           foreground: "hsl(var(--destructive-foreground))",
           light: "hsl(var(--destructive-light))",
         },
-        border: "hsl(var(--border))",
+        border: {
+          DEFAULT: "hsl(var(--border))",
+          dark: "hsl(var(--border-dark))",
+        },
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        chart: {
-          1: "hsl(var(--chart-1))",
-          2: "hsl(var(--chart-2))",
-          3: "hsl(var(--chart-3))",
-          4: "hsl(var(--chart-4))",
-          5: "hsl(var(--chart-5))",
-        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

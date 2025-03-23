@@ -21,7 +21,8 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         success: "bg-success text-white shadow-sm hover:bg-success/90",
-        error: "bg-red-500 text-white shadow-sm hover:bg-red-600",
+        error:
+          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
       },
       size: {
         default: "h-9 px-4 py-2",

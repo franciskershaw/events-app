@@ -112,7 +112,7 @@ const SearchBar = ({
       {isDropdownOpen && filteredOptions.length > 0 && (
         <div
           ref={dropdownRef}
-          className="absolute left-0 right-0 mt-2 bg-white border border-gray-300 rounded-md shadow-md z-10"
+          className="absolute left-0 right-0 mt-2 bg-white border rounded-md shadow-md z-10"
         >
           {filteredOptions.map((option) => (
             <button

@@ -115,9 +115,9 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
           size="sm"
           variant="outline"
           onClick={() => openDeleteEventModal(event)}
-          className="text-xs px-2 py-1 h-7 border-red-300 hover:bg-red-50 w-[84px]"
+          className="text-xs px-2 py-1 h-7 w-[84px]"
         >
-          <FaTrash className="mr-1 text-[10px] text-red-500" />
+          <FaTrash className="mr-1 text-[10px] text-destructive" />
           Delete
         </Button>
       )}
@@ -136,7 +136,7 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
         className={cn(
           "text-xs px-2 py-1 h-7 transition-all duration-300 w-[84px]",
           buttonStatus === "success" ? "bg-success" : "",
-          buttonStatus === "error" ? "bg-red-500" : ""
+          buttonStatus === "error" ? "bg-destructive" : ""
         )}
       >
         {getShareButtonContent()}
