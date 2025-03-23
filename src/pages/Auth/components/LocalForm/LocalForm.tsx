@@ -72,14 +72,20 @@ const LocalForm = () => {
         {isRegister ? (
           <>
             Already have an account?{" "}
-            <span onClick={toggleForm} className="text-accent cursor-pointer">
+            <span
+              onClick={toggleForm}
+              className="text-highlight cursor-pointer"
+            >
               Login
             </span>
           </>
         ) : (
           <>
             Don't have an account?{" "}
-            <span onClick={toggleForm} className="text-accent cursor-pointer">
+            <span
+              onClick={toggleForm}
+              className="text-highlight cursor-pointer"
+            >
               Register
             </span>
           </>
