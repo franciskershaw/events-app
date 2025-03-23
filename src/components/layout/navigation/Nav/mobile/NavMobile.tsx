@@ -80,9 +80,6 @@ const NavMobile = () => {
               <br />
               foreground
             </div>
-            <div className="h-20 w-20 rounded-full bg-card text-card-foreground text-xs flex justify-center items-center">
-              card
-            </div>
             <div className="h-20 w-20 rounded-full bg-popover text-popover-foreground text-xs flex justify-center items-center">
               popover
             </div>
