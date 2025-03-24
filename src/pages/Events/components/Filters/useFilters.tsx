@@ -205,7 +205,7 @@ const useFilters = () => {
 
   const resetButton = () => {
     setTimeout(() => {
-      setButtonStatus("default");
+      setButtonStatus("outline");
       setButtonText("Copy event text");
     }, 2000);
   };

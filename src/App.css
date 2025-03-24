@@ -14,28 +14,28 @@
     --popover: 0 100% 100%; /* White */
     --popover-foreground: 0 100% 0%; /* Black */
 
-    --primary: 158, 49%, 47%; /* Mint Green */
+    --primary: 158 49% 47%; /* Mint Green */
     --primary-foreground: 0 100% 0%; /* Black */
-    --primary-light: 156, 52%, 74%; /* Celadon */
-    --primary-lightest: 156, 52%, 94%; /* Mint Cream */
+    --primary-light: 156 52% 74%; /* Celadon */
+    --primary-lightest: 156 52% 94%; /* Mint Cream */
 
     --secondary: 0 100% 100%; /* White */
-    --secondary-foreground: 158, 50%, 20%; /* Dark Green */
+    --secondary-foreground: 158 50% 20%; /* Dark Green */
 
     --muted-light: 220 13% 95%; /* gray-100 */
     --muted: 220 13% 91%; /* gray-200 */
     --muted-foreground: 220 13% 45%; /* gray-500 */
 
-    --highlight: 158, 49%, 47%; /* Mint Green */
-    --highlight-foreground: 214 100% 92%: 0 100% 0%; /* Black */
-    --highlight-light: 156, 52%, 94%; /* Mint Cream */
+    --highlight: 158 49% 47%; /* Mint Green */
+    --highlight-foreground: 0 100% 0%; /* Black */
+    --highlight-light: 156 52% 94%; /* Mint Cream */
 
     --accent: 0 0% 96.1%;
     --accent-foreground: 0 0% 9%;
 
-    --success: 158, 49%, 47%; /* Mint Green */
+    --success: 158 49% 47%; /* Mint Green */
     --success-foreground: 0 100% 0%; /* Black */
-    --success-light: 156, 52%, 94%; /* Mint Cream */
+    --success-light: 158 49% 47%; /* Mint Green */
 
     --destructive: 0 84% 60%; /* red-500 */
     --destructive-foreground: 0 0% 100%; /* white */
@@ -104,7 +104,7 @@
     @apply border-highlight;
 
     .event-date {
-      @apply bg-highlight;
+      @apply bg-highlight/50;
     }
   }
 

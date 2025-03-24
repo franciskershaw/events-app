@@ -23,7 +23,7 @@ const FiltersDrawer = () => {
         </div>
       </DrawerTrigger>
 
-      <DrawerContent className="px-4">
+      <DrawerContent className="px-4 bg-primary-lightest">
         <DrawerHeader>
           <DrawerTitle>Filters</DrawerTitle>
           <DrawerDescription className="sr-only">

@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 
 import { isToday } from "date-fns";
 import { motion } from "framer-motion";
+import { FaLocationDot } from "react-icons/fa6";
 import { useSwipeable } from "react-swipeable";
 
 import { Badge } from "@/components/ui/badge";
@@ -86,14 +87,15 @@ const EventCard = ({ event }: { event: Event }) => {
               <h2 className="font-semibold text-sm truncate">{title}</h2>
             </div>
             {location?.city && (
-              <span className="ml-4 font-medium text-sm max-w-[50%] truncate">
-                📍 {location.city}
+              <span className="ml-4 font-medium text-sm max-w-[50%] truncate flex items-center gap-1">
+                <FaLocationDot />
+                {location.city}
               </span>
             )}
           </div>
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">{formattedDate}</span>
-            <Badge variant="secondary">
+            <Badge variant="secondary" className="p-0">
               {getCategoryIcon(category.name)}
               <span className="ml-1">{category.name}</span>
             </Badge>

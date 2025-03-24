@@ -40,7 +40,7 @@ const AddEventModal = () => {
 
   return (
     <Dialog open={isEventModalOpen} onOpenChange={closeModal}>
-      <DialogContent className="flex flex-col max-h-dvh md:max-h-[90dvh] p-0">
+      <DialogContent className="flex flex-col max-h-dvh md:max-h-[90dvh] p-0 bg-background">
         <DialogHeader className="px-6 pt-6">
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
