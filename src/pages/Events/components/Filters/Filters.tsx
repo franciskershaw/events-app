@@ -6,6 +6,7 @@ import { DateTime } from "@/components/ui/date-time";
 
 import { Combobox } from "../../../../components/ui/combobox";
 import LongPress from "../../../../components/utility/LongPress/LongPress";
+import { CATEGORY_FREE } from "../../../../constants/app";
 import { useSearch } from "../../../../contexts/SearchEvents/SearchEventsContext";
 import useFilters from "./useFilters";
 
@@ -44,7 +45,7 @@ const Filters = () => {
   } = useSearch();
 
   const freeEventsCount = filteredEvents.filter(
-    (e) => e.category.name === "Free"
+    (e) => e.category.name === CATEGORY_FREE
   ).length;
   const totalEventsCount = filteredEvents.length;
 
