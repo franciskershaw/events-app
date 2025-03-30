@@ -2,6 +2,7 @@ import { useMemo } from "react";
 
 import { CATEGORY_FREE } from "../../../constants/app";
 import useUser from "../../../hooks/user/useUser";
+import { filterUserEvents } from "../../../pages/Events/helpers/filterUserEvents";
 import { Event } from "../../../types/globalTypes";
 import {
   getNestedValue,
@@ -42,20 +43,13 @@ export const useFilterEvents = ({
       : null;
     const textKeywords = textQuery.split(/\s+/).filter(Boolean);
 
-    return events.filter((event) => {
+    let filteredEvents = [...events];
+    filteredEvents = filterUserEvents(filteredEvents, user);
+
+    return filteredEvents.filter((event) => {
       // Include/exclude free events
       const isEventFree = event.category._id === CATEGORY_FREE;
       if (!showEventsFree && isEventFree) return false;
-
-      // User connection events
-      if (user) {
-        if (event.createdBy._id !== user._id) {
-          const connection = user.connections.find(
-            (conn) => conn._id === event.createdBy._id
-          );
-          if (connection?.hideEvents) return false;
-        }
-      }
 
       // Match text fields (title, venue, city) against each keyword
       const matchesTextQuery = textKeywords.every((keyword) =>

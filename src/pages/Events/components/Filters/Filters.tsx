@@ -6,6 +6,7 @@ import { DateTime } from "@/components/ui/date-time";
 
 import { Combobox } from "../../../../components/ui/combobox";
 import LongPress from "../../../../components/utility/LongPress/LongPress";
+import { CATEGORY_FREE } from "../../../../constants/app";
 import { useSearch } from "../../../../contexts/SearchEvents/SearchEventsContext";
 import useFilters from "./useFilters";
 
@@ -43,13 +44,20 @@ const Filters = () => {
     clearAllFilters,
   } = useSearch();
 
+  const freeEventsCount = filteredEvents.filter(
+    (e) => e.category.name === CATEGORY_FREE
+  ).length;
+  const totalEventsCount = filteredEvents.length;
+
   return (
     <>
       {appliedFilters.length > 0 && (
         <>
           <div className="text-sm text-center mb-2">
-            Showing {filteredEvents.length} result
-            {filteredEvents.length !== 1 ? "s" : ""}.{" "}
+            {showEventsFree
+              ? `Showing ${freeEventsCount} free day${freeEventsCount !== 1 ? "s" : ""}`
+              : `Showing ${totalEventsCount} result${totalEventsCount !== 1 ? "s" : ""}`}
+            .{" "}
             <button
               className="text-highlight hover:underline"
               onClick={clearAllFilters}

@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 
 import { Event } from "@/types/globalTypes";
 
-import { LOCATION_DEFAULT } from "../../../constants/app";
+import { CATEGORY_FREE, LOCATION_DEFAULT } from "../../../constants/app";
 
 interface UseCreateMessageProps {
   filteredEvents: Event[];
@@ -26,6 +26,9 @@ const useCreateMessage = ({
 }: UseCreateMessageProps) => {
   const createMessage = useMemo(() => {
     const eventsNum = filteredEvents.length;
+    const freeEventsNum = filteredEvents.filter(
+      (e) => e.category.name === CATEGORY_FREE
+    ).length;
 
     if (eventsNum === 0) {
       return "";
@@ -60,6 +63,7 @@ const useCreateMessage = ({
 
     if (showEventsFree) {
       const eventsFree = filteredEvents
+        .filter((e) => e.category.name === CATEGORY_FREE)
         .map((event) => {
           const date = formatDate(event.date.start);
           const city = event.location?.city;
@@ -69,7 +73,7 @@ const useCreateMessage = ({
         .join("\n");
 
       // Free events
-      return `I am free on ${eventsNum} day${eventsNum > 1 ? "s" : ""} between ${firstDate} and ${lastDate}: \n${eventsFree}`;
+      return `I am free on ${freeEventsNum} day${freeEventsNum > 1 ? "s" : ""} between ${firstDate} and ${lastDate}: \n${eventsFree}`;
     } else {
       const events = formatEvents();
 

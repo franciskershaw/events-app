@@ -5,8 +5,8 @@ import usePageTitle from "@/hooks/utility/usePageTitle";
 
 import { useEventsFree } from "../../contexts/SearchEvents/hooks/useEventsFree";
 import { SearchProvider } from "../../contexts/SearchEvents/SearchEventsContext";
-import { useIsMobile } from "../../hooks/utility/use-mobile";
 import useUser from "../../hooks/user/useUser";
+import { useIsMobile } from "../../hooks/utility/use-mobile";
 import { Event } from "../../types/globalTypes";
 import { EventsDesktop } from "./desktop/EventsDesktop";
 import { generateRecurringEvents } from "./helpers/generateRecurringEvents";
