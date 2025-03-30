@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import dayjs from "dayjs";
 
 import { SearchBar } from "../../../../../components/ui/search-bar";
+import { CATEGORY_FREE } from "../../../../../constants/app";
 import { useSearch } from "../../../../../contexts/SearchEvents/SearchEventsContext";
 import { formatTime } from "../../../../../lib/utils";
 import { Event } from "../../../../../types/globalTypes";
@@ -53,7 +54,9 @@ export const EventsSearch = ({
                     </h4>
                     <ol>
                       {events
-                        .filter((event) => event.category.name !== "Free")
+                        .filter(
+                          (event) => event.category.name !== CATEGORY_FREE
+                        )
                         .map((event) => (
                           <li
                             key={event._id}

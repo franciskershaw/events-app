@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-import { DESKTOP_MIN_VISIBLE_MONTHS } from "../../../constants/app";
+import { MIN_VISIBLE_MONTHS } from "../../../constants/app";
 import { Event } from "../../../types/globalTypes";
 
 export const generateRecurringEvents = (
@@ -16,7 +16,7 @@ export const generateRecurringEvents = (
   let currentDate = dayjs(event.date.start); // Start from the base event's start date
 
   const minVisibleDate = dayjs()
-    .add(DESKTOP_MIN_VISIBLE_MONTHS, "month")
+    .add(MIN_VISIBLE_MONTHS, "month")
     .endOf("month");
 
   // Determine the end date for recurrence generation

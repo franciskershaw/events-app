@@ -8,7 +8,9 @@ import { LOCATION_DEFAULT, LOCATION_SHOW } from "../../../constants/app";
 import { ActiveDayProvider } from "../../../contexts/ActiveDay/ActiveDayContext";
 import { useSearch } from "../../../contexts/SearchEvents/SearchEventsContext";
 import { useSidebarContent } from "../../../contexts/Sidebar/desktop/SidebarContentContext";
+import useUser from "../../../hooks/user/useUser";
 import { Event } from "../../../types/globalTypes";
+import { filterUserEvents } from "../helpers/filterUserEvents";
 import { generateMonthColumns } from "../helpers/generateMonthColumns";
 import { getFirstAndLastEventDates } from "../helpers/getFirstAndLastEventDates";
 import { getEventsByDay } from "../helpers/helpers";
@@ -18,9 +20,12 @@ import { EventsSummary } from "./components/EventsSummary/EventsSummary";
 import { MonthColumn } from "./components/MonthColumn/MonthColumn";
 
 export const EventsDesktop = () => {
+  const { user } = useUser();
   const { filteredEvents, activeFilterCount } = useSearch();
-  const { eventsPastMonth } = useGetPastMonthEvents();
   const { sidebarContent } = useSidebarContent();
+
+  const { eventsPastMonth } = useGetPastMonthEvents();
+  const filteredEventsPastMonth = filterUserEvents(eventsPastMonth, user);
 
   const filteredEventsWithoutPast = filteredEvents.filter((event) => {
     const eventEndDate = new Date(event.date.end);
@@ -37,7 +42,7 @@ export const EventsDesktop = () => {
 
   const eventsByDay: Record<string, Event[]> = getEventsByDay([
     ...filteredEventsWithoutPast,
-    ...(activeFilterCount === 0 ? eventsPastMonth : []),
+    ...(activeFilterCount === 0 ? filteredEventsPastMonth : []),
   ]);
 
   const monthColumns = generateMonthColumns(firstEventDate, lastEventDate);
