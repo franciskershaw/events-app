@@ -132,10 +132,10 @@ const EventCard = ({ event }: { event: Event }) => {
         transition={{ duration: duration }}
         className="overflow-hidden rounded-b-md"
       >
-        <div className="px-4 pb-4 pt-0 space-y-4">
+        <div className="flex flex-col">
           {(location?.venue || formattedTime) && (
-            <div className="mx-[-1rem] px-4 py-2 bg-muted overflow-x-auto">
-              <div className="flex items-center gap-2 text-sm whitespace-nowrap min-w-min">
+            <div className="w-full bg-muted overflow-x-auto">
+              <div className="flex items-center gap-2 text-sm whitespace-nowrap min-w-min px-4 py-2">
                 {location?.venue && (
                   <Badge variant="secondary" className="max-w-[200px] truncate">
                     {location.venue}
@@ -149,7 +149,9 @@ const EventCard = ({ event }: { event: Event }) => {
           )}
 
           {description && (
-            <p className="text-sm leading-relaxed">{description}</p>
+            <div className="px-4 py-3">
+              <p className="text-sm leading-relaxed">{description}</p>
+            </div>
           )}
         </div>
       </motion.div>
