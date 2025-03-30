@@ -14,8 +14,10 @@
     --popover: 0 100% 100%; /* White */
     --popover-foreground: 0 100% 0%; /* Black */
 
-    --primary: 158 49% 47%; /* Mint Green */
-    --primary-foreground: 0 100% 0%; /* Black */
+    /*--primary: 158 49% 47%; /* Mint Green */
+    --primary: 160 50% 59%; /* Mint Green */
+    /*--primary-foreground: 0 100% 0%; /* Black */
+    --primary-foreground: 204 12% 8%; /* Black */
     --primary-light: 156 52% 74%; /* Celadon */
     --primary-lightest: 156 52% 94%; /* Mint Cream */
 
