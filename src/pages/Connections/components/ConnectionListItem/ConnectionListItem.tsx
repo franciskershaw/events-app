@@ -19,7 +19,12 @@ const ConnectionListItem = ({ connection }: ConnectionListItemProps) => {
 
   return (
     <div className="flex items-center justify-between rounded-md border bg-white p-4 shadow-sm hover:shadow-md transition-all">
-      <div className="flex flex-col">
+      <div className="flex items-center gap-2">
+        {connection.hideEvents === true ? (
+          <EyeOff className="h-5 w-5" />
+        ) : (
+          <Eye className="h-5 w-5" />
+        )}
         <h3 className="font-semibold">{connection.name}</h3>
       </div>
       <div className="flex items-center gap-2">
@@ -37,13 +42,11 @@ const ConnectionListItem = ({ connection }: ConnectionListItemProps) => {
         >
           {connection.hideEvents ? (
             <>
-              <EyeOff className="h-4 w-4" />
-              <span className="hidden lg:block">Show Events</span>
+              <span>Show events</span>
             </>
           ) : (
             <>
-              <Eye className="h-4 w-4" />
-              <span className="hidden lg:block">Hide Events</span>
+              <span>Hide events</span>
             </>
           )}
         </Button>

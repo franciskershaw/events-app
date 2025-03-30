@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-import { DESKTOP_MIN_VISIBLE_MONTHS } from "../../../constants/app";
+import { MIN_VISIBLE_MONTHS } from "../../../constants/app";
 
 export const generateMonthColumns = (startDate: Date, endDate: Date) => {
   const start = isNaN(startDate.getTime())
@@ -15,7 +15,7 @@ export const generateMonthColumns = (startDate: Date, endDate: Date) => {
   while (
     current.isBefore(end) ||
     current.isSame(end) ||
-    count < DESKTOP_MIN_VISIBLE_MONTHS
+    count < MIN_VISIBLE_MONTHS
   ) {
     months.push(current);
     current = current.add(1, "month");
