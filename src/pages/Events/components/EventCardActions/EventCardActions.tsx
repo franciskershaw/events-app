@@ -5,6 +5,7 @@ import {
   FaCopy,
   FaEdit,
   FaLock,
+  FaQuestion,
   FaShare,
   FaThumbsUp,
   FaTimes,
@@ -161,7 +162,7 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
           )}
         </Button>
       )}
-      {event.unConfirmed && ownsEvent && (
+      {ownsEvent && (
         <Button
           size="sm"
           variant="outline"
@@ -173,8 +174,17 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
           }
           className="text-xs px-2 py-1 h-7 w-[84px]"
         >
-          <FaThumbsUp className="mr-1 text-[10px]" />
-          Confirm
+          {event.unConfirmed ? (
+            <>
+              <FaThumbsUp className="mr-1 text-[10px]" />
+              Confirm
+            </>
+          ) : (
+            <>
+              <FaQuestion className="mr-1 text-[10px]" />
+              <span className="text-xxs">Draft</span>
+            </>
+          )}
         </Button>
       )}
     </div>
