@@ -2,7 +2,7 @@ import ConnectionFormContent from "./ConnectionFormContent";
 
 const ConnectionForm = () => {
   return (
-    <div className="rounded-lg border bg-card p-6 h-full md:p-8">
+    <div className="rounded-lg border p-6 h-full md:p-8">
       <h2 className="text-xl font-semibold text-center mb-2">
         Connect with Friends
       </h2>

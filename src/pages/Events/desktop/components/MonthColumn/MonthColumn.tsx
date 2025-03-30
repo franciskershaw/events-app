@@ -19,7 +19,7 @@ export const MonthColumn = ({
   filters = false,
 }: MonthColumnProps) => {
   return (
-    <div className="border rounded p-2 bg-white shadow">
+    <div className="border rounded p-2 bg-event shadow">
       <div className="date-header mb-2">
         <h2 className="text-lg font-semibold">{month.format("MMMM YYYY")}</h2>
       </div>

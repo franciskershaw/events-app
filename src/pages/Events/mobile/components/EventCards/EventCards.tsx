@@ -46,7 +46,7 @@ const EventCards = () => {
       {todayEvents.length > 0 && (
         <>
           <DateScroller label="Today" />
-          <div className="space-y-2 px-4 py-5 bg-blue-100">
+          <div className="space-y-2 px-4 py-5 bg-primary-lightest">
             {todayEvents.map((event) =>
               event.category._id === CATEGORY_FREE ? (
                 <EventFreeCard key={event._id} event={event} />
@@ -61,7 +61,7 @@ const EventCards = () => {
       {Object.entries(upcomingEvents).map(([month, monthEvents]) => (
         <div key={month}>
           <DateScroller date={monthEvents[0].date.start} />
-          <div className="space-y-2 px-4 py-5 bg-blue-100">
+          <div className="space-y-2 px-4 py-5 bg-primary-lightest">
             {monthEvents.map((event) =>
               event.category._id === CATEGORY_FREE ? (
                 <EventFreeCard key={event._id} event={event} />

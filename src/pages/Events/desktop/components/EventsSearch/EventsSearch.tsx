@@ -55,7 +55,10 @@ export const EventsSearch = ({
                       {events
                         .filter((event) => event.category.name !== "Free")
                         .map((event) => (
-                          <li key={event._id} className="text-sm text-gray-500">
+                          <li
+                            key={event._id}
+                            className="text-sm text-muted-foreground"
+                          >
                             <div className="flex gap-1 items-center">
                               <UserEventInitials event={event} />
                               <span>

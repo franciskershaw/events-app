@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 
 import { isToday } from "date-fns";
 import { motion } from "framer-motion";
+import { FaLocationDot } from "react-icons/fa6";
 import { useSwipeable } from "react-swipeable";
 
 import { Badge } from "@/components/ui/badge";
@@ -69,15 +70,13 @@ const EventCard = ({ event }: { event: Event }) => {
         weekend && "event--weekend"
       } ${
         today && "event--today"
-      } ${event.unConfirmed === true ? "border-dashed" : ""} ${
-        !isUserEvent ? "bg-gray-50/80" : "bg-white"
-      }`}
+      } ${event.unConfirmed === true ? "border-dashed" : ""}`}
       {...swipeHandlers}
     >
       <div onClick={handleClick}>
         {/* Main event card */}
         <div
-          className={`relative flex flex-col gap-3 p-4 cursor-pointer z-10 ${
+          className={`relative flex flex-col gap-2 px-4 py-3 cursor-pointer z-10 ${
             event.unConfirmed === true ? "opacity-50" : ""
           } ${!isUserEvent ? "opacity-80" : ""}`}
         >
@@ -88,14 +87,15 @@ const EventCard = ({ event }: { event: Event }) => {
               <h2 className="font-semibold text-sm truncate">{title}</h2>
             </div>
             {location?.city && (
-              <span className="ml-4 font-medium text-sm max-w-[50%] truncate">
-                📍 {location.city}
+              <span className="ml-4 font-medium text-sm max-w-[50%] truncate flex items-center gap-1">
+                <FaLocationDot />
+                {location.city}
               </span>
             )}
           </div>
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">{formattedDate}</span>
-            <Badge variant="secondary">
+            <Badge variant="secondary" className="p-0">
               {getCategoryIcon(category.name)}
               <span className="ml-1">{category.name}</span>
             </Badge>
@@ -108,7 +108,7 @@ const EventCard = ({ event }: { event: Event }) => {
         </div>
         {/* Action buttons */}
         <motion.div
-          className="absolute top-0 right-0 bottom-0 bg-white bg-opacity-80 z-20"
+          className="absolute top-0 right-0 bottom-0 bg-event bg-opacity-80 z-20"
           style={{ width: "100%" }}
           initial={{ translateX: "100%" }}
           animate={{ translateX: isSwiped ? 0 : "100%" }}
@@ -132,10 +132,10 @@ const EventCard = ({ event }: { event: Event }) => {
         transition={{ duration: duration }}
         className="overflow-hidden rounded-b-md"
       >
-        <div className="px-4 pb-4 pt-0 space-y-4">
+        <div className="flex flex-col">
           {(location?.venue || formattedTime) && (
-            <div className="mx-[-1rem] px-4 py-2 bg-gray-200 overflow-x-auto">
-              <div className="flex items-center gap-2 text-sm whitespace-nowrap min-w-min">
+            <div className="w-full bg-muted overflow-x-auto">
+              <div className="flex items-center gap-2 text-sm whitespace-nowrap min-w-min px-4 py-2">
                 {location?.venue && (
                   <Badge variant="secondary" className="max-w-[200px] truncate">
                     {location.venue}
@@ -149,7 +149,9 @@ const EventCard = ({ event }: { event: Event }) => {
           )}
 
           {description && (
-            <p className="text-sm leading-relaxed">{description}</p>
+            <div className="px-4 py-3">
+              <p className="text-sm leading-relaxed">{description}</p>
+            </div>
           )}
         </div>
       </motion.div>

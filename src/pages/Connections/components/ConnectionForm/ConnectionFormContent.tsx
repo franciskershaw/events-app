@@ -57,7 +57,7 @@ const ConnectionFormContent = ({
     <div className={className}>
       <div className="grid gap-6">
         {/* Share Your Code Section */}
-        <div className="rounded-lg bg-muted p-4">
+        <div className="rounded-lg bg-event border border-highlight-light p-4 shadow-sm">
           <h3 className="mb-2 font-semibold">Share Your Code</h3>
           <p className="mb-3 text-sm text-muted-foreground">
             Generate a temporary code to share with friends who want to connect
@@ -84,7 +84,7 @@ const ConnectionFormContent = ({
         </div>
 
         {/* Enter Someone's Code Section */}
-        <div className="rounded-lg bg-muted p-4">
+        <div className="rounded-lg bg-event border border-highlight-light p-4 shadow-sm">
           <h3 className="mb-2 font-semibold">Connect with Someone</h3>
           <p className="mb-3 text-sm text-muted-foreground">
             Enter a connection code shared with you to connect with a friend

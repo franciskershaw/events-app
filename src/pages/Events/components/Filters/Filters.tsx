@@ -51,13 +51,13 @@ const Filters = () => {
             Showing {filteredEvents.length} result
             {filteredEvents.length !== 1 ? "s" : ""}.{" "}
             <button
-              className="text-blue-500 hover:underline"
+              className="text-highlight hover:underline"
               onClick={clearAllFilters}
             >
               Clear filters ✕
             </button>
           </div>
-          <div className="mx-[-1rem] px-4 py-2 mb-4 bg-gray-200 overflow-x-auto">
+          <div className="mx-[-1rem] px-4 py-2 mb-4 bg-muted overflow-x-auto">
             <div className="flex items-center gap-2 text-sm whitespace-nowrap min-w-min">
               {appliedFilters.map((filter, index) => (
                 <button onClick={() => removeFilter(filter.type)} key={index}>
@@ -120,14 +120,14 @@ const Filters = () => {
                 <Button
                   size="round"
                   variant={
-                    activeButton === button.label ? "outline" : "default"
+                    activeButton === button.label ? "default" : "outline"
                   }
                 >
                   {button.label}
                 </Button>
               </LongPress>
               {offset > 0 && activeButton === button.label && (
-                <div className="text-xs absolute bg-white border rounded-full w-5 h-5 top-[-4px] right-[-4px] flex justify-center items-center">
+                <div className="text-xs absolute bg-primary border rounded-full w-5 h-5 top-[-4px] right-[-4px] flex justify-center items-center">
                   +{offset}
                 </div>
               )}
@@ -137,7 +137,7 @@ const Filters = () => {
         <div className="flex gap-2 md:flex-col md:w-full lg:flex-row">
           <Button
             size="default"
-            variant={showEventsFree ? "outline" : "default"}
+            variant={showEventsFree ? "default" : "outline"}
             onClick={() => setShowEventsFree(!showEventsFree)}
             className="min-w-40 md:hidden"
           >

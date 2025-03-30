@@ -18,7 +18,7 @@ const ConnectionListItem = ({ connection }: ConnectionListItemProps) => {
     useUpdateConnectionPreferences();
 
   return (
-    <div className="flex items-center justify-between rounded-md border bg-white p-4 shadow-sm hover:shadow-md transition-all">
+    <div className="flex items-center justify-between rounded-md border bg-background p-4 shadow-sm hover:shadow-md transition-all">
       <div className="flex flex-col">
         <h3 className="font-semibold">{connection.name}</h3>
       </div>

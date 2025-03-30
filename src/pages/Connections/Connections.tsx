@@ -1,8 +1,8 @@
 import { Users } from "lucide-react";
 
 import Heading from "@/components/ui/heading";
-import usePageTitle from "@/hooks/utility/usePageTitle";
 import useUser from "@/hooks/user/useUser";
+import usePageTitle from "@/hooks/utility/usePageTitle";
 
 import ConnectionForm from "./components/ConnectionForm/ConnectionForm";
 import ConnectionListItem from "./components/ConnectionListItem/ConnectionListItem";
@@ -28,7 +28,7 @@ const Connections = () => {
             <div className="mt-4">
               {!connections?.length ? (
                 <div className="rounded-lg border p-8 text-center">
-                  <Users className="mx-auto h-12 w-12 text-gray-400" />
+                  <Users className="mx-auto h-12 w-12" />
                   <EmptyStateNoConnections />
                   <div className="lg:hidden">
                     <ConnectionModal />

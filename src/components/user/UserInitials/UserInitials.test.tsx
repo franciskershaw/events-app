@@ -71,7 +71,7 @@ describe("UserInitials Component", () => {
     // Default size should be md
     expect(avatar.className).toContain("h-12 w-12");
     // Default color should be default
-    expect(fallback.className).toContain("text-primary");
+    expect(fallback.className).toContain("text-secondary-foreground");
     // Default font size for md
     expect(fallback.className).toContain("text-lg");
     // Empty initials for default empty name
@@ -118,10 +118,10 @@ describe("UserInitials Component", () => {
 
     expect(fallback.className).toContain("bg-primary");
     expect(fallback.className).toContain("text-primary-foreground");
-    expect(fallback.className).toContain("md:border");
-    expect(fallback.className).toContain("md:border-secondary");
-    expect(fallback.className).toContain("md:outline");
-    expect(fallback.className).toContain("md:outline-primary");
+    expect(fallback.className).toContain("border");
+    expect(fallback.className).toContain("border-secondary");
+    expect(fallback.className).toContain("outline");
+    expect(fallback.className).toContain("outline-primary");
   });
 
   it("renders with combination of size and color props", () => {

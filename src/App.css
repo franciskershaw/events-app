@@ -4,44 +4,66 @@
 @layer base {
   :root {
     --radius: 0.5rem;
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
+
+    --background: 0 100% 100%; /* White */
+    --foreground: 0 100% 0%; /* Black */
+
+    --event: 0 100% 100%; /* White */
+    --event-foreground: 0 100% 0%; /* Black */
+
+    --popover: 0 100% 100%; /* White */
+    --popover-foreground: 0 100% 0%; /* Black */
+
+    /*--primary: 158 49% 47%; /* Mint Green */
+    --primary: 160 50% 59%; /* Mint Green */
+    /*--primary-foreground: 0 100% 0%; /* Black */
+    --primary-foreground: 204 12% 8%; /* Black */
+    --primary-light: 156 52% 74%; /* Celadon */
+    --primary-lightest: 156 52% 94%; /* Mint Cream */
+
+    --secondary: 0 100% 100%; /* White */
+    --secondary-foreground: 158 50% 20%; /* Dark Green */
+
+    --muted-light: 220 13% 95%; /* gray-100 */
+    --muted: 220 13% 91%; /* gray-200 */
+    --muted-foreground: 220 13% 45%; /* gray-500 */
+
+    --highlight: 158 49% 47%; /* Mint Green */
+    --highlight-foreground: 0 100% 0%; /* Black */
+    --highlight-light: 156 52% 74%; /* Celadon */
+
     --accent: 0 0% 96.1%;
     --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --success: 158 49% 47%; /* Mint Green */
+    --success-foreground: 0 100% 0%; /* Black */
+    --success-light: 158 49% 47%; /* Mint Green */
+
+    --destructive: 0 84% 60%; /* red-500 */
+    --destructive-foreground: 0 0% 100%; /* white */
+    --destructive-light: 0 86% 77%; /* red-300 */
+
+    --border: 220 13% 83%; /* gray-300 */
+    --border-dark: 220 13% 69%; /* gray-400 */
+
+    --input: 0 100% 100%; /* White */
+
+    --ring: 0 100% 0%; /* Black */
+
+    /* Sidebar Colors */
+    --sidebar-background: 156, 52%, 94%; /* Mint Cream */
+    --sidebar-foreground: 240 100% 10%; /* unused */
+    --sidebar-primary: 240 100% 50%; /* unused */
+    --sidebar-primary-foreground: 0 100% 100%; /* unused */
+    --sidebar-accent: 300 100% 90%; /* unused */
+    --sidebar-accent-foreground: 300 100% 10%; /* unused */
+    --sidebar-border: 220 100% 75%; /* unused */
+    --sidebar-ring: 217.2 91.2% 59.8%; /* unused */
   }
+
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
     --popover: 0 0% 3.9%;
     --popover-foreground: 0 0% 98%;
     --primary: 0 0% 98%;
@@ -57,11 +79,6 @@
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -80,60 +97,56 @@
     @apply bg-background text-foreground;
   }
 
-  .box {
-    @apply border-2 border-black bg-white;
-  }
-
   /* Event card styling */
   .event {
-    @apply bg-white border-gray-300 overflow-hidden;
+    @apply bg-event border overflow-hidden;
   }
 
   .event--today {
-    @apply border-green-500;
+    @apply border-highlight;
 
     .event-date {
-      @apply bg-green-100;
+      @apply bg-highlight-light;
     }
   }
 
   .event--past {
-    @apply bg-gray-200 text-gray-500;
+    @apply bg-muted text-muted-foreground;
   }
 
   .event--weekend {
-    @apply border-blue-500;
+    @apply border-highlight;
 
     .event-date {
-      @apply bg-blue-100;
+      @apply bg-highlight-light/50;
     }
   }
 
   .event--weekend-past {
-    @apply border-gray-400;
+    @apply border-border-dark;
 
     .event-date {
-      @apply bg-gray-100;
+      @apply bg-muted-light;
     }
   }
 
   /* Menu drawers */
   .menu-trigger {
-    @apply !bg-gray-200 border border-gray-300;
+    @apply !bg-primary;
 
     svg {
-      @apply text-gray-500;
+      @apply text-primary-foreground;
     }
   }
 
   /* Desktop - date headers */
   .date-header {
-    @apply border border-gray-300 bg-white rounded text-center p-2 sticky top-2 shadow outline outline-8 outline-white/75;
+    @apply border bg-event rounded text-center p-2 sticky top-2 shadow outline outline-8 outline-event/60;
   }
 
   /* Desktop - nav links */
   .nav-desktop {
-    @apply bg-primary text-primary-foreground p-4 space-y-4 h-screen w-fit fixed top-0 bottom-0 left-0 z-50 transition-all duration-500 ease-in-out;
+    @apply bg-primary text-primary-foreground border-background border-r p-4 space-y-4 h-screen w-fit fixed top-0 bottom-0 left-0 z-50 transition-all duration-500 ease-in-out;
   }
 
   .nav-desktop:hover h3 {
@@ -149,7 +162,7 @@
   }
 
   .nav-link-icon {
-    @apply h-12 w-12 rounded-full text-primary bg-secondary flex items-center justify-center;
+    @apply h-12 w-12 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center;
   }
 }
 
@@ -158,6 +171,6 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-primary-lightest text-foreground;
   }
 }

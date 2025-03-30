@@ -59,7 +59,7 @@ export const EventsDesktop = () => {
         </Sidebar>
 
         <div
-          className="grid gap-4 h-screen pl-12"
+          className="grid gap-4 h-screen pl-10"
           style={{
             gridTemplateColumns: `repeat(${monthColumns.length}, 300px)`,
           }}

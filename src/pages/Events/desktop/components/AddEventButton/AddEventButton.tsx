@@ -7,7 +7,7 @@ export const AddEventButton = ({ text = "Add event +" }) => {
 
   return (
     <button
-      className={`text-blue-500 hover:underline ${text === "Add event +" ? "my-4 w-full" : ""}`}
+      className={`text-highlight hover:underline ${text === "Add event +" ? "my-4 w-full" : ""}`}
       onClick={() =>
         openEventModal(
           {

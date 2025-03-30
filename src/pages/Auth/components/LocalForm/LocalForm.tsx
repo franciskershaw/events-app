@@ -68,18 +68,24 @@ const LocalForm = () => {
           <Input type="password" placeholder="Confirm your password" />
         </FormInput>
       )}
-      <div className="text-sm text-gray-500 text-center">
+      <div className="text-sm text-center">
         {isRegister ? (
           <>
             Already have an account?{" "}
-            <span onClick={toggleForm} className="text-blue-500 cursor-pointer">
+            <span
+              onClick={toggleForm}
+              className="text-highlight cursor-pointer"
+            >
               Login
             </span>
           </>
         ) : (
           <>
             Don't have an account?{" "}
-            <span onClick={toggleForm} className="text-blue-500 cursor-pointer">
+            <span
+              onClick={toggleForm}
+              className="text-highlight cursor-pointer"
+            >
               Register
             </span>
           </>

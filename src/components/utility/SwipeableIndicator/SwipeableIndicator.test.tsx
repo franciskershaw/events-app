@@ -20,7 +20,7 @@ describe("SwipeableIndicator Component", () => {
     expect(indicator).toHaveClass(
       "w-1",
       "h-full",
-      "bg-secondary",
+      "bg-event-foreground/20",
       "rounded-full"
     );
     expect(indicator).toHaveAttribute("aria-hidden", "true");
@@ -42,7 +42,7 @@ describe("SwipeableIndicator Component", () => {
     expect(indicator).toHaveClass(
       "w-1",
       "h-full",
-      "bg-secondary",
+      "bg-event-foreground/20",
       "rounded-full"
     );
   });
@@ -72,7 +72,7 @@ describe("SwipeableIndicator Component", () => {
     expect(indicator).toHaveClass(
       "h-1",
       "w-[100px]",
-      "bg-secondary",
+      "bg-event-foreground/20",
       "rounded-full"
     );
   });

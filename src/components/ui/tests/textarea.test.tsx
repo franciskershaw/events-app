@@ -23,7 +23,7 @@ describe("Textarea component", () => {
     expect(textarea).toHaveClass("w-full");
     expect(textarea).toHaveClass("rounded-md");
     expect(textarea).toHaveClass("border");
-    expect(textarea).toHaveClass("border-input");
+    expect(textarea).toHaveClass("bg-input");
   });
 
   it("merges custom className with default classes", () => {

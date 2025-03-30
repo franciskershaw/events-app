@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Slot } from "@radix-ui/react-slot";
 import { cva, VariantProps } from "class-variance-authority";
-import { FaChevronRight } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -267,7 +267,7 @@ const SidebarTrigger = React.forwardRef<
   React.ElementRef<typeof Button>,
   React.ComponentProps<typeof Button>
 >(({ className, onClick, ...props }, ref) => {
-  const { toggleSidebar } = useSidebar();
+  const { toggleSidebar, state } = useSidebar();
 
   return (
     <Button
@@ -284,7 +284,7 @@ const SidebarTrigger = React.forwardRef<
       tabIndex={0}
       {...props}
     >
-      <FaChevronRight />
+      {state === "collapsed" ? <FaChevronRight /> : <FaChevronLeft />}
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   );

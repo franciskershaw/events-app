@@ -40,8 +40,8 @@ const UserInitials: React.FC<UserInitialsProps> = ({
   };
 
   const colourClasses: Record<Colour, string> = {
-    default: "text-primary",
-    dark: "bg-primary text-primary-foreground md:border md:border-secondary md:outline md:outline-primary",
+    default: "bg-secondary text-secondary-foreground",
+    dark: "bg-primary text-primary-foreground border border-secondary outline outline-primary",
   };
 
   return (

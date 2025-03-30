@@ -5,6 +5,7 @@ import {
   FaCopy,
   FaEdit,
   FaLock,
+  FaQuestion,
   FaShare,
   FaThumbsUp,
   FaTimes,
@@ -113,11 +114,11 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
       {ownsEvent && (
         <Button
           size="sm"
-          variant="outline"
+          variant="destructive"
           onClick={() => openDeleteEventModal(event)}
-          className="text-xs px-2 py-1 h-7 border-red-300 hover:bg-red-50 w-[84px]"
+          className="text-xs px-2 py-1 h-7 w-[84px]"
         >
-          <FaTrash className="mr-1 text-[10px] text-red-500" />
+          <FaTrash className="mr-1 text-[10px]" />
           Delete
         </Button>
       )}
@@ -131,12 +132,12 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
             ? "success"
             : buttonStatus === "error"
               ? "destructive"
-              : "default"
+              : "outline"
         }
         className={cn(
           "text-xs px-2 py-1 h-7 transition-all duration-300 w-[84px]",
-          buttonStatus === "success" ? "bg-green-500" : "",
-          buttonStatus === "error" ? "bg-red-500" : ""
+          buttonStatus === "success" ? "bg-success" : "",
+          buttonStatus === "error" ? "bg-destructive" : ""
         )}
       >
         {getShareButtonContent()}
@@ -161,7 +162,7 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
           )}
         </Button>
       )}
-      {event.unConfirmed && ownsEvent && (
+      {ownsEvent && (
         <Button
           size="sm"
           variant="outline"
@@ -173,8 +174,17 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
           }
           className="text-xs px-2 py-1 h-7 w-[84px]"
         >
-          <FaThumbsUp className="mr-1 text-[10px]" />
-          Confirm
+          {event.unConfirmed ? (
+            <>
+              <FaThumbsUp className="mr-1 text-[10px]" />
+              Confirm
+            </>
+          ) : (
+            <>
+              <FaQuestion className="mr-1 text-[10px]" />
+              <span className="text-xxs">Draft</span>
+            </>
+          )}
         </Button>
       )}
     </div>

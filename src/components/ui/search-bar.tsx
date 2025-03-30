@@ -84,13 +84,13 @@ const SearchBar = ({
       {/* Search bar */}
       <div
         className={cn(
-          "relative flex h-9 items-center rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm placeholder:text-muted-foreground focus-within:ring-1 focus-within:ring-ring"
+          "relative flex h-9 items-center rounded-md border bg-input px-3 py-1 text-sm shadow-sm placeholder:text-muted-foreground focus-within:ring-1 focus-within:ring-ring"
         )}
       >
         <input
           type="text"
           placeholder={placeholder}
-          className="flex-grow bg-transparent outline-none"
+          className="flex-grow outline-none"
           value={query}
           onChange={handleInputChange}
           id="search-bar"
@@ -112,12 +112,12 @@ const SearchBar = ({
       {isDropdownOpen && filteredOptions.length > 0 && (
         <div
           ref={dropdownRef}
-          className="absolute left-0 right-0 mt-2 bg-white border border-gray-300 rounded-md shadow-md z-10"
+          className="absolute left-0 right-0 mt-2 bg-input border rounded-md shadow-md z-10"
         >
           {filteredOptions.map((option) => (
             <button
               key={option.value}
-              className="w-full text-left text-sm px-3 py-2 hover:bg-gray-100 focus:outline-none"
+              className="w-full text-left text-sm px-3 py-2 hover:bg-muted-light focus:outline-none"
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => handleOptionSelect(option.value)}
             >

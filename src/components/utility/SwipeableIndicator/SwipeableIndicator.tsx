@@ -16,7 +16,7 @@ const SwipeableIndicator = ({
         >
           <div
             data-testid="swipeable-indicator"
-            className="w-1 h-full max-h-52 rounded-full bg-secondary"
+            className="w-1 h-full max-h-52 rounded-full bg-event-foreground/20"
             aria-hidden="true"
           ></div>
         </div>
@@ -24,7 +24,7 @@ const SwipeableIndicator = ({
         <div data-testid="swipeable-container" className="mx-auto pt-4">
           <div
             data-testid="swipeable-indicator"
-            className="h-1 w-[100px] rounded-full bg-secondary"
+            className="h-1 w-[100px] rounded-full bg-event-foreground/20"
             aria-hidden="true"
           />
         </div>
