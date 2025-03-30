@@ -22,6 +22,9 @@ const AddEventForm = ({ formId }: { formId: string }) => {
     isSubmitting,
   } = useEventForm();
 
+  const toggleInputClasses =
+    "flex items-center space-y-0 gap-3 max-sm:justify-between";
+
   return (
     <div className="relative">
       {isSubmitting && <LoadingOverlay />}
@@ -78,23 +81,25 @@ const AddEventForm = ({ formId }: { formId: string }) => {
           />
         </FormInput>
 
-        <div className="flex items-center justify-around pt-3">
+        <div className="grid grid-cols-2 sm:flex sm:items-center sm:justify-around gap-x-8 gap-y-6 pt-3">
           <FormInput
             name="unConfirmed"
             label="Unconfirmed"
-            className="flex items-center space-y-0 gap-3"
+            className={toggleInputClasses}
           >
             <Switch
               checked={form.watch("unConfirmed")}
               onCheckedChange={(checked) =>
-                form.setValue("unConfirmed", checked, { shouldValidate: true })
+                form.setValue("unConfirmed", checked, {
+                  shouldValidate: true,
+                })
               }
             />
           </FormInput>
           <FormInput
             name="private"
             label="Private"
-            className="flex items-center space-y-0 gap-3"
+            className={toggleInputClasses}
           >
             <Switch
               checked={form.watch("private")}
@@ -106,7 +111,7 @@ const AddEventForm = ({ formId }: { formId: string }) => {
           <FormInput
             name="recurrence.isRecurring"
             label="Recurring"
-            className="flex items-center space-y-0 gap-3"
+            className={toggleInputClasses}
           >
             <Switch
               checked={form.watch("recurrence.isRecurring")}
