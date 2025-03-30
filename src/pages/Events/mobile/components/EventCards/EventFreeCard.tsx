@@ -1,4 +1,5 @@
 import { isToday } from "date-fns";
+import { FaLocationDot } from "react-icons/fa6";
 
 import { formatDate, isWeekend } from "@/lib/utils";
 import { Event } from "@/types/globalTypes";
@@ -40,8 +41,8 @@ const EventFreeCard = ({ event }: { event: Event }) => {
       <div className="flex items-center justify-between text-sm px-4 py-2">
         <span>{formattedDate}</span>
         {event.location?.city && (
-          <span className="ml-4 font-medium text-sm">
-            📍 {event.location.city}
+          <span className="ml-4 font-medium text-sm max-w-[50%] truncate flex items-center gap-1">
+            <FaLocationDot /> {event.location.city}
           </span>
         )}
       </div>
