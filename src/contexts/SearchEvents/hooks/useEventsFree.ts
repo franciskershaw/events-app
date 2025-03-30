@@ -3,6 +3,8 @@ import { useMemo } from "react";
 import { eachDayOfInterval } from "date-fns";
 
 import {
+  CATEGORY_ANNIVERSARY,
+  CATEGORY_BIRTHDAY,
   CATEGORY_FREE,
   CATEGORY_HOLIDAY,
   CATEGORY_REMINDER,
@@ -65,7 +67,14 @@ export const useEventsFree = ({
 
     const eventDays = new Set<string>();
     events.forEach((event) => {
-      if ([CATEGORY_HOLIDAY, CATEGORY_REMINDER].includes(event.category.name))
+      if (
+        [
+          CATEGORY_ANNIVERSARY,
+          CATEGORY_BIRTHDAY,
+          CATEGORY_HOLIDAY,
+          CATEGORY_REMINDER,
+        ].includes(event.category.name)
+      )
         return;
 
       eachDayOfInterval({
@@ -85,8 +94,6 @@ export const useEventsFree = ({
     return eventFreeDays.map((day) => {
       const dayKey = day.toUTCString().split("T")[0];
       const locationCity = holidayLocations.get(dayKey) || LOCATION_DEFAULT;
-
-      console.log(day, dayKey);
 
       return {
         _id: `free-${day.toUTCString()}`,
