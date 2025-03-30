@@ -34,7 +34,7 @@ const useToggleConfirmEvent = () => {
     }) => toggleConfirmEvent(eventId, unConfirmed),
     onSuccess: ({ unConfirmed }) => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
-      toast.success(`Event ${unConfirmed ? "confirmed" : "unconfirmed"}!`);
+      toast.success(`Event ${unConfirmed ? "unconfirmed" : "confirmed"}!`);
     },
     onError: (error: AxiosError<{ message: string }>) => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
