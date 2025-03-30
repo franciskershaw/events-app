@@ -51,8 +51,6 @@ const Events = () => {
     return <LoadingOverlay />;
   }
 
-  console.log("events", events);
-
   return (
     <SearchProvider eventsDb={eventsAll} categories={eventCategories}>
       {isMobile ? <EventsMobile /> : <EventsDesktop />}

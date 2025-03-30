@@ -57,7 +57,7 @@ export const useEventsFree = ({
         end: new Date(event.date.end || event.date.start),
       }).forEach((day) => {
         holidayLocations.set(
-          day.toISOString().split("T")[0],
+          day.toUTCString().split("T")[0],
           event.location?.city || LOCATION_DEFAULT
         );
       });
@@ -71,11 +71,11 @@ export const useEventsFree = ({
       eachDayOfInterval({
         start: new Date(event.date.start),
         end: new Date(event.date.end || event.date.start),
-      }).forEach((day) => eventDays.add(day.toISOString().split("T")[0]));
+      }).forEach((day) => eventDays.add(day.toUTCString().split("T")[0]));
     });
 
     let eventFreeDays = allDays.filter(
-      (day) => !eventDays.has(day.toISOString().split("T")[0])
+      (day) => !eventDays.has(day.toUTCString().split("T")[0])
     );
 
     if (startDate) {
@@ -83,13 +83,15 @@ export const useEventsFree = ({
     }
 
     return eventFreeDays.map((day) => {
-      const dayKey = day.toISOString().split("T")[0];
+      const dayKey = day.toUTCString().split("T")[0];
       const locationCity = holidayLocations.get(dayKey) || LOCATION_DEFAULT;
 
+      console.log(day, dayKey);
+
       return {
-        _id: `free-${day.toISOString()}`,
+        _id: `free-${day.toUTCString()}`,
         title: "",
-        date: { start: day.toISOString(), end: day.toISOString() },
+        date: { start: day.toUTCString(), end: day.toUTCString() },
         location: { city: locationCity, venue: "" },
         category: {
           _id: CATEGORY_FREE,
