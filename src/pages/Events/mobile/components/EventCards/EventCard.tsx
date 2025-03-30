@@ -76,7 +76,7 @@ const EventCard = ({ event }: { event: Event }) => {
       <div onClick={handleClick}>
         {/* Main event card */}
         <div
-          className={`relative flex flex-col gap-3 p-4 cursor-pointer z-10 ${
+          className={`relative flex flex-col gap-2 px-4 py-3 cursor-pointer z-10 ${
             event.unConfirmed === true ? "opacity-50" : ""
           } ${!isUserEvent ? "opacity-80" : ""}`}
         >

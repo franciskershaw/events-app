@@ -28,7 +28,7 @@
 
     --highlight: 158 49% 47%; /* Mint Green */
     --highlight-foreground: 0 100% 0%; /* Black */
-    --highlight-light: 156 52% 94%; /* Mint Cream */
+    --highlight-light: 156 52% 74%; /* Celadon */
 
     --accent: 0 0% 96.1%;
     --accent-foreground: 0 0% 9%;
@@ -104,7 +104,7 @@
     @apply border-highlight;
 
     .event-date {
-      @apply bg-highlight/50;
+      @apply bg-highlight-light;
     }
   }
 
@@ -116,7 +116,7 @@
     @apply border-highlight;
 
     .event-date {
-      @apply bg-highlight-light;
+      @apply bg-highlight-light/50;
     }
   }
 
@@ -169,6 +169,6 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-primary-lightest text-foreground;
   }
 }
