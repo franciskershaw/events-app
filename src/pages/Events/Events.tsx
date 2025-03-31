@@ -45,7 +45,7 @@ const Events = () => {
       (a, b) =>
         new Date(a.date.start).getTime() - new Date(b.date.start).getTime()
     );
-  }, [events, eventsFree, isMobile]);
+  }, [events, eventsFree, lastEventDate]);
 
   if (fetchingEvents && !events.length) {
     return <LoadingOverlay />;

@@ -51,7 +51,7 @@ const DrawerContent = React.forwardRef<
       <DrawerPrimitive.Content
         ref={ref}
         className={cn(
-          "fixed z-50 flex h-auto flex-col border bg-background focus-visible:outline-none transition-transform duration-300 ease-in-out",
+          "fixed z-50 flex h-auto flex-col border bg-background focus-visible:outline-none will-change-transform",
           {
             "inset-x-0 bottom-0 mt-24 rounded-t-[10px]":
               orientation === "bottom",
@@ -60,6 +60,9 @@ const DrawerContent = React.forwardRef<
           },
           className
         )}
+        style={{
+          transform: "translate3d(0, 0, 0)", // Force GPU acceleration
+        }}
         {...props}
       >
         <SwipeableIndicator
