@@ -11,7 +11,7 @@ import Filters from "../../../components/Filters/Filters";
 
 const FiltersDrawer = () => {
   return (
-    <Drawer shouldScaleBackground={false}>
+    <Drawer>
       <DrawerTrigger asChild>
         <div
           className="fixed bottom-0 left-0 right-0 h-6 bg-muted-light rounded-t-lg shadow-md z-30 flex items-center justify-center gap-2 cursor-pointer"
@@ -23,7 +23,7 @@ const FiltersDrawer = () => {
         </div>
       </DrawerTrigger>
 
-      <DrawerContent 
+      <DrawerContent
         className="px-4 bg-primary-lightest"
         onOpenAutoFocus={(e) => {
           // Prevent focus from escaping the drawer
