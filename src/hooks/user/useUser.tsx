@@ -29,7 +29,6 @@ const useUser = () => {
     queryKey: [queryKeys.user],
     queryFn: getUser,
     retry: false,
-    staleTime: 1000 * 60 * 5,
   });
 
   function updateUser(newUser: User) {
