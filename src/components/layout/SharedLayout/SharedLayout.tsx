@@ -65,7 +65,7 @@ const UnauthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
 const SharedLayout = () => {
   const { user, fetchingUser } = useUser();
 
-  if (fetchingUser) {
+  if (fetchingUser && !user) {
     return <LoadingOverlay fullPage />;
   }
 
