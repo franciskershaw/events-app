@@ -43,6 +43,7 @@ const RemoveConnectionModal = ({ _id }: RemoveConnectionModalProps) => {
             variant="destructive"
             onClick={() => removeConnection({ _id })}
             disabled={isPending}
+            throttleClicks
           >
             {isPending ? "Removing..." : "Remove Connection"}
           </Button>

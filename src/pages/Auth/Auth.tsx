@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
-import usePageTitle from "@/hooks/utility/usePageTitle";
 import useUser from "@/hooks/user/useUser";
+import usePageTitle from "@/hooks/utility/usePageTitle";
 
 import LocalForm from "./components/LocalForm/LocalForm";
 import OrDivider from "./components/OrDivider/OrDivider";
@@ -37,7 +37,11 @@ const Auth = () => {
         </Heading>
 
         {/* Google Login Button */}
-        <Button onClick={handleGoogleLogin} className="w-full gap-3">
+        <Button
+          throttleClicks
+          onClick={handleGoogleLogin}
+          className="w-full gap-3"
+        >
           <FaGoogle size={24} />
           <span className="text-lg">Login with Google</span>
         </Button>

@@ -37,7 +37,7 @@ const DeleteEventModal = () => {
           <span className="font-bold">This action cannot be undone.</span>
         </DialogDescription>
         <DialogFooter>
-          <Button onClick={onDelete} variant={"destructive"}>
+          <Button throttleClicks onClick={onDelete} variant={"destructive"}>
             Delete
           </Button>
         </DialogFooter>

@@ -63,7 +63,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       variant,
       size,
       asChild = false,
-      throttleClicks = true,
+      throttleClicks = false,
       throttleTime = 500,
       onClick,
       disabled,

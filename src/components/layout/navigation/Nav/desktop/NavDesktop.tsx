@@ -58,6 +58,7 @@ export const NavDesktop = () => {
         onClick={logout}
         className="nav-link-wrapper"
         variant="naked"
+        throttleClicks={true}
         throttleTime={5000}
       >
         <div className="nav-link-icon">

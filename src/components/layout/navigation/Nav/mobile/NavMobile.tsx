@@ -76,6 +76,7 @@ const NavMobile = () => {
               onClick={handleLogout}
               variant="naked"
               className="flex items-center gap-3 text-lg w-full text-left hover:underline"
+              throttleClicks={true}
               throttleTime={5000}
             >
               <LogOut className="h-5 w-5" />
