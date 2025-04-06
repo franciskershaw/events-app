@@ -1,5 +1,6 @@
 import { toast } from "sonner";
 
+import { useSidebar } from "@/contexts/Sidebar/mobile/SidebarContext";
 import useAxios from "@/hooks/axios/useAxios";
 
 import useUser from "../../../hooks/user/useUser";
@@ -7,6 +8,7 @@ import useUser from "../../../hooks/user/useUser";
 const useAuth = () => {
   const api = useAxios();
   const { clearUser, updateUser } = useUser();
+  const { closeSidebar } = useSidebar();
 
   const login = async (credentials: { email: string; password: string }) => {
     try {
@@ -52,6 +54,7 @@ const useAuth = () => {
 
   const logout = async () => {
     clearUser();
+    closeSidebar();
     toast.success("You have been logged out.");
   };
 
