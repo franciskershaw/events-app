@@ -94,6 +94,12 @@ export default {
             "padding-bottom": "calc(env(safe-area-inset-bottom) + 16px)", // Dynamic safe area
           },
         },
+        ".wh-hamburger": {
+          width: "3rem",
+          minWidth: "3rem",
+          height: "3rem",
+          minHeight: "3rem",
+        },
       });
     },
   ],

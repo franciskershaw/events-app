@@ -1,4 +1,3 @@
-import Hamburger from "@/components/layout/navigation/Hamburger/Hamburger";
 import { SearchBar } from "@/components/ui/search-bar";
 
 import UsersInitials from "../../../../../components/user/UsersInitials/UsersInitials";
@@ -27,9 +26,11 @@ const EventsNavbarTop = () => {
             activeFilterCount={activeFilterCount}
           />
         </div>
-        <div className="invisible">
-          <Hamburger />
-        </div>
+        {/* Empty div to reserve space for the hamburger menu */}
+        <div
+          className="opacity-0 pointer-events-none wh-hamburger"
+          aria-hidden="true"
+        />
       </div>
     </nav>
   );

@@ -67,8 +67,7 @@ describe("Hamburger Component", () => {
     // Verify mobile styling is applied (secondary color, not primary)
     const container = button.querySelector("div");
     expect(container).toHaveClass("bg-secondary");
-    expect(container).toHaveClass("w-12");
-    expect(container).toHaveClass("h-12");
+    expect(container).toHaveClass("wh-hamburger");
   });
 
   it("renders correctly when expanded", () => {
