@@ -22,6 +22,11 @@ const NavMobile = () => {
     toggleSidebar();
   };
 
+  const handleLogout = async () => {
+    await logout();
+    toggleSidebar();
+  };
+
   if (isAuthPage) return null;
 
   return (
@@ -67,7 +72,7 @@ const NavMobile = () => {
               Events
             </Link>
             <button
-              onClick={logout}
+              onClick={handleLogout}
               className="flex items-center gap-3 text-lg w-full text-left hover:underline"
             >
               <LogOut className="h-5 w-5" />
