@@ -38,9 +38,6 @@ const useAddEvent = () => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
       toast.error(error.response?.data?.message || error.message);
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKeys.events] });
-    },
   });
 };
 

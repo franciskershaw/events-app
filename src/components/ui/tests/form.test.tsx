@@ -111,7 +111,9 @@ describe("Form components", () => {
 
     // Create a very simple test form with minimal validation
     const SimpleSubmitForm = () => {
-      const form = useForm({
+      type FormValues = { testField: string };
+
+      const form = useForm<FormValues>({
         defaultValues: {
           testField: "test value",
         },
@@ -145,11 +147,8 @@ describe("Form components", () => {
       .setup()
       .click(screen.getByRole("button", { name: "Submit Simple Form" }));
 
-    // Now the handler should be called
-    expect(handleSubmit).toHaveBeenCalledWith(
-      expect.objectContaining({ testField: "test value" }),
-      expect.anything()
-    );
+    // Now the handler should be called - only check the data itself without expecting a second arg
+    expect(handleSubmit).toHaveBeenCalledWith({ testField: "test value" });
   });
 
   // Test 4: FormInput wrapper component - FIXED
@@ -264,5 +263,48 @@ describe("Form components", () => {
     expect(screen.getByText("Custom Message")).toHaveClass(
       "custom-message-class"
     );
+  });
+
+  it("prevents multiple rapid submissions", async () => {
+    // Mock submit handler that tracks calls
+    const handleSubmit = vi.fn().mockImplementation(() => {
+      // Add a small delay to simulate async submission
+      return new Promise<void>((resolve) => {
+        setTimeout(() => {
+          resolve();
+        }, 100);
+      });
+    });
+
+    // Create a simple test form
+    const TestForm = () => {
+      type FormValues = { test: string };
+
+      const form = useForm<FormValues>({
+        defaultValues: { test: "value" },
+      });
+
+      return (
+        <Form form={form} onSubmit={handleSubmit} preventMultipleSubmits>
+          <button type="submit">Submit</button>
+        </Form>
+      );
+    };
+
+    render(<TestForm />);
+    const user = userEvent.setup();
+    const submitBtn = screen.getByRole("button", { name: "Submit" });
+
+    // First click should work
+    await user.click(submitBtn);
+
+    // Verify the submit handler was called once
+    expect(handleSubmit).toHaveBeenCalledTimes(1);
+
+    // Rapid second click should be prevented
+    await user.click(submitBtn);
+
+    // The handler should still only have been called once
+    expect(handleSubmit).toHaveBeenCalledTimes(1);
   });
 });

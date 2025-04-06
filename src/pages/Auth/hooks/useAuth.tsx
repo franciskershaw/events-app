@@ -51,7 +51,7 @@ const useAuth = () => {
   };
 
   const logout = async () => {
-    clearUser();
+    await clearUser();
     toast.success("You have been logged out.");
   };
 

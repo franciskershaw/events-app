@@ -23,6 +23,7 @@ const buttonVariants = cva(
         success: "bg-success text-white shadow-sm hover:bg-success/90",
         error:
           "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+        naked: "",
       },
       size: {
         default: "h-9 px-4 py-2",
@@ -43,15 +44,73 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
+  /**
+   * Prevents multiple rapid clicks on the button
+   * @default false
+   */
+  throttleClicks?: boolean;
+  /**
+   * Time in milliseconds before the button can be clicked again when throttleClicks is true
+   * @default 500
+   */
+  throttleTime?: number;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  (
+    {
+      className,
+      variant,
+      size,
+      asChild = false,
+      throttleClicks = true,
+      throttleTime = 500,
+      onClick,
+      disabled,
+      ...props
+    },
+    ref
+  ) => {
+    // Use ref to track throttled state without causing re-renders
+    const isThrottledRef = React.useRef(false);
+
+    // Handle click with throttling if enabled
+    const handleClick = React.useCallback(
+      (event: React.MouseEvent<HTMLButtonElement>) => {
+        // If already throttled or disabled, ignore click
+        if ((throttleClicks && isThrottledRef.current) || disabled) {
+          event.preventDefault();
+          return;
+        }
+
+        // If throttling is enabled, set the throttled state
+        if (throttleClicks) {
+          isThrottledRef.current = true;
+
+          // Reset the throttled state after the specified delay
+          setTimeout(() => {
+            isThrottledRef.current = false;
+          }, throttleTime);
+        }
+
+        // Call the original onClick handler
+        onClick?.(event);
+      },
+      [onClick, throttleClicks, throttleTime, disabled]
+    );
+
     const Comp = asChild ? Slot : "button";
+
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={
+          variant === "naked"
+            ? className
+            : cn(buttonVariants({ variant, size, className }))
+        }
         ref={ref}
+        onClick={handleClick}
+        disabled={disabled || (throttleClicks && isThrottledRef.current)}
         {...props}
       />
     );

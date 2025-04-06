@@ -33,4 +33,61 @@ describe("Button", () => {
     // Check for the destructive class - adjust based on your actual implementation
     expect(button).toHaveClass("bg-destructive");
   });
+
+  it("prevents multiple rapid clicks when throttleClicks is enabled", async () => {
+    const handleClick = vi.fn();
+    const user = userEvent.setup();
+
+    render(
+      <Button throttleClicks throttleTime={500} onClick={handleClick}>
+        Throttled Button
+      </Button>
+    );
+
+    const button = screen.getByRole("button", { name: "Throttled Button" });
+
+    // First click should work
+    await user.click(button);
+    expect(handleClick).toHaveBeenCalledTimes(1);
+
+    // Rapid second click should be ignored
+    await user.click(button);
+    expect(handleClick).toHaveBeenCalledTimes(1);
+
+    // Rapid third click should be ignored
+    await user.click(button);
+    expect(handleClick).toHaveBeenCalledTimes(1);
+
+    // Wait for throttle timeout
+    await new Promise((resolve) => setTimeout(resolve, 600));
+
+    // After timeout, clicks should work again
+    await user.click(button);
+    expect(handleClick).toHaveBeenCalledTimes(2);
+  });
+
+  it("allows multiple clicks when throttleClicks is disabled", async () => {
+    const handleClick = vi.fn();
+    const user = userEvent.setup();
+
+    render(
+      <Button onClick={handleClick} throttleClicks={false}>
+        Regular Button
+      </Button>
+    );
+
+    const button = screen.getByRole("button", { name: "Regular Button" });
+
+    // First click
+    await user.click(button);
+    expect(handleClick).toHaveBeenCalledTimes(1);
+
+    // Second click should also work
+    await user.click(button);
+    expect(handleClick).toHaveBeenCalledTimes(2);
+
+    // Third click should also work
+    await user.click(button);
+    expect(handleClick).toHaveBeenCalledTimes(3);
+  });
 });

@@ -1,6 +1,7 @@
 import { Calendar, LogOut, Users } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
+import { Button } from "@/components/ui/button";
 import UserInitials from "@/components/user/UserInitials/UserInitials";
 import { useSidebar } from "@/contexts/Sidebar/mobile/SidebarContext";
 import useUser from "@/hooks/user/useUser";
@@ -19,6 +20,11 @@ const NavMobile = () => {
   const { logout } = useAuth();
 
   const handleLinkClick = () => {
+    toggleSidebar();
+  };
+
+  const handleLogout = async () => {
+    await logout();
     toggleSidebar();
   };
 
@@ -66,13 +72,15 @@ const NavMobile = () => {
               <Calendar className="h-5 w-5" />
               Events
             </Link>
-            <button
-              onClick={logout}
+            <Button
+              onClick={handleLogout}
+              variant="naked"
               className="flex items-center gap-3 text-lg w-full text-left hover:underline"
+              throttleTime={5000}
             >
               <LogOut className="h-5 w-5" />
               Logout
-            </button>
+            </Button>
           </nav>
         </div>
       </div>
