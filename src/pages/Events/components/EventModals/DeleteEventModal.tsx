@@ -26,7 +26,7 @@ const DeleteEventModal = () => {
   };
   return (
     <Dialog open={isDeleteEventModalOpen} onOpenChange={closeModal}>
-      <DialogContent className="text-center">
+      <DialogContent className="text-center md:text-left">
         <DialogHeader>
           <DialogTitle>Delete event</DialogTitle>
         </DialogHeader>

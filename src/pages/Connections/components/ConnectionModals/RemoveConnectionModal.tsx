@@ -28,7 +28,7 @@ const RemoveConnectionModal = ({ _id }: RemoveConnectionModalProps) => {
           <span>Delete</span>
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="text-center md:text-left">
         <DialogHeader>
           <DialogTitle>Remove Connection</DialogTitle>
           <DialogDescription className="flex flex-col gap-1">
