@@ -16,11 +16,16 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
 type FormProps<TFieldValues extends FieldValues> = {
-  onSubmit: (values: TFieldValues) => void;
+  onSubmit: (values: TFieldValues) => void | Promise<unknown> | unknown;
   form: UseFormReturn<TFieldValues>;
   children: React.ReactNode;
   className?: string;
   id?: string;
+  /**
+   * Enable protection against multiple submissions
+   * @default true
+   */
+  preventMultipleSubmits?: boolean;
 };
 
 const Form = <TFieldValues extends FieldValues>({
@@ -28,12 +33,30 @@ const Form = <TFieldValues extends FieldValues>({
   form,
   children,
   className,
+  preventMultipleSubmits = true,
   ...formProps
 }: FormProps<TFieldValues>) => {
+  const isSubmittingRef = React.useRef(false);
+
+  const handleSubmit = React.useCallback(
+    (values: TFieldValues) => {
+      if (preventMultipleSubmits && isSubmittingRef.current) {
+        return;
+      }
+
+      if (preventMultipleSubmits) {
+        isSubmittingRef.current = true;
+      }
+
+      return onSubmit(values);
+    },
+    [onSubmit, preventMultipleSubmits]
+  );
+
   return (
     <FormProvider {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className={cn("space-y-4", className)}
         {...formProps}
       >
