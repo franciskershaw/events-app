@@ -38,6 +38,7 @@ const ConnectionListItem = ({ connection }: ConnectionListItemProps) => {
           variant="outline"
           size="sm"
           className="gap-2"
+          throttleClicks={false}
           disabled={isPending}
         >
           {connection.hideEvents ? (
