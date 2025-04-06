@@ -92,7 +92,7 @@ const LocalForm = () => {
         )}
       </div>
 
-      <Button className="w-full" type="submit">
+      <Button throttleClicks className="w-full" type="submit">
         {isRegister ? "Register" : "Login"}
       </Button>
     </Form>

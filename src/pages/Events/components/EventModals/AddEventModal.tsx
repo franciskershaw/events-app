@@ -56,7 +56,7 @@ const AddEventModal = () => {
           <Button variant="outline" type="button" onClick={closeModal}>
             Cancel
           </Button>
-          <Button form={id} type="submit">
+          <Button form={id} type="submit" throttleClicks>
             {button}
           </Button>
         </DialogFooter>
