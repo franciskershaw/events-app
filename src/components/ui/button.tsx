@@ -23,6 +23,7 @@ const buttonVariants = cva(
         success: "bg-success text-white shadow-sm hover:bg-success/90",
         error:
           "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+        naked: "",
       },
       size: {
         default: "h-9 px-4 py-2",
@@ -102,7 +103,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={
+          variant === "naked"
+            ? className
+            : cn(buttonVariants({ variant, size, className }))
+        }
         ref={ref}
         onClick={handleClick}
         disabled={disabled || (throttleClicks && isThrottledRef.current)}

@@ -2,6 +2,8 @@ import { Calendar, LogOut, Search, Users } from "lucide-react";
 import { FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
+import { Button } from "@/components/ui/button";
+
 import { useModals } from "../../../../../contexts/Modals/ModalsContext";
 import { useSidebarContent } from "../../../../../contexts/Sidebar/desktop/SidebarContentContext";
 import useUser from "../../../../../hooks/user/useUser";
@@ -52,12 +54,17 @@ export const NavDesktop = () => {
         </div>
         <h3>Connections</h3>
       </Link>
-      <button onClick={logout} className="nav-link-wrapper">
+      <Button
+        onClick={logout}
+        className="nav-link-wrapper"
+        variant="naked"
+        throttleTime={5000}
+      >
         <div className="nav-link-icon">
           <LogOut />
         </div>
         <h3>Logout</h3>
-      </button>
+      </Button>
     </nav>
   );
 };
