@@ -40,19 +40,20 @@ const Form = <TFieldValues extends FieldValues>({
 
   const handleSubmit = React.useCallback(
     (values: TFieldValues) => {
-      try {
-        if (preventMultipleSubmits && isSubmittingRef.current) {
-          return;
-        }
-
-        if (preventMultipleSubmits) {
-          isSubmittingRef.current = true;
-        }
-
-        return onSubmit(values);
-      } catch {
-        isSubmittingRef.current = false;
+      if (preventMultipleSubmits && isSubmittingRef.current) {
+        return;
       }
+
+      if (preventMultipleSubmits) {
+        isSubmittingRef.current = true;
+
+        // Reset the flag after a short delay to ensure it resets even if there are errors
+        setTimeout(() => {
+          isSubmittingRef.current = false;
+        }, 5000);
+      }
+
+      return onSubmit(values);
     },
     [onSubmit, preventMultipleSubmits]
   );
