@@ -40,15 +40,19 @@ const Form = <TFieldValues extends FieldValues>({
 
   const handleSubmit = React.useCallback(
     (values: TFieldValues) => {
-      if (preventMultipleSubmits && isSubmittingRef.current) {
-        return;
-      }
+      try {
+        if (preventMultipleSubmits && isSubmittingRef.current) {
+          return;
+        }
 
-      if (preventMultipleSubmits) {
-        isSubmittingRef.current = true;
-      }
+        if (preventMultipleSubmits) {
+          isSubmittingRef.current = true;
+        }
 
-      return onSubmit(values);
+        return onSubmit(values);
+      } catch {
+        isSubmittingRef.current = false;
+      }
     },
     [onSubmit, preventMultipleSubmits]
   );
