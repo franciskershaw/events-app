@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Circle background -->
+  <circle cx="50" cy="50" r="45" fill="none" stroke="hsl(160 50% 59%)" stroke-width="7"/>
+  
+  <!-- Calendar page (smaller) -->
+  <rect x="35" y="33" width="30" height="34" rx="2" fill="none" stroke="hsl(160 50% 59%)" stroke-width="3.5"/>
+  
+  <!-- Calendar top hooks -->
+  <rect x="41" y="28" width="4" height="6" rx="1" fill="hsl(160 50% 59%)"/>
+  <rect x="55" y="28" width="4" height="6" rx="1" fill="hsl(160 50% 59%)"/>
+  
+  <!-- Calendar lines -->
+  <line x1="35" y1="42" x2="65" y2="42" stroke="hsl(160 50% 59%)" stroke-width="2.5" stroke-linecap="round"/>
+  
+  <!-- Folded corner -->
+  <path d="M65 33 L65 44 L54 33 Z" fill="hsl(160 50% 59%)" stroke="none"/>
+</svg>

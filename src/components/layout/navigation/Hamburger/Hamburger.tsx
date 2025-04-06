@@ -19,7 +19,7 @@ const Hamburger = () => {
       }}
     >
       <div
-        className={`relative flex overflow-hidden items-center justify-center rounded-full ${isMobile ? "w-12 h-12" : "w-14 h-14"} ${bgColor} transform transition-all`}
+        className={`relative flex overflow-hidden items-center justify-center rounded-full wh-hamburger ${bgColor} transform transition-all`}
       >
         <div className="flex flex-col justify-between w-5 h-5 transform transition-all duration-300 origin-center overflow-hidden">
           <div
