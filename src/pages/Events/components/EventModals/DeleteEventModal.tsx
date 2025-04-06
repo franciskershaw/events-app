@@ -3,6 +3,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -25,30 +26,21 @@ const DeleteEventModal = () => {
   };
   return (
     <Dialog open={isDeleteEventModalOpen} onOpenChange={closeModal}>
-      <DialogContent>
+      <DialogContent className="text-center">
         <DialogHeader>
-          <DialogTitle className="text-center text-xl">
-            Delete event
-          </DialogTitle>
+          <DialogTitle>Delete event</DialogTitle>
         </DialogHeader>
-        <DialogDescription className="sr-only">
-          Modal for confirming deletion
+        <DialogDescription className="flex flex-col gap-1">
+          <span>
+            Are you sure you want to delete '{selectedEvent?.title}'?{" "}
+          </span>
+          <span className="font-bold">This action cannot be undone.</span>
         </DialogDescription>
-        <div className="text-center space-y-5">
-          <div className="">
-            <p>Are you sure you want to delete '{selectedEvent?.title}'?</p>
-            <p className="font-bold">This action cannot be undone.</p>
-          </div>
-
-          <div className="flex justify-center items-center gap-6">
-            <Button variant={"outline"} onClick={closeModal}>
-              Cancel
-            </Button>
-            <Button onClick={onDelete} variant={"destructive"}>
-              Delete
-            </Button>
-          </div>
-        </div>
+        <DialogFooter>
+          <Button onClick={onDelete} variant={"destructive"}>
+            Delete
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

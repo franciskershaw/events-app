@@ -31,9 +31,11 @@ const RemoveConnectionModal = ({ _id }: RemoveConnectionModalProps) => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Remove Connection</DialogTitle>
-          <DialogDescription>
-            Are you sure you want to remove this connection? You will no longer
-            see their events.
+          <DialogDescription className="flex flex-col gap-1">
+            <span>Are you sure you want to remove this connection?</span>
+            <span className="font-bold">
+              You will no longer see their events.
+            </span>
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
