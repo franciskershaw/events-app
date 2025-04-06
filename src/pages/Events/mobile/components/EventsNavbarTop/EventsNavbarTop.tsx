@@ -16,7 +16,7 @@ const EventsNavbarTop = () => {
         transform: `translateY(${isNavbarVisible ? "0px" : `-${NAV_HEIGHT}`})`,
       }}
     >
-      <div className="flex justify-between items-center w-full p-4 gap-4">
+      <div className="flex justify-between items-center w-full p-4 gap-2 sm:gap-4">
         <UsersInitials />
         <div className="flex-grow">
           <SearchBar
