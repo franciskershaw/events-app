@@ -1,5 +1,8 @@
 import { useMemo } from "react";
 
+import dayjs from "dayjs";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+
 import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
 
 import { CATEGORY_FREE, NAV_HEIGHT } from "../../../../../constants/app";
@@ -9,15 +12,18 @@ import DateScroller from "../DateScroller/DateScroller";
 import EventCard from "./EventCard";
 import EventFreeCard from "./EventFreeCard";
 
+// Extend dayjs with the plugin
+dayjs.extend(isSameOrAfter);
+
 const EventCards = () => {
   const { filteredEvents } = useSearch();
   const { isVisible: isNavbarVisible, isNearBottom } = useScrollVisibility();
 
+  // Update the filter in EventCards.tsx
   const filteredEventsWithoutPast = filteredEvents.filter((event) => {
-    const eventEndDate = new Date(event.date.end);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return eventEndDate >= today;
+    const eventEndDate = dayjs(event.date.end);
+    const today = dayjs().startOf("day");
+    return eventEndDate.isSameOrAfter(today);
   });
 
   const todayEvents = useMemo(

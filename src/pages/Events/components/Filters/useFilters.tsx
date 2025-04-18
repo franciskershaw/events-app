@@ -41,7 +41,7 @@ const useFilters = () => {
 
   // Manages applied date ranges
   const dateButtons = useMemo(() => {
-    const now = new Date();
+    const now = dayjs().toDate();
     return [
       {
         label: "D",

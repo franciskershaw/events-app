@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 
-import { format } from "date-fns";
 import dayjs from "dayjs";
 
 import { Event } from "@/types/globalTypes";
@@ -35,7 +34,7 @@ const useCreateMessage = ({
     }
 
     const formatDate = (dateString: string) => {
-      return format(new Date(dateString), "EEE do MMM");
+      return dayjs(dateString).format("ddd Do MMM");
     };
 
     const firstDate = startDate

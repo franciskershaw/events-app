@@ -1,4 +1,5 @@
 import { isToday } from "date-fns";
+import dayjs from "dayjs";
 import { FaLocationDot } from "react-icons/fa6";
 
 import { formatDate, isWeekend } from "@/lib/utils";
@@ -29,8 +30,8 @@ const EventFreeCard = ({ event }: { event: Event }) => {
               city: event.location?.city ? event.location?.city : "",
             },
             createdBy: { _id: "", name: "" },
-            createdAt: new Date(),
-            updatedAt: new Date(),
+            createdAt: dayjs().toDate(),
+            updatedAt: dayjs().toDate(),
             unConfirmed: false,
             private: false,
           },

@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 import { useActiveDay } from "../../../../../contexts/ActiveDay/ActiveDayContext";
 import { useModals } from "../../../../../contexts/Modals/ModalsContext";
 
@@ -19,8 +21,8 @@ export const AddEventButton = ({ text = "Add event +" }) => {
             },
             category: { _id: "", name: "", icon: "" },
             createdBy: { _id: "", name: "" },
-            createdAt: new Date(),
-            updatedAt: new Date(),
+            createdAt: dayjs().toDate(),
+            updatedAt: dayjs().toDate(),
             unConfirmed: false,
             private: false,
           },

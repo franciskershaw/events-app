@@ -30,7 +30,7 @@ const Time = ({
   const timeValue = React.useMemo(() => {
     if (!value) return { hour: "00", minute: "00" };
     const date =
-      value instanceof Date ? value : new Date(`1970-01-01T${value}`);
+      value instanceof Date ? value : dayjs(`1970-01-01T${value}`).toDate();
     return {
       hour: dayjs(date).format("HH"),
       minute: dayjs(date).format("mm"),

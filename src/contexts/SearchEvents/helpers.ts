@@ -1,18 +1,5 @@
-import {
-  addDays,
-  addMonths,
-  addYears,
-  endOfMonth,
-  endOfWeek,
-  endOfYear,
-  getDate,
-  getDay,
-  getMonth,
-  getYear,
-  startOfMonth,
-  startOfWeek,
-  startOfYear,
-} from "date-fns";
+import { getDate, getDay, getMonth, getYear } from "date-fns";
+import dayjs from "dayjs";
 
 import { Event } from "../../types/globalTypes";
 
@@ -69,36 +56,36 @@ export const monthMap: Record<string, number> = {
 // Explicitly define the type for relativeDateMap
 export const relativeDateMap: Record<string, DateRange> = {
   today: {
-    start: new Date(),
-    end: new Date(),
+    start: dayjs().startOf("day").toDate(),
+    end: dayjs().endOf("day").toDate(),
   },
   tomorrow: {
-    start: addDays(new Date(), 1),
-    end: addDays(new Date(), 1),
+    start: dayjs().add(1, "day").startOf("day").toDate(),
+    end: dayjs().add(1, "day").endOf("day").toDate(),
   },
   "this week": {
-    start: startOfWeek(new Date(), { weekStartsOn: 1 }),
-    end: endOfWeek(new Date(), { weekStartsOn: 1 }),
+    start: dayjs().startOf("week").add(1, "day").toDate(), // Week starts on Monday
+    end: dayjs().endOf("week").add(1, "day").toDate(), // Week ends on Sunday
   },
   "next week": {
-    start: startOfWeek(addDays(new Date(), 7), { weekStartsOn: 1 }),
-    end: endOfWeek(addDays(new Date(), 7), { weekStartsOn: 1 }),
+    start: dayjs().add(1, "week").startOf("week").add(1, "day").toDate(),
+    end: dayjs().add(1, "week").endOf("week").add(1, "day").toDate(),
   },
   "this month": {
-    start: startOfMonth(new Date()),
-    end: endOfMonth(new Date()),
+    start: dayjs().startOf("month").toDate(),
+    end: dayjs().endOf("month").toDate(),
   },
   "next month": {
-    start: startOfMonth(addMonths(new Date(), 1)),
-    end: endOfMonth(addMonths(new Date(), 1)),
+    start: dayjs().add(1, "month").startOf("month").toDate(),
+    end: dayjs().add(1, "month").endOf("month").toDate(),
   },
   "this year": {
-    start: startOfYear(new Date()),
-    end: endOfYear(new Date()),
+    start: dayjs().startOf("year").toDate(),
+    end: dayjs().endOf("year").toDate(),
   },
   "next year": {
-    start: startOfYear(addYears(new Date(), 1)),
-    end: endOfYear(addYears(new Date(), 1)),
+    start: dayjs().add(1, "year").startOf("year").toDate(),
+    end: dayjs().add(1, "year").endOf("year").toDate(),
   },
 };
 
@@ -128,7 +115,7 @@ export const parseDateComponents = (input: string) => {
     } else if (yearPattern.test(part)) {
       // Match years like 25 or 2025
       const year = parseInt(part, 10);
-      const currentYear = new Date().getFullYear();
+      const currentYear = dayjs().year();
       components.year =
         year < 100
           ? year + 2000 <= currentYear + 20
@@ -147,21 +134,19 @@ export const isDateInRange = (
   startComponents: ReturnType<typeof parseDateComponents>,
   endComponents: ReturnType<typeof parseDateComponents>
 ) => {
-  const startDate = new Date(
-    startComponents.year!,
-    startComponents.month!,
-    startComponents.day!
-  );
+  const startDate = dayjs()
+    .year(startComponents.year!)
+    .month(startComponents.month!)
+    .date(startComponents.day!)
+    .startOf("day")
+    .toDate();
 
-  const endDate = new Date(
-    endComponents.year!,
-    endComponents.month!,
-    endComponents.day!,
-    23,
-    59,
-    59,
-    999 // Ensure end date includes full day
-  );
+  const endDate = dayjs()
+    .year(endComponents.year!)
+    .month(endComponents.month!)
+    .date(endComponents.day!)
+    .endOf("day")
+    .toDate();
 
   return eventDate >= startDate && eventDate <= endDate;
 };

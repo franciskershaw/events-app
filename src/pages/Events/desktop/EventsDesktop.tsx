@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 import {
   Sidebar,
   SidebarContent,
@@ -28,12 +30,13 @@ export const EventsDesktop = () => {
   const filteredEventsPastMonth = filterUserEvents(eventsPastMonth, user);
 
   const filteredEventsWithoutPast = filteredEvents.filter((event) => {
-    const eventEndDate = new Date(event.date.end);
-    const firstDayOfMonth = new Date();
-    firstDayOfMonth.setDate(1);
-    firstDayOfMonth.setHours(0, 0, 0, 0);
+    const eventEndDate = dayjs(event.date.end);
+    const firstDayOfMonth = dayjs().startOf("month");
 
-    return eventEndDate >= firstDayOfMonth;
+    return (
+      eventEndDate.isAfter(firstDayOfMonth) ||
+      eventEndDate.format("YYYY-MM-DD") === firstDayOfMonth.format("YYYY-MM-DD")
+    );
   });
 
   const { firstEventDate, lastEventDate } = getFirstAndLastEventDates(

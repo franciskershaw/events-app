@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 
 import { eachDayOfInterval } from "date-fns";
+import dayjs from "dayjs";
 
 import {
   CATEGORY_ANNIVERSARY,
@@ -27,18 +28,18 @@ export const useEventsFree = ({
   query,
 }: UseEventsFreeProps): Event[] => {
   return useMemo(() => {
-    const today = new Date();
+    const today = dayjs().toDate();
 
     const furthestEventDate = events.reduce(
       (latest, event) =>
-        new Date(event.date.end || event.date.start) > latest
-          ? new Date(event.date.end || event.date.start)
+        dayjs(event.date.end || event.date.start).toDate() > latest
+          ? dayjs(event.date.end || event.date.start).toDate()
           : latest,
       today
     );
 
     const { dateQuery } = splitQueryParts(query);
-    const queryEndDate = dateQuery.end ? new Date(dateQuery.end) : null;
+    const queryEndDate = dateQuery.end ? dayjs(dateQuery.end).toDate() : null;
 
     const furthestDate =
       queryEndDate && queryEndDate > furthestEventDate
@@ -55,8 +56,8 @@ export const useEventsFree = ({
       if (event.category.name !== CATEGORY_HOLIDAY) return;
 
       eachDayOfInterval({
-        start: new Date(event.date.start),
-        end: new Date(event.date.end || event.date.start),
+        start: dayjs(event.date.start).toDate(),
+        end: dayjs(event.date.end || event.date.start).toDate(),
       }).forEach((day) => {
         holidayLocations.set(
           day.toUTCString().split("T")[0],
@@ -78,8 +79,8 @@ export const useEventsFree = ({
         return;
 
       eachDayOfInterval({
-        start: new Date(event.date.start),
-        end: new Date(event.date.end || event.date.start),
+        start: dayjs(event.date.start).toDate(),
+        end: dayjs(event.date.end || event.date.start).toDate(),
       }).forEach((day) => eventDays.add(day.toUTCString().split("T")[0]));
     });
 
@@ -111,8 +112,8 @@ export const useEventsFree = ({
           name: "",
         },
         description: "",
-        createdAt: new Date(day),
-        updatedAt: new Date(day),
+        createdAt: dayjs(day).toDate(),
+        updatedAt: dayjs(day).toDate(),
         unConfirmed: false,
         private: false,
       };

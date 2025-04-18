@@ -34,7 +34,7 @@ function Calendar({
     <DayPicker
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
-      fromDate={disablePast ? new Date() : undefined}
+      fromDate={disablePast ? dayjs().toDate() : undefined}
       classNames={{
         months: "flex justify-center space-y-4",
         month: "space-y-4",

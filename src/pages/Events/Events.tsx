@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 
+import dayjs from "dayjs";
+
 import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import usePageTitle from "@/hooks/utility/usePageTitle";
 
@@ -42,8 +44,7 @@ const Events = () => {
     );
 
     return allEvents.sort(
-      (a, b) =>
-        new Date(a.date.start).getTime() - new Date(b.date.start).getTime()
+      (a, b) => dayjs(a.date.start).valueOf() - dayjs(b.date.start).valueOf()
     );
   }, [events, eventsFree, lastEventDate]);
 

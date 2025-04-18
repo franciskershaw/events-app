@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import dayjs from "dayjs";
 
 import { CATEGORY_FREE } from "../../../constants/app";
@@ -101,8 +100,9 @@ interface ShareEventProps {
 }
 
 export const shareEvent = ({ event }: ShareEventProps) => {
-  const eventTime = format(new Date(event.date.start), "h:mmaaa");
-  const eventDay = format(new Date(event.date.start), "EEEE do MMM");
+  const formattedDate = dayjs(event.date.start);
+  const eventTime = formattedDate.format("h:mma");
+  const eventDay = formattedDate.format("dddd Do MMM");
 
   let message = `I'm going to ${event.title}`;
 

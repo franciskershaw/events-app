@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 
+import dayjs from "dayjs";
+
 import { CATEGORY_FREE } from "../../../constants/app";
 import useUser from "../../../hooks/user/useUser";
 import { filterUserEvents } from "../../../pages/Events/helpers/filterUserEvents";
@@ -60,8 +62,8 @@ export const useFilterEvents = ({
       );
 
       // Match event date range
-      const eventStartDate = new Date(event.date.start);
-      const eventEndDate = new Date(event.date.end || event.date.start);
+      const eventStartDate = dayjs(event.date.start).toDate();
+      const eventEndDate = dayjs(event.date.end || event.date.start).toDate();
 
       // Match parsed date range from query
       const matchesQueryDateRange =
@@ -76,8 +78,8 @@ export const useFilterEvents = ({
               startDateComponents,
               endDateComponents
             ) ||
-            (eventStartDate <= new Date(dateQuery.end) &&
-              eventEndDate >= new Date(dateQuery.start))
+            (eventStartDate <= dayjs(dateQuery.end).toDate() &&
+              eventEndDate >= dayjs(dateQuery.start).toDate())
           : matchesDateComponents(startDateComponents, eventStartDate) ||
             matchesDateComponents(startDateComponents, eventEndDate);
 
