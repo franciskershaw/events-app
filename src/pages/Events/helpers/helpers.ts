@@ -5,13 +5,19 @@ import { CATEGORY_FREE } from "../../../constants/app";
 import { Event } from "../../../types/globalTypes";
 import { EventFormValues } from "../hooks/useEventForm";
 
+// Helper to format date without timezone information
+const formatDateWithoutTimezone = (date: Date | null | undefined): string => {
+  if (!date) return "";
+  return dayjs(date).format("YYYY-MM-DDTHH:mm:ss");
+};
+
 export const transformEventFormValues = (
   values: EventFormValues & { copiedFrom?: string }
 ) => ({
   title: values.title,
   date: {
-    start: values.datetime,
-    end: values.endDatetime || values.datetime,
+    start: formatDateWithoutTimezone(values.datetime),
+    end: formatDateWithoutTimezone(values.endDatetime || values.datetime),
   },
   location: {
     venue: values.venue,
@@ -34,18 +40,6 @@ export const filterTodayEvents = (events: Event[]) => {
   return events.filter((event) => {
     const startDate = dayjs(event.date.start);
     const endDate = dayjs(event.date.end || event.date.start);
-
-    // For debugging in production
-    console.log("Event check:", {
-      title: event.title,
-      todayStr: today.format("YYYY-MM-DD"),
-      startStr: startDate.format("YYYY-MM-DD"),
-      endStr: endDate.format("YYYY-MM-DD"),
-      isSameStart: startDate.isSame(today, "day"),
-      isSameEnd: endDate.isSame(today, "day"),
-      spanning:
-        startDate.isBefore(today, "day") && endDate.isAfter(today, "day"),
-    });
 
     return (
       startDate.isSame(today, "day") ||
