@@ -33,7 +33,20 @@ export const filterTodayEvents = (events: Event[]) => {
   const today = dayjs().startOf("day");
   return events.filter((event) => {
     const startDate = dayjs(event.date.start);
-    const endDate = dayjs(event.date.end);
+    const endDate = dayjs(event.date.end || event.date.start);
+
+    // For debugging in production
+    console.log("Event check:", {
+      title: event.title,
+      todayStr: today.format("YYYY-MM-DD"),
+      startStr: startDate.format("YYYY-MM-DD"),
+      endStr: endDate.format("YYYY-MM-DD"),
+      isSameStart: startDate.isSame(today, "day"),
+      isSameEnd: endDate.isSame(today, "day"),
+      spanning:
+        startDate.isBefore(today, "day") && endDate.isAfter(today, "day"),
+    });
+
     return (
       startDate.isSame(today, "day") ||
       endDate.isSame(today, "day") ||
