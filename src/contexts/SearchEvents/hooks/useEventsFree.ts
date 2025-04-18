@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 
 import { eachDayOfInterval } from "date-fns";
+import dayjs from "dayjs";
 
 import {
   CATEGORY_ANNIVERSARY,
@@ -59,7 +60,7 @@ export const useEventsFree = ({
         end: new Date(event.date.end || event.date.start),
       }).forEach((day) => {
         holidayLocations.set(
-          day.toUTCString().split("T")[0],
+          dayjs(day).format("YYYY-MM-DD"),
           event.location?.city || LOCATION_DEFAULT
         );
       });
@@ -80,11 +81,11 @@ export const useEventsFree = ({
       eachDayOfInterval({
         start: new Date(event.date.start),
         end: new Date(event.date.end || event.date.start),
-      }).forEach((day) => eventDays.add(day.toUTCString().split("T")[0]));
+      }).forEach((day) => eventDays.add(dayjs(day).format("YYYY-MM-DD")));
     });
 
     let eventFreeDays = allDays.filter(
-      (day) => !eventDays.has(day.toUTCString().split("T")[0])
+      (day) => !eventDays.has(dayjs(day).format("YYYY-MM-DD"))
     );
 
     if (startDate) {
@@ -92,13 +93,16 @@ export const useEventsFree = ({
     }
 
     return eventFreeDays.map((day) => {
-      const dayKey = day.toUTCString().split("T")[0];
+      const dayKey = dayjs(day).format("YYYY-MM-DD");
       const locationCity = holidayLocations.get(dayKey) || LOCATION_DEFAULT;
 
       return {
-        _id: `free-${day.toUTCString()}`,
+        _id: `free-${dayjs(day).format("YYYY-MM-DDTHH:mm:ss")}`,
         title: "",
-        date: { start: day.toUTCString(), end: day.toUTCString() },
+        date: {
+          start: dayjs(day).format("YYYY-MM-DDTHH:mm:ss"),
+          end: dayjs(day).format("YYYY-MM-DDTHH:mm:ss"),
+        },
         location: { city: locationCity, venue: "" },
         category: {
           _id: CATEGORY_FREE,

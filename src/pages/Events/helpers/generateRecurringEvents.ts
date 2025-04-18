@@ -73,10 +73,10 @@ export const generateRecurringEvents = (
     // Clone the base event and update the date
     const newInstance = { ...event };
     newInstance.date = {
-      start: currentDate.toISOString(),
+      start: currentDate.format("YYYY-MM-DDTHH:mm:ss"),
       end: currentDate
         .add(dayjs(event.date.end).diff(dayjs(event.date.start)), "millisecond")
-        .toISOString(),
+        .format("YYYY-MM-DDTHH:mm:ss"),
     };
 
     instances.push(newInstance);
