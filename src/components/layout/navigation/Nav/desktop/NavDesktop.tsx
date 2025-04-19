@@ -15,10 +15,14 @@ export const NavDesktop = () => {
   const { logout } = useAuth();
   const { openEventModal } = useModals();
   const { setSidebarContent } = useSidebarContent();
+  const { openConnectionsModal } = useModals();
 
   return (
     <nav className="nav-desktop">
-      <button className="nav-link-wrapper">
+      <button
+        className="nav-link-wrapper"
+        onClick={() => openConnectionsModal()}
+      >
         <UsersInitials />
         {user?.name && <h3>{user.name}</h3>}
       </button>
