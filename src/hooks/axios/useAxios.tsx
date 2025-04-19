@@ -7,8 +7,17 @@ import { INVALID_ACCESS_TOKEN } from "@/constants/api";
 import queryKeys from "@/tanstackQuery/queryKeys";
 import { User } from "@/types/globalTypes";
 
+// For development on mobile over wifi
+const isDevelopmentNetwork =
+  import.meta.env.MODE === "development" &&
+  window.location.hostname !== "localhost";
+
+const apiBaseUrl = isDevelopmentNetwork
+  ? `http://${window.location.hostname}:5500/api`
+  : import.meta.env.VITE_API_URL;
+
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: apiBaseUrl,
   headers: {
     "Content-Type": "application/json",
   },
