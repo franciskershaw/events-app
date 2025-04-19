@@ -2,6 +2,7 @@ import React from "react";
 
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import dayjs from "dayjs";
 import { describe, expect, it, vi } from "vitest";
 
 import { Time } from "../time";
@@ -114,9 +115,7 @@ describe("Time component", () => {
 
   it("renders with the provided Date time value", () => {
     // Create a date with a specific time
-    const date = new Date();
-    date.setHours(9);
-    date.setMinutes(45);
+    const date = dayjs().hour(9).minute(45).toDate();
 
     render(<Time value={date} />);
 

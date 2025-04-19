@@ -79,8 +79,8 @@ export const useEventsFree = ({
         return;
 
       eachDayOfInterval({
-        start: new Date(event.date.start),
-        end: new Date(event.date.end || event.date.start),
+        start: dayjs(event.date.start).toDate(),
+        end: dayjs(event.date.end || event.date.start).toDate(),
       }).forEach((day) => eventDays.add(dayjs(day).format("YYYY-MM-DD")));
     });
 

@@ -17,7 +17,7 @@ describe("DateTime component", () => {
 
   // Test 2: Renders with formatted date when value is provided
   it("renders with formatted date when value is provided", () => {
-    const testDate = new Date(2023, 5, 15); // June 15, 2023
+    const testDate = dayjs("2023-06-15").toDate();
     render(<DateTime value={testDate} />);
 
     // Check for the exact format that the component uses (with 'th')
@@ -57,7 +57,7 @@ describe("DateTime component", () => {
 
   // Test 5: Handles clear functionality
   it("shows clear button when allowClear is true and value exists", () => {
-    const testDate = new Date(2023, 5, 15);
+    const testDate = dayjs("2023-06-15").toDate();
     render(<DateTime value={testDate} allowClear />);
 
     // There should be a clear button (typically with an X icon)
