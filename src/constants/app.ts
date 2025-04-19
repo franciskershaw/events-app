@@ -1,4 +1,4 @@
-export const NAV_HEIGHT = "82px";
+export const NAV_HEIGHT = "80px";
 
 // TODO: Replace with category data restructure
 export const CATEGORY_ANNIVERSARY = "Anniversary";
