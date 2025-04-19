@@ -23,7 +23,7 @@ const EventCards = () => {
   const filteredEventsWithoutPast = filteredEvents.filter((event) => {
     const eventEndDate = dayjs(event.date.end);
     const today = dayjs().startOf("day");
-    return eventEndDate.isSameOrAfter(today);
+    return eventEndDate.isSameOrAfter(today, "day");
   });
 
   const todayEvents = useMemo(

@@ -103,7 +103,7 @@ const DateTime = React.forwardRef<HTMLInputElement, DateTimeProps>(
 
     const getInputValue = () => {
       if (!effectiveValue) return "";
-      return effectiveValue.toISOString();
+      return dayjs(effectiveValue).format("YYYY-MM-DDTHH:mm:ss");
     };
 
     return (

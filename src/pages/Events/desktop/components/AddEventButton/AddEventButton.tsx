@@ -16,7 +16,9 @@ export const AddEventButton = ({ text = "Add event +" }) => {
             _id: "",
             title: "",
             date: {
-              start: activeDay ? activeDay.startOf("day").toISOString() : "",
+              start: activeDay
+                ? activeDay.startOf("day").format("YYYY-MM-DDTHH:mm:ss")
+                : "",
               end: "",
             },
             category: { _id: "", name: "", icon: "" },
