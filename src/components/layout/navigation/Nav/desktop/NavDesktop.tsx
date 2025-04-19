@@ -17,6 +17,12 @@ export const NavDesktop = () => {
   const { setSidebarContent } = useSidebarContent();
   const { openConnectionsModal } = useModals();
 
+  const { setSidebarOpenNavClick } = useSidebarContent();
+  const handleNavClick = (content: "events" | "search") => {
+    setSidebarContent(content);
+    setSidebarOpenNavClick(true);
+  };
+
   return (
     <nav className="nav-desktop">
       <button
@@ -34,7 +40,7 @@ export const NavDesktop = () => {
       </button>
       <Link
         to="/events"
-        onClick={() => setSidebarContent("events")}
+        onClick={() => handleNavClick("events")}
         className="nav-link-wrapper"
       >
         <div className="nav-link-icon">
@@ -44,7 +50,7 @@ export const NavDesktop = () => {
       </Link>
       <Link
         to="/events"
-        onClick={() => setSidebarContent("search")}
+        onClick={() => handleNavClick("search")}
         className="nav-link-wrapper"
       >
         <div className="nav-link-icon">

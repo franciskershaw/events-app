@@ -18,6 +18,8 @@ import {
 import { useIsMobile } from "@/hooks/utility/use-mobile";
 import { cn } from "@/lib/utils";
 
+import { useSidebarContent } from "../../contexts/Sidebar/desktop/SidebarContentContext";
+
 const TRIGGER_WIDTH = "32px";
 const SIDEBAR_COOKIE_NAME = "sidebar:state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -89,6 +91,14 @@ const SidebarProvider = React.forwardRef<
       },
       [setOpenProp, open]
     );
+
+    const { sidebarOpenNavClick } = useSidebarContent();
+
+    React.useEffect(() => {
+      if (sidebarOpenNavClick) {
+        setOpen(true);
+      }
+    }, [sidebarOpenNavClick, setOpen]);
 
     // Helper to toggle the sidebar.
     const toggleSidebar = React.useCallback(() => {
