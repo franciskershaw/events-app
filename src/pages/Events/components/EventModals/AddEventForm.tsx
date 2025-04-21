@@ -132,22 +132,20 @@ const AddEventForm = ({ formId }: { formId: string }) => {
         {form.watch("recurrence.isRecurring") === true && (
           <div className="p-4 pt-2 border-y space-y-2">
             <FormInput name="recurrence.pattern.frequency" label="Frequency*">
-              <div>
-                <Combobox
-                  value={form.watch("recurrence.pattern.frequency")}
-                  onChange={(value) =>
-                    form.setValue(
-                      "recurrence.pattern.frequency",
-                      value as Frequency,
-                      {
-                        shouldValidate: true,
-                      }
-                    )
-                  }
-                  options={recurringFrequencySelectOptions}
-                  placeholder="Select a frequency"
-                />
-              </div>
+              <Combobox
+                value={form.watch("recurrence.pattern.frequency")}
+                onChange={(value) =>
+                  form.setValue(
+                    "recurrence.pattern.frequency",
+                    value as Frequency,
+                    {
+                      shouldValidate: true,
+                    }
+                  )
+                }
+                options={recurringFrequencySelectOptions}
+                placeholder="Select a frequency"
+              />
             </FormInput>
 
             <FormInput

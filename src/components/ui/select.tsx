@@ -18,9 +18,9 @@ import {
   FormMessage,
 } from "./form";
 
-const Select = (props: React.ComponentPropsWithoutRef<typeof SelectPrimitive.Root>) => (
-  <SelectPrimitive.Root {...props} />
-);
+const Select = (
+  props: React.ComponentPropsWithoutRef<typeof SelectPrimitive.Root>
+) => <SelectPrimitive.Root {...props} />;
 Select.displayName = SelectPrimitive.Root.displayName;
 
 const SelectGroup = SelectPrimitive.Group;
@@ -225,10 +225,7 @@ interface BasicSelectProps {
   onBlur?: () => void;
 }
 
-const BasicSelect = React.forwardRef<
-  HTMLButtonElement,
-  BasicSelectProps
->(
+const BasicSelect = React.forwardRef<HTMLButtonElement, BasicSelectProps>(
   (
     {
       value,
