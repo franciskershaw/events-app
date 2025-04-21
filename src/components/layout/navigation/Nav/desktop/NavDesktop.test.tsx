@@ -114,6 +114,8 @@ describe("NavDesktop Component", () => {
     vi.mocked(useSidebarContent).mockReturnValue({
       sidebarContent: "events",
       setSidebarContent: setSidebarContentMock,
+      sidebarOpenNavClick: false,
+      setSidebarOpenNavClick: vi.fn(),
     });
 
     vi.mocked(useLocation).mockReturnValue({
@@ -168,6 +170,14 @@ describe("NavDesktop Component", () => {
   });
 
   it("sets sidebar content to Events when clicking the Events link", () => {
+    const setSidebarOpenNavClickMock = vi.fn();
+    vi.mocked(useSidebarContent).mockReturnValue({
+      sidebarContent: "events",
+      setSidebarContent: setSidebarContentMock,
+      sidebarOpenNavClick: false,
+      setSidebarOpenNavClick: setSidebarOpenNavClickMock,
+    });
+
     render(
       <TestRouter>
         <NavDesktop />
@@ -179,6 +189,8 @@ describe("NavDesktop Component", () => {
 
     // Verify that setSidebarContent was called with 'events'
     expect(setSidebarContentMock).toHaveBeenCalledWith("events");
+    // Verify that setSidebarOpenNavClick was called with true
+    expect(setSidebarOpenNavClickMock).toHaveBeenCalledWith(true);
   });
 
   it("sets sidebar content to Search when clicking the Search link", () => {
