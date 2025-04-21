@@ -8,11 +8,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useModals } from "@/contexts/Modals/ModalsContext";
+import { useIsMobile } from "@/hooks/utility/use-mobile";
 
 import AddEventForm from "./AddEventForm";
 
 const AddEventModal = () => {
   const { selectedEvent, closeModal, isEventModalOpen, mode } = useModals();
+  const isMobile = useIsMobile();
   const id = selectedEvent?._id || "addEvent";
 
   const { title, button } = (() => {
@@ -38,9 +40,19 @@ const AddEventModal = () => {
     }
   })();
 
+  // Prevent auto-focus on mobile devices to avoid keyboard issues
+  const handleOpenAutoFocus = (event: Event) => {
+    if (isMobile) {
+      event.preventDefault();
+    }
+  };
+
   return (
     <Dialog open={isEventModalOpen} onOpenChange={closeModal}>
-      <DialogContent className="flex flex-col max-h-dvh md:max-h-[90dvh] p-0 bg-background">
+      <DialogContent
+        className="flex flex-col max-h-dvh md:max-h-[90dvh] p-0 bg-background"
+        onOpenAutoFocus={handleOpenAutoFocus}
+      >
         <DialogHeader className="px-6 pt-6">
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
