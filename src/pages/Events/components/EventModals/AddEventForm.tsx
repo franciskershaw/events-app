@@ -174,6 +174,7 @@ const AddEventForm = ({ formId }: { formId: string }) => {
             }
             options={eventCategorySelectOptions}
             placeholder="Select a category"
+            modal={true}
           />
         </FormInput>
 

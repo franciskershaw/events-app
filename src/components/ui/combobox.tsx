@@ -33,6 +33,7 @@ interface ComboboxProps {
   id?: string;
   onBlur?: () => void;
   ref?: React.ForwardedRef<HTMLButtonElement>;
+  modal?: boolean;
 }
 
 const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
@@ -48,6 +49,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
       name,
       id,
       onBlur,
+      modal = false,
       ...props
     },
     ref
@@ -93,7 +95,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
     }
 
     return (
-      <Popover open={open} onOpenChange={handleOpenChange}>
+      <Popover modal={modal} open={open} onOpenChange={handleOpenChange}>
         <PopoverTrigger asChild>
           <Button
             ref={ref}
