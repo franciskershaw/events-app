@@ -33,13 +33,15 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
       {isMobile ? (
         <>
           <NavMobile />
-          <Button
-            size="round"
-            onClick={() => openEventModal()}
-            className={`fixed bottom-4 right-4 z-40 h-14 w-14 shadow-lg ${isExpanded ? "opacity-0 pointer-events-none" : "opacity-100"}`}
-          >
-            <FaPlus className="h-5 w-5" />
-          </Button>
+          {isEventsPage && (
+            <Button
+              size="round"
+              onClick={() => openEventModal()}
+              className={`fixed bottom-4 right-4 z-40 h-14 w-14 shadow-lg ${isExpanded ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+            >
+              <FaPlus className="h-5 w-5" />
+            </Button>
+          )}
         </>
       ) : (
         <>

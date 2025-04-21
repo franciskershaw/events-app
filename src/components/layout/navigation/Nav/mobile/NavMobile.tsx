@@ -1,4 +1,5 @@
 import { Calendar, LogOut, Users } from "lucide-react";
+import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
@@ -19,7 +20,13 @@ const NavMobile = () => {
   const { user } = useUser();
   const { logout } = useAuth();
 
+  // Reset scroll position when navigating to a new page
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   const handleLinkClick = () => {
+    // Store current scroll position before toggling sidebar
     toggleSidebar();
   };
 
