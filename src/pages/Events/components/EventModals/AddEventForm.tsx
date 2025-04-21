@@ -169,16 +169,14 @@ const AddEventForm = ({ formId }: { formId: string }) => {
         )}
 
         <FormInput name="category" label="Category*">
-          <div>
-            <Combobox
-              value={form.watch("category")}
-              onChange={(value) =>
-                form.setValue("category", value, { shouldValidate: true })
-              }
-              options={eventCategorySelectOptions}
-              placeholder="Select a category"
-            />
-          </div>
+          <Combobox
+            value={form.watch("category")}
+            onChange={(value) =>
+              form.setValue("category", value, { shouldValidate: true })
+            }
+            options={eventCategorySelectOptions}
+            placeholder="Select a category"
+          />
         </FormInput>
 
         <FormInput name="venue" label="Venue">

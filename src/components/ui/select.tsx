@@ -18,7 +18,10 @@ import {
   FormMessage,
 } from "./form";
 
-const Select = SelectPrimitive.Root;
+const Select = (props: React.ComponentPropsWithoutRef<typeof SelectPrimitive.Root>) => (
+  <SelectPrimitive.Root {...props} />
+);
+Select.displayName = SelectPrimitive.Root.displayName;
 
 const SelectGroup = SelectPrimitive.Group;
 
@@ -186,6 +189,9 @@ const FormSelect = ({
             name={name}
             onValueChange={field.onChange}
             value={field.value}
+            onOpenChange={(open) => {
+              if (!open && field.onBlur) field.onBlur();
+            }}
           >
             <FormControl>
               <SelectTrigger>
@@ -214,33 +220,67 @@ interface BasicSelectProps {
   placeholder?: string;
   disabled?: boolean;
   side?: "bottom" | "top" | "right" | "left" | undefined;
+  name?: string;
+  id?: string;
+  onBlur?: () => void;
 }
 
-const BasicSelect = ({
-  value,
-  onChange,
-  options,
-  placeholder = "Select an option",
-  disabled = false,
-  side = undefined,
-}: BasicSelectProps) => {
-  return (
-    <Select value={value} onValueChange={onChange} disabled={disabled}>
-      <SelectTrigger className="w-full" disabled={options.length === 0 && true}>
-        <ChevronsUpDown className="mr-4 h-4 w-4 flex-shrink-0" />
-        <SelectValue placeholder={placeholder} />
-        {options.length === 0 && value}
-      </SelectTrigger>
-      <SelectContent side={side}>
-        {options.map((option) => (
-          <SelectItem key={option.value} value={option.value}>
-            {option.label}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  );
-};
+const BasicSelect = React.forwardRef<
+  HTMLButtonElement,
+  BasicSelectProps
+>(
+  (
+    {
+      value,
+      onChange,
+      options,
+      placeholder = "Select an option",
+      disabled = false,
+      side = undefined,
+      name,
+      id,
+      onBlur,
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <Select
+        value={value}
+        onValueChange={(newValue) => {
+          onChange(newValue);
+          if (onBlur) onBlur();
+        }}
+        disabled={disabled}
+        name={name}
+        onOpenChange={(open) => {
+          if (!open && onBlur) onBlur();
+        }}
+      >
+        <SelectTrigger
+          ref={ref}
+          className="w-full"
+          disabled={options.length === 0 && true}
+          id={id}
+          {...props}
+        >
+          <ChevronsUpDown className="mr-4 h-4 w-4 flex-shrink-0" />
+          <SelectValue placeholder={placeholder} />
+          {options.length === 0 && value}
+        </SelectTrigger>
+        <SelectContent side={side}>
+          {options.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    );
+  }
+);
+
+BasicSelect.displayName = "BasicSelect";
 
 export {
   BasicSelect,
