@@ -13,7 +13,7 @@ const isDevelopmentNetwork =
   window.location.hostname !== "localhost";
 
 const apiBaseUrl = isDevelopmentNetwork
-  ? `http://${window.location.hostname}:5500/api`
+  ? import.meta.env.VITE_API_URL_NETWORK
   : import.meta.env.VITE_API_URL;
 
 const axiosInstance = axios.create({
