@@ -17,7 +17,7 @@ const Connections = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-8 px-7 lg:px-28 py-7">
+      <div className="flex flex-col gap-8 px-7 lg:px-28 py-7 overflow-x-hidden">
         <div className="flex items-center gap-2">
           <Users />
           <Heading type="h1">Connections</Heading>

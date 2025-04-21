@@ -19,7 +19,7 @@ const ConnectionsModal = () => {
 
   return (
     <Dialog open={isConnectionsModalOpen} onOpenChange={closeModal}>
-      <DialogContent className="flex flex-col max-h-dvh md:max-h-[90dvh] p-0">
+      <DialogContent className="flex flex-col max-h-dvh md:max-h-[90dvh] md:max-w-2xl p-0">
         <DialogHeader className="px-6 pt-6">
           <DialogTitle>Connections</DialogTitle>
         </DialogHeader>
