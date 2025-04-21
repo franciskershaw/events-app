@@ -8,6 +8,7 @@ interface LoadingOverlayProps {
   message?: string;
   opacity?: "light" | "medium" | "dark";
   spinnerSize?: "sm" | "md" | "lg";
+  fixedInDialog?: boolean;
 }
 
 export const LoadingOverlay = ({
@@ -16,6 +17,7 @@ export const LoadingOverlay = ({
   message,
   opacity = "medium",
   spinnerSize = "lg",
+  fixedInDialog = false,
 }: LoadingOverlayProps) => {
   // Map opacity names to actual values
   const opacityValues = {
@@ -31,7 +33,11 @@ export const LoadingOverlay = ({
       className={cn(
         "flex flex-col items-center justify-center backdrop-blur-[1px]",
         opacityValues[opacity],
-        fullPage ? "fixed inset-0 z-50" : "absolute inset-0",
+        fullPage
+          ? "fixed inset-0 z-50"
+          : fixedInDialog
+            ? "fixed inset-0 z-[100]"
+            : "absolute inset-0",
         className
       )}
     >
