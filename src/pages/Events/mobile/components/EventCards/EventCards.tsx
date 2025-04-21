@@ -67,11 +67,11 @@ const EventCards = () => {
         <div key={month}>
           <DateScroller date={monthEvents[0].date.start} />
           <div className="space-y-2 px-4 py-5 bg-primary-lightest">
-            {monthEvents.map((event) =>
+            {monthEvents.map((event, index) =>
               event.category._id === CATEGORY_FREE ? (
                 <EventFreeCard key={event._id} event={event} />
               ) : (
-                <EventCard key={event._id} event={event} />
+                <EventCard key={`${event._id}${index}`} event={event} />
               )
             )}
           </div>

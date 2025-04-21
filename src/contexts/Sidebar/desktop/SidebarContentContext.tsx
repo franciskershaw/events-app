@@ -3,6 +3,8 @@ import React, { createContext, useContext, useState } from "react";
 interface SidebarContentContextType {
   sidebarContent: "events" | "search";
   setSidebarContent: (content: "events" | "search") => void;
+  sidebarOpenNavClick: boolean;
+  setSidebarOpenNavClick: (open: boolean) => void;
 }
 
 const SidebarContentContext = createContext<
@@ -27,10 +29,24 @@ export const SidebarContentProvider = ({
   const [sidebarContent, setSidebarContent] = useState<"events" | "search">(
     "events"
   );
+  const [sidebarOpenNavClick, _setSidebarOpenNavClick] = useState(false);
+
+  const setSidebarOpenNavClick = (open: boolean) => {
+    _setSidebarOpenNavClick(open);
+    if (open) {
+      const timer = setTimeout(() => _setSidebarOpenNavClick(false), 100);
+      return () => clearTimeout(timer);
+    }
+  };
 
   return (
     <SidebarContentContext.Provider
-      value={{ sidebarContent, setSidebarContent }}
+      value={{
+        sidebarContent,
+        setSidebarContent,
+        sidebarOpenNavClick,
+        setSidebarOpenNavClick,
+      }}
     >
       {children}
     </SidebarContentContext.Provider>
