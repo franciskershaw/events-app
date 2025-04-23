@@ -103,9 +103,6 @@
       transform: translateY(-50%);
     }
   }
-  body {
-    @apply bg-background text-foreground;
-  }
 
   /* Event card styling */
   .event {
@@ -181,6 +178,10 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-primary-lightest text-foreground;
+    @apply bg-primary-lightest text-foreground overflow-hidden;
+
+    main {
+      @apply overflow-auto;
+    }
   }
 }
