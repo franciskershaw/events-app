@@ -95,7 +95,7 @@ const EventCard = ({ event }: { event: Event }) => {
           </div>
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">{formattedDate}</span>
-            <Badge variant="secondary" className="p-0">
+            <Badge variant="outlineNoBorder" className="p-0">
               {getCategoryIcon(category.name)}
               <span className="ml-1">{category.name}</span>
             </Badge>

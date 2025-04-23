@@ -53,7 +53,7 @@ export const EventsSummary = ({
           <>
             {events.length > 0 ? (
               <>
-                <ul>
+                <ul className="[&>*:first-child]:pt-0">
                   {events.map((event) => (
                     <EventCard event={event} key={event._id} />
                   ))}

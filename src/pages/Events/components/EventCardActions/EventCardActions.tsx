@@ -89,104 +89,108 @@ const EventCardActions = ({ event }: EventCardActionsProps) => {
   return (
     <div className="flex flex-wrap gap-1.5 justify-center">
       {/* Top row - Edit, Copy, Delete */}
-      {ownsEvent && (
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={() => openEventModal(event, "edit")}
-          className="text-xs px-2 py-1 h-7 w-[84px]"
-        >
-          <FaEdit className="mr-1 text-[10px]" />
-          Edit
-        </Button>
-      )}
-      <Button
-        size="sm"
-        variant="outline"
-        onClick={() =>
-          openEventModal(event, ownsEvent ? "copy" : "copyFromConnection")
-        }
-        className="text-xs px-2 py-1 h-7 w-[84px]"
-      >
-        <FaCopy className="mr-1 text-[10px]" />
-        Copy
-      </Button>
-      {ownsEvent && (
-        <Button
-          size="sm"
-          variant="destructive"
-          onClick={() => openDeleteEventModal(event)}
-          className="text-xs px-2 py-1 h-7 w-[84px]"
-        >
-          <FaTrash className="mr-1 text-[10px]" />
-          Delete
-        </Button>
-      )}
-
-      {/* Bottom row - Share, Public/Private, Confirm */}
-      <Button
-        size="sm"
-        onClick={handleShare}
-        variant={
-          buttonStatus === "success"
-            ? "success"
-            : buttonStatus === "error"
-              ? "destructive"
-              : "outline"
-        }
-        className={cn(
-          "text-xs px-2 py-1 h-7 transition-all duration-300 w-[84px]",
-          buttonStatus === "success" ? "bg-success" : "",
-          buttonStatus === "error" ? "bg-destructive" : ""
+      <div className="flex gap-1.5 justify-center">
+        {ownsEvent && (
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => openEventModal(event, "edit")}
+            className="text-xs px-2 py-1 h-7 w-[84px]"
+          >
+            <FaEdit className="mr-1 text-[10px]" />
+            Edit
+          </Button>
         )}
-      >
-        {getShareButtonContent()}
-      </Button>
-      {ownsEvent && (
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={() => makeEventPrivate(event._id)}
-          className="text-xs px-2 py-1 h-7 w-[84px]"
-        >
-          {event.private ? (
-            <>
-              <FaUnlock className="mr-1 text-[10px]" />
-              Public
-            </>
-          ) : (
-            <>
-              <FaLock className="mr-1 text-[10px]" />
-              Private
-            </>
-          )}
-        </Button>
-      )}
-      {ownsEvent && (
         <Button
           size="sm"
           variant="outline"
           onClick={() =>
-            toggleEventConfirmation({
-              eventId: event._id,
-              unConfirmed: event.unConfirmed,
-            })
+            openEventModal(event, ownsEvent ? "copy" : "copyFromConnection")
           }
           className="text-xs px-2 py-1 h-7 w-[84px]"
         >
-          {event.unConfirmed ? (
-            <>
-              <FaThumbsUp className="mr-1 text-[10px]" />
-              Confirm
-            </>
-          ) : (
-            <>
-              <FaQuestion className="mr-1 text-[10px]" />
-              <span className="text-xxs">Draft</span>
-            </>
-          )}
+          <FaCopy className="mr-1 text-[10px]" />
+          Copy
         </Button>
-      )}
+        {ownsEvent && (
+          <Button
+            size="sm"
+            variant="destructive"
+            onClick={() => openDeleteEventModal(event)}
+            className="text-xs px-2 py-1 h-7 w-[84px]"
+          >
+            <FaTrash className="mr-1 text-[10px]" />
+            Delete
+          </Button>
+        )}
+      </div>
+
+      {/* Bottom row - Share, Public/Private, Confirm */}
+      <div className="flex gap-1.5 justify-center">
+        <Button
+          size="sm"
+          onClick={handleShare}
+          variant={
+            buttonStatus === "success"
+              ? "success"
+              : buttonStatus === "error"
+                ? "destructive"
+                : "outline"
+          }
+          className={cn(
+            "text-xs px-2 py-1 h-7 transition-all duration-300 w-[84px]",
+            buttonStatus === "success" ? "bg-success" : "",
+            buttonStatus === "error" ? "bg-destructive" : ""
+          )}
+        >
+          {getShareButtonContent()}
+        </Button>
+        {ownsEvent && (
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => makeEventPrivate(event._id)}
+            className="text-xs px-2 py-1 h-7 w-[84px]"
+          >
+            {event.private ? (
+              <>
+                <FaUnlock className="mr-1 text-[10px]" />
+                Public
+              </>
+            ) : (
+              <>
+                <FaLock className="mr-1 text-[10px]" />
+                Private
+              </>
+            )}
+          </Button>
+        )}
+        {ownsEvent && (
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() =>
+              toggleEventConfirmation({
+                eventId: event._id,
+                unConfirmed: event.unConfirmed,
+              })
+            }
+            className="text-xs px-2 py-1 h-7 w-[84px]"
+          >
+            {event.unConfirmed ? (
+              <>
+                <FaThumbsUp className="mr-1 text-[10px]" />
+                Confirm
+              </>
+            ) : (
+              <>
+                <FaQuestion className="mr-1 text-[10px]" />
+                <span className="text-xxs">Draft</span>
+              </>
+            )}
+          </Button>
+        )}
+      </div>
     </div>
   );
 };

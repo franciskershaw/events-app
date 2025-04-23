@@ -128,3 +128,7 @@ The application is deployed using [your deployment platform] and follows a CI/CD
 - Recurring events
 - Notifications / reminders
 - Access to past events data
+
+## 🎨 Colour
+
+...
