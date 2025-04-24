@@ -27,7 +27,7 @@ const AddEventForm = ({ formId }: { formId: string }) => {
 
   return (
     <div className="relative">
-      {isSubmitting && <LoadingOverlay />}
+      {isSubmitting && <LoadingOverlay fixedInDialog />}
       <Form {...{ form, onSubmit, id: formId }}>
         {(copiedFromId || (mode == "edit" && copiedFromId === "")) && (
           <FormDescription className="mb-4 bg-muted p-4 rounded-lg grid grid-cols-1 gap-2">
