@@ -14,9 +14,7 @@
     --popover: 0 100% 100%; /* White */
     --popover-foreground: 0 100% 0%; /* Black */
 
-    /*--primary: 158 49% 47%; /* Mint Green */
     --primary: 160 50% 59%; /* Mint Green */
-    /*--primary-foreground: 0 100% 0%; /* Black */
     --primary-foreground: 204 12% 8%; /* Black */
     --primary-light: 156 52% 74%; /* Celadon */
     --primary-lightest: 156 52% 94%; /* Mint Cream */
@@ -51,7 +49,7 @@
     --ring: 0 100% 0%; /* Black */
 
     /* Sidebar Colors */
-    --sidebar-background: 156, 52%, 94%; /* Mint Cream */
+    --sidebar-background: 0 100% 100%; /* White */
     --sidebar-foreground: 240 100% 10%; /* unused */
     --sidebar-primary: 240 100% 50%; /* unused */
     --sidebar-primary-foreground: 0 100% 100%; /* unused */
@@ -92,9 +90,18 @@
 @layer base {
   * {
     @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
+
+    ol {
+      @apply list-inside;
+    }
+    ol li {
+      @apply relative pl-4;
+    }
+    ol li::before {
+      content: "";
+      @apply absolute left-0 top-[0.75em] h-2 w-2 rounded-full bg-highlight;
+      transform: translateY(-50%);
+    }
   }
 
   /* Event card styling */
@@ -171,6 +178,10 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-primary-lightest text-foreground;
+    @apply bg-primary-lightest text-foreground md:overflow-hidden;
+
+    main {
+      @apply md:overflow-auto;
+    }
   }
 }
