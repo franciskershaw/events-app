@@ -178,10 +178,10 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-primary-lightest text-foreground overflow-hidden;
+    @apply bg-primary-lightest text-foreground md:overflow-hidden;
 
     main {
-      @apply overflow-auto;
+      @apply md:overflow-auto;
     }
   }
 }
