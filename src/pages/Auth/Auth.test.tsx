@@ -1,9 +1,10 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import useUser from "@/hooks/user/useUser";
+import { TestMemoryRouter } from "@/test/TestRouter";
 import { User } from "@/types/globalTypes";
 
 import Auth from "./Auth";
@@ -37,18 +38,6 @@ const createMockUserHook = (user: User | null) => ({
   updateUser: vi.fn(),
   clearUser: vi.fn().mockResolvedValue(undefined),
 });
-
-// Custom test router with future flags to avoid warnings
-const TestMemoryRouter = ({ children }: { children: React.ReactNode }) => (
-  <MemoryRouter
-    future={{
-      v7_startTransition: true,
-      v7_relativeSplatPath: true,
-    }}
-  >
-    {children}
-  </MemoryRouter>
-);
 
 describe("Auth", () => {
   // Set up window.location.href mock
