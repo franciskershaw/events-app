@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, MemoryRouter } from "react-router-dom";
 
 /**
  * A test router wrapper that includes the future flags to prevent warnings
@@ -15,3 +15,19 @@ export const TestRouter = ({ children }: { children: ReactNode }) => {
     </BrowserRouter>
   );
 };
+
+// Custom test router with future flags to avoid warnings
+export const TestMemoryRouter = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => (
+  <MemoryRouter
+    future={{
+      v7_startTransition: true,
+      v7_relativeSplatPath: true,
+    }}
+  >
+    {children}
+  </MemoryRouter>
+);
