@@ -17,11 +17,10 @@ import { Button } from "@/components/ui/button";
 import { useModals } from "@/contexts/Modals/ModalsContext";
 import useUser from "@/hooks/user/useUser";
 import { cn } from "@/lib/utils";
+import { shareEvent } from "@/pages/Events/helpers/helpers";
+import useMakeEventPrivate from "@/pages/Events/hooks/useMakeEventPrivate";
+import useToggleConfirmEvent from "@/pages/Events/hooks/useToggleConfirmEvent";
 import { Event } from "@/types/globalTypes";
-
-import { shareEvent } from "../../helpers/helpers";
-import useMakeEventPrivate from "../../hooks/useMakeEventPrivate";
-import useToggleConfirmEvent from "../../hooks/useToggleConfirmEvent";
 
 interface EventCardActionsProps {
   event: Event;

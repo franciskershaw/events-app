@@ -6,8 +6,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-
-import Filters from "../../../components/Filters/Filters";
+import Filters from "@/pages/Events/components/global/Filters/Filters";
 
 const FiltersDrawer = () => {
   return (

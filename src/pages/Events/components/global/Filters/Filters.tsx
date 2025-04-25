@@ -2,13 +2,12 @@ import { FaRegCalendar } from "react-icons/fa";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Combobox } from "@/components/ui/combobox";
 import { DateTime } from "@/components/ui/date-time";
-
-import { Combobox } from "../../../../components/ui/combobox";
-import LongPress from "../../../../components/utility/LongPress/LongPress";
-import { CATEGORY_FREE } from "../../../../constants/app";
-import { useSearch } from "../../../../contexts/SearchEvents/SearchEventsContext";
-import useFilters from "./useFilters";
+import LongPress from "@/components/utility/LongPress/LongPress";
+import { CATEGORY_FREE } from "@/constants/app";
+import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
+import useFilters from "@/pages/Events/components/global/Filters/useFilters";
 
 const Filters = () => {
   const {

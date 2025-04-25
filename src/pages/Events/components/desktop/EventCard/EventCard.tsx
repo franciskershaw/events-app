@@ -2,12 +2,11 @@ import { useState } from "react";
 
 import { motion } from "framer-motion";
 
+import { getCategoryIcon } from "@/lib/icons";
+import { formatDate, formatTime } from "@/lib/utils";
+import EventCardActions from "@/pages/Events/components/global/EventCardActions/EventCardActions";
+import { UserEventInitials } from "@/pages/Events/components/global/UserEventInitials/UserEventInitials";
 import { Event } from "@/types/globalTypes";
-
-import { getCategoryIcon } from "../../../../../lib/icons";
-import { formatDate, formatTime } from "../../../../../lib/utils";
-import EventCardActions from "../../../components/EventCardActions/EventCardActions";
-import { UserEventInitials } from "../../../components/UserEventInitials/UserEventInitials";
 
 interface EventCardProps {
   event: Event;

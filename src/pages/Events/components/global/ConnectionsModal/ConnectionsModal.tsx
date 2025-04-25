@@ -8,9 +8,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useModals } from "@/contexts/Modals/ModalsContext";
-
-import useUser from "../../../../hooks/user/useUser";
-import ConnectionListItem from "../../../Connections/components/ConnectionListItem/ConnectionListItem";
+import useUser from "@/hooks/user/useUser";
+import ConnectionListItem from "@/pages/Connections/components/ConnectionListItem/ConnectionListItem";
 
 const ConnectionsModal = () => {
   const { closeModal, isConnectionsModalOpen } = useModals();

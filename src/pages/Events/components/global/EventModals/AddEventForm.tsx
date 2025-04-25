@@ -1,15 +1,14 @@
 import dayjs from "dayjs";
 
+import { Combobox } from "@/components/ui/combobox";
 import { DateTime } from "@/components/ui/date-time";
 import { Form, FormDescription, FormInput } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-
-import { Combobox } from "../../../../components/ui/combobox";
-import { Frequency } from "../../../../types/globalTypes";
-import useEventForm from "../../hooks/useEventForm";
+import useEventForm from "@/pages/Events/hooks/useEventForm";
+import { Frequency } from "@/types/globalTypes";
 
 const AddEventForm = ({ formId }: { formId: string }) => {
   const {

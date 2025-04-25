@@ -79,17 +79,23 @@ vi.mock("@/components/ui/button", () => ({
   ),
 }));
 
-vi.mock("@/pages/Events/components/EventModals/AddEventModal", () => ({
+vi.mock("@/pages/Events/components/global/EventModals/AddEventModal", () => ({
   default: () => <div data-testid="add-event-modal">AddEventModal</div>,
 }));
 
-vi.mock("@/pages/Events/components/EventModals/DeleteEventModal", () => ({
-  default: () => <div data-testid="delete-event-modal">DeleteEventModal</div>,
-}));
+vi.mock(
+  "@/pages/Events/components/global/EventModals/DeleteEventModal",
+  () => ({
+    default: () => <div data-testid="delete-event-modal">DeleteEventModal</div>,
+  })
+);
 
-vi.mock("@/pages/Events/components/ConnectionsModal/ConnectionsModal", () => ({
-  default: () => <div data-testid="connections-modal">ConnectionsModal</div>,
-}));
+vi.mock(
+  "@/pages/Events/components/global/ConnectionsModal/ConnectionsModal",
+  () => ({
+    default: () => <div data-testid="connections-modal">ConnectionsModal</div>,
+  })
+);
 
 describe("SharedLayout Component", () => {
   const openEventModalMock = vi.fn();

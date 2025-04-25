@@ -1,8 +1,7 @@
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { getInitials } from "@/components/user/UserInitials/UserInitials";
+import useIsUserEvent from "@/hooks/user/useIsUserEvent";
 import { Event } from "@/types/globalTypes";
-
-import { Avatar, AvatarFallback } from "../../../../components/ui/avatar";
-import { getInitials } from "../../../../components/user/UserInitials/UserInitials";
-import useIsUserEvent from "../../../../hooks/user/useIsUserEvent";
 
 export const UserEventInitials = ({ event }: { event: Event }) => {
   const isUserEvent = useIsUserEvent(event);

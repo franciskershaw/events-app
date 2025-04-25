@@ -1,4 +1,4 @@
-import { EmptyState } from "../../../components/EmptyState/EmptyState";
+import { EmptyState } from "@/pages/Events/components/global/EmptyState/EmptyState";
 
 export const EmptyStateNoEvents = () => {
   return (
