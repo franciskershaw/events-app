@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 
-interface SidebarContentContextType {
+export interface SidebarContentContextType {
   sidebarContent: "events" | "search";
   setSidebarContent: (content: "events" | "search") => void;
   sidebarOpenNavClick: boolean;
