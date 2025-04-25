@@ -34,6 +34,7 @@ interface ButtonProps {
   children: ReactNode;
   type?: "button" | "submit" | "reset";
   className?: string;
+  throttleClicks?: boolean;
   [key: string]: unknown;
 }
 
@@ -80,18 +81,20 @@ vi.mock("@/components/ui/input", () => ({
 }));
 
 // Mock the Button component
-vi.mock("@/components/ui/button", () => ({
-  Button: ({ children, type, className, ...props }: ButtonProps) => (
-    <button
-      data-testid="submit-button"
-      className={className}
-      type={type}
-      {...props}
-    >
-      {children}
-    </button>
-  ),
-}));
+vi.mock("@/components/ui/button", () => {
+  return {
+    Button: (props: ButtonProps) => {
+      // Create a new props object without throttleClicks
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { throttleClicks, ...buttonProps } = props;
+      return (
+        <button data-testid="submit-button" {...buttonProps}>
+          {props.children}
+        </button>
+      );
+    },
+  };
+});
 
 // Mock the useAuth hook
 vi.mock("@/pages/Auth/hooks/useAuth", () => ({
