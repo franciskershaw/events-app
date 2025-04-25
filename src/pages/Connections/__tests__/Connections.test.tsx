@@ -6,7 +6,7 @@ import { useIsMobile } from "@/hooks/utility/use-mobile";
 import { TestMemoryRouter } from "@/test/TestRouter";
 import { User } from "@/types/globalTypes";
 
-import Connections from "./Connections";
+import Connections from "../Connections";
 
 // Mock dependencies
 vi.mock("@/hooks/user/useUser");
@@ -14,31 +14,40 @@ vi.mock("@/hooks/utility/usePageTitle");
 vi.mock("@/hooks/utility/use-mobile");
 
 // Mock all the connection components to make testing easier
-vi.mock("./components/ConnectionForm/ConnectionForm", () => ({
+vi.mock("@/pages/Connections/components/ConnectionForm/ConnectionForm", () => ({
   default: () => <div data-testid="connection-form">Connection Form</div>,
 }));
 
-vi.mock("./components/ConnectionListItem/ConnectionListItem", () => ({
-  default: ({
-    connection,
-  }: {
-    connection: { _id: string; name: string; hideEvents: boolean };
-  }) => (
-    <div data-testid="connection-list-item" data-id={connection._id}>
-      {connection.name}
-    </div>
-  ),
-}));
+vi.mock(
+  "@/pages/Connections/components/ConnectionListItem/ConnectionListItem",
+  () => ({
+    default: ({
+      connection,
+    }: {
+      connection: { _id: string; name: string; hideEvents: boolean };
+    }) => (
+      <div data-testid="connection-list-item" data-id={connection._id}>
+        {connection.name}
+      </div>
+    ),
+  })
+);
 
-vi.mock("./components/ConnectionModals/ConnectionModal", () => ({
-  default: () => <div data-testid="connection-modal">Connection Modal</div>,
-}));
+vi.mock(
+  "@/pages/Connections/components/ConnectionModals/ConnectionModal",
+  () => ({
+    default: () => <div data-testid="connection-modal">Connection Modal</div>,
+  })
+);
 
-vi.mock("./components/EmptyStateNoConnections/EmptyStateNoConnections", () => ({
-  EmptyStateNoConnections: () => (
-    <div data-testid="empty-state">No connections message</div>
-  ),
-}));
+vi.mock(
+  "@/pages/Connections/components/EmptyStateNoConnections/EmptyStateNoConnections",
+  () => ({
+    EmptyStateNoConnections: () => (
+      <div data-testid="empty-state">No connections message</div>
+    ),
+  })
+);
 
 // Create a complete mock type for useUser return
 const createMockUserHook = (user: User | null) => ({

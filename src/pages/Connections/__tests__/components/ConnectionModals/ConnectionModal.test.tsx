@@ -2,13 +2,16 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
-import ConnectionFormContent from "../../ConnectionForm/ConnectionFormContent";
-import ConnectionModal from "../ConnectionModal";
+import ConnectionFormContent from "@/pages/Connections/components/ConnectionForm/ConnectionFormContent";
+import ConnectionModal from "@/pages/Connections/components/ConnectionModals/ConnectionModal";
 
 // Mock the ConnectionFormContent component
-vi.mock("../../ConnectionForm/ConnectionFormContent", () => ({
-  default: vi.fn(() => <div data-testid="mocked-form-content" />),
-}));
+vi.mock(
+  "@/pages/Connections/components/ConnectionForm/ConnectionFormContent",
+  () => ({
+    default: vi.fn(() => <div data-testid="mocked-form-content" />),
+  })
+);
 
 describe("ConnectionModal", () => {
   it("renders a button to trigger the modal", () => {

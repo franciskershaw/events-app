@@ -10,7 +10,7 @@ import useGetEvents from "@/pages/Events/hooks/useGetEvents";
 import queryKeys from "@/tanstackQuery/queryKeys";
 import { User } from "@/types/globalTypes";
 
-import useUpdateConnectionPreferences from "../useUpdateConnectionPreferences";
+import useUpdateConnectionPreferences from "../../hooks/useUpdateConnectionPreferences";
 
 // Type for the connection
 interface Connection {

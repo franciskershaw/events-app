@@ -7,7 +7,7 @@ import useUser from "@/hooks/user/useUser";
 import { TestMemoryRouter } from "@/test/TestRouter";
 import { User } from "@/types/globalTypes";
 
-import Auth from "./Auth";
+import Auth from "../Auth";
 
 // Mock dependencies
 vi.mock("react-router-dom", async () => {
@@ -22,12 +22,12 @@ vi.mock("@/hooks/user/useUser");
 vi.mock("@/hooks/utility/usePageTitle");
 
 // Mock the LocalForm component
-vi.mock("./components/LocalForm/LocalForm", () => ({
+vi.mock("../components/LocalForm/LocalForm", () => ({
   default: () => <div data-testid="local-form">LocalForm Component</div>,
 }));
 
 // Mock the OrDivider component
-vi.mock("./components/OrDivider/OrDivider", () => ({
+vi.mock("../components/OrDivider/OrDivider", () => ({
   default: () => <div data-testid="or-divider">OrDivider Component</div>,
 }));
 

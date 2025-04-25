@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import { EmptyStateNoConnections } from "./EmptyStateNoConnections";
+import { EmptyStateNoConnections } from "../../../components/EmptyStateNoConnections/EmptyStateNoConnections";
 
 describe("EmptyStateNoConnections", () => {
   it("renders the correct heading and description", () => {

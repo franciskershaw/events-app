@@ -4,9 +4,8 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import LocalForm from "@/pages/Auth/components/LocalForm/LocalForm";
 import useAuth from "@/pages/Auth/hooks/useAuth";
-
-import LocalForm from "./LocalForm";
 
 // Interface definitions for mock components
 interface FormProps {

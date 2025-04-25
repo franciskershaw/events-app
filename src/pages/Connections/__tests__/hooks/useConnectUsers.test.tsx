@@ -9,25 +9,20 @@ import useUser from "@/hooks/user/useUser";
 import queryKeys from "@/tanstackQuery/queryKeys";
 import { User } from "@/types/globalTypes";
 
-import useRemoveConnection from "../useRemoveConnection";
+import useConnectUsers from "../../hooks/useConnectUsers";
 
-// Type for the connection to be removed
-interface Connection {
+// Type for the connected user returned by the API
+interface ConnectedUser {
   _id: string;
   name: string;
   email: string;
   hideEvents: boolean;
 }
 
-// Type for API response on success
-interface RemoveConnectionResponse {
-  data: { _id: string };
-}
-
 // Type for mutation options
 interface MutationOptions {
-  mutationFn: (data: { _id: string }) => Promise<RemoveConnectionResponse>;
-  onSuccess: (response: RemoveConnectionResponse) => void;
+  mutationFn: (connectionId: string) => Promise<ConnectedUser>;
+  onSuccess: (data: ConnectedUser) => void;
   onError: (error: AxiosError<{ message: string }> | Error) => void;
 }
 
@@ -56,44 +51,29 @@ vi.mock("sonner", () => ({
   },
 }));
 
-describe("useRemoveConnection", () => {
-  // Mock connection to remove
-  const mockConnection: Connection = {
-    _id: "conn123",
-    name: "Test Connection",
-    email: "connection@example.com",
-    hideEvents: false,
-  };
-
-  // Mock user with connections
+describe("useConnectUsers", () => {
+  // Mock user
   const mockUser: User = {
     _id: "user123",
     name: "Test User",
     email: "test@example.com",
     accessToken: "test-access-token",
-    connections: [
-      mockConnection,
-      {
-        _id: "conn456",
-        name: "Another Connection",
-        email: "another@example.com",
-        hideEvents: true,
-      },
-    ],
+    connections: [],
   };
 
-  // Mock API response
-  const mockResponse: RemoveConnectionResponse = {
-    data: {
-      _id: mockConnection._id,
-    },
+  // Connected user to return from the API
+  const mockConnectedUser: ConnectedUser = {
+    _id: "conn123",
+    name: "Connected User",
+    email: "connected@example.com",
+    hideEvents: false,
   };
 
   // Setup mocks
   const mockMutate = vi.fn();
   const mockSetQueryData = vi.fn();
   const mockInvalidateQueries = vi.fn();
-  const mockDelete = vi.fn();
+  const mockPost = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -106,10 +86,10 @@ describe("useRemoveConnection", () => {
       clearUser: vi.fn(),
     });
 
-    // Mock axios delete method
-    mockDelete.mockResolvedValue(mockResponse);
+    // Mock axios post method
+    mockPost.mockResolvedValue({ data: mockConnectedUser });
     vi.mocked(useAxios).mockReturnValue({
-      delete: mockDelete,
+      post: mockPost,
     } as unknown as AxiosInstance);
 
     // Mock query client
@@ -129,24 +109,25 @@ describe("useRemoveConnection", () => {
     vi.resetAllMocks();
   });
 
-  it("should call the correct API endpoint to remove a connection", () => {
+  it("should call the correct API endpoint with connection ID", () => {
     // Render the hook
-    renderHook(() => useRemoveConnection());
+    renderHook(() => useConnectUsers());
 
     // Extract the mutation function from useMutation mock
     const mutationOptions = vi.mocked(useMutation).mock
       .calls[0][0] as MutationOptions;
 
     // Get the mutationFn
-    const removeConnectionFn = mutationOptions.mutationFn;
+    const connectUsersFn = mutationOptions.mutationFn;
 
-    // Test the mutation function with connection ID
-    const connectionIdToRemove = { _id: mockConnection._id };
-    removeConnectionFn(connectionIdToRemove);
+    // Test the mutation function
+    const connectionId = "test-connection-id";
+    connectUsersFn(connectionId);
 
     // Verify API called with correct params
-    expect(mockDelete).toHaveBeenCalledWith(
-      `/users/connections/${connectionIdToRemove._id}`,
+    expect(mockPost).toHaveBeenCalledWith(
+      "/users/connections",
+      { connectionId },
       {
         headers: {
           Authorization: `Bearer ${mockUser.accessToken}`,
@@ -155,16 +136,16 @@ describe("useRemoveConnection", () => {
     );
   });
 
-  it("should update user data in cache on successful connection removal", () => {
+  it("should update user data in cache on successful connection", () => {
     // Render the hook
-    renderHook(() => useRemoveConnection());
+    renderHook(() => useConnectUsers());
 
     // Extract the mutation options from useMutation mock
     const mutationOptions = vi.mocked(useMutation).mock
       .calls[0][0] as MutationOptions;
 
-    // Call the onSuccess handler manually with the mock response
-    mutationOptions.onSuccess(mockResponse);
+    // Call the onSuccess handler manually with the mock connected user
+    mutationOptions.onSuccess(mockConnectedUser);
 
     // Verify cache was updated correctly
     expect(mockSetQueryData).toHaveBeenCalledWith(
@@ -176,18 +157,9 @@ describe("useRemoveConnection", () => {
     const updateFn = mockSetQueryData.mock.calls[0][1];
     const result = updateFn(mockUser);
 
-    // Verify the result has the connection removed
-    expect(result.connections.length).toBe(mockUser.connections.length - 1);
-    expect(
-      result.connections.find(
-        (conn: Connection) => conn._id === mockConnection._id
-      )
-    ).toBeUndefined();
-
-    // Should still contain other connections
-    expect(
-      result.connections.find((conn: Connection) => conn._id === "conn456")
-    ).toBeDefined();
+    // Verify the result has the connected user added to connections
+    expect(result.connections).toContain(mockConnectedUser);
+    expect(result.connections.length).toBe(mockUser.connections.length + 1);
 
     // Verify events were invalidated
     expect(mockInvalidateQueries).toHaveBeenCalledWith({
@@ -196,20 +168,20 @@ describe("useRemoveConnection", () => {
 
     // Verify success toast was shown
     expect(toast.success).toHaveBeenCalledWith(
-      "Connection removed successfully"
+      `Connected with ${mockConnectedUser.name}`
     );
   });
 
   it("should handle null user data gracefully", () => {
     // Render the hook
-    renderHook(() => useRemoveConnection());
+    renderHook(() => useConnectUsers());
 
     // Extract the mutation options from useMutation mock
     const mutationOptions = vi.mocked(useMutation).mock
       .calls[0][0] as MutationOptions;
 
     // Call the onSuccess handler manually
-    mutationOptions.onSuccess(mockResponse);
+    mutationOptions.onSuccess(mockConnectedUser);
 
     // Test the update function with null user data
     const updateFn = mockSetQueryData.mock.calls[0][1];
@@ -219,9 +191,9 @@ describe("useRemoveConnection", () => {
     expect(result).toBeNull();
   });
 
-  it("should show error toast when connection removal fails", () => {
+  it("should show error toast when connection fails", () => {
     // Error message from server
-    const errorMessage = "Failed to remove connection";
+    const errorMessage = "Connection failed: Invalid connection ID";
 
     // Setup error response
     const error = {
@@ -230,11 +202,11 @@ describe("useRemoveConnection", () => {
           message: errorMessage,
         },
       },
-      message: "Request failed with status code 404",
+      message: "Request failed with status code 400",
     } as AxiosError<{ message: string }>;
 
     // Render the hook
-    renderHook(() => useRemoveConnection());
+    renderHook(() => useConnectUsers());
 
     // Extract the mutation options from useMutation mock
     const mutationOptions = vi.mocked(useMutation).mock
@@ -252,7 +224,7 @@ describe("useRemoveConnection", () => {
     const genericError = new Error("Network Error");
 
     // Render the hook
-    renderHook(() => useRemoveConnection());
+    renderHook(() => useConnectUsers());
 
     // Extract the mutation options from useMutation mock
     const mutationOptions = vi.mocked(useMutation).mock

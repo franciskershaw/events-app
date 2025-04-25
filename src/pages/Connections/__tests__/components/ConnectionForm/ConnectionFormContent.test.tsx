@@ -6,9 +6,9 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import useUser from "@/hooks/user/useUser";
 import { User } from "@/types/globalTypes";
 
+import ConnectionFormContent from "../../../components/ConnectionForm/ConnectionFormContent";
 import useConnectUsers from "../../../hooks/useConnectUsers";
 import useGenerateConnectionId from "../../../hooks/useGenerateConnectionId";
-import ConnectionFormContent from "../ConnectionFormContent";
 
 // Mock dependencies
 vi.mock("@/hooks/user/useUser", () => ({

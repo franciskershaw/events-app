@@ -1,13 +1,16 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import ConnectionForm from "../ConnectionForm";
-import ConnectionFormContent from "../ConnectionFormContent";
+import ConnectionForm from "@/pages/Connections/components/ConnectionForm/ConnectionForm";
+import ConnectionFormContent from "@/pages/Connections/components/ConnectionForm/ConnectionFormContent";
 
 // Mock the ConnectionFormContent component
-vi.mock("../ConnectionFormContent", () => ({
-  default: vi.fn(() => <div data-testid="mocked-form-content" />),
-}));
+vi.mock(
+  "@/pages/Connections/components/ConnectionForm/ConnectionFormContent",
+  () => ({
+    default: vi.fn(() => <div data-testid="mocked-form-content" />),
+  })
+);
 
 describe("ConnectionForm", () => {
   it("renders with correct heading and description", () => {

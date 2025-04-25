@@ -2,21 +2,24 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import useUpdateConnectionPreferences from "../../hooks/useUpdateConnectionPreferences";
-import ConnectionListItem from "./ConnectionListItem";
+import ConnectionListItem from "@/pages/Connections/components/ConnectionListItem/ConnectionListItem";
+import useUpdateConnectionPreferences from "@/pages/Connections/hooks/useUpdateConnectionPreferences";
 
 // Mock the hooks and components
-vi.mock("../../hooks/useUpdateConnectionPreferences", () => ({
+vi.mock("@/pages/Connections/hooks/useUpdateConnectionPreferences", () => ({
   default: vi.fn(),
 }));
 
-vi.mock("../ConnectionModals/RemoveConnectionModal", () => ({
-  default: vi.fn(({ _id }) => (
-    <button data-testid="mock-remove-modal" data-connection-id={_id}>
-      Delete
-    </button>
-  )),
-}));
+vi.mock(
+  "@/pages/Connections/components/ConnectionModals/RemoveConnectionModal",
+  () => ({
+    default: vi.fn(({ _id }) => (
+      <button data-testid="mock-remove-modal" data-connection-id={_id}>
+        Delete
+      </button>
+    )),
+  })
+);
 
 describe("ConnectionListItem", () => {
   const mockVisibleConnection = {

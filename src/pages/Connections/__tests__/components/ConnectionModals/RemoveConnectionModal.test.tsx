@@ -2,8 +2,8 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import RemoveConnectionModal from "../../../components/ConnectionModals/RemoveConnectionModal";
 import useRemoveConnection from "../../../hooks/useRemoveConnection";
-import RemoveConnectionModal from "../RemoveConnectionModal";
 
 // Mock the useRemoveConnection hook
 vi.mock("../../../hooks/useRemoveConnection", () => ({

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import OrDivider from "./OrDivider";
+import OrDivider from "@/pages/Auth/components/OrDivider/OrDivider";
 
 describe("OrDivider", () => {
   it("renders the divider with 'or' text", () => {

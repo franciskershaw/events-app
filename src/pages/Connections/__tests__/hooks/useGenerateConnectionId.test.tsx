@@ -9,20 +9,18 @@ import useUser from "@/hooks/user/useUser";
 import queryKeys from "@/tanstackQuery/queryKeys";
 import { User } from "@/types/globalTypes";
 
-import useConnectUsers from "../useConnectUsers";
+import useGenerateConnectionId from "../../hooks/useGenerateConnectionId";
 
-// Type for the connected user returned by the API
-interface ConnectedUser {
-  _id: string;
-  name: string;
-  email: string;
-  hideEvents: boolean;
+// Type for connection ID returned by the API
+interface ConnectionId {
+  id: string;
+  expiry: string;
 }
 
 // Type for mutation options
 interface MutationOptions {
-  mutationFn: (connectionId: string) => Promise<ConnectedUser>;
-  onSuccess: (data: ConnectedUser) => void;
+  mutationFn: () => Promise<ConnectionId>;
+  onSuccess: (data: ConnectionId) => void;
   onError: (error: AxiosError<{ message: string }> | Error) => void;
 }
 
@@ -51,7 +49,7 @@ vi.mock("sonner", () => ({
   },
 }));
 
-describe("useConnectUsers", () => {
+describe("useGenerateConnectionId", () => {
   // Mock user
   const mockUser: User = {
     _id: "user123",
@@ -61,18 +59,15 @@ describe("useConnectUsers", () => {
     connections: [],
   };
 
-  // Connected user to return from the API
-  const mockConnectedUser: ConnectedUser = {
-    _id: "conn123",
-    name: "Connected User",
-    email: "connected@example.com",
-    hideEvents: false,
+  // Connection ID to return from the API
+  const mockConnectionId: ConnectionId = {
+    id: "generated-connection-id-123",
+    expiry: "2023-12-31T23:59:59Z",
   };
 
   // Setup mocks
   const mockMutate = vi.fn();
   const mockSetQueryData = vi.fn();
-  const mockInvalidateQueries = vi.fn();
   const mockPost = vi.fn();
 
   beforeEach(() => {
@@ -87,7 +82,7 @@ describe("useConnectUsers", () => {
     });
 
     // Mock axios post method
-    mockPost.mockResolvedValue({ data: mockConnectedUser });
+    mockPost.mockResolvedValue({ data: mockConnectionId });
     vi.mocked(useAxios).mockReturnValue({
       post: mockPost,
     } as unknown as AxiosInstance);
@@ -95,7 +90,6 @@ describe("useConnectUsers", () => {
     // Mock query client
     vi.mocked(useQueryClient).mockReturnValue({
       setQueryData: mockSetQueryData,
-      invalidateQueries: mockInvalidateQueries,
     } as unknown as ReturnType<typeof useQueryClient>);
 
     // Mock useMutation
@@ -109,25 +103,24 @@ describe("useConnectUsers", () => {
     vi.resetAllMocks();
   });
 
-  it("should call the correct API endpoint with connection ID", () => {
+  it("should call the correct API endpoint to generate a connection ID", () => {
     // Render the hook
-    renderHook(() => useConnectUsers());
+    renderHook(() => useGenerateConnectionId());
 
     // Extract the mutation function from useMutation mock
     const mutationOptions = vi.mocked(useMutation).mock
       .calls[0][0] as MutationOptions;
 
     // Get the mutationFn
-    const connectUsersFn = mutationOptions.mutationFn;
+    const generateConnectionIdFn = mutationOptions.mutationFn;
 
-    // Test the mutation function
-    const connectionId = "test-connection-id";
-    connectUsersFn(connectionId);
+    // Call the function
+    generateConnectionIdFn();
 
     // Verify API called with correct params
     expect(mockPost).toHaveBeenCalledWith(
-      "/users/connections",
-      { connectionId },
+      "/users/connection-id",
+      {},
       {
         headers: {
           Authorization: `Bearer ${mockUser.accessToken}`,
@@ -136,16 +129,16 @@ describe("useConnectUsers", () => {
     );
   });
 
-  it("should update user data in cache on successful connection", () => {
+  it("should update user data in cache on successful connection ID generation", () => {
     // Render the hook
-    renderHook(() => useConnectUsers());
+    renderHook(() => useGenerateConnectionId());
 
     // Extract the mutation options from useMutation mock
     const mutationOptions = vi.mocked(useMutation).mock
       .calls[0][0] as MutationOptions;
 
-    // Call the onSuccess handler manually with the mock connected user
-    mutationOptions.onSuccess(mockConnectedUser);
+    // Call the onSuccess handler manually with the mock connection ID
+    mutationOptions.onSuccess(mockConnectionId);
 
     // Verify cache was updated correctly
     expect(mockSetQueryData).toHaveBeenCalledWith(
@@ -157,31 +150,25 @@ describe("useConnectUsers", () => {
     const updateFn = mockSetQueryData.mock.calls[0][1];
     const result = updateFn(mockUser);
 
-    // Verify the result has the connected user added to connections
-    expect(result.connections).toContain(mockConnectedUser);
-    expect(result.connections.length).toBe(mockUser.connections.length + 1);
+    // Verify the result has the connection ID updated
+    expect(result.connectionId).toEqual(mockConnectionId);
 
-    // Verify events were invalidated
-    expect(mockInvalidateQueries).toHaveBeenCalledWith({
-      queryKey: [queryKeys.events],
-    });
-
-    // Verify success toast was shown
-    expect(toast.success).toHaveBeenCalledWith(
-      `Connected with ${mockConnectedUser.name}`
-    );
+    // Other properties should remain untouched
+    expect(result._id).toBe(mockUser._id);
+    expect(result.name).toBe(mockUser.name);
+    expect(result.connections).toBe(mockUser.connections);
   });
 
   it("should handle null user data gracefully", () => {
     // Render the hook
-    renderHook(() => useConnectUsers());
+    renderHook(() => useGenerateConnectionId());
 
     // Extract the mutation options from useMutation mock
     const mutationOptions = vi.mocked(useMutation).mock
       .calls[0][0] as MutationOptions;
 
     // Call the onSuccess handler manually
-    mutationOptions.onSuccess(mockConnectedUser);
+    mutationOptions.onSuccess(mockConnectionId);
 
     // Test the update function with null user data
     const updateFn = mockSetQueryData.mock.calls[0][1];
@@ -191,9 +178,38 @@ describe("useConnectUsers", () => {
     expect(result).toBeNull();
   });
 
-  it("should show error toast when connection fails", () => {
+  it("should handle case with existing connectionId", () => {
+    // Create user with existing connection ID
+    const userWithConnectionId: User = {
+      ...mockUser,
+      connectionId: {
+        id: "existing-connection-id",
+        expiry: "2023-11-30T23:59:59Z",
+      },
+    };
+
+    // Render the hook
+    renderHook(() => useGenerateConnectionId());
+
+    // Extract the mutation options from useMutation mock
+    const mutationOptions = vi.mocked(useMutation).mock
+      .calls[0][0] as MutationOptions;
+
+    // Call the onSuccess handler manually
+    mutationOptions.onSuccess(mockConnectionId);
+
+    // Test the update function with user that has existing connectionId
+    const updateFn = mockSetQueryData.mock.calls[0][1];
+    const result = updateFn(userWithConnectionId);
+
+    // Should replace the existing connectionId with the new one
+    expect(result.connectionId).toEqual(mockConnectionId);
+    expect(result.connectionId).not.toEqual(userWithConnectionId.connectionId);
+  });
+
+  it("should show error toast when connection ID generation fails", () => {
     // Error message from server
-    const errorMessage = "Connection failed: Invalid connection ID";
+    const errorMessage = "Failed to generate connection ID";
 
     // Setup error response
     const error = {
@@ -202,11 +218,11 @@ describe("useConnectUsers", () => {
           message: errorMessage,
         },
       },
-      message: "Request failed with status code 400",
+      message: "Request failed with status code 500",
     } as AxiosError<{ message: string }>;
 
     // Render the hook
-    renderHook(() => useConnectUsers());
+    renderHook(() => useGenerateConnectionId());
 
     // Extract the mutation options from useMutation mock
     const mutationOptions = vi.mocked(useMutation).mock
@@ -224,7 +240,7 @@ describe("useConnectUsers", () => {
     const genericError = new Error("Network Error");
 
     // Render the hook
-    renderHook(() => useConnectUsers());
+    renderHook(() => useGenerateConnectionId());
 
     // Extract the mutation options from useMutation mock
     const mutationOptions = vi.mocked(useMutation).mock

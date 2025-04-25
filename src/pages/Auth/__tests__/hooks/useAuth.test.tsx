@@ -4,10 +4,10 @@ import { toast } from "sonner";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import useAxios from "@/hooks/axios/useAxios";
+import useUser from "@/hooks/user/useUser";
 import { User } from "@/types/globalTypes";
 
-import useUser from "../../../hooks/user/useUser";
-import useAuth from "./useAuth";
+import useAuth from "../../hooks/useAuth";
 
 // Mock dependencies
 vi.mock("sonner", () => ({
@@ -18,7 +18,7 @@ vi.mock("sonner", () => ({
 }));
 
 vi.mock("@/hooks/axios/useAxios");
-vi.mock("../../../hooks/user/useUser");
+vi.mock("@/hooks/user/useUser");
 
 // Type for mocking useUser return
 type UserHookReturn = ReturnType<typeof useUser>;
