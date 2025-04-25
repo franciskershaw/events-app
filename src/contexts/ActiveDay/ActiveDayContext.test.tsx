@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 
 import { act, renderHook } from "@testing-library/react";
 import dayjs from "dayjs";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { ActiveDayProvider, useActiveDay } from "./ActiveDayContext";
 
@@ -37,9 +37,16 @@ describe("ActiveDayContext", () => {
   });
 
   it("should throw an error when useActiveDay is used outside of ActiveDayProvider", () => {
-    // Expect the hook to throw when used outside of provider
-    expect(() => renderHook(() => useActiveDay())).toThrow(
-      "useActiveDay must be used within an ActiveDayProvider"
-    );
+    // Silence React error boundary warning in test output
+    const consoleSpy = vi.spyOn(console, "error");
+    consoleSpy.mockImplementation(() => {});
+
+    expect(() => {
+      const { result } = renderHook(() => useActiveDay());
+      // Access result to trigger hook execution
+      return result.current;
+    }).toThrow("useActiveDay must be used within an ActiveDayProvider");
+
+    consoleSpy.mockRestore();
   });
 });
