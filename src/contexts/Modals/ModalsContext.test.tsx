@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 import { act, renderHook } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { Event } from "@/types/globalTypes";
 
@@ -136,8 +136,16 @@ describe("ModalsContext", () => {
   });
 
   it("should throw an error when useModals is used outside of ModalsProvider", () => {
-    expect(() => renderHook(() => useModals())).toThrow(
-      "useModals must be used within a ModalsProvider"
-    );
+    // Silence React error boundary warning in test output
+    const consoleSpy = vi.spyOn(console, "error");
+    consoleSpy.mockImplementation(() => {});
+
+    expect(() => {
+      const { result } = renderHook(() => useModals());
+      // Access result to trigger hook execution
+      return result.current;
+    }).toThrow("useModals must be used within a ModalsProvider");
+
+    consoleSpy.mockRestore();
   });
 });

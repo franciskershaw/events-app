@@ -120,8 +120,16 @@ describe("SidebarContext", () => {
   });
 
   it("should throw an error when useSidebar is used outside of SidebarProvider", () => {
-    expect(() => renderHook(() => useSidebar())).toThrow(
-      "useSidebar must be used within a SidebarProvider"
-    );
+    // Silence React error boundary warning in test output
+    const consoleSpy = vi.spyOn(console, "error");
+    consoleSpy.mockImplementation(() => {});
+
+    expect(() => {
+      const { result } = renderHook(() => useSidebar());
+      // Access result to trigger hook execution
+      return result.current;
+    }).toThrow("useSidebar must be used within a SidebarProvider");
+
+    consoleSpy.mockRestore();
   });
 });
