@@ -7,12 +7,12 @@ import { Toaster } from "@/components/ui/sonner";
 import { useModals } from "@/contexts/Modals/ModalsContext";
 import { useSidebar } from "@/contexts/Sidebar/mobile/SidebarContext";
 import useUser from "@/hooks/user/useUser";
-import AddEventModal from "@/pages/Events/components/EventModals/AddEventModal";
-import DeleteEventModal from "@/pages/Events/components/EventModals/DeleteEventModal";
+import ConnectionsModal from "@/pages/Events/components/global/ConnectionsModal/ConnectionsModal";
+import AddEventModal from "@/pages/Events/components/global/EventModals/AddEventModal";
+import DeleteEventModal from "@/pages/Events/components/global/EventModals/DeleteEventModal";
 
 import { NAV_HEIGHT } from "../../../constants/app";
 import { useIsMobile } from "../../../hooks/utility/use-mobile";
-import ConnectionsModal from "../../../pages/Events/components/ConnectionsModal/ConnectionsModal";
 import { Button } from "../../ui/button";
 import { NavDesktop } from "../navigation/Nav/desktop/NavDesktop";
 

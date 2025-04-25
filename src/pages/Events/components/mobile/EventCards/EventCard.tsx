@@ -8,12 +8,12 @@ import { useSwipeable } from "react-swipeable";
 import { Badge } from "@/components/ui/badge";
 import useIsUserEvent from "@/hooks/user/useIsUserEvent";
 import { formatDate, formatTime, isWeekend } from "@/lib/utils";
+import EventCardActions from "@/pages/Events/components/global/EventCardActions/EventCardActions";
+import { UserEventInitials } from "@/pages/Events/components/global/UserEventInitials/UserEventInitials";
 import { Event } from "@/types/globalTypes";
 
 import SwipeableIndicator from "../../../../../components/utility/SwipeableIndicator/SwipeableIndicator";
 import { getCategoryIcon } from "../../../../../lib/icons";
-import EventCardActions from "../../../components/EventCardActions/EventCardActions";
-import { UserEventInitials } from "../../../components/UserEventInitials/UserEventInitials";
 
 const EventCard = ({ event }: { event: Event }) => {
   const { location, title, category, description } = event;

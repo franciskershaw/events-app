@@ -14,8 +14,7 @@ import dayjs from "dayjs";
 import { FaCheck, FaRegCopy, FaTimes } from "react-icons/fa";
 
 import { useSearch } from "@/contexts/SearchEvents/SearchEventsContext";
-
-import useCreateMessage from "../../hooks/useCreateMessage";
+import useCreateMessage from "@/pages/Events/hooks/useCreateMessage";
 
 const useFilters = () => {
   const {

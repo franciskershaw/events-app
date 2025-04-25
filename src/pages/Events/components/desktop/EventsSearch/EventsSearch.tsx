@@ -2,15 +2,16 @@ import { useMemo } from "react";
 
 import dayjs from "dayjs";
 
+import { EmptyStateNoResults } from "@/pages/Events/components/global/EmptyStateNoResults/EmptyStateNoResults";
+import { EmptyStateNoSearch } from "@/pages/Events/components/global/EmptyStateNoSearch/EmptyStateNoSearch";
+import Filters from "@/pages/Events/components/global/Filters/Filters";
+import { UserEventInitials } from "@/pages/Events/components/global/UserEventInitials/UserEventInitials";
+
 import { SearchBar } from "../../../../../components/ui/search-bar";
 import { CATEGORY_FREE } from "../../../../../constants/app";
 import { useSearch } from "../../../../../contexts/SearchEvents/SearchEventsContext";
 import { formatTime } from "../../../../../lib/utils";
 import { Event } from "../../../../../types/globalTypes";
-import { EmptyStateNoResults } from "../../../components/EmptyStateNoResults/EmptyStateNoResults";
-import { EmptyStateNoSearch } from "../../../components/EmptyStateNoSearch/EmptyStateNoSearch";
-import Filters from "../../../components/Filters/Filters";
-import { UserEventInitials } from "../../../components/UserEventInitials/UserEventInitials";
 
 export const EventsSearch = ({
   eventsByDay,

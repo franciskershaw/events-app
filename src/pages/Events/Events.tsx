@@ -8,12 +8,12 @@ import { SearchProvider } from "../../contexts/SearchEvents/SearchEventsContext"
 import useUser from "../../hooks/user/useUser";
 import { useIsMobile } from "../../hooks/utility/use-mobile";
 import { Event } from "../../types/globalTypes";
-import { EventsDesktop } from "./desktop/EventsDesktop";
+import { EventsDesktop } from "./components/desktop/EventsDesktop";
+import { EventsMobile } from "./components/mobile/EventsMobile";
 import { generateRecurringEvents } from "./helpers/generateRecurringEvents";
 import { getFirstAndLastEventDates } from "./helpers/getFirstAndLastEventDates";
 import useGetEventCategories from "./hooks/useGetEventCategories";
 import useGetEvents from "./hooks/useGetEvents";
-import { EventsMobile } from "./mobile/EventsMobile";
 
 const Events = () => {
   const { user } = useUser();

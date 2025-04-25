@@ -1,4 +1,5 @@
-import { EmptyState } from "../../../components/EmptyState/EmptyState";
+import { EmptyState } from "@/pages/Events/components/global/EmptyState/EmptyState";
+
 import { AddEventButton } from "../AddEventButton/AddEventButton";
 
 export const EmptyStateNoEvents = () => {

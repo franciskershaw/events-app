@@ -2,10 +2,11 @@ import { useMemo } from "react";
 
 import dayjs from "dayjs";
 
-import { useActiveDay } from "../../../../../contexts/ActiveDay/ActiveDayContext";
-import { formatTime } from "../../../../../lib/utils";
-import { Event } from "../../../../../types/globalTypes";
-import { UserEventInitials } from "../../../components/UserEventInitials/UserEventInitials";
+import { useActiveDay } from "@/contexts/ActiveDay/ActiveDayContext";
+import { formatTime } from "@/lib/utils";
+import { UserEventInitials } from "@/pages/Events/components/global/UserEventInitials/UserEventInitials";
+import { Event } from "@/types/globalTypes";
+
 import { AddEventButton } from "../AddEventButton/AddEventButton";
 import { EmptyStateNoEvents } from "../EmptyStateNoEvents/EmptyStateNoEvents";
 import EventCard from "../EventCard/EventCard";
