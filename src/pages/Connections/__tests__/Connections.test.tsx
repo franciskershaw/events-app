@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { TestMemoryRouter } from "@/__test__/TestRouter";
 import useUser from "@/hooks/user/useUser";
 import { useIsMobile } from "@/hooks/utility/use-mobile";
-import { TestMemoryRouter } from "@/test/TestRouter";
 import { User } from "@/types/globalTypes";
 
 import Connections from "../Connections";

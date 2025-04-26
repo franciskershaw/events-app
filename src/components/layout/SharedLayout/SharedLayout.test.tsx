@@ -4,11 +4,11 @@ import { cleanup, render, screen } from "@testing-library/react";
 import { Outlet } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { TestRouter } from "@/__test__/TestRouter";
 import { useModals } from "@/contexts/Modals/ModalsContext";
 import { useSidebar } from "@/contexts/Sidebar/mobile/SidebarContext";
 import useUser from "@/hooks/user/useUser";
 import { useIsMobile } from "@/hooks/utility/use-mobile";
-import { TestRouter } from "@/test/TestRouter";
 
 import SharedLayout from "./SharedLayout";
 

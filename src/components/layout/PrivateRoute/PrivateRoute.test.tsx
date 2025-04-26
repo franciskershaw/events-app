@@ -4,8 +4,8 @@ import { cleanup, render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { TestRouter } from "@/__test__/TestRouter";
 import useUser from "@/hooks/user/useUser";
-import { TestRouter } from "@/test/TestRouter";
 
 import PrivateRoute from "./PrivateRoute";
 
@@ -15,7 +15,7 @@ vi.mock("@/hooks/user/useUser", () => ({
 }));
 
 // Mock the TestRouter component
-vi.mock("@/test/TestRouter", () => ({
+vi.mock("@/__test__/TestRouter", () => ({
   TestRouter: ({ children }: { children: React.ReactNode }) => (
     <MemoryRouter
       initialEntries={["/protected"]}

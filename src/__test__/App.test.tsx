@@ -2,11 +2,12 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, test, vi } from "vitest";
 
-import App from "../App";
 // Import only the components we need for tests
-import Auth from "../pages/Auth/Auth";
-import Connections from "../pages/Connections/Connections";
-import Events from "../pages/Events/Events";
+import Auth from "@/pages/Auth/Auth";
+import Connections from "@/pages/Connections/Connections";
+import Events from "@/pages/Events/Events";
+
+import App from "../App";
 
 // Mock the components
 vi.mock("../components/layout/SharedLayout/SharedLayout", () => ({
