@@ -2,13 +2,13 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { useLocation } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { TestRouter } from "@/__test__/TestRouter";
 // Import mocked hooks after mocking
 import { useSidebar } from "@/contexts/Sidebar/mobile/SidebarContext";
 import useUser from "@/hooks/user/useUser";
 import useAuth from "@/pages/Auth/hooks/useAuth";
 
 import { useScrollVisibility } from "../../../../../hooks/utility/useScrollVisibility";
-import { TestRouter } from "../../../../../test/TestRouter";
 import NavMobile from "./NavMobile";
 
 // Mock all dependencies

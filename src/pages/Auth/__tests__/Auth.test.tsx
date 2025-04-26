@@ -3,8 +3,8 @@ import userEvent from "@testing-library/user-event";
 import { useNavigate } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { TestMemoryRouter } from "@/__test__/TestRouter";
 import useUser from "@/hooks/user/useUser";
-import { TestMemoryRouter } from "@/test/TestRouter";
 import { User } from "@/types/globalTypes";
 
 import Auth from "../Auth";
