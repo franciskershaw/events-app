@@ -1,5 +1,6 @@
+import { act } from "react";
+
 import { fireEvent, render, screen } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
 import { describe, expect, it, vi } from "vitest";
 
 import EventCard from "@/pages/Events/components/mobile/EventCards/EventCard";
@@ -91,18 +92,21 @@ vi.mock("framer-motion", () => ({
   },
 }));
 
-// Create a mock for useSwipeable that allows us to access the handlers
+// Create a mock for useSwipeable that properly mocks the handlers
 const swipeHandlersMock = {
   onSwipedLeft: vi.fn(),
   onSwipedRight: vi.fn(),
 };
 
-// Mock useSwipeable
+// Mock useSwipeable to return a ref and event handlers object
 vi.mock("react-swipeable", () => ({
   useSwipeable: vi.fn(({ onSwipedLeft, onSwipedRight }) => {
+    // Store the handlers for tests to access
     swipeHandlersMock.onSwipedLeft = onSwipedLeft;
     swipeHandlersMock.onSwipedRight = onSwipedRight;
-    return swipeHandlersMock;
+
+    // Return an empty object that's safe to spread
+    return {};
   }),
 }));
 
