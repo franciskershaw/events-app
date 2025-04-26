@@ -96,28 +96,36 @@ export const handlers = [
     }
   ),
 
-  // Event endpoints
+  // Event endpoints - original paths without /api prefix
   http.get("/events", () => {
     return HttpResponse.json([
       {
         _id: "event1",
         title: "Event 1",
-        date: "2023-10-01",
+        date: {
+          start: "2023-10-01T00:00:00.000Z",
+          end: "2023-10-01T01:00:00.000Z",
+        },
         description: "First event",
         category: { _id: "cat1", name: "Social" },
         private: false,
         unConfirmed: false,
         userId: "user123",
+        createdBy: { _id: "user123", name: "Test User" },
       },
       {
         _id: "event2",
         title: "Event 2",
-        date: "2023-10-15",
+        date: {
+          start: "2023-10-15T00:00:00.000Z",
+          end: "2023-10-15T01:00:00.000Z",
+        },
         description: "Second event",
         category: { _id: "cat2", name: "Work" },
         private: true,
         unConfirmed: true,
         userId: "user123",
+        createdBy: { _id: "user123", name: "Test User" },
       },
     ]);
   }),
@@ -156,5 +164,88 @@ export const handlers = [
       _id: params.eventId,
       private: true,
     });
+  }),
+
+  // Handlers for API endpoints with /api prefix
+  http.get("/api/events", () => {
+    return HttpResponse.json([
+      {
+        _id: "event1",
+        title: "Event 1",
+        date: {
+          start: "2023-10-01T00:00:00.000Z",
+          end: "2023-10-01T01:00:00.000Z",
+        },
+        description: "First event",
+        category: { _id: "cat1", name: "Social" },
+        private: false,
+        unConfirmed: false,
+        userId: "user123",
+        createdBy: { _id: "user123", name: "Test User" },
+      },
+      {
+        _id: "event2",
+        title: "Event 2",
+        date: {
+          start: "2023-10-15T00:00:00.000Z",
+          end: "2023-10-15T01:00:00.000Z",
+        },
+        description: "Second event",
+        category: { _id: "cat2", name: "Work" },
+        private: true,
+        unConfirmed: true,
+        userId: "user123",
+        createdBy: { _id: "user123", name: "Test User" },
+      },
+    ]);
+  }),
+
+  http.get("/api/events/categories", () => {
+    return HttpResponse.json([
+      { _id: "cat1", name: "Social" },
+      { _id: "cat2", name: "Work" },
+      { _id: "cat3", name: "Family" },
+      { _id: "cat4", name: "Health" },
+    ]);
+  }),
+
+  http.get("/api/auth/refresh-token", () => {
+    return HttpResponse.json({
+      accessToken: "mock-refreshed-token",
+    });
+  }),
+
+  // Add other API endpoints that might be called
+  http.post("/api/auth/login", async ({ request }) => {
+    const credentials = (await request.json()) as {
+      email: string;
+      password: string;
+    };
+    return HttpResponse.json({
+      _id: "user123",
+      name: "Test User",
+      email: credentials.email,
+      accessToken: "mock-access-token",
+      connections: [],
+    });
+  }),
+
+  http.post("/api/auth/register", async ({ request }) => {
+    const userData = (await request.json()) as {
+      name: string;
+      email: string;
+      password: string;
+    };
+    return HttpResponse.json({
+      _id: "user123",
+      name: userData.name,
+      email: userData.email,
+      accessToken: "mock-access-token",
+      connections: [],
+    });
+  }),
+
+  http.post("/api/auth/logout", () => {
+    return HttpResponse.json({ success: true });
   }),
 ];
