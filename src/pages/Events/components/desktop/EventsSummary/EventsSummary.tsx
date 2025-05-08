@@ -40,13 +40,13 @@ export const EventsSummary = ({
   return (
     <>
       {Object.keys(eventsByDay).length > 0 && (
-        <div className="date-header m-2 mb-0 z-40">
+        <div className="date-header gap-0 m-2 mb-0 z-40">
           <h2 className="text-lg font-semibold">
             {activeDay.format("dddd Do MMMM")}
           </h2>
         </div>
       )}
-      <div className="p-2">
+      <div className="p-2 pt-0">
         {/* Events - today */}
         {Object.keys(eventsByDay).length === 0 ? (
           <EmptyStateNoEvents />
@@ -54,7 +54,7 @@ export const EventsSummary = ({
           <>
             {events.length > 0 ? (
               <>
-                <ul className="[&>*:first-child]:pt-0">
+                <ul className="[&>*:first-child]:border-t">
                   {events.map((event) => (
                     <EventCard event={event} key={event._id} />
                   ))}
