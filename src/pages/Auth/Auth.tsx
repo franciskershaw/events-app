@@ -27,7 +27,7 @@ const Auth = () => {
   };
   return (
     <div className="flex items-center justify-center h-screen rounded-md">
-      <div className="flex flex-col items-center justify-center border rounded-sm p-8 w-full max-w-[400px]">
+      <div className="bg-background flex flex-col items-center justify-center border rounded-sm p-8 w-full max-w-[400px]">
         <Heading
           type="h1"
           fontWeight="font-semibold"

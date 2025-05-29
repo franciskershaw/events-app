@@ -102,6 +102,10 @@
       @apply absolute left-0 top-[0.75em] h-2 w-2 rounded-full bg-highlight;
       transform: translateY(-50%);
     }
+
+    ol.toaster li::before {
+      display: none;
+    }
   }
 
   /* Event card styling */
