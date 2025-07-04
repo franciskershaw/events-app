@@ -178,7 +178,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-primary-lightest text-foreground md:overflow-hidden;
+    @apply bg-primary-lightest text-foreground;
 
     main {
       @apply md:overflow-auto;

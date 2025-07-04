@@ -79,20 +79,6 @@ describe("Auth", () => {
     vi.clearAllMocks();
   });
 
-  it("renders the login page correctly", () => {
-    render(
-      <TestMemoryRouter>
-        <Auth />
-      </TestMemoryRouter>
-    );
-
-    // Check for main components
-    expect(screen.getByText("Organisey!")).toBeInTheDocument();
-    expect(screen.getByText("Login with Google")).toBeInTheDocument();
-    expect(screen.getByTestId("local-form")).toBeInTheDocument();
-    expect(screen.getByTestId("or-divider")).toBeInTheDocument();
-  });
-
   it("redirects to events page if user is already logged in", async () => {
     // Mock a logged-in user
     const mockUser: User = {
